@@ -43,7 +43,7 @@
       (f.fall10 < 366 ? '<i class="band frost-risk" style="' + span(f.fall10, Math.min(f.fall50, 366)) + '"></i>' : "") +
       (f.fall50 < 366 ? '<i class="band frost-hard" style="' + span(f.fall50, 366) + '"></i>' : "") +
       '</div></div>';
-    var groups = [["cool", "Cool-season crops"], ["warm", "Warm-season crops"], ["fall", "Fall-planted"]];
+    var groups = [["cool", "Cool-season crops"], ["warm", "Warm-season crops"], ["berry", "Berries"], ["fall", "Fall-planted"]];
     groups.forEach(function (g) {
       h += '<div class="row row-group"><div class="lbl">' + g[1] + '</div></div>';
       p.crops.filter(function (r) { return r.crop.group === g[0]; }).forEach(function (r) {
