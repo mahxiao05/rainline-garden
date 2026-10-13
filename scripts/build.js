@@ -88,7 +88,7 @@ ${body}
 </main>
 <footer class="site-foot"><div class="wrap">
 <p>Rainline Garden: free planting calendars for Oregon and Washington gardens.<br>Frost data from NOAA. Planting timing from OSU Extension guidance. Updated ${CONFIG.updated}.${CONFIG.amazonTag ? "<br>As an Amazon Associate, Rainline Garden earns from qualifying purchases." : ""}</p>
-<nav aria-label="Footer"><a href="${base}glossary/">Glossary</a><a href="${base}how-it-works/">How it works</a><a href="${base}about/">About</a><a href="${base}privacy/">Privacy</a></nav>
+<nav aria-label="Footer"><a href="${base}glossary/">Glossary</a><a href="${base}how-it-works/">How it works</a><a href="${base}about/">About</a><a href="${base}contact/">Contact</a><a href="${base}privacy/">Privacy</a><a href="${base}terms/">Terms</a></nav>
 </div></footer>
 ${(scripts || []).map(s => `<script src="${base}assets/${s}"></script>`).join("\n")}
 </body>
@@ -178,7 +178,7 @@ write("", "index.html", layout({
   description: "When to plant vegetables where you live in Oregon and Washington. Enter your ZIP for local frost dates and a planting calendar built from NOAA data and OSU Extension guidance.",
   jsonld: [{ "@context": "https://schema.org", "@type": "WebSite", name: "Rainline Garden", url: CONFIG.siteUrl }],
   body: `
-<div class="hero-art"><img src="assets/img/hero.svg" width="1200" height="440" alt="A raised vegetable bed with tomatoes, lettuce and carrots under Northwest mountains and light rain"></div>
+<div class="hero-art"><img src="assets/img/hero.svg" width="1200" height="440" alt="Two raised vegetable beds with tomatoes, beans, lettuce and kale inside a picket fence, with evergreen hills, a snowy volcano and a passing rain shower behind"></div>
 <section class="hero">
 <h1>Plant on Northwest time.</h1>
 <p class="lede">Enter your ZIP or pick a city for local frost dates, what to plant this week, and a full-year planting calendar for Oregon and Washington gardens.</p>
@@ -613,6 +613,35 @@ ${CONFIG.goatcounterCode ? `<h2>Visitor statistics</h2>
 <p>Questions about this policy: <a href="mailto:${CONFIG.contactEmail}">${CONFIG.contactEmail}</a>.</p></div>`
 }), "0.2");
 
+/* Contact */
+write("../", "contact/index.html", layout({
+  rel: "../", canonical: "contact/", current: "contact/",
+  title: "Contact | Rainline Garden",
+  description: "How to reach Rainline Garden with questions, corrections or suggestions.",
+  body: `<section class="hero prose"><h1>Contact</h1>
+<p class="lede">Questions, corrections and suggestions are welcome.</p></section>
+<div class="prose"><p>Email <a href="mailto:${CONFIG.contactEmail}">${CONFIG.contactEmail}</a>. We read every message and usually answer within a few days.</p>
+<p>The most helpful notes are corrections: a frost date that doesn't match your experience, a town we should add, or advice that doesn't fit your part of the Northwest. If you write about a date, tell us your town or ZIP code so we can check it against the nearest weather station.</p>
+<p>For advertising or partnership questions, use the same address.</p></div>`
+}), "0.3");
+
+/* Terms */
+write("../", "terms/index.html", layout({
+  rel: "../", canonical: "terms/", current: "terms/",
+  title: "Terms of Use | Rainline Garden",
+  description: "Terms of use and gardening disclaimer for Rainline Garden.",
+  body: `<section class="hero prose"><h1>Terms of use</h1><p class="lede">Last updated ${CONFIG.updated}.</p></section>
+<div class="prose">
+<h2>Gardening information</h2>
+<p>Planting dates on Rainline Garden are estimates based on 30-year weather averages and university extension guidance. Weather in any given year can be earlier or later, so check your local forecast before planting tender crops. We can't guarantee results and aren't responsible for crop losses.</p>
+<h2>Using the site</h2>
+<p>You're welcome to use the planner and guides for your own garden, and to link to any page. Please don't copy the site's text, illustrations or data tables wholesale onto another website.</p>
+<h2>Links and ads</h2>
+<p>The site shows ads and links to other websites, including affiliate links to stores. We don't control those sites and aren't responsible for their content or products. See the <a href="../privacy/">privacy policy</a> for how ads and links use cookies.</p>
+<h2>Changes</h2>
+<p>We may update these terms; the date above shows the latest version. Questions: <a href="mailto:${CONFIG.contactEmail}">${CONFIG.contactEmail}</a>.</p></div>`
+}), "0.2");
+
 /* 404 (absolute links because it can be served at any path) */
 const B = CONFIG.basePath;
 fs.writeFileSync(path.join(ROOT, "404.html"), layout({
@@ -634,4 +663,8 @@ ${pages.map(p => `  <url><loc>${CONFIG.siteUrl}${p.loc}</loc><lastmod>${CONFIG.u
 `);
 fs.writeFileSync(path.join(ROOT, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${CONFIG.siteUrl}sitemap.xml\n`);
 fs.writeFileSync(path.join(ROOT, ".nojekyll"), "");
+/* ads.txt: AdSense checks it at the root of the domain, so it only works with a custom domain. */
+const adsTxt = path.join(ROOT, "ads.txt");
+if (CONFIG.adsenseClient) fs.writeFileSync(adsTxt, `google.com, ${CONFIG.adsenseClient.replace(/^ca-/, "")}, DIRECT, f08c47fec0942fa0\n`);
+else if (fs.existsSync(adsTxt)) fs.unlinkSync(adsTxt);
 console.log(`Built ${pages.length} pages.`);
