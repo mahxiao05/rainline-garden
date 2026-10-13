@@ -9,6 +9,7 @@ const D = require("../assets/data.js");
 const P = require("../assets/plan.js");
 const R = require("../assets/render.js");
 const G = require("./guide.js");
+const ARTICLES = require("./articles.js");
 
 const CONFIG = {
   siteName: "Rainline Garden",
@@ -18,6 +19,7 @@ const CONFIG = {
   amazonTag: "", // Amazon Associates tracking ID, e.g. "rainline-20"; product links work without it but earn nothing
   newsletterAction: "", // email signup form URL, e.g. "https://buttondown.com/api/emails/embed-subscribe/rainline"; signup boxes stay hidden until set
   newsletterField: "email", // the form field name your email provider expects
+  goatcounterCode: "", // free, cookie-free visitor stats: the code you picked at goatcounter.com, e.g. "rainline"
   updated: new Date().toISOString().slice(0, 10)
 };
 CONFIG.siteUrl = CONFIG.customDomain ? `https://${CONFIG.customDomain}/` : "https://mahxiao05.github.io/rainline-garden/";
@@ -45,7 +47,7 @@ const pages = [];
 
 function layout({ rel, title, description, canonical, current, body, scripts, jsonld }) {
   const base = rel; // relative prefix back to the site root, e.g. "../../"
-  const nav = [["", "Planner"], ["when-to-plant/", "When to plant"], ["frost-dates/", "Frost dates"], ["garden-calendar/", "Monthly chores"], ["beginners-guide/", "Beginner's guide"]]
+  const nav = [["", "Planner"], ["when-to-plant/", "When to plant"], ["frost-dates/", "Frost dates"], ["garden-calendar/", "Monthly chores"], ["beginners-guide/", "Beginner's guide"], ["articles/", "Articles"]]
     .map(([href, label]) => `<a href="${base}${href}"${current === href ? ' aria-current="page"' : ""}>${label}</a>`).join("");
   const ld = (jsonld || []).map(o => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, "\\u003c")}</script>`).join("\n");
   const ads = CONFIG.adsenseClient
@@ -72,6 +74,7 @@ function layout({ rel, title, description, canonical, current, body, scripts, js
 <link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@700;800&family=Alegreya+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="${base}assets/style.css">
 ${ads}
+${CONFIG.goatcounterCode ? `<script data-goatcounter="https://${CONFIG.goatcounterCode}.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>` : ""}
 ${ld}
 </head>
 <body>
@@ -148,12 +151,22 @@ function crumbs(rel, items) {
   return { html, ld };
 }
 
+function relatedArticles(rel, cropId) {
+  const list = ARTICLES.filter(a => a.crops.includes(cropId));
+  if (!list.length) return "";
+  return `<aside class="reads"><h2>Read more</h2><ul>${list.map(a => `<li><a href="${rel}articles/${a.slug}/">${esc(a.title)}</a><span>${esc(a.description)}</span></li>`).join("")}</ul></aside>`;
+}
+
+function articleCards(rel, list) {
+  return `<ul class="reads-grid">${list.map(a => `<li><a class="card" href="${rel}articles/${a.slug}/">${R.icon(a.crops[0], rel, 48)}<span class="card-t">${esc(a.title)}</span><span class="card-s">${esc(a.description)}</span></a></li>`).join("")}</ul>`;
+}
+
 function faqLd(qas) {
   return { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: qas.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) };
 }
 
 function cropGrid(rel, linkFor) {
-  const groups = [["cool", "Cool-season crops", "Plant in early spring, and many again for fall. They handle light frost."], ["warm", "Warm-season crops", "Plant after the last frost once the soil warms. Frost kills them."], ["fall", "Planted in fall", "Goes in the ground in autumn and is harvested the next summer."]];
+  const groups = [["cool", "Cool-season crops", "Plant in early spring, and many again for fall. They handle light frost."], ["warm", "Warm-season crops", "Plant after the last frost once the soil warms. Frost kills them."], ["berry", "Berries", "Plant once and pick for years. Hardy through Northwest winters."], ["fall", "Planted in fall", "Goes in the ground in autumn and is harvested the next summer."]];
   return groups.map(([g, t, d]) => `<h3 class="grid-h">${t}</h3><p class="grid-d">${d}</p><ul class="cards cards-sm">${D.crops.filter(c => c.group === g).map(c =>
     `<li><a class="card" href="${linkFor(c)}">${R.icon(c.id, rel, 56)}<span class="card-t">${c.name}</span>${badge(G.crops[c.id].difficulty)}</a></li>`).join("")}</ul>`).join("");
 }
@@ -184,6 +197,9 @@ ${ad("home-mid")}
 <p>Pick a crop to see its planting dates in all 30 Oregon and Washington cities.</p>
 ${cropGrid("", c => `when-to-plant/${c.id}/`)}
 </section>
+<section><h2>Guides for Northwest gardeners</h2>
+${articleCards("", ARTICLES.slice(0, 3))}
+<p><a href="articles/">All articles</a></p></section>
 ${newsletter()}
 <section class="prose">
 <h2>Why Northwest planting dates are different</h2>
@@ -206,7 +222,7 @@ D.places.forEach(place => {
   write("../../", `frost-dates/${place.slug}/index.html`, layout({
     rel: "../../", canonical: `frost-dates/${place.slug}/`, current: "frost-dates/",
     title: `${placeLabel(place)} Frost Dates and Planting Calendar | Rainline Garden`,
-    description: `The typical last spring frost in ${placeLabel(place)} is ${P.fmtLong(f.spring50)} and the first fall frost is ${P.fmtLong(f.fall50)}. See when to plant tomatoes, peas, garlic and 18 more crops.`,
+    description: `The typical last spring frost in ${placeLabel(place)} is ${P.fmtLong(f.spring50)} and the first fall frost is ${P.fmtLong(f.fall50)}. See when to plant tomatoes, peas, garlic and ${D.crops.length - 3} more crops.`,
     jsonld: [bc.ld],
     body: `${bc.html}
 <section class="hero" id="live" data-place="${place.slug}">
@@ -237,8 +253,10 @@ function answer(c, r, city) {
   const sp = win(r, "spring"), fa = win(r, "fall");
   const where = city ? ` in ${esc(city)}` : "";
   if (c.id === "garlic") return `Plant garlic${where} from <strong>${P.fmtRange(fa.start, fa.end)}</strong>. It grows slowly over winter and is ready to dig the next summer.`;
+  const g = G.crops[c.id];
   let s;
-  if (r.indoor && c.how === "Plant young plants (starts)")
+  if (g.plantText) s = `Plant ${g.plantText}${where} <strong>${P.fmtRange(sp.start, sp.end)}</strong>.`;
+  else if (r.indoor && c.how === "Plant young plants (starts)")
     s = `Start ${lc(c.name)} from seed indoors <strong>${P.fmtRange(r.indoor.start, r.indoor.end)}</strong>, then plant the young plants in the garden${where} <strong>${P.fmtRange(sp.start, sp.end)}</strong>.`;
   else if (r.indoor)
     s = `Plant ${lc(c.name)} in the garden${where} <strong>${P.fmtRange(sp.start, sp.end)}</strong>, either as seeds or as young plants started indoors <strong>${P.fmtRange(r.indoor.start, r.indoor.end)}</strong>.`;
@@ -254,18 +272,19 @@ function why(c, r, p) {
   if (c.id === "garlic") return `Garlic needs a cold winter to form bulbs, so it goes in during fall, after the soil cools but before it freezes hard. In ${city} the first fall frost usually comes around ${P.fmtLong(f.fall50)}.`;
   const last = `${city}'s typical last spring frost is ${P.fmtLong(f.spring50)}.`;
   const anchor = P.doy(p.zone.anchors[c.anchor]);
-  if (c.group === "cool") {
+  if (c.group === "cool" || c.group === "berry") {
+    const hardy = c.group === "berry" ? "As a hardy perennial" : "As a cool-season crop that handles light frost";
     const weeks = Math.round((f.spring50 - sp.start) / 7);
     if (sp.start === anchor) return last + (sp.start < f.spring50
-      ? ` As a cool-season crop that handles light frost, this crop doesn't need to wait for that date. ${ZONE_IN[p.place.zone]}, though, the soil usually isn't ready to work until about ${P.fmtLong(sp.start)}.`
+      ? ` ${hardy}, this crop doesn't need to wait for that date. ${ZONE_IN[p.place.zone]}, though, the soil usually isn't ready to work until about ${P.fmtLong(sp.start)}.`
       : ` ${ZONE_IN[p.place.zone]}, the soil is usually ready for ${lc(c.name)} around ${P.fmtLong(sp.start)}.`);
-    return last + ` As a cool-season crop that handles light frost, this crop can go in about ${weeks} week${weeks === 1 ? "" : "s"} before that.`;
+    return last + ` ${hardy}, this crop can go in about ${weeks} week${weeks === 1 ? "" : "s"} before that.`;
   }
   return last + (sp.start - f.spring50 > 10
     ? ` Frost kills ${lc(c.name)}, and warm-season crops also need warm soil. Soil here stays cold for weeks after the last frost, so planting waits until about ${P.fmtLong(sp.start)}.`
     : ` Frost kills ${lc(c.name)}, so planting starts once frost risk drops, around ${P.fmtLong(sp.start)}.`)
     + (r.cover ? " Keep row cover or a frost blanket handy for the first couple of weeks, since a late frost is still possible." : "")
-    + (r.season === "short" ? ` The season here is short for this crop: use young plants rather than seeds, choose the fastest variety you can find, and cover plants on cool nights.` : r.season === "tight" ? " The season is a little tight here, so an early variety is the safer choice." : "");
+    + (r.season === "short" && c.id === "dahlias" ? ` The season here is short for dahlias: start tubers in pots indoors about a month early, choose smaller early-blooming varieties, and cover plants on cool nights.` : r.season === "short" ? ` The season here is short for this crop: use young plants rather than seeds, choose the fastest variety you can find, and cover plants on cool nights.` : r.season === "tight" ? " The season is a little tight here, so an early variety is the safer choice." : "");
 }
 
 function steps(c, r, g) {
@@ -276,6 +295,10 @@ function steps(c, r, g) {
     out.push(`Loosen the soil and mix in an inch or two of compost.`);
     out.push(`Break bulbs into cloves and plant them ${P.fmtRange(fa.start, fa.end)}, ${g.depth}, ${g.spacing}.`);
     out.push(`Cover the bed with a few inches of straw or leaves for winter. Pull weeds in spring and stop watering in early summer when the leaves start to brown.`);
+  } else if (g.plantText) {
+    out.push(`Pick a sunny spot with soil that drains well, and mix in an inch or two of compost.`);
+    out.push(`Plant ${g.plantText} ${P.fmtRange(sp.start, sp.end)}, ${g.spacing}. ${g.depth}.`);
+    out.push(g.care);
   } else if (r.indoor) {
     out.push(`Start seeds indoors ${P.fmtRange(r.indoor.start, r.indoor.end)} in trays or small pots under a grow light or in your sunniest window. Or skip this step and buy young plants (starts) at a garden center.`);
     out.push(`Harden off the young plants: about a week before planting, set them outside for a few hours a day, a little longer each day.`);
@@ -295,8 +318,9 @@ function steps(c, r, g) {
 
 function quickFacts(c, g) {
   const rows = [["Difficulty", badge(g.difficulty)], ["Sun", g.sun], ["Spacing", g.spacing], ["Planting depth", g.depth],
-    ["Frost", c.group === "warm" ? "Killed by frost" : c.group === "fall" ? "Very hardy; grows through winter" : "Handles light frost"]];
-  if (c.days) rows.push(["First harvest", `About ${c.days} days after planting`]);
+    ["Frost", c.group === "warm" ? "Killed by frost" : c.group === "fall" ? "Very hardy; grows through winter" : c.group === "berry" ? "Hardy perennial; comes back every year" : "Handles light frost"]];
+  if (g.firstHarvest) rows.push([c.id === "dahlias" ? "Flowers" : "First harvest", g.firstHarvest]);
+  else if (c.days) rows.push(["First harvest", `About ${c.days} days after planting`]);
   return `<dl class="qf">${rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("")}</dl>`;
 }
 
@@ -332,11 +356,12 @@ ${quickFacts(c, g)}
 <div class="table-wrap"><table class="plan"><thead>${head}</thead><tbody>${rows}</tbody></table></div>
 ${ad("crop-mid")}
 <h2>How to grow ${lc(c.name)}</h2>
-${steps(c, rowFor(port, c.id), g).replace(/(Start seeds indoors|Plant them in the garden|Plant seeds|Plant seed potatoes|Plant onion sets|Break bulbs into cloves and plant them|Plant again) [A-Z][a-z]{2} \d+(–\d+| – [A-Z][a-z]{2} \d+)/g, "$1 on your city's dates")}
+${steps(c, rowFor(port, c.id), g).replace(/(Start seeds indoors|Plant them in the garden|Plant seeds|Plant seed potatoes|Plant onion sets|Break bulbs into cloves and plant them|Plant again|Plant strawberry plants|Plant blueberry bushes|Plant raspberry canes|Plant dahlia tubers) [A-Z][a-z]{2} \d+(–\d+| – [A-Z][a-z]{2} \d+)/g, "$1 on your city's dates")}
 <h2>Varieties that do well in the Northwest</h2>
 <ul class="vars">${g.varieties.map(v => `<li>${esc(v)}</li>`).join("")}</ul>
 <h2>Watch out for</h2><p>${esc(g.problem)}</p>
 ${gearBox(g.gear)}
+${relatedArticles("../../", c.id)}
 ${newsletter()}
 <h2>Other crops</h2>
 <ul class="chips">${D.crops.filter(x => x.id !== c.id).map(x => `<li><a href="../${x.id}/">${R.icon(x.id, "../../", 24)}${x.name}</a></li>`).join("")}</ul>`
@@ -349,8 +374,9 @@ ${newsletter()}
     const rel = "../../../";
     const qas = [[`When is the last frost in ${city}, ${place.state}?`, `Typically ${P.fmtLong(f.spring50)}. In 9 years out of 10, frost is over by ${P.fmtLong(f.spring10)}. These are 1991–2020 NOAA climate normals for ${p.station.name}.`]];
     if (c.id === "garlic") qas.push([`When is garlic ready to harvest in ${city}?`, `Usually in early summer, about eight months after fall planting. ${g.harvest}`]);
-    else qas.push([`Is it too late to plant ${lc(c.name)} in ${city}?`, `The spring planting window runs through ${P.fmtLong(sp.end)}. ` + (fa ? `If you miss it, plant again for fall from ${P.fmtLong(fa.start)} to ${P.fmtLong(fa.end)}.` : c.group === "warm" ? `Later plantings may not have time to produce before the first fall frost, which usually arrives around ${P.fmtLong(f.fall50)}.` : `Later plantings tend to struggle in summer heat.`)]);
+    else qas.push([`Is it too late to plant ${lc(c.name)} in ${city}?`, `The spring planting window runs through ${P.fmtLong(sp.end)}. ` + (fa ? `If you miss it, plant again for fall from ${P.fmtLong(fa.start)} to ${P.fmtLong(fa.end)}.` : c.group === "warm" ? `Later plantings may not have time to ${c.id === "dahlias" ? "bloom well" : "produce"} before the first fall frost, which usually arrives around ${P.fmtLong(f.fall50)}.` : c.group === "berry" ? `Potted plants can still go in later if you water them faithfully through their first summer.${place.zone === "west" || place.zone === "coast" ? " Fall planting also works well here." : ""}` : `Later plantings tend to struggle in summer heat.`)]);
     if (r.indoor) qas.push([`When should I start ${lc(c.name)} from seed indoors in ${city}?`, `${P.fmtLong(r.indoor.start)} to ${P.fmtLong(r.indoor.end)}, which is ${c.indoor[0]} to ${c.indoor[1]} weeks before the ${P.fmtLong(sp.start)} planting date. Or buy young plants at a garden center instead.`]);
+    else if (g.firstHarvest) qas.push([c.id === "dahlias" ? `When do dahlias bloom?` : `How long until I can pick ${lc(c.name)}?`, `${g.firstHarvest}. ${g.harvest}`]);
     else if (c.days) qas.push([`How long until I can harvest ${lc(c.name)}?`, `About ${c.days} days after planting. ${g.harvest}`]);
     const ref = c.id === "garlic" ? fa : sp;
     const same = p.crops.filter(x => x.crop.id !== c.id && x.windows.some(w => w.kind === ref.kind && w.start <= ref.end && w.end >= ref.start)).slice(0, 8);
@@ -381,6 +407,7 @@ ${gearBox(g.gear)}
 </div>
 <h2>Common questions</h2>
 <div class="faq">${qas.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("")}</div>
+${relatedArticles(rel, c.id)}
 ${newsletter(city)}
 ${same.length ? `<h2>Also plant in ${esc(city)} around the same time</h2><ul class="chips">${same.map(x => `<li><a href="../../${x.crop.id}/${place.slug}/">${R.icon(x.crop.id, rel, 24)}${x.crop.name}</a></li>`).join("")}</ul>` : ""}
 <h2>Planting dates for ${lc(c.name)} in nearby areas</h2>
@@ -394,11 +421,11 @@ ${same.length ? `<h2>Also plant in ${esc(city)} around the same time</h2><ul cla
 const wb = crumbs("../", [["When to plant", null]]);
 write("../", "when-to-plant/index.html", layout({
   rel: "../", canonical: WHEN_INDEX, current: WHEN_INDEX,
-  title: "When to Plant Vegetables in Oregon and Washington | Rainline Garden",
-  description: "Planting dates for 21 vegetables in 30 Oregon and Washington cities, with difficulty ratings and beginner-friendly growing guides.",
+  title: "When to Plant Vegetables, Herbs and Berries in Oregon and Washington | Rainline Garden",
+  description: `Planting dates for ${D.crops.length} vegetables, herbs, berries and flowers in 30 Oregon and Washington cities, with difficulty ratings and beginner-friendly growing guides.`,
   jsonld: [wb.ld],
   body: `${wb.html}
-<section class="hero"><h1>When to plant vegetables in the Northwest</h1>
+<section class="hero"><h1>When to plant vegetables, herbs and berries in the Northwest</h1>
 <p class="lede">Pick a crop for its planting dates in every Oregon and Washington city we cover, plus how to grow it. New to this? Start with the ones marked Easy.</p></section>
 ${cropGrid("../", c => `${c.id}/`)}
 ${ad("index-bottom")}`
@@ -440,6 +467,42 @@ ${beginnerBox("../", null)}
 ${gearBox(starter, "A simple starter kit")}
 ${newsletter()}`
 }), "0.9");
+
+/* Articles */
+const frostFor = slug => { const f = P.plan(D, P.findPlace(D, slug)).frost; return { last: P.fmtLong(f.spring50), first: P.fmtLong(f.fall50), season: f.season }; };
+ARTICLES.forEach(a => {
+  const rel = "../../";
+  const ab = crumbs(rel, [["Articles", "articles/"], [a.title, null]]);
+  const others = ARTICLES.filter(x => x.slug !== a.slug);
+  write(rel, `articles/${a.slug}/index.html`, layout({
+    rel, canonical: `articles/${a.slug}/`, current: "articles/",
+    title: `${a.title} | Rainline Garden`, description: a.description,
+    jsonld: [ab.ld, { "@context": "https://schema.org", "@type": "Article", headline: a.title, description: a.description, datePublished: a.published, dateModified: CONFIG.updated,
+      image: CONFIG.siteUrl + "assets/img/og.png", author: { "@type": "Organization", name: "Rainline Garden", url: CONFIG.siteUrl }, mainEntityOfPage: CONFIG.siteUrl + `articles/${a.slug}/` }],
+    body: `${ab.html}
+<article class="article">
+<header class="hero hero-crop">${R.icon(a.crops[0], rel, 120)}<div><h1>${esc(a.title)}</h1><p class="lede">${esc(a.description)}</p></div></header>
+<div class="prose">${a.body({ D, P, frost: frostFor, link: p => rel + p })}</div>
+</article>
+${ad("article-bottom")}
+<h2>Crops in this article</h2>
+<ul class="chips">${a.crops.map(id => `<li><a href="${rel}when-to-plant/${id}/">${R.icon(id, rel, 24)}${cropById(id).name}</a></li>`).join("")}</ul>
+${newsletter()}
+<h2>More guides</h2>
+${articleCards(rel, others.slice(0, 3))}`
+  }), "0.7");
+});
+const ib = crumbs("../", [["Articles", null]]);
+write("../", "articles/index.html", layout({
+  rel: "../", canonical: "articles/", current: "articles/",
+  title: "Northwest Gardening Articles | Rainline Garden",
+  description: "Practical guides for vegetable gardening in Oregon and Washington: varieties that ripen here, winter gardens, short seasons, slugs and soil temperature.",
+  jsonld: [ib.ld],
+  body: `${ib.html}
+<section class="hero"><h1>Guides for Northwest gardeners</h1>
+<p class="lede">Practical advice for the things that make gardening here different: cool summers, wet winters, short high-desert seasons and a lot of slugs.</p></section>
+${articleCards("../", ARTICLES)}`
+}), "0.7");
 
 /* Glossary */
 const glb = crumbs("../", [["Glossary", null]]);
@@ -542,6 +605,8 @@ write("../", "privacy/index.html", layout({
 <p>This site uses Google AdSense to show ads. Google and its partners use cookies to serve ads based on your visits to this and other websites. You can opt out of personalized advertising at <a href="https://www.google.com/settings/ads">Google Ads Settings</a>, and learn more at <a href="https://policies.google.com/technologies/ads">How Google uses information from sites that use its services</a>.</p>
 <h2>Affiliate links</h2>
 <p>Some links to products go to Amazon.${CONFIG.amazonTag ? " As an Amazon Associate, Rainline Garden earns from qualifying purchases, at no extra cost to you." : ""} Amazon may set its own cookies when you follow them.</p>
+${CONFIG.goatcounterCode ? `<h2>Visitor statistics</h2>
+<p>We count page views with GoatCounter, which doesn't use cookies or track you across sites. It records the page, referring site, browser type, screen size and country, never personal information.</p>` : ""}
 <h2>Hosting and fonts</h2>
 <p>The site is hosted on GitHub Pages, which may log visitor IP addresses for security. Fonts load from Google Fonts.</p>
 <h2>Contact</h2>

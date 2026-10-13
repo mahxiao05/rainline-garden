@@ -13,8 +13,9 @@ Plain HTML, CSS and JavaScript, with no framework and no build tools to install 
 - `assets/render.js`: turns a plan into HTML (used by both the browser and the builder).
 - `assets/app.js`: the ZIP/city planner and live "plant now" lists.
 - `assets/img/`: the crop illustrations, homepage scene and social share image (`og.png`), all drawn for this site.
+- `scripts/articles.js`: the hand-written articles. Add one by copying an entry; it gets its own page, a spot on the articles page and links from related crop pages.
 - `scripts/guide.js`: growing-guide text per crop (difficulty, spacing, varieties, gear), the beginner picks and the glossary.
-- `scripts/build.js`: generates every page (home, 30 city pages, 21 crop guides, 630 crop-by-city pages, beginner's guide, glossary, monthly chores, how it works, about, privacy, sitemap).
+- `scripts/build.js`: generates every page (home, 30 city pages, 28 crop guides, 840 crop-by-city pages, articles, beginner's guide, glossary, monthly chores, how it works, about, privacy, sitemap).
 - `data/noaa_freeze_normals.csv`: the raw NOAA 1991-2020 freeze normals used.
 
 ## Making changes
@@ -36,6 +37,10 @@ Product links ("What you'll need") go to Amazon search results. To earn commissi
 ## Email signup
 
 Signup boxes stay hidden until an email provider is connected. With Buttondown (free to start): create an account, then set `CONFIG.newsletterAction` to `https://buttondown.com/api/emails/embed-subscribe/YOUR-USERNAME` and rebuild. Other providers work too; set `CONFIG.newsletterField` if their form uses a field name other than `email`.
+
+## Visitor stats
+
+Sign up at goatcounter.com (free, no cookies), pick a code such as `rainline`, put it in `CONFIG.goatcounterCode` in `scripts/build.js` and rebuild. Stats then show at https://YOUR-CODE.goatcounter.com, and the privacy page updates itself.
 
 ## Custom domain
 
