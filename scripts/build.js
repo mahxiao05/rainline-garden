@@ -15,6 +15,8 @@ const CONFIG = {
   siteName: "Rainline Garden",
   customDomain: "", // e.g. "rainlinegarden.com"; set after buying the domain, then rebuild (see README)
   contactEmail: "xventuresbusiness@gmail.com",
+  owner: "X Ventures LLC", // the company that owns and runs the site
+  author: { name: "Jigmey Dorjee", id: "jigmey-dorjee" }, // writes the articles; bio is on the About page
   adsenseClient: "", // e.g. "ca-pub-1234567890123456"; leave empty until AdSense approves the site
   amazonTag: "", // Amazon Associates tracking ID, e.g. "rainline-20"; product links work without it but earn nothing
   newsletterAction: "", // email signup form URL, e.g. "https://buttondown.com/api/emails/embed-subscribe/rainline"; signup boxes stay hidden until set
@@ -44,6 +46,10 @@ const MONTH_PUBS = {
 
 const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const pages = [];
+const OWNER_LD = { "@type": "Organization", name: CONFIG.owner, url: CONFIG.siteUrl };
+const AUTHOR_LD = { "@type": "Person", name: CONFIG.author.name, url: `${CONFIG.siteUrl}about/#${CONFIG.author.id}` };
+const AUTHOR_BIO = `${CONFIG.author.name} is an experienced home gardener who has grown his own vegetables at home for years. He writes Rainline Garden's articles and checks the advice against NOAA weather records and Oregon State University Extension guidance, so what you read reflects both hands-on growing and published research.`;
+const initials = n => n.split(/\s+/).map(w => w[0]).join("").slice(0, 2).toUpperCase();
 
 function layout({ rel, title, description, canonical, current, body, scripts, jsonld }) {
   const base = rel; // relative prefix back to the site root, e.g. "../../"
@@ -67,7 +73,9 @@ function layout({ rel, title, description, canonical, current, body, scripts, js
 <meta property="og:image" content="${CONFIG.siteUrl}assets/img/og.png">
 <meta property="og:site_name" content="Rainline Garden">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#24374A">
+<meta name="theme-color" content="#F2F4F6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#11161B" media="(prefers-color-scheme: dark)">
+<script>try{var t=localStorage.getItem("rainline-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="icon" href="${base}assets/icon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -80,16 +88,19 @@ ${ld}
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-head"><div class="wrap">
-<a class="brand" href="${base}">Rainline Garden</a>
+<a class="brand" href="${base}"><img src="${base}assets/icon.svg" width="30" height="30" alt="">Rainline Garden</a>
 <nav class="nav" aria-label="Main">${nav}</nav>
+<button class="theme-btn" type="button" aria-label="Switch to dark mode" title="Light or dark mode"><svg class="i-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="currentColor"/></svg><svg class="i-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
 </div></header>
 <main id="main" class="wrap">
 ${body}
 </main>
 <footer class="site-foot"><div class="wrap">
-<p>Rainline Garden: free planting calendars for Oregon and Washington gardens.<br>Frost data from NOAA. Planting timing from OSU Extension guidance. Updated ${CONFIG.updated}.${CONFIG.amazonTag ? "<br>As an Amazon Associate, Rainline Garden earns from qualifying purchases." : ""}</p>
+<p><strong class="foot-brand">Rainline Garden</strong><br>Free planting calendars for Oregon and Washington gardens.<br>Frost data from NOAA. Planting timing from OSU Extension guidance. Updated ${CONFIG.updated}.${CONFIG.amazonTag ? "<br>As an Amazon Associate, Rainline Garden earns from qualifying purchases." : ""}</p>
 <nav aria-label="Footer"><a href="${base}glossary/">Glossary</a><a href="${base}how-it-works/">How it works</a><a href="${base}about/">About</a><a href="${base}contact/">Contact</a><a href="${base}privacy/">Privacy</a><a href="${base}terms/">Terms</a></nav>
+<p class="owner">&copy; ${YEAR} ${CONFIG.owner}. Rainline Garden is owned and operated by ${CONFIG.owner}.</p>
 </div></footer>
+<script>(function(){var r=document.documentElement,b=document.querySelector(".theme-btn");if(!b)return;var mq=matchMedia("(prefers-color-scheme: dark)");function cur(){return r.dataset.theme||(mq.matches?"dark":"light")}function sync(){b.setAttribute("aria-label",cur()==="dark"?"Switch to light mode":"Switch to dark mode")}sync();mq.addEventListener&&mq.addEventListener("change",sync);b.addEventListener("click",function(){var n=cur()==="dark"?"light":"dark";r.dataset.theme=n;try{localStorage.setItem("rainline-theme",n)}catch(e){}sync()})})();</script>
 ${(scripts || []).map(s => `<script src="${base}assets/${s}"></script>`).join("\n")}
 </body>
 </html>
@@ -176,7 +187,7 @@ write("", "index.html", layout({
   rel: "", canonical: "", current: "",
   title: "Rainline Garden: Planting Calendar and Frost Dates for Oregon and Washington",
   description: "When to plant vegetables where you live in Oregon and Washington. Enter your ZIP for local frost dates and a planting calendar built from NOAA data and OSU Extension guidance.",
-  jsonld: [{ "@context": "https://schema.org", "@type": "WebSite", name: "Rainline Garden", url: CONFIG.siteUrl }],
+  jsonld: [{ "@context": "https://schema.org", "@type": "WebSite", name: "Rainline Garden", url: CONFIG.siteUrl, publisher: OWNER_LD }],
   body: `
 <div class="hero-art"><img src="assets/img/hero.svg" width="1200" height="440" alt="Two raised vegetable beds with tomatoes, beans, lettuce and kale inside a picket fence, with evergreen hills, a snowy volcano and a passing rain shower behind"></div>
 <section class="hero">
@@ -478,11 +489,13 @@ ARTICLES.forEach(a => {
     rel, canonical: `articles/${a.slug}/`, current: "articles/",
     title: `${a.title} | Rainline Garden`, description: a.description,
     jsonld: [ab.ld, { "@context": "https://schema.org", "@type": "Article", headline: a.title, description: a.description, datePublished: a.published, dateModified: CONFIG.updated,
-      image: CONFIG.siteUrl + "assets/img/og.png", author: { "@type": "Organization", name: "Rainline Garden", url: CONFIG.siteUrl }, mainEntityOfPage: CONFIG.siteUrl + `articles/${a.slug}/` }],
+      image: CONFIG.siteUrl + "assets/img/og.png", author: AUTHOR_LD, publisher: OWNER_LD, mainEntityOfPage: CONFIG.siteUrl + `articles/${a.slug}/` }],
     body: `${ab.html}
 <article class="article">
-<header class="hero hero-crop">${R.icon(a.crops[0], rel, 120)}<div><h1>${esc(a.title)}</h1><p class="lede">${esc(a.description)}</p></div></header>
+<header class="hero hero-crop">${R.icon(a.crops[0], rel, 120)}<div><h1>${esc(a.title)}</h1><p class="lede">${esc(a.description)}</p>
+<p class="byline"><span class="avatar" aria-hidden="true">${initials(CONFIG.author.name)}</span><span>By <a href="${rel}about/#${CONFIG.author.id}">${CONFIG.author.name}</a><br><span class="byline-d">Updated <time datetime="${CONFIG.updated}">${new Date(CONFIG.updated + "T12:00:00").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</time></span></span></p></div></header>
 <div class="prose">${a.body({ D, P, frost: frostFor, link: p => rel + p })}</div>
+<aside class="author-box"><span class="avatar avatar-lg" aria-hidden="true">${initials(CONFIG.author.name)}</span><div><h2>About the author</h2><p>${AUTHOR_BIO}</p><a href="${rel}about/#${CONFIG.author.id}">More about ${CONFIG.author.name.split(" ")[0]}</a></div></aside>
 </article>
 ${ad("article-bottom")}
 <h2>Crops in this article</h2>
@@ -585,10 +598,21 @@ write("../", "about/index.html", layout({
   rel: "../", canonical: "about/", current: "about/",
   title: "About Rainline Garden",
   description: "Rainline Garden is a free planting calendar made for Oregon and Washington gardeners.",
+  jsonld: [{ "@context": "https://schema.org", "@type": "AboutPage", name: "About Rainline Garden", url: CONFIG.siteUrl + "about/", publisher: OWNER_LD, mainEntity: { ...AUTHOR_LD, description: AUTHOR_BIO } }],
   body: `<section class="hero prose"><h1>About Rainline Garden</h1>
 <p class="lede">A free planting calendar built for Pacific Northwest gardens, not adapted from a national chart.</p></section>
 <div class="prose"><p>National planting guides treat the whole country the same way. The Northwest doesn't cooperate: coastal gardens rarely frost but never get hot, west-side valleys have long seasons and cold spring soil, and the high desert can frost in July. Rainline Garden gives each area its own dates, built from NOAA weather records and Oregon State University Extension guidance.</p>
-<p>The site is free and supported by advertising and affiliate links. It isn't affiliated with NOAA, Oregon State University or Washington State University.</p>
+<h2 id="${CONFIG.author.id}">Who writes Rainline Garden</h2>
+<div class="author-box"><span class="avatar avatar-lg" aria-hidden="true">${initials(CONFIG.author.name)}</span><div><p>${AUTHOR_BIO}</p></div></div>
+<h2>How we make this site</h2>
+<ul>
+<li><strong>Frost dates</strong> come from NOAA's 1991–2020 climate normals for the weather station nearest each town.</li>
+<li><strong>Planting windows</strong> follow Oregon State University Extension guidance for each crop, counted from those frost dates.</li>
+<li><strong>Articles</strong> combine that research with hands-on growing experience. Each one is checked against the sources before it's published and updated when the guidance changes.</li>
+<li><strong>Corrections</strong> are welcome. If a date doesn't match your garden, <a href="../contact/">tell us</a> and we'll check it.</li>
+</ul>
+<h2>Who owns the site</h2>
+<p>Rainline Garden is owned and operated by ${CONFIG.owner}. The site is free and supported by advertising and affiliate links, which never decide what we recommend. It isn't affiliated with NOAA, Oregon State University or Washington State University.</p>
 <p>Questions or corrections: <a href="mailto:${CONFIG.contactEmail}">${CONFIG.contactEmail}</a>.</p></div>`
 }), "0.3");
 
@@ -599,6 +623,7 @@ write("../", "privacy/index.html", layout({
   description: "How Rainline Garden handles your information.",
   body: `<section class="hero prose"><h1>Privacy policy</h1><p class="lede">Last updated ${CONFIG.updated}.</p></section>
 <div class="prose">
+<p>Rainline Garden is owned and operated by ${CONFIG.owner} ("we", "us"). This policy explains what happens to your information when you use the site.</p>
 <h2>What we collect</h2>
 <p>Rainline Garden has no accounts.${CONFIG.newsletterAction ? " If you sign up for the monthly email, your address goes to our email provider and is used only to send that email; every message has an unsubscribe link." : ""} The ZIP code you enter is matched to a city inside your browser and is never sent to our server. The planner remembers the last city you chose in your browser's local storage so it's ready next time; you can clear it by clearing site data in your browser.</p>
 <h2>Advertising</h2>
@@ -632,6 +657,7 @@ write("../", "terms/index.html", layout({
   description: "Terms of use and gardening disclaimer for Rainline Garden.",
   body: `<section class="hero prose"><h1>Terms of use</h1><p class="lede">Last updated ${CONFIG.updated}.</p></section>
 <div class="prose">
+<p>Rainline Garden is owned and operated by ${CONFIG.owner}. By using the site you agree to these terms.</p>
 <h2>Gardening information</h2>
 <p>Planting dates on Rainline Garden are estimates based on 30-year weather averages and university extension guidance. Weather in any given year can be earlier or later, so check your local forecast before planting tender crops. We can't guarantee results and aren't responsible for crop losses.</p>
 <h2>Using the site</h2>
