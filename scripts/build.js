@@ -54,7 +54,7 @@ function layout({ rel, title, description, canonical, current, body, scripts }) 
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="${CONFIG.siteUrl}${canonical}">
-<meta name="theme-color" content="#1E3A2B">
+<meta name="theme-color" content="#24374A">
 <link rel="icon" href="${base}assets/icon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
