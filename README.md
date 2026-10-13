@@ -18,6 +18,10 @@ Plain HTML, CSS and JavaScript, with no framework and no build tools to install 
 - `scripts/build.js`: generates every page (home, 30 city pages, 28 crop guides, 840 crop-by-city pages, articles, beginner's guide, glossary, monthly chores, how it works, about, privacy, sitemap).
 - `data/noaa_freeze_normals.csv`: the raw NOAA 1991-2020 freeze normals used.
 
+## Author and owner
+
+The article byline and About page use `CONFIG.author` (Jigmey Dorjee); the footer, policies and structured data name `CONFIG.owner` (X Ventures LLC). Edit the bio in `AUTHOR_BIO` in `scripts/build.js`.
+
 ## Making changes
 
 1. Edit `assets/data.js` (or the page text in `scripts/build.js`).
