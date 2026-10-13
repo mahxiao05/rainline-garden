@@ -26,9 +26,10 @@ Plain HTML, CSS and JavaScript, with no framework and no build tools to install 
 
 ## Turning on ads
 
-1. In AdSense, add the site (`mahxiao05.github.io/rainline-garden` or your custom domain).
-2. Put your publisher ID in `CONFIG.adsenseClient` in `scripts/build.js` (looks like `ca-pub-...`) and rebuild.
+1. Set up the custom domain first (see below). AdSense won't approve a `github.io` project address because it can't check `ads.txt` at the domain root. Then add the domain in AdSense.
+2. Put your publisher ID in `CONFIG.adsenseClient` in `scripts/build.js` (looks like `ca-pub-...`) and rebuild. The build also writes `ads.txt` with your publisher ID.
 3. Auto ads will place ads on their own. To use fixed spots, paste AdSense ad unit code into the empty `<div class="ad-slot">` blocks (they're hidden until they contain something).
+4. In AdSense, open Privacy & messaging and turn on the European regulations (GDPR) consent message. Google requires a certified consent banner for visitors in the EEA, UK and Switzerland, and this one is free.
 
 ## Affiliate links
 
