@@ -48,7 +48,18 @@ const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(
 const pages = [];
 const OWNER_LD = { "@type": "Organization", name: CONFIG.owner, url: CONFIG.siteUrl };
 const AUTHOR_LD = { "@type": "Person", name: CONFIG.author.name, url: `${CONFIG.siteUrl}about/#${CONFIG.author.id}` };
-const AUTHOR_BIO = `${CONFIG.author.name} is an experienced home gardener who has grown his own vegetables at home for years. He writes Rainline Garden's articles and checks the advice against NOAA weather records and Oregon State University Extension guidance, so what you read reflects both hands-on growing and published research.`;
+const AUTHOR_BIO = `${CONFIG.author.name} grew up in Oregon, where gardening means working with the weather: cold, wet springs, dry summers and long, mild falls. He's an experienced home gardener who has grown his own vegetables for years, and he knows firsthand that a Northwest garden runs on a different calendar than the national planting charts. He writes Rainline Garden's articles and checks the advice against NOAA weather records and Oregon State University Extension guidance, so what you read combines hands-on growing with published research.`;
+const AUTHOR_SHORT = `${CONFIG.author.name} grew up in Oregon and has grown his own vegetables at home for years. He writes Rainline Garden's articles and checks the advice against NOAA weather records and Oregon State University Extension guidance.`;
+const authorCard = (rel, heading) => `<section class="profile" id="${CONFIG.author.id}">
+<div class="profile-cover"><img src="${rel}assets/img/hero.svg" alt="" width="1200" height="440" loading="lazy"></div>
+<div class="profile-body">
+<span class="avatar avatar-xl" aria-hidden="true">${initials(CONFIG.author.name)}</span>
+<p class="profile-kicker">${heading}</p>
+<h2 class="profile-name">${CONFIG.author.name}</h2>
+<p class="profile-role">Experienced home gardener</p>
+<ul class="profile-facts"><li>Grew up in Oregon</li><li>Years of growing vegetables at home</li><li>Checks dates against NOAA and OSU Extension</li></ul>
+<p>${AUTHOR_BIO}</p>
+</div></section>`;
 const initials = n => n.split(/\s+/).map(w => w[0]).join("").slice(0, 2).toUpperCase();
 
 function layout({ rel, title, description, canonical, current, body, scripts, jsonld }) {
@@ -495,7 +506,7 @@ ARTICLES.forEach(a => {
 <header class="hero hero-crop">${R.icon(a.crops[0], rel, 120)}<div><h1>${esc(a.title)}</h1><p class="lede">${esc(a.description)}</p>
 <p class="byline"><span class="avatar" aria-hidden="true">${initials(CONFIG.author.name)}</span><span>By <a href="${rel}about/#${CONFIG.author.id}">${CONFIG.author.name}</a><br><span class="byline-d">Updated <time datetime="${CONFIG.updated}">${new Date(CONFIG.updated + "T12:00:00").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</time></span></span></p></div></header>
 <div class="prose">${a.body({ D, P, frost: frostFor, link: p => rel + p })}</div>
-<aside class="author-box"><span class="avatar avatar-lg" aria-hidden="true">${initials(CONFIG.author.name)}</span><div><h2>About the author</h2><p>${AUTHOR_BIO}</p><a href="${rel}about/#${CONFIG.author.id}">More about ${CONFIG.author.name.split(" ")[0]}</a></div></aside>
+<aside class="author-box"><span class="avatar avatar-lg" aria-hidden="true">${initials(CONFIG.author.name)}</span><div><h2>About the author</h2><p>${AUTHOR_SHORT}</p><a href="${rel}about/#${CONFIG.author.id}">More about ${CONFIG.author.name.split(" ")[0]}</a></div></aside>
 </article>
 ${ad("article-bottom")}
 <h2>Crops in this article</h2>
@@ -602,8 +613,7 @@ write("../", "about/index.html", layout({
   body: `<section class="hero prose"><h1>About Rainline Garden</h1>
 <p class="lede">A free planting calendar built for Pacific Northwest gardens, not adapted from a national chart.</p></section>
 <div class="prose"><p>National planting guides treat the whole country the same way. The Northwest doesn't cooperate: coastal gardens rarely frost but never get hot, west-side valleys have long seasons and cold spring soil, and the high desert can frost in July. Rainline Garden gives each area its own dates, built from NOAA weather records and Oregon State University Extension guidance.</p>
-<h2 id="${CONFIG.author.id}">Who writes Rainline Garden</h2>
-<div class="author-box"><span class="avatar avatar-lg" aria-hidden="true">${initials(CONFIG.author.name)}</span><div><p>${AUTHOR_BIO}</p></div></div>
+${authorCard("../", "Who writes Rainline Garden")}
 <h2>How we make this site</h2>
 <ul>
 <li><strong>Frost dates</strong> come from NOAA's 1991–2020 climate normals for the weather station nearest each town.</li>
