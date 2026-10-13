@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en" data-base="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rainline Garden: Planting Calendar and Frost Dates for Oregon and Washington</title>
+<meta name="description" content="When to plant vegetables where you live in Oregon and Washington. Enter your ZIP for local frost dates and a planting calendar built from NOAA data and OSU Extension guidance.">
+<link rel="canonical" href="https://mahxiao05.github.io/rainline-garden/">
+<meta property="og:title" content="Rainline Garden: Planting Calendar and Frost Dates for Oregon and Washington">
+<meta property="og:description" content="When to plant vegetables where you live in Oregon and Washington. Enter your ZIP for local frost dates and a planting calendar built from NOAA data and OSU Extension guidance.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mahxiao05.github.io/rainline-garden/">
+<meta name="theme-color" content="#1E3A2B">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@700;800&family=Alegreya+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head"><div class="wrap">
+<a class="brand" href="">Rainline Garden</a>
+<nav class="nav" aria-label="Main"><a href="" aria-current="page">Planner</a><a href="frost-dates/">Frost dates by city</a><a href="garden-calendar/">Monthly garden chores</a><a href="how-it-works/">How it works</a></nav>
+</div></header>
+<main id="main" class="wrap">
+
+<section class="hero">
+<h1>Plant on Northwest time.</h1>
+<p class="lede">Enter your ZIP or pick a city for local frost dates, what to plant this week, and a full-year planting calendar for Oregon and Washington gardens.</p>
+<form id="finder" class="finder" novalidate>
+  <div class="field"><label for="zip">ZIP code</label><input id="zip" name="zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" placeholder="97214"></div>
+  <span class="or">or</span>
+  <div class="field field-select"><label for="place">City</label><select id="place" name="place"><option value="">Choose a city</option></select></div>
+  <button class="btn" type="submit">Show my calendar</button>
+</form>
+<p id="msg" class="msg" role="status" aria-live="polite"></p>
+</section>
+<section id="result" aria-live="polite"></section>
+<div class="ad-slot" data-ad="home-mid"></div>
+<section class="prose">
+<h2>Why Northwest planting dates are different</h2>
+<p>National planting charts key everything off the last frost date. In much of the Pacific Northwest that's only half the story. Portland's typical last frost is in mid-March, yet tomatoes planted then would sit in cold, wet soil for two months. Oregon State University Extension advises waiting until soil is consistently above 70°F for tomatoes, squash and peppers.</p>
+<p>East of the Cascades it flips. At Redmond, the NOAA station nearest Bend, the typical last frost isn't until June, and the frost-free season is closer to three months than eight. Rainline Garden combines both: NOAA frost records for each area, and regional timing from OSU Extension for when the soil is actually ready.</p>
+<p><a href="how-it-works/">See exactly how the dates are worked out</a>.</p>
+</section>
+</main>
+<footer class="site-foot"><div class="wrap">
+<p>Rainline Garden: free planting calendars for Oregon and Washington gardens.<br>Frost data from NOAA. Planting timing from OSU Extension guidance. Updated 2026-10-13.</p>
+<nav aria-label="Footer"><a href="about/">About</a><a href="how-it-works/">Sources</a><a href="privacy/">Privacy</a></nav>
+</div></footer>
+<script src="assets/data.js"></script>
+<script src="assets/plan.js"></script>
+<script src="assets/render.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
