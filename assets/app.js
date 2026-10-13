@@ -15,7 +15,7 @@
     if (place) {
       var p = P.plan(D, place);
       var nowEl = document.getElementById("now");
-      if (nowEl) nowEl.innerHTML = R.nowBlock(p, today);
+      if (nowEl) nowEl.innerHTML = R.nowBlock(p, today, base);
       var chartEl = document.getElementById("chart");
       if (chartEl) chartEl.innerHTML = R.chart(p, today);
     }
@@ -50,9 +50,9 @@
       '<a href="' + base + 'frost-dates/' + place.slug + '/">Printable page for ' + place.city + '</a></div>' +
       (viaZip ? '<p class="station">Using the nearest NOAA station we have for that ZIP. If another city on the list is closer to you, pick it instead.</p>' : '') +
       R.frostFacts(p) + R.regionNote(p) +
-      '<h2>What to plant now</h2>' + R.nowBlock(p, today) +
+      '<h2>What to plant now</h2>' + R.nowBlock(p, today, base) +
       '<h2>Your year at a glance</h2><div class="reveal">' + R.chart(p, today) + '</div>' +
-      '<h2>Planting dates</h2>' + R.table(p);
+      '<h2>Planting dates</h2>' + R.table(p, base);
     if (history.replaceState) history.replaceState(null, "", "?place=" + place.slug);
   }
 

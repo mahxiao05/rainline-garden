@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 440" width="1200" height="440" preserveAspectRatio="xMidYMax slice" role="img" aria-label="Illustration of a raised vegetable bed under Northwest mountains and light rain">
+<defs>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CFE0EA"/><stop offset="1" stop-color="#EEF3F0"/></linearGradient>
+<linearGradient id="soil" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6B4A32"/><stop offset="1" stop-color="#4E3523"/></linearGradient>
+<pattern id="rain" width="40" height="60" patternUnits="userSpaceOnUse" patternTransform="rotate(15)"><path d="M10 0 v14 M30 30 v14" stroke="#9FB7C8" stroke-width="2" stroke-linecap="round"/></pattern>
+</defs>
+<rect width="1200" height="440" fill="url(#sky)"/>
+<circle cx="980" cy="110" r="56" fill="#F6D58A"/>
+<g fill="#FFFFFF" opacity=".92"><ellipse cx="300" cy="90" rx="110" ry="34"/><ellipse cx="370" cy="70" rx="70" ry="36"/><ellipse cx="230" cy="78" rx="60" ry="28"/>
+<ellipse cx="900" cy="140" rx="90" ry="26"/><ellipse cx="950" cy="124" rx="56" ry="28"/></g>
+<rect x="150" y="100" width="300" height="140" fill="url(#rain)" opacity=".8"/>
+<path d="M0 300 L120 210 L210 260 L340 150 L420 205 L470 180 L600 270 L0 330Z" fill="#8FA6B8"/>
+<path d="M340 150 L372 172 L356 176 L340 168 L322 176 Z" fill="#F4F7F9"/>
+<path d="M560 300 L760 120 L840 180 L900 150 L1060 250 L1200 220 L1200 330 L560 330Z" fill="#7E97AB"/>
+<path d="M760 120 L800 156 L782 160 L762 150 L744 162 Z" fill="#F4F7F9"/>
+<path d="M0 320 C200 280 380 300 600 290 C820 280 1000 270 1200 290 L1200 360 L0 360Z" fill="#5E8A6E"/>
+<g fill="#2F5D47">
+<path d="M70 300 l18 -60 l18 60z"/><path d="M100 306 l14 -46 l14 46z"/><path d="M1080 292 l20 -66 l20 66z"/><path d="M1116 298 l14 -48 l14 48z"/><path d="M1150 296 l16 -54 l16 54z"/><path d="M40 310 l12 -40 l12 40z"/>
+</g>
+<rect x="0" y="350" width="1200" height="90" fill="#7FA66A"/>
+<rect x="300" y="330" width="600" height="80" rx="6" fill="#A8774E"/>
+<rect x="300" y="330" width="600" height="14" rx="4" fill="#C08D60"/>
+<path d="M300 370 H900" stroke="#8C5F3A" stroke-width="2"/>
+<rect x="312" y="318" width="576" height="16" rx="6" fill="url(#soil)"/>
+<g>
+<path d="M360 320 V270" stroke="#3E7A35" stroke-width="5"/><path d="M360 300 C340 296 330 280 334 268 C348 274 356 286 360 300Z M360 290 C380 286 390 270 386 258 C372 264 364 276 360 290Z" fill="#4E8A3E"/>
+<circle cx="350" cy="276" r="12" fill="#E2412F"/><circle cx="372" cy="262" r="10" fill="#E2412F"/><circle cx="364" cy="286" r="9" fill="#F2754A"/>
+<path d="M440 320 C420 300 420 282 436 276 C452 282 456 300 440 320Z M440 320 C460 302 470 290 462 278 C448 282 442 300 440 320Z M440 320 C428 306 410 300 404 306 C414 316 428 320 440 320Z" fill="#8CC063"/>
+<path d="M510 320 C506 300 500 280 488 268 M520 320 V264 M530 320 C534 300 540 280 552 268" stroke="#4E8A3E" stroke-width="7" stroke-linecap="round" fill="none"/>
+<path d="M600 322 V300" stroke="#3E7A35" stroke-width="5"/><circle cx="584" cy="292" r="13" fill="#4E8A3E"/><circle cx="616" cy="292" r="13" fill="#4E8A3E"/><circle cx="600" cy="280" r="15" fill="#6BA84F"/>
+<path d="M680 320 C664 300 662 280 678 266 C690 282 690 302 680 320Z M680 320 C696 300 712 292 718 280 C700 280 686 298 680 320Z M680 320 C666 312 648 304 642 290 C660 290 674 304 680 320Z" fill="#3F7A5A"/>
+<path d="M760 320 C754 292 740 278 726 274 M770 320 V270 M780 320 C786 294 798 280 812 276" stroke="#6BA84F" stroke-width="5" stroke-linecap="round" fill="none"/><path d="M760 322 c-6 -10 -2 -20 8 -20 c10 0 14 10 8 20z" fill="#EE7B22"/>
+<path d="M850 320 C842 300 846 276 860 266 C866 288 862 306 850 320Z M850 320 C866 304 880 300 888 288 C872 286 856 300 850 320Z" fill="#4E8A3E"/><circle cx="836" cy="306" r="8" fill="#D9334F"/>
+</g>
+
+</svg>
