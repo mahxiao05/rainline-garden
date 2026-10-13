@@ -72,6 +72,18 @@ p { margin: 0 0 1rem; }
   :root:not([data-theme="light"]) .hero-art img { filter: brightness(.82) saturate(.95); }
 }
 :root[data-theme="dark"] .hero-art img { filter: brightness(.82) saturate(.95); }
+.profile { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; margin: 2.5rem 0 1rem; max-width: 46rem; box-shadow: 0 10px 30px color-mix(in srgb, var(--fir) 10%, transparent); scroll-margin-top: 80px; }
+.profile-cover { height: 150px; background: var(--sky); }
+.profile-cover img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 78%; display: block; }
+.profile-body { position: relative; padding: 0 26px 22px; }
+.profile-body > p:last-child { margin: 0; }
+.profile .avatar-xl { width: 96px; height: 96px; font-size: 2rem; margin-top: -48px; border: 5px solid var(--paper); background: linear-gradient(135deg, var(--moss), var(--fir)); color: #fff; font-family: var(--serif); }
+.profile-kicker { margin: .75rem 0 0; font-size: .85rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ochre); }
+.profile-name { margin: .1rem 0 .1rem; font-size: 1.9rem; }
+.profile-role { color: var(--muted); margin: 0 0 1rem; }
+.profile-facts { list-style: none; padding: 0; margin: 0 0 1rem; display: flex; flex-wrap: wrap; gap: 8px; }
+.profile-facts li { font-size: .92rem; padding: 5px 12px 5px 28px; border-radius: 999px; background: var(--moss-soft); color: var(--fir); position: relative; }
+.profile-facts li::before { content: ""; position: absolute; left: 11px; top: 50%; width: 9px; height: 5px; border-left: 2px solid var(--moss); border-bottom: 2px solid var(--moss); transform: translateY(-70%) rotate(-45deg); }
 .byline { display: flex; align-items: center; gap: 12px; margin: .25rem 0 0; font-size: 1rem; line-height: 1.35; }
 .byline a { font-weight: 700; }
 .byline-d { color: var(--muted); font-size: .92rem; }
@@ -275,6 +287,8 @@ table.plan { width: 100%; border-collapse: collapse; font-size: 1rem; background
   body { font-size: 1.05rem; }
   .finder { padding: 14px; }
   .author-box { padding: 16px; gap: 14px; }
+  .profile-body { padding: 0 18px 18px; }
+  .profile-cover { height: 110px; }
   .facts { grid-template-columns: 1fr; }
   .fact + .fact { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
   .now { grid-template-columns: 1fr; gap: 16px; }
