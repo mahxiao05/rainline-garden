@@ -457,8 +457,10 @@ ${newsletter()}
       rel, canonical: `when-to-plant/${c.id}/${place.slug}/`, current: WHEN_INDEX, noindex: true,
       title: `When to Plant ${c.name} in ${placeLabel(place)} (${YEAR}) | Rainline Garden`,
       description: `${plain} Local frost dates, step-by-step instructions and the best varieties for ${ZONE_FOR[place.zone]}.`.slice(0, 300),
+      image: PHOTOS["crop:" + c.id] && photoFile("crop:" + c.id, "banner"),
       jsonld: [cb.ld, faqLd(qas)],
       body: `${cb.html}
+${banner("crop:" + c.id, rel)}
 <section class="hero hero-crop">${R.icon(c.id, rel, 120)}<div>
 <h1>When to plant ${lc(c.name)} in ${esc(city)}, ${place.state}</h1>
 <p class="answer">${answer(c, r, city)}</p>
