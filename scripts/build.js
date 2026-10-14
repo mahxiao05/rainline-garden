@@ -10,6 +10,7 @@ const P = require("../assets/plan.js");
 const R = require("../assets/render.js");
 const G = require("./guide.js");
 const PHOTOS = require("./photos.js");
+const SCIENCE = require("./crop-science.js");
 const { SIZES, fileBase, sizesFor } = require("./photo-sizes.js");
 const ARTICLES = require("./articles-3.js").concat(require("./articles-2.js"), require("./articles.js")); // newest first
 
@@ -230,6 +231,13 @@ function faqLd(qas) {
   return { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: qas.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) };
 }
 
+function scienceSection(c, sci) {
+  return `<section class="science prose"><h2>Growing ${lc(c.name)}: how it works</h2>
+${sci.sections.map(([h, ...ps]) => `<h3>${esc(h)}</h3>${ps.map(p => `<p>${esc(p)}</p>`).join("")}`).join("\n")}</section>
+<h2>Common questions about growing ${lc(c.name)}</h2>
+<div class="faq">${sci.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("")}</div>`;
+}
+
 const WHEN_INDEX = "when-to-plant/";
 const catById = id => D.categories.find(k => k.id === id);
 const cropCard = (rel, c, href) => `<li><a class="card" href="${href}">${R.icon(c.id, rel, 56)}<span class="card-t">${c.name}</span>${badge(G.crops[c.id].difficulty)}</a></li>`;
@@ -408,12 +416,13 @@ D.crops.forEach(c => {
   }).join("");
   const port = plans.find(p => p.place.slug === "portland-or"), bend = plans.find(p => p.place.slug === "bend-or");
   const hb = crumbs("../../", [["When to plant", WHEN_INDEX], [catById(c.cat).name, `${WHEN_INDEX}${c.cat}/`], [c.name, null]]);
+  const sci = SCIENCE[c.id];
   write("../../", `when-to-plant/${c.id}/index.html`, layout({
     rel: "../../", canonical: `when-to-plant/${c.id}/`, current: WHEN_INDEX,
     title: `When to Plant ${c.name} in Oregon and Washington, by City | Rainline Garden`,
     description: `${c.name} planting dates for 30 Oregon and Washington cities, from Portland and Seattle to Bend and Spokane, plus a beginner-friendly growing guide.`,
     image: PHOTOS["crop:" + c.id] && photoFile("crop:" + c.id, "banner"),
-    jsonld: [hb.ld],
+    jsonld: sci ? [hb.ld, faqLd(sci.faq)] : [hb.ld],
     body: `${hb.html}
 ${banner("crop:" + c.id, "../../")}
 <section class="hero hero-crop">${R.icon(c.id, "../../", 120)}<div>
@@ -430,7 +439,7 @@ ${steps(c, rowFor(port, c.id), g).replace(/(Start seeds indoors|Plant them in th
 <ul class="vars">${g.varieties.map(v => `<li>${esc(v)}</li>`).join("")}</ul>
 <h2>Watch out for</h2><p>${esc(g.problem)}</p>
 ${gearBox(g.gear)}
-${relatedArticles("../../", c.id)}
+${sci ? scienceSection(c, sci) + "\n" : ""}${relatedArticles("../../", c.id)}
 ${newsletter()}
 <h2>More ${catById(c.cat).name.toLowerCase()}</h2>
 <ul class="chips">${catById(c.cat).crops.filter(id => id !== c.id).map(id => `<li><a href="../${id}/">${R.icon(id, "../../", 24)}${cropById(id).name}</a></li>`).join("")}</ul>
