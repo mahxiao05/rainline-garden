@@ -9,6 +9,7 @@ const win = (D, P, slug, id, kind) => {
 module.exports = [
   {
     slug: "planting-garlic-in-the-northwest",
+    topic: "crops",
     author: "jigmey-dorjee",
     title: "When and How to Plant Garlic in Oregon and Washington",
     description: "Garlic goes in during fall and comes out the next summer. Here's when to plant it where you live, which kind to buy, and how to harvest and cure it.",
@@ -47,6 +48,7 @@ module.exports = [
   },
   {
     slug: "starting-seeds-indoors",
+    topic: "timing", icon: "seed-tray",
     author: "jigmey-dorjee",
     title: "Starting Vegetable Seeds Indoors: A Northwest Timeline",
     description: "When to start tomatoes, peppers and other seeds indoors in Oregon and Washington, plus the simple setup that grows strong seedlings.",
@@ -88,6 +90,7 @@ module.exports = [
   },
   {
     slug: "growing-blueberries-in-the-northwest",
+    topic: "crops",
     author: "elaine-holloway",
     title: "Growing Blueberries in the Pacific Northwest",
     description: "Blueberries love the Northwest's acidic soil and wet winters. How to plant them, which varieties to pair, and how to get a big harvest for decades.",
@@ -124,6 +127,7 @@ module.exports = [
   },
   {
     slug: "growing-strawberries-in-the-northwest",
+    topic: "crops",
     author: "elaine-holloway",
     title: "Growing Strawberries in Oregon and Washington",
     description: "June-bearing or everbearing? How to plant strawberries, keep them out of the mud, and keep a patch productive for years.",
@@ -152,6 +156,7 @@ module.exports = [
   },
   {
     slug: "native-pollinator-garden",
+    topic: "flowers", icon: "bee",
     author: "elaine-holloway",
     title: "Native Plants for a Northwest Pollinator Garden",
     description: "Native shrubs and flowers that feed bees, butterflies and hummingbirds from late winter to fall, and how to plant for pollinators in Oregon and Washington.",
@@ -189,6 +194,7 @@ module.exports = [
   },
   {
     slug: "winter-cover-crops",
+    topic: "soil", icon: "cover-crop",
     author: "elaine-holloway",
     title: "Winter Cover Crops for Northwest Vegetable Beds",
     description: "Why to sow cover crops in empty beds each fall, which ones grow well in Oregon and Washington, and how to turn them under in spring.",
@@ -221,6 +227,7 @@ module.exports = [
   },
   {
     slug: "watering-vegetables-in-dry-summers",
+    topic: "soil", icon: "watering",
     author: "elaine-holloway",
     title: "How Much to Water Vegetables in a Dry Northwest Summer",
     description: "The Northwest is rainy for nine months and bone dry for three. How much water vegetables need in summer, when to water, and how to waste less of it.",
@@ -253,6 +260,7 @@ module.exports = [
   },
   {
     slug: "raised-beds-for-rainy-gardens",
+    topic: "soil", icon: "raised-bed",
     author: "elaine-holloway",
     title: "Raised Beds for Rainy Northwest Gardens",
     description: "Why raised beds suit the Northwest so well, how big and deep to build them, what to fill them with, and the mistakes to avoid.",
@@ -289,6 +297,7 @@ module.exports = [
   },
   {
     slug: "growing-potatoes-in-the-northwest",
+    topic: "crops",
     author: "jigmey-dorjee",
     title: "Growing Potatoes in Oregon and Washington",
     description: "When to plant potatoes in the Northwest, how to cut and plant seed potatoes, hilling, and when to dig for new potatoes and storage potatoes.",
@@ -330,6 +339,7 @@ module.exports = [
   },
   {
     slug: "container-vegetable-gardening",
+    topic: "soil", icon: "container",
     author: "jigmey-dorjee",
     title: "Growing Vegetables in Containers on a Northwest Balcony or Patio",
     description: "No yard? Herbs, greens, tomatoes and more grow well in pots. Container sizes, soil, watering and the best crops for small Northwest spaces.",

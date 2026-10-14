@@ -5,6 +5,7 @@
 module.exports = [
   {
     slug: "best-tomatoes-for-the-northwest",
+    topic: "crops",
     author: "jigmey-dorjee",
     title: "The Best Tomatoes for Cool Northwest Summers",
     description: "Which tomato varieties actually ripen in Portland, Seattle and the coast, and how to give them the heat they need.",
@@ -39,6 +40,7 @@ module.exports = [
   },
   {
     slug: "fall-and-winter-vegetable-garden",
+    topic: "timing", icon: "winter",
     author: "jigmey-dorjee",
     title: "Fall and Winter Vegetable Gardening West of the Cascades",
     description: "How to keep harvesting kale, carrots, garlic and greens through a mild Northwest winter, and when to plant for it.",
@@ -75,6 +77,7 @@ module.exports = [
   },
   {
     slug: "short-season-gardening-central-oregon",
+    topic: "timing", icon: "mountain",
     author: "jigmey-dorjee",
     title: "Gardening in Bend and Central Oregon's Short Season",
     description: "How to grow vegetables where frost can come almost any month: what to plant, when, and how to protect it.",
@@ -103,6 +106,7 @@ module.exports = [
   },
   {
     slug: "slugs",
+    topic: "problems", icon: "slug",
     author: "elaine-holloway",
     title: "How to Control Slugs in a Northwest Garden",
     description: "Practical, pet-safe ways to protect seedlings, lettuce and strawberries from the Pacific Northwest's most famous garden pest.",
@@ -127,6 +131,7 @@ module.exports = [
   },
   {
     slug: "soil-temperature",
+    topic: "timing", icon: "thermometer",
     author: "elaine-holloway",
     title: "Why Northwest Gardeners Should Plant by Soil Temperature",
     description: "The air warms up long before the soil does here. A $10 soil thermometer tells you when it's really time to plant beans, squash and tomatoes.",

@@ -9,7 +9,7 @@ const D = require("../assets/data.js");
 const P = require("../assets/plan.js");
 const R = require("../assets/render.js");
 const G = require("./guide.js");
-const ARTICLES = require("./articles-2.js").concat(require("./articles.js")); // newest first
+const ARTICLES = require("./articles-3.js").concat(require("./articles-2.js"), require("./articles.js")); // newest first
 
 const CONFIG = {
   siteName: "Rainline Garden",
@@ -93,9 +93,7 @@ ${noindex ? '<meta name="robots" content="noindex, follow">\n' : ""}<link rel="c
 <meta name="theme-color" content="#F2F4F6">
 <script>try{var t=localStorage.getItem("rainline-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="icon" href="${base}assets/icon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@700;800&family=Alegreya+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="${base}assets/fonts/fonts.css">
 <link rel="stylesheet" href="${base}assets/style.css">
 ${ads}
 ${CONFIG.goatcounterCode ? `<script data-goatcounter="https://${CONFIG.goatcounterCode}.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>` : ""}
@@ -185,8 +183,25 @@ function relatedArticles(rel, cropId) {
   return `<aside class="reads"><h2>Read more</h2><ul>${list.map(a => `<li><a href="${rel}articles/${a.slug}/">${esc(a.title)}</a><span>${esc(a.description)}</span></li>`).join("")}</ul></aside>`;
 }
 
+// Topics for grouping the articles page. Articles about one crop use that crop's icon;
+// general articles set `icon` to a drawing in assets/img/topics/.
+const ARTICLE_TOPICS = [
+  ["crops", "Crop guides", "How to grow specific vegetables, fruit and flowers here."],
+  ["timing", "Timing and seasons", "Frost dates, soil temperature, seed starting and planning the year."],
+  ["soil", "Beds, soil and water", "Raised beds, containers, soil care and summer watering."],
+  ["problems", "Pests and diseases", "Slugs, blight and the other troubles of a wet climate."],
+  ["flowers", "Flowers and pollinators", "Cut flowers and plantings for bees and butterflies."]
+];
+ARTICLES.forEach(a => {
+  if (!ARTICLE_TOPICS.some(t => t[0] === a.topic)) throw new Error(`Article ${a.slug} needs a topic`);
+  if (a.icon && !fs.existsSync(path.join(ROOT, "assets/img/topics", a.icon + ".svg"))) throw new Error(`Missing topic icon ${a.icon}`);
+});
+const articleIcon = (a, rel, size) => a.icon
+  ? `<img class="ico" src="${rel}assets/img/topics/${a.icon}.svg" width="${size}" height="${size}" alt="" loading="lazy">`
+  : R.icon(a.crops[0], rel, size);
+
 function articleCards(rel, list) {
-  return `<ul class="reads-grid">${list.map(a => `<li><a class="card" href="${rel}articles/${a.slug}/">${R.icon(a.crops[0], rel, 48)}<span class="card-t">${esc(a.title)}</span><span class="card-s">${esc(a.description)}</span></a></li>`).join("")}</ul>`;
+  return `<ul class="reads-grid">${list.map(a => `<li><a class="card" href="${rel}articles/${a.slug}/">${articleIcon(a, rel, 48)}<span class="card-t">${esc(a.title)}</span><span class="card-s">${esc(a.description)}</span></a></li>`).join("")}</ul>`;
 }
 
 function faqLd(qas) {
@@ -563,7 +578,7 @@ ARTICLES.forEach(a => {
       image: CONFIG.siteUrl + "assets/img/og.png", author: authorLd(a.author || DEFAULT_AUTHOR), publisher: OWNER_LD, mainEntityOfPage: CONFIG.siteUrl + `articles/${a.slug}/` }],
     body: `${ab.html}
 <article class="article">
-<header class="hero hero-crop">${R.icon(a.crops[0], rel, 120)}<div><h1>${esc(a.title)}</h1><p class="lede">${esc(a.description)}</p>
+<header class="hero hero-crop">${articleIcon(a, rel, 120)}<div><h1>${esc(a.title)}</h1><p class="lede">${esc(a.description)}</p>
 <p class="byline">${avatar(rel, a.author || DEFAULT_AUTHOR)}<span>By <a href="${rel}about/#${a.author || DEFAULT_AUTHOR}">${AUTHORS[a.author || DEFAULT_AUTHOR].name}</a><br><span class="byline-d">Updated <time datetime="${CONFIG.updated}">${new Date(CONFIG.updated + "T12:00:00").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</time></span></span></p></div></header>
 <div class="prose">${a.body({ D, P, frost: frostFor, link: p => rel + p })}</div>
 ${(au => `<aside class="author-box">${avatar(rel, au, "avatar-lg")}<div><h2>About the author</h2><p>${esc(AUTHORS[au].short)}</p><a href="${rel}about/#${au}">More about ${AUTHORS[au].name.split(" ")[0]}</a></div></aside>`)(a.author || DEFAULT_AUTHOR)}
@@ -585,7 +600,9 @@ write("../", "articles/index.html", layout({
   body: `${ib.html}
 <section class="hero"><h1>Guides for Northwest gardeners</h1>
 <p class="lede">Practical advice for the things that make gardening here different: cool summers, wet winters, short high-desert seasons and a lot of slugs.</p></section>
-${articleCards("../", ARTICLES)}`
+<nav class="topic-nav" aria-label="Article topics"><ul class="chips">${ARTICLE_TOPICS.map(([id, name]) => `<li><a href="#${id}">${name} <span class="count">${ARTICLES.filter(a => a.topic === id).length}</span></a></li>`).join("")}</ul></nav>
+${ARTICLE_TOPICS.map(([id, name, blurb]) => `<section class="topic-sec" id="${id}"><h2>${name}</h2><p class="topic-blurb">${blurb}</p>
+${articleCards("../", ARTICLES.filter(a => a.topic === id))}</section>`).join("\n")}`
 }), "0.7");
 
 /* Glossary */
@@ -698,7 +715,8 @@ write("../", "privacy/index.html", layout({
 <div class="prose">
 <p>Rainline Garden is owned and operated by ${CONFIG.owner} ("we", "us"). This policy explains what happens to your information when you use the site.</p>
 <h2>What we collect</h2>
-<p>Rainline Garden has no accounts.${CONFIG.newsletterAction ? " If you sign up for the monthly email, your address goes to our email provider and is used only to send that email; every message has an unsubscribe link." : ""} The ZIP code you enter is matched to a city inside your browser and is never sent to our server. The planner remembers the last city you chose in your browser's local storage so it's ready next time; you can clear it by clearing site data in your browser.</p>
+<p>Rainline Garden has no accounts.${CONFIG.newsletterAction ? " If you sign up for the monthly email, your address goes to our email provider and is used only to send that email; every message has an unsubscribe link." : ""} The ZIP code you enter is matched to a city inside your browser and is never sent to our server. Your browser's local storage keeps three things on your own device: the last city you chose in the planner, your light or dark display choice, and your garden plan if you make one on the My garden plan page (the city, the plants you picked, tasks you checked off and your notes). None of it is sent to us. You can clear it by clearing site data in your browser or with the "Clear my plan" link on the plan page.</p>
+<p>The plant question helper also runs entirely in your browser. Questions you type into it are answered from data already loaded on the page and are not sent to us or stored.</p>
 <h2>Advertising</h2>
 <p>This site uses Google AdSense to show ads. Google and its partners use cookies to serve ads based on your visits to this and other websites. You can opt out of personalized advertising at <a href="https://www.google.com/settings/ads">Google Ads Settings</a>, and learn more at <a href="https://policies.google.com/technologies/ads">How Google uses information from sites that use its services</a>.</p>
 <h2>Affiliate links</h2>
@@ -706,7 +724,7 @@ write("../", "privacy/index.html", layout({
 ${CONFIG.goatcounterCode ? `<h2>Visitor statistics</h2>
 <p>We count page views with GoatCounter, which doesn't use cookies or track you across sites. It records the page, referring site, browser type, screen size and country, never personal information.</p>` : ""}
 <h2>Hosting and fonts</h2>
-<p>The site is hosted on GitHub Pages, which may log visitor IP addresses for security. Fonts load from Google Fonts.</p>
+<p>The site is hosted on GitHub Pages, which may log visitor IP addresses for security. Fonts are served from this site, not from a third-party font service.</p>
 <h2>Contact</h2>
 <p>Questions about this policy: <a href="mailto:${CONFIG.contactEmail}">${CONFIG.contactEmail}</a>.</p></div>`
 }), "0.2");
