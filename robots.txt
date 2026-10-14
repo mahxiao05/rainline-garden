@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mahxiao05.github.io/rainline-garden/sitemap.xml
+Sitemap: https://rainlinegarden.org/sitemap.xml

@@ -13,7 +13,7 @@ const ARTICLES = require("./articles.js");
 
 const CONFIG = {
   siteName: "Rainline Garden",
-  customDomain: "", // e.g. "rainlinegarden.com"; set after buying the domain, then rebuild (see README)
+  customDomain: "rainlinegarden.org", // e.g. "rainlinegarden.com"; set after buying the domain, then rebuild (see README)
   contactEmail: "info@rainlinegarden.org",
   owner: "X Ventures LLC", // the company that owns and runs the site
   // Article authors are in AUTHORS below. Only list credentials the person actually holds.
