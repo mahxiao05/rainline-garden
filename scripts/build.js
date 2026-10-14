@@ -17,7 +17,7 @@ const CONFIG = {
   contactEmail: "info@rainlinegarden.org",
   owner: "X Ventures LLC", // the company that owns and runs the site
   // Article authors are in AUTHORS below. Only list credentials the person actually holds.
-  adsenseClient: "", // e.g. "ca-pub-1234567890123456"; leave empty until AdSense approves the site
+  adsenseClient: "ca-pub-7867146450299069", // AdSense publisher ID; also written to ads.txt
   amazonTag: "", // Amazon Associates tracking ID, e.g. "rainline-20"; product links work without it but earn nothing
   newsletterAction: "", // email signup form URL, e.g. "https://buttondown.com/api/emails/embed-subscribe/rainline"; signup boxes stay hidden until set
   newsletterField: "email", // the form field name your email provider expects
