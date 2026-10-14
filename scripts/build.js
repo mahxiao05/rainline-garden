@@ -14,7 +14,7 @@ const ARTICLES = require("./articles.js");
 const CONFIG = {
   siteName: "Rainline Garden",
   customDomain: "", // e.g. "rainlinegarden.com"; set after buying the domain, then rebuild (see README)
-  contactEmail: "xventuresbusiness@gmail.com",
+  contactEmail: "info@rainlinegarden.org",
   owner: "X Ventures LLC", // the company that owns and runs the site
   // Article authors are in AUTHORS below. Only list credentials the person actually holds.
   adsenseClient: "", // e.g. "ca-pub-1234567890123456"; leave empty until AdSense approves the site
@@ -49,24 +49,29 @@ const pages = [];
 const OWNER_LD = { "@type": "Organization", name: CONFIG.owner, url: CONFIG.siteUrl };
 const AUTHORS = {
   "jigmey-dorjee": {
-    name: "Jigmey Dorjee", role: "Experienced home gardener", he: "He",
+    name: "Jigmey Dorjee", role: "Experienced home gardener", he: "He", cover: "author-jigmey.svg",
     facts: ["Grew up in Oregon", "Years of growing vegetables at home", "Checks dates against NOAA and OSU Extension"],
     bio: "Jigmey Dorjee grew up in Oregon, where gardening means working with the weather: cold, wet springs, dry summers and long, mild falls. He's an experienced home gardener who has grown his own vegetables for years, and he knows firsthand that a Northwest garden runs on a different calendar than the national planting charts. He writes about vegetables and planting timing for Rainline Garden and checks the advice against NOAA weather records and Oregon State University Extension guidance.",
     short: "Jigmey Dorjee grew up in Oregon and has grown his own vegetables at home for years. He writes about vegetables and planting timing, and checks the advice against NOAA weather records and Oregon State University Extension guidance."
   },
   "elaine-holloway": {
-    name: "Elaine Holloway", role: "Soil, native plants and perennials", he: "She",
+    name: "Elaine Holloway", role: "Soil, native plants and perennials", he: "She", cover: "author-elaine.svg",
     facts: ["Born and raised in the Portland area", "Studied environmental science at Portland State", "Focus: soil health, native and pollinator plants"],
     bio: "Elaine Holloway was born and raised in the greater Portland area, where she grew up helping family tend backyard vegetable plots, native plant borders and container gardens. A lifelong gardener, she focuses on regional horticulture: building healthy soil, managing moisture through wet Northwest winters and dry summers, choosing native and climate-adapted plants, and adding pollinator-friendly, low-maintenance plantings to home gardens. She studied environmental science with a focus on horticulture at Portland State University, including plant ecology, sustainable agriculture and native plants. Where Jigmey covers vegetables and planting dates, Elaine covers the soil underneath them and the perennials, herbs and flowers around them.",
     short: "Elaine Holloway was born and raised in the Portland area, has gardened all her life and studied environmental science at Portland State. She writes about soil, moisture, perennials and native and pollinator-friendly plants for Northwest gardens."
   }
 };
 const DEFAULT_AUTHOR = "jigmey-dorjee";
+// Drop a square photo at assets/img/authors/{id}.jpg and it replaces the initials badge.
+const authorPhoto = id => fs.existsSync(path.join(ROOT, "assets/img/authors", id + ".jpg")) ? `assets/img/authors/${id}.jpg` : null;
+const avatar = (rel, id, cls) => authorPhoto(id)
+  ? `<img class="avatar ${cls || ""}" src="${rel}${authorPhoto(id)}" alt="${AUTHORS[id].name}" width="96" height="96">`
+  : `<span class="avatar ${cls || ""}${id === "elaine-holloway" ? " avatar-alt" : ""}" aria-hidden="true">${initials(AUTHORS[id].name)}</span>`;
 const authorLd = id => ({ "@type": "Person", name: AUTHORS[id].name, url: `${CONFIG.siteUrl}about/#${id}` });
 const authorCard = (rel, id, heading) => { const a = AUTHORS[id]; return `<section class="profile" id="${id}">
-<div class="profile-cover"><img src="${rel}assets/img/hero.svg" alt="" width="1200" height="440" loading="lazy"></div>
+<div class="profile-cover"><img src="${rel}assets/img/${a.cover}" alt="" width="1200" height="320" loading="lazy"></div>
 <div class="profile-body">
-<span class="avatar avatar-xl${id === "elaine-holloway" ? " avatar-alt" : ""}" aria-hidden="true">${initials(a.name)}</span>
+${avatar(rel, id, "avatar-xl")}
 <p class="profile-kicker">${heading}</p>
 <h2 class="profile-name">${a.name}</h2>
 <p class="profile-role">${a.role}</p>
@@ -541,9 +546,9 @@ ARTICLES.forEach(a => {
     body: `${ab.html}
 <article class="article">
 <header class="hero hero-crop">${R.icon(a.crops[0], rel, 120)}<div><h1>${esc(a.title)}</h1><p class="lede">${esc(a.description)}</p>
-<p class="byline"><span class="avatar${(a.author || DEFAULT_AUTHOR) === "elaine-holloway" ? " avatar-alt" : ""}" aria-hidden="true">${initials(AUTHORS[a.author || DEFAULT_AUTHOR].name)}</span><span>By <a href="${rel}about/#${a.author || DEFAULT_AUTHOR}">${AUTHORS[a.author || DEFAULT_AUTHOR].name}</a><br><span class="byline-d">Updated <time datetime="${CONFIG.updated}">${new Date(CONFIG.updated + "T12:00:00").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</time></span></span></p></div></header>
+<p class="byline">${avatar(rel, a.author || DEFAULT_AUTHOR)}<span>By <a href="${rel}about/#${a.author || DEFAULT_AUTHOR}">${AUTHORS[a.author || DEFAULT_AUTHOR].name}</a><br><span class="byline-d">Updated <time datetime="${CONFIG.updated}">${new Date(CONFIG.updated + "T12:00:00").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</time></span></span></p></div></header>
 <div class="prose">${a.body({ D, P, frost: frostFor, link: p => rel + p })}</div>
-${(au => `<aside class="author-box"><span class="avatar avatar-lg${au === "elaine-holloway" ? " avatar-alt" : ""}" aria-hidden="true">${initials(AUTHORS[au].name)}</span><div><h2>About the author</h2><p>${esc(AUTHORS[au].short)}</p><a href="${rel}about/#${au}">More about ${AUTHORS[au].name.split(" ")[0]}</a></div></aside>`)(a.author || DEFAULT_AUTHOR)}
+${(au => `<aside class="author-box">${avatar(rel, au, "avatar-lg")}<div><h2>About the author</h2><p>${esc(AUTHORS[au].short)}</p><a href="${rel}about/#${au}">More about ${AUTHORS[au].name.split(" ")[0]}</a></div></aside>`)(a.author || DEFAULT_AUTHOR)}
 </article>
 ${ad("article-bottom")}
 <h2>Crops in this article</h2>
