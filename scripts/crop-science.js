@@ -1,10 +1,11 @@
 /* In-depth, science-based growing notes for the most-searched Northwest crops, shown on the crop hub
  * pages (/when-to-plant/{crop}/) only. Crops not listed here keep the standard guide.
- * Per crop: sections ([heading, ...paragraphs]) and faq ([question, answer]); the FAQ is also emitted
+ * Per crop: keys ([label, value] numbers to scan at a glance), sections ([heading, ...paragraphs]) and faq ([question, answer]); the FAQ is also emitted
  * as FAQPage structured data. Plain text only (escaped when rendered). Keep numbers to well-established
  * horticultural research, and keep them consistent with scripts/guide.js. */
 module.exports = {
   tomatoes: {
+    keys: [["Soil to sprout", "75–85°F"], ["Plant out when", "Nights stay above 50°F"], ["Best fruit set", "Nights 60–70°F"], ["Soil pH", "6.2–6.8"], ["Water", "1+ inch a week, steady"], ["Biggest risk", "Late blight in fall rain"]],
     sections: [
       ["Soil and feeding",
         "Tomatoes do best in loose, well-drained soil with a pH of about 6.2 to 6.8. Work in a couple of inches of compost before planting and add a balanced vegetable fertilizer. Go easy on nitrogen: too much grows big, leafy plants that flower late and set less fruit, which is the last thing you want in a short Northwest summer.",
@@ -32,6 +33,7 @@ module.exports = {
   },
 
   garlic: {
+    keys: [["Winter cold needed", "6–8 weeks below 40°F"], ["Soil pH", "6.0–7.0"], ["Feed", "Early spring, stop by late May"], ["Stop watering", "2 weeks before harvest"], ["Dig when", "3–4 lower leaves are brown"], ["Store", "Cool room, not the fridge"]],
     sections: [
       ["Why garlic is planted in fall",
         "A garlic clove needs a long spell of cold before it will divide into a new bulb with cloves. This is called vernalization, and it takes roughly six to eight weeks of temperatures below about 40°F, with hardneck types needing the most. Northwest winters provide that easily. Garlic planted in spring, or kept somewhere warm, often grows into a single round bulb with no cloves at all.",
@@ -58,6 +60,7 @@ module.exports = {
   },
 
   blueberries: {
+    keys: [["Soil pH", "4.5–5.5"], ["Nitrogen type", "Ammonium, not nitrate"], ["Mulch", "2–4 inches sawdust or bark"], ["Water", "1–2 inches a week in summer"], ["Most fruitful canes", "3–6 years old"], ["Full crops", "By year 5"]],
     sections: [
       ["Acidic soil is the whole game",
         "Blueberries need acidic soil, with a pH of about 4.5 to 5.5. Many Northwest soils west of the Cascades are already close, but soils east of the mountains are often neutral or alkaline. Test before you plant. At the wrong pH, blueberries can't take up iron and other nutrients, and the classic symptom is yellow leaves with green veins.",
@@ -84,6 +87,7 @@ module.exports = {
   },
 
   strawberries: {
+    keys: [["Soil pH", "5.5–6.5"], ["Crown depth", "Right at the soil surface"], ["Feed June-bearers", "After harvest"], ["Day-neutrals slow", "Above 85°F"], ["Replace plants", "Every 3–4 years"], ["Biggest risk", "Gray mold at bloom"]],
     sections: [
       ["June-bearers, everbearers and day-neutrals",
         "The kind of strawberry decides when you get fruit. June-bearing varieties, like Hood and Shuksan, form next year's flower buds in late summer and fall, when days shorten and nights cool, and they fruit once, in a big flush in early summer.",
@@ -112,6 +116,7 @@ module.exports = {
   },
 
   raspberries: {
+    keys: [["Soil pH", "5.6–6.2"], ["Raised row", "10–12 inches high"], ["Each cane lives", "2 years"], ["Water", "1–2 inches a week in fruit"], ["Root-rot resistant", "Cascade Bounty, Cascade Delight"], ["Picked berries keep", "2–3 days"]],
     sections: [
       ["How raspberry canes work",
         "Raspberry roots live for many years, but each cane lives only two. In its first year a cane (a primocane) grows leaves; in its second year (as a floricane) it fruits and then dies. Summer-bearing varieties like Meeker and Tulameen fruit only on second-year canes. Fall-bearing varieties like Heritage also fruit at the tips of first-year canes in late summer and fall.",
@@ -134,6 +139,7 @@ module.exports = {
   },
 
   lettuce: {
+    keys: [["Soil to sprout", "35–80°F (best 75°F)"], ["Sow depth", "¼ inch max; needs light"], ["Seeds go dormant", "Soil above 80°F"], ["Soil pH", "6.0–7.0"], ["Hardy types take", "Mid-20s °F"], ["Keeps", "1–2 weeks near 32°F"]],
     sections: [
       ["Getting seeds to sprout",
         "Lettuce sprouts in soil as cool as 35 to 40°F and does best around 75°F. Many varieties also need some light to germinate, so sow seeds no more than about a quarter inch deep and keep the surface moist.",
@@ -156,6 +162,7 @@ module.exports = {
   },
 
   kale: {
+    keys: [["Soil pH", "6.0–7.5"], ["Hardy to", "Low teens °F"], ["Frost", "Makes leaves sweeter"], ["Clubroot fix", "Lime to pH 7.2"], ["Leave on plant", "Top 5–6 leaves"], ["Keeps", "1–2 weeks cold"]],
     sections: [
       ["Why frost makes kale sweeter",
         "As temperatures drop, kale converts some of its starch into sugars, which act as a natural antifreeze in its cells. The result is noticeably sweeter, milder leaves after a few frosts. Hardy varieties like Winterbor and Red Russian survive into the low teens or below, and west of the Cascades kale often produces all winter."],
@@ -179,6 +186,7 @@ module.exports = {
   },
 
   chard: {
+    keys: [["Soil to sprout", "50–85°F"], ["Takes frost to", "Low 20s °F"], ["Soil pH", "6.0–7.0"], ["Each seed", "Several seedlings"], ["Cut stalks at", "8–12 inches"], ["Bolts", "Spring after a winter"]],
     sections: [
       ["A beet grown for its leaves",
         "Swiss chard is the same species as beets, Beta vulgaris, bred for big leaves and stems instead of a swollen root. That's why it shares beets' pests and much of their care. Its seeds are actually dried fruit clusters holding several seeds each, so one seed often produces a small clump of seedlings. Thin to the strongest one."],
@@ -201,6 +209,7 @@ module.exports = {
   },
 
   spinach: {
+    keys: [["Bolts when days pass", "14 hours (late April)"], ["Soil to sprout", "35–75°F; poor above 85°F"], ["Soil pH", "6.5–7.5"], ["Hardy to", "The teens °F, with cover"], ["Best crop", "Fall and overwintered"], ["Keeps", "10–14 days cold"]],
     sections: [
       ["Why spinach bolts",
         "Spinach is a long-day plant: once the days get longer than about 14 hours, it starts making flowers instead of leaves. In Portland and Seattle that happens around late April, and warm weather speeds it up. That's why spring spinach has a short window, and why fall and overwintered crops are often the best ones here.",
@@ -222,6 +231,7 @@ module.exports = {
   },
 
   "summer-squash": {
+    keys: [["Soil to sprout", "60°F min, 70–95°F best"], ["Chill damage", "Below 50°F"], ["Soil pH", "6.0–7.5"], ["Water", "1 inch a week"], ["Each flower opens", "One morning only"], ["Pick at", "6–8 inches"]],
     sections: [
       ["Warm soil first",
         "Squash seeds need soil of at least 60°F to sprout, and they come up fastest at 70 to 95°F. In cold, wet soil they rot before they emerge, which is why squash sown too early in the Northwest often fails. Plants are also damaged by long spells below about 50°F. Wait for warm soil, or start seeds indoors two to three weeks before planting out."],
@@ -243,6 +253,7 @@ module.exports = {
   },
 
   "winter-squash": {
+    keys: [["Days to ripen", "85–110"], ["Soil to sprout", "60°F+"], ["Last useful flowers", "Mid-August"], ["Soil pH", "6.0–7.5"], ["Cure", "10 days at about 80°F"], ["Store", "50–55°F, dry"]],
     sections: [
       ["Racing the season",
         "Winter squash needs a long, warm season, often 85 to 110 days from sowing, and the fruit has to mature fully before fall rains and frost. Seeds need soil of at least 60°F to sprout, and plants stall below about 50°F. In the Northwest, that makes the choice of variety and an early, warm start the deciding factors.",
@@ -265,6 +276,7 @@ module.exports = {
   },
 
   cucumbers: {
+    keys: [["Soil to sprout", "60°F+"], ["Chill damage", "Below 50°F"], ["Fruit is", "About 95% water"], ["Soil pH", "6.0–7.0"], ["Pick slicers at", "6–8 inches"], ["Store", "50–55°F"]],
     sections: [
       ["Warmth is everything",
         "Cucumbers are a tropical crop. Seeds need soil of at least 60°F to sprout and do best much warmer, and long spells below about 50°F damage plants. In much of the Northwest, transplants or seeds go out only once nights are reliably warm. Black plastic mulch, a south-facing spot and row cover early in the season help."],
@@ -286,6 +298,7 @@ module.exports = {
   },
 
   beans: {
+    keys: [["Soil to sprout", "60°F min, 80°F ideal"], ["Soak seeds?", "No"], ["Nitrogen", "Makes its own"], ["Flowers drop", "Above 90°F or dry"], ["Soil pH", "6.0–7.0"], ["Pick at", "Pencil-thick"]],
     sections: [
       ["Why cold soil kills bean seeds",
         "Bean seeds need soil of at least 60°F to sprout, and about 80°F is ideal. In cold, wet soil, dry seeds absorb water so quickly that their tissues are damaged, and soil fungi then rot them before they emerge. That's the most common bean failure in the Northwest. Use a soil thermometer and wait for 60°F. Don't soak bean seeds before planting, since that can cause the same injury. Provider is noted for sprouting better in cooler soil."],
@@ -307,6 +320,7 @@ module.exports = {
   },
 
   peas: {
+    keys: [["Soil to sprout", "40°F+, faster near 60°F"], ["Best days", "60–70°F"], ["Slows down", "Above 80°F"], ["Soil pH", "6.0–7.5"], ["Seedlings take", "Light frost"], ["Sweetness fades", "Within hours of picking"]],
     sections: [
       ["A crop built for cool weather",
         "Peas sprout in soil as cool as 40°F, though they come up much faster as it warms toward 60°F, and they grow best when days are 60 to 70°F. Seedlings tolerate light frost. Production drops once temperatures regularly top about 80°F, which is why peas go in early, from February to April depending on where you live.",
@@ -330,6 +344,7 @@ module.exports = {
   },
 
   potatoes: {
+    keys: [["Plant when soil is", "45°F+"], ["Tubers form best", "Soil 60–70°F"], ["Soil pH", "5.0–6.5 (scab drops at 5.2)"], ["Seed pieces", "1½–2 oz, 1–2 eyes"], ["Water", "1–2 inches a week, even"], ["Store", "Dark, 40–45°F"]],
     sections: [
       ["Start with certified seed potatoes",
         "Potatoes are grown from pieces of tubers, so diseases and viruses travel with them. Certified seed potatoes are inspected and tested for these problems. Grocery potatoes may carry diseases, and some are treated to slow sprouting.",
@@ -354,6 +369,7 @@ module.exports = {
   },
 
   carrots: {
+    keys: [["Days to sprout", "7–21"], ["Soil to sprout", "40–45°F min"], ["Thin to", "2 inches"], ["Soil pH", "6.0–6.8"], ["Rust fly flights", "Mid-April–June, Aug–Sept"], ["Pull at", "¾-inch shoulders"]],
     sections: [
       ["Getting carrots to come up",
         "Carrot seeds are slow, often taking one to three weeks to sprout, and they need the soil surface to stay moist the whole time. They'll sprout in soil as cool as 40 to 45°F, but come up much faster in warmer soil. In the Northwest, the common failure is a crust: rain or watering packs the surface into a crust the tiny seedlings can't push through.",
@@ -378,6 +394,7 @@ module.exports = {
   },
 
   onions: {
+    keys: [["Type for here", "Long-day"], ["Bulbing starts at", "14–16 hour days"], ["Sets", "Smaller than ¾ inch"], ["Soil pH", "6.0–7.0"], ["Harvest when", "Half the tops fall"], ["Cure", "2–3 weeks"]],
     sections: [
       ["Day length decides the bulb",
         "Onions start forming bulbs when days reach a certain length, and varieties are grouped by that trigger. Long-day onions bulb when days reach about 14 to 16 hours and are the right choice for the Northwest's long summer days. Short-day onions, bred for the South, bulb too early here and stay small. Check the packet or set label for long-day or day-neutral varieties."],
@@ -400,6 +417,7 @@ module.exports = {
   },
 
   beets: {
+    keys: [["Seeds per cluster", "2–4"], ["Thin to", "3 inches"], ["Soil pH", "6.0–7.5"], ["Soil to sprout", "50–85°F"], ["Pull at", "Golf to tennis ball size"], ["Keeps", "2–4 months cold"]],
     sections: [
       ["One seed, several seedlings",
         "A beet \"seed\" is actually a dried fruit cluster containing two to four seeds, so seedlings come up in small clumps. Thin to one plant every 3 inches once they're a couple of inches tall; crowded beets grow leaves instead of roots. Monogerm varieties have one seed per cluster and need less thinning."],
@@ -422,6 +440,7 @@ module.exports = {
   },
 
   basil: {
+    keys: [["Chill damage", "Below 50°F"], ["Soil to sprout", "70–85°F"], ["Plant out", "Nights above 50°F"], ["Pinch at", "6 inches tall"], ["Store", "Counter, not the fridge"], ["Mildew resistant", "Prospera, Amazel"]],
     sections: [
       ["A tropical plant in a cool climate",
         "Basil is a tropical plant, and cold damages it even without frost. Below about 50°F the leaves can develop dark spots and blacken a few days later, and growth stalls. Seeds sprout best in soil around 70 to 85°F. In the Northwest, that means waiting until nights stay above 50°F, usually June west of the Cascades, or growing it in a greenhouse or a warm, sheltered spot."],
@@ -442,6 +461,7 @@ module.exports = {
   },
 
   rosemary: {
+    keys: [["Top killer", "Wet winter soil"], ["Most types hurt at", "15–20°F"], ["Hardiest", "Arp, Madeline Hill"], ["Fertilizer", "None needed"], ["Prune", "Only into green growth"], ["In pots", "Terracotta, gritty mix"]],
     sections: [
       ["Wet soil kills more rosemary than cold",
         "Rosemary comes from dry, rocky hillsides around the Mediterranean. Its roots rot when they sit in cold, soggy soil, which is why more rosemary dies in a wet Northwest winter than in a cold, dry one. Plant it in fast-draining soil, on a slope or in a raised bed, and never in a spot where water pools. Mixing gravel into heavy clay helps."],
@@ -462,6 +482,7 @@ module.exports = {
   },
 
   mint: {
+    keys: [["Spreads by", "Underground rhizomes"], ["From seed", "Unreliable flavor"], ["Soil pH", "6.0–7.0"], ["Light", "Sun to part shade"], ["Best flavor", "Just before flowering"], ["Divide", "Every few years"]],
     sections: [
       ["Why mint takes over",
         "Mint spreads by underground stems called rhizomes, plus runners above ground. Each piece can root and start a new plant, so it quickly spreads through a bed. Grow it in a container, or sink a bottomless pot or bucket into the ground with the rim a couple of inches above the soil, and trim runners that creep over the edge."],
@@ -482,6 +503,7 @@ module.exports = {
   },
 
   dahlias: {
+    keys: [["Plant when soil is", "60°F"], ["First water", "Once shoots appear"], ["Pinch at", "3–4 leaf pairs"], ["Fertilizer", "Low nitrogen"], ["Store tubers", "40–50°F"], ["Frozen tubers", "Die"]],
     sections: [
       ["What you're planting",
         "Dahlias grow from tuberous roots, native to the highlands of Mexico. New shoots come only from the crown, the old stem where the tubers attach, so a tuber with no piece of crown and no eye will never sprout. Look for firm tubers with a visible eye or a bit of crown tissue."],
@@ -504,6 +526,7 @@ module.exports = {
   },
 
   tulips: {
+    keys: [["Winter cold needed", "12–16 weeks below 48°F"], ["Plant", "October–November"], ["Depth", "6–8 inches (3× bulb)"], ["Keep leaves", "About 6 weeks"], ["Return best", "Darwin hybrids, species"], ["Pre-chill?", "Not needed here"]],
     sections: [
       ["Why tulips need winter",
         "Tulip bulbs need a long cold period, roughly 12 to 16 weeks below about 48°F, before the flower stem will grow properly. Northwest winters provide that naturally, so there's no need to chill bulbs in the fridge. Plant in fall once the soil has cooled, usually October to November, so roots grow before winter."],

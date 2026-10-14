@@ -180,8 +180,8 @@ function crumbs(rel, items) {
   return { html, ld };
 }
 
-function relatedArticles(rel, cropId) {
-  const list = ARTICLES.filter(a => a.crops.includes(cropId));
+function relatedArticles(rel, cropId, max) {
+  const list = ARTICLES.filter(a => a.crops.includes(cropId)).slice(0, max || Infinity);
   if (!list.length) return "";
   return `<aside class="reads"><h2>Read more</h2><ul>${list.map(a => `<li><a href="${rel}articles/${a.slug}/">${esc(a.title)}</a><span>${esc(a.description)}</span></li>`).join("")}</ul></aside>`;
 }
@@ -231,11 +231,33 @@ function faqLd(qas) {
   return { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: qas.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) };
 }
 
-function scienceSection(c, sci) {
-  return `<section class="science prose"><h2>Growing ${lc(c.name)}: how it works</h2>
-${sci.sections.map(([h, ...ps]) => `<h3>${esc(h)}</h3>${ps.map(p => `<p>${esc(p)}</p>`).join("")}`).join("\n")}</section>
-<h2>Common questions about growing ${lc(c.name)}</h2>
-<div class="faq">${sci.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("")}</div>`;
+// Cleaner layout for crops with in-depth notes in scripts/crop-science.js.
+const FEATURED_CITIES = ["portland-or", "seattle-wa", "eugene-or", "spokane-wa", "bend-or", "tri-cities-wa"];
+function scienceBody(c, g, sci, { head, rowHtml, plans, port }) {
+  const featured = FEATURED_CITIES.map(slug => plans.find(p => p.place.slug === slug));
+  return `${quickFacts(c, g)}
+<nav class="jump" aria-label="On this page"><a href="#dates">Planting dates</a><a href="#grow">How to grow</a><a href="#numbers">Key numbers</a><a href="#science">How it works</a><a href="#faq">Questions</a></nav>
+<p class="callout">${esc(c.note)}</p>
+<h2 id="dates">${c.name} planting dates</h2>
+<div class="table-wrap"><table class="plan"><thead>${head}</thead><tbody>${featured.map(rowHtml).join("")}</tbody></table></div>
+<details class="more-cities"><summary>All ${plans.length} Oregon and Washington cities</summary><div class="table-wrap"><table class="plan"><thead>${head}</thead><tbody>${plans.map(rowHtml).join("")}</tbody></table></div></details>
+${ad("crop-mid")}
+<h2 id="grow">How to grow ${lc(c.name)}</h2>
+<div class="grow-grid"><div>${stepsForHub(c, g, port)}</div>
+<aside class="side-card"><h3>Varieties that do well here</h3><ul class="vars">${g.varieties.map(v => `<li>${esc(v)}</li>`).join("")}</ul>
+<h3>Watch out for</h3><p>${esc(g.problem)}</p></aside></div>
+<h2 id="numbers">Key numbers</h2>
+<ul class="keys">${sci.keys.map(([l, v]) => `<li><span class="k-v">${esc(v)}</span><span class="k-l">${esc(l)}</span></li>`).join("")}</ul>
+<h2 id="science">How it works</h2>
+<p class="lede-sm">The plant biology behind the advice above, in plain language.</p>
+<div class="sci-cards">${sci.sections.map(([h, ...ps]) => `<section class="sci-card"><h3>${esc(h)}</h3>${ps.map(p => `<p>${esc(p)}</p>`).join("")}</section>`).join("\n")}</div>
+${gearBox(g.gear)}
+<h2 id="faq">Common questions about growing ${lc(c.name)}</h2>
+<div class="faq">${sci.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("")}</div>
+${relatedArticles("../../", c.id, 4)}`;
+}
+function stepsForHub(c, g, port) {
+  return steps(c, rowFor(port, c.id), g).replace(/(Start seeds indoors|Plant them in the garden|Plant seeds|Plant seed potatoes|Plant onion sets|Break bulbs into cloves and plant them|Plant them|Plant again|Plant [a-z ]+?) [A-Z][a-z]{2} \d+(–\d+| – [A-Z][a-z]{2} \d+)/g, "$1 on your city's dates");
 }
 
 const WHEN_INDEX = "when-to-plant/";
@@ -410,10 +432,12 @@ D.crops.forEach(c => {
   const cols = [["Start seeds indoors", r => r.indoor], ["Plant in the garden", r => win(r, "spring")], [g.fall ? "Plant in fall" : "Plant again for fall", r => win(r, "fall")]]
     .filter(([, get]) => plans.some(p => get(rowFor(p, c.id))));
   const head = `<tr><th scope="col">City</th>${cols.map(([l]) => `<th scope="col">${l}</th>`).join("")}</tr>`;
-  const rows = plans.slice().sort((a, b) => a.place.state.localeCompare(b.place.state) || a.place.city.localeCompare(b.place.city)).map(p => {
+  const rowHtml = p => {
     const r = rowFor(p, c.id);
     return `<tr><th scope="row"><a href="${p.place.slug}/">${esc(placeLabel(p.place))}</a></th>${cols.map(([l, get]) => { const w = get(r); return `<td data-label="${l}">${w ? P.fmtRange(w.start, w.end) : '<span class="none">—</span>'}</td>`; }).join("")}</tr>`;
-  }).join("");
+  };
+  const sorted = plans.slice().sort((a, b) => a.place.state.localeCompare(b.place.state) || a.place.city.localeCompare(b.place.city));
+  const rows = sorted.map(rowHtml).join("");
   const port = plans.find(p => p.place.slug === "portland-or"), bend = plans.find(p => p.place.slug === "bend-or");
   const hb = crumbs("../../", [["When to plant", WHEN_INDEX], [catById(c.cat).name, `${WHEN_INDEX}${c.cat}/`], [c.name, null]]);
   const sci = SCIENCE[c.id];
@@ -428,18 +452,18 @@ ${banner("crop:" + c.id, "../../")}
 <section class="hero hero-crop">${R.icon(c.id, "../../", 120)}<div>
 <h1>When to plant ${lc(c.name)} in Oregon and Washington</h1>
 <p class="lede">${g.fall ? g.fall.lede : `In Portland: ${answer(c, rowFor(port, c.id), null).replace(/<\/?strong>/g, "")} In Bend: ${P.fmtRange(win(rowFor(bend, c.id), "spring").start, win(rowFor(bend, c.id), "spring").end)}.`} Find your city below.</p></div></section>
-${quickFacts(c, g)}
+${sci ? scienceBody(c, g, sci, { head, rowHtml, plans: sorted, port }) : `${quickFacts(c, g)}
 <p class="callout">${esc(c.note)}</p>
 <h2>${c.name} planting dates by city</h2>
 <div class="table-wrap"><table class="plan"><thead>${head}</thead><tbody>${rows}</tbody></table></div>
 ${ad("crop-mid")}
 <h2>How to grow ${lc(c.name)}</h2>
-${steps(c, rowFor(port, c.id), g).replace(/(Start seeds indoors|Plant them in the garden|Plant seeds|Plant seed potatoes|Plant onion sets|Break bulbs into cloves and plant them|Plant them|Plant again|Plant [a-z ]+?) [A-Z][a-z]{2} \d+(–\d+| – [A-Z][a-z]{2} \d+)/g, "$1 on your city's dates")}
+${stepsForHub(c, g, port)}
 <h2>Varieties that do well in the Northwest</h2>
 <ul class="vars">${g.varieties.map(v => `<li>${esc(v)}</li>`).join("")}</ul>
 <h2>Watch out for</h2><p>${esc(g.problem)}</p>
 ${gearBox(g.gear)}
-${sci ? scienceSection(c, sci) + "\n" : ""}${relatedArticles("../../", c.id)}
+${relatedArticles("../../", c.id)}`}
 ${newsletter()}
 <h2>More ${catById(c.cat).name.toLowerCase()}</h2>
 <ul class="chips">${catById(c.cat).crops.filter(id => id !== c.id).map(id => `<li><a href="../${id}/">${R.icon(id, "../../", 24)}${cropById(id).name}</a></li>`).join("")}</ul>
