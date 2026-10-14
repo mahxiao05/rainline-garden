@@ -34,7 +34,7 @@
 <div class="prose">
 <p>Rainline Garden is owned and operated by X Ventures LLC ("we", "us"). This policy explains what happens to your information when you use the site.</p>
 <h2>What we collect</h2>
-<p>Rainline Garden has no accounts. The ZIP code you enter is matched to a city inside your browser and is never sent to our server. Your browser's local storage keeps three things on your own device: the last city you chose in the planner, your light or dark display choice, and your garden plan if you make one on the My garden plan page (the city, the plants you picked, tasks you checked off and your notes). None of it is sent to us. You can clear it by clearing site data in your browser or with the "Clear my plan" link on the plan page.</p>
+<p>Rainline Garden has no accounts. The ZIP code you enter is matched to a city inside your browser and is never sent to our server. Your browser's local storage keeps three things on your own device: the last city you chose in the planner, your light or dark display choice, and your garden plan if you make one on the My garden plan page (the city, the plants you picked, tasks you checked off, bed sizes, your harvest log and your notes). None of it is sent to us. You can clear it by clearing site data in your browser or with the "Clear my plan" link on the plan page.</p>
 <p>The plant question helper also runs entirely in your browser. Questions you type into it are answered from data already loaded on the page and are not sent to us or stored.</p>
 <h2>Advertising</h2>
 <p>This site uses Google AdSense to show ads. Google and its partners use cookies to serve ads based on your visits to this and other websites. You can opt out of personalized advertising at <a href="https://www.google.com/settings/ads">Google Ads Settings</a>, and learn more at <a href="https://policies.google.com/technologies/ads">How Google uses information from sites that use its services</a>.</p>
@@ -52,6 +52,7 @@
 <p class="owner">&copy; 2026 X Ventures LLC. Rainline Garden is owned and operated by X Ventures LLC.</p>
 </div></footer>
 <script>(function(){var r=document.documentElement,b=document.querySelector(".theme-btn");if(!b)return;function cur(){return r.dataset.theme==="dark"?"dark":"light"}function sync(){b.setAttribute("aria-label",cur()==="dark"?"Switch to light mode":"Switch to dark mode")}sync();b.addEventListener("click",function(){var n=cur()==="dark"?"light":"dark";r.dataset.theme=n;try{localStorage.setItem("rainline-theme",n)}catch(e){}sync()})})();</script>
+<script>(function(){var n=document.querySelector(".nav"),a=n&&n.querySelector("[aria-current]");if(!n)return;if(a&&a.offsetLeft+a.offsetWidth>n.clientWidth)n.scrollLeft=a.offsetLeft-(n.clientWidth-a.offsetWidth)/2;function edge(){n.classList.toggle("at-end",n.scrollLeft+n.clientWidth>=n.scrollWidth-4)}edge();n.addEventListener("scroll",edge,{passive:true});addEventListener("resize",edge)})();</script>
 
 <script src="../assets/helper.js" defer></script>
 </body>

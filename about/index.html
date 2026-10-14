@@ -72,6 +72,7 @@
 <p class="owner">&copy; 2026 X Ventures LLC. Rainline Garden is owned and operated by X Ventures LLC.</p>
 </div></footer>
 <script>(function(){var r=document.documentElement,b=document.querySelector(".theme-btn");if(!b)return;function cur(){return r.dataset.theme==="dark"?"dark":"light"}function sync(){b.setAttribute("aria-label",cur()==="dark"?"Switch to light mode":"Switch to dark mode")}sync();b.addEventListener("click",function(){var n=cur()==="dark"?"light":"dark";r.dataset.theme=n;try{localStorage.setItem("rainline-theme",n)}catch(e){}sync()})})();</script>
+<script>(function(){var n=document.querySelector(".nav"),a=n&&n.querySelector("[aria-current]");if(!n)return;if(a&&a.offsetLeft+a.offsetWidth>n.clientWidth)n.scrollLeft=a.offsetLeft-(n.clientWidth-a.offsetWidth)/2;function edge(){n.classList.toggle("at-end",n.scrollLeft+n.clientWidth>=n.scrollWidth-4)}edge();n.addEventListener("scroll",edge,{passive:true});addEventListener("resize",edge)})();</script>
 
 <script src="../assets/helper.js" defer></script>
 </body>
