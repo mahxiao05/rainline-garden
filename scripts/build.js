@@ -236,7 +236,7 @@ const FEATURED_CITIES = ["portland-or", "seattle-wa", "eugene-or", "spokane-wa",
 function scienceBody(c, g, sci, { head, rowHtml, plans, port }) {
   const featured = FEATURED_CITIES.map(slug => plans.find(p => p.place.slug === slug));
   return `${quickFacts(c, g)}
-<nav class="jump" aria-label="On this page"><a href="#dates">Planting dates</a><a href="#grow">How to grow</a><a href="#numbers">Key numbers</a><a href="#science">How it works</a><a href="#faq">Questions</a></nav>
+${JUMP}
 <p class="callout">${esc(c.note)}</p>
 <h2 id="dates">${c.name} planting dates</h2>
 <div class="table-wrap"><table class="plan"><thead>${head}</thead><tbody>${featured.map(rowHtml).join("")}</tbody></table></div>
@@ -244,17 +244,23 @@ function scienceBody(c, g, sci, { head, rowHtml, plans, port }) {
 ${ad("crop-mid")}
 <h2 id="grow">How to grow ${lc(c.name)}</h2>
 <div class="grow-grid"><div>${stepsForHub(c, g, port)}</div>
-<aside class="side-card"><h3>Varieties that do well here</h3><ul class="vars">${g.varieties.map(v => `<li>${esc(v)}</li>`).join("")}</ul>
-<h3>Watch out for</h3><p>${esc(g.problem)}</p></aside></div>
-<h2 id="numbers">Key numbers</h2>
+${sideCard(g)}</div>
+${scienceParts(sci)}
+${gearBox(g.gear)}
+<h2 id="faq">Common questions about growing ${lc(c.name)}</h2>
+${faqHtml(sci.faq)}
+${relatedArticles("../../", c.id, 4)}`;
+}
+const JUMP = `<nav class="jump" aria-label="On this page"><a href="#dates">Planting dates</a><a href="#grow">How to grow</a><a href="#numbers">Key numbers</a><a href="#science">How it works</a><a href="#faq">Questions</a></nav>`;
+const faqHtml = qas => `<div class="faq">${qas.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("")}</div>`;
+const sideCard = (g, note) => `<aside class="side-card"><h3>Varieties that do well here</h3><ul class="vars">${g.varieties.map(v => `<li>${esc(v)}</li>`).join("")}</ul>
+<h3>Watch out for</h3><p>${esc(g.problem)}</p>${note ? `<p class="note">${esc(note)}</p>` : ""}</aside>`;
+function scienceParts(sci) {
+  return `<h2 id="numbers">Key numbers</h2>
 <ul class="keys">${sci.keys.map(([l, v]) => `<li><span class="k-v">${esc(v)}</span><span class="k-l">${esc(l)}</span></li>`).join("")}</ul>
 <h2 id="science">How it works</h2>
 <p class="lede-sm">The plant biology behind the advice above, in plain language.</p>
-<div class="sci-cards">${sci.sections.map(([h, ...ps]) => `<section class="sci-card"><h3>${esc(h)}</h3>${ps.map(p => `<p>${esc(p)}</p>`).join("")}</section>`).join("\n")}</div>
-${gearBox(g.gear)}
-<h2 id="faq">Common questions about growing ${lc(c.name)}</h2>
-<div class="faq">${sci.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("")}</div>
-${relatedArticles("../../", c.id, 4)}`;
+<div class="sci-cards">${sci.sections.map(([h, ...ps]) => `<section class="sci-card"><h3>${esc(h)}</h3>${ps.map(p => `<p>${esc(p)}</p>`).join("")}</section>`).join("\n")}</div>`;
 }
 function stepsForHub(c, g, port) {
   return steps(c, rowFor(port, c.id), g).replace(/(Start seeds indoors|Plant them in the garden|Plant seeds|Plant seed potatoes|Plant onion sets|Break bulbs into cloves and plant them|Plant them|Plant again|Plant [a-z ]+?) [A-Z][a-z]{2} \d+(–\d+| – [A-Z][a-z]{2} \d+)/g, "$1 on your city's dates");
@@ -491,14 +497,27 @@ ${newsletter()}
       title: `When to Plant ${c.name} in ${placeLabel(place)} (${YEAR}) | Rainline Garden`,
       description: `${plain} Local frost dates, step-by-step instructions and the best varieties for ${ZONE_FOR[place.zone]}.`.slice(0, 300),
       image: PHOTOS["crop:" + c.id] && photoFile("crop:" + c.id, "banner"),
-      jsonld: [cb.ld, faqLd(qas)],
+      jsonld: [cb.ld, faqLd(sci ? qas.concat(sci.faq) : qas)],
       body: `${cb.html}
 ${banner("crop:" + c.id, rel)}
 <section class="hero hero-crop">${R.icon(c.id, rel, 120)}<div>
 <h1>When to plant ${lc(c.name)} in ${esc(city)}, ${place.state}</h1>
 <p class="answer">${answer(c, r, city)}</p>
 <p class="meta">${badge(g.difficulty)} <span>${esc(c.how)}</span></p></div></section>
-<h2>Why these dates</h2>
+${sci ? `${quickFacts(c, g)}
+${JUMP}
+<h2 id="dates">Why these dates</h2>
+<p class="prose">${why(c, r, p)}</p>
+<p class="region prose"><strong>${p.zone.name}.</strong> ${p.zone.blurb}</p>
+<h2 id="grow">How to grow ${lc(c.name)} in ${esc(city)}</h2>
+<div class="grow-grid"><div>${steps(c, r, g)}</div>
+${sideCard(g, c.note)}</div>
+${ad("cropcity-mid")}
+${scienceParts(sci)}
+${gearBox(g.gear)}
+<h2 id="faq">Common questions</h2>
+${faqHtml(qas.concat(sci.faq))}
+${relatedArticles(rel, c.id, 4)}` : `<h2>Why these dates</h2>
 <p class="prose">${why(c, r, p)}</p>
 <p class="region prose"><strong>${p.zone.name}.</strong> ${p.zone.blurb}</p>
 ${quickFacts(c, g)}
@@ -512,7 +531,7 @@ ${gearBox(g.gear)}
 </div>
 <h2>Common questions</h2>
 <div class="faq">${qas.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("")}</div>
-${relatedArticles(rel, c.id)}
+${relatedArticles(rel, c.id)}`}
 ${newsletter(city)}
 ${same.length ? `<h2>Also plant in ${esc(city)} around the same time</h2><ul class="chips">${same.map(x => `<li><a href="../../${x.crop.id}/${place.slug}/">${R.icon(x.crop.id, rel, 24)}${x.crop.name}</a></li>`).join("")}</ul>` : ""}
 <h2>Planting dates for ${lc(c.name)} in nearby areas</h2>
