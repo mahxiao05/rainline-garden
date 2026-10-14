@@ -9,6 +9,8 @@ const D = require("../assets/data.js");
 const P = require("../assets/plan.js");
 const R = require("../assets/render.js");
 const G = require("./guide.js");
+const PHOTOS = require("./photos.js");
+const { SIZES, fileBase, sizesFor } = require("./photo-sizes.js");
 const ARTICLES = require("./articles-3.js").concat(require("./articles-2.js"), require("./articles.js")); // newest first
 
 const CONFIG = {
@@ -68,7 +70,7 @@ ${avatar(rel, id, "avatar-xl")}
 </div></section>`; };
 const initials = n => n.split(/\s+/).map(w => w[0]).join("").slice(0, 2).toUpperCase();
 
-function layout({ rel, title, description, canonical, current, body, scripts, jsonld, noindex }) {
+function layout({ rel, title, description, canonical, current, body, scripts, jsonld, noindex, image }) {
   const base = rel; // relative prefix back to the site root, e.g. "../../"
   const nav = [["", "Planner"], ["when-to-plant/", "When to plant"], ["frost-dates/", "Frost dates"], ["garden-calendar/", "Monthly chores"], ["beginners-guide/", "Beginner's guide"], ["articles/", "Articles"], ["my-garden/", "My garden plan"]]
     .map(([href, label]) => `<a href="${base}${href}"${current === href ? ' aria-current="page"' : ""}>${label}</a>`).join("");
@@ -87,7 +89,7 @@ ${noindex ? '<meta name="robots" content="noindex, follow">\n' : ""}<link rel="c
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="${CONFIG.siteUrl}${canonical}">
-<meta property="og:image" content="${CONFIG.siteUrl}assets/img/og.png">
+<meta property="og:image" content="${CONFIG.siteUrl}${image || "assets/img/og.png"}">
 <meta property="og:site_name" content="Rainline Garden">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#F2F4F6">
@@ -200,6 +202,26 @@ const articleIcon = (a, rel, size) => a.icon
   ? `<img class="ico" src="${rel}assets/img/topics/${a.icon}.svg" width="${size}" height="${size}" alt="" loading="lazy">`
   : R.icon(a.crops[0], rel, size);
 
+/* Real photos (scripts/photos.js). photo() returns a <figure> with WebP and JPEG sources at two widths. */
+Object.keys(PHOTOS).forEach(key => sizesFor(key).forEach(s => ["webp", "jpg"].forEach(ext => {
+  const f = `assets/img/photos/${fileBase(key)}-${SIZES[s].w}.${ext}`;
+  if (!fs.existsSync(path.join(ROOT, f))) throw new Error(`Missing ${f}: run node scripts/fetch-photos.js`);
+})));
+const photoFile = (key, size, ext = "jpg") => `assets/img/photos/${fileBase(key)}-${SIZES[size].w}.${ext}`;
+function photoCredit(src) {
+  const [site, id] = src.split(":");
+  return site === "pexels" ? `<a href="https://www.pexels.com/photo/${id}/" rel="nofollow">Pexels</a>` : `<a href="https://unsplash.com/" rel="nofollow">Unsplash</a>`;
+}
+function photo(key, rel, { big, small, cls, sizes, eager }) {
+  const p = PHOTOS[key];
+  if (!p) return "";
+  const set = ext => `${rel}${photoFile(key, big, ext)} ${SIZES[big].w}w, ${rel}${photoFile(key, small, ext)} ${SIZES[small].w}w`;
+  return `<figure class="${cls}"><picture><source type="image/webp" srcset="${set("webp")}" sizes="${sizes}">
+<img src="${rel}${photoFile(key, big)}" srcset="${set("jpg")}" sizes="${sizes}" width="${SIZES[big].w}" height="${SIZES[big].h}" alt="${esc(p.alt)}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async"></picture>
+<figcaption>Photo: ${photoCredit(p.src)}</figcaption></figure>`;
+}
+const banner = (key, rel) => photo(key, rel, { big: "banner", small: "bannerSm", cls: "photo-banner", sizes: "(min-width: 70rem) 66rem, calc(100vw - 32px)", eager: true });
+
 function articleCards(rel, list) {
   return `<ul class="reads-grid">${list.map(a => `<li><a class="card" href="${rel}articles/${a.slug}/">${articleIcon(a, rel, 48)}<span class="card-t">${esc(a.title)}</span><span class="card-s">${esc(a.description)}</span></a></li>`).join("")}</ul>`;
 }
@@ -215,7 +237,7 @@ function cropGrid(rel, linkFor) {
   return D.categories.map(k => `<h3 class="grid-h"><a href="${rel}${WHEN_INDEX}${k.id}/">${k.name}</a></h3><p class="grid-d">${k.blurb}</p><ul class="cards cards-sm">${k.crops.map(id => cropCard(rel, cropById(id), linkFor(cropById(id)))).join("")}</ul>`).join("");
 }
 function categoryTiles(rel) {
-  return `<ul class="cat-tiles">${D.categories.map(k => `<li><a class="cat-tile" href="${rel}${WHEN_INDEX}${k.id}/"><span class="cat-icons">${k.crops.slice(0, 3).map(id => R.icon(id, rel, 40)).join("")}</span><span class="card-t">${k.name}</span><span class="card-s">${k.crops.length} plants</span></a></li>`).join("")}</ul>`;
+  return `<ul class="cat-tiles">${D.categories.map(k => `<li><a class="cat-tile" href="${rel}${WHEN_INDEX}${k.id}/">${PHOTOS["cat:" + k.id] ? `<img class="cat-photo" src="${rel}${photoFile("cat:" + k.id, "thumb", "webp")}" width="480" height="240" alt="" loading="lazy" decoding="async">` : ""}<span class="cat-icons">${k.crops.slice(0, 3).map(id => R.icon(id, rel, 40)).join("")}</span><span class="card-t">${k.name}</span><span class="card-s">${k.crops.length} plants</span></a></li>`).join("")}</ul>`;
 }
 
 /* Home */
@@ -225,7 +247,7 @@ write("", "index.html", layout({
   description: "When to plant vegetables where you live in Oregon and Washington. Enter your ZIP for local frost dates and a planting calendar built from NOAA frost data and regional growing guidance.",
   jsonld: [{ "@context": "https://schema.org", "@type": "WebSite", name: "Rainline Garden", url: CONFIG.siteUrl, publisher: OWNER_LD }],
   body: `
-<div class="hero-art"><img src="assets/img/hero.svg" width="1200" height="440" alt="Two raised vegetable beds with tomatoes, beans, lettuce and kale inside a picket fence, with evergreen hills, a snowy volcano and a passing rain shower behind"></div>
+${photo("hero", "", { big: "hero", small: "heroSm", cls: "hero-art", sizes: "(min-width: 70rem) 66rem, calc(100vw - 32px)", eager: true })}
 <section class="hero">
 <h1>Plant on Northwest time.</h1>
 <p class="lede">Enter your ZIP or pick a city for local frost dates, what to plant this week, and a full-year planting calendar for Oregon and Washington gardens.</p>
@@ -490,7 +512,9 @@ D.categories.forEach(k => {
     title: `When to Plant ${k.name} in Oregon and Washington | Rainline Garden`,
     description: `Planting dates and growing guides for ${list.map(c => lc(c.name)).join(", ")} in Oregon and Washington.`.slice(0, 300),
     jsonld: [kb.ld],
+    image: PHOTOS["cat:" + k.id] && photoFile("cat:" + k.id, "banner"),
     body: `${kb.html}
+${banner("cat:" + k.id, rel)}
 <section class="hero"><h1>When to plant ${k.name.toLowerCase()} in the Northwest</h1>
 <p class="lede">${k.blurb} Pick a plant for its dates in every city we cover and a step-by-step growing guide.</p></section>
 <ul class="cards cards-sm">${list.map(c => cropCard(rel, c, `../${c.id}/`)).join("")}</ul>
@@ -574,10 +598,12 @@ ARTICLES.forEach(a => {
   write(rel, `articles/${a.slug}/index.html`, layout({
     rel, canonical: `articles/${a.slug}/`, current: "articles/",
     title: `${a.title} | Rainline Garden`, description: a.description,
+    image: PHOTOS["article:" + a.slug] && photoFile("article:" + a.slug, "banner"),
     jsonld: [ab.ld, { "@context": "https://schema.org", "@type": "Article", headline: a.title, description: a.description, datePublished: a.published, dateModified: CONFIG.updated,
-      image: CONFIG.siteUrl + "assets/img/og.png", author: authorLd(a.author || DEFAULT_AUTHOR), publisher: OWNER_LD, mainEntityOfPage: CONFIG.siteUrl + `articles/${a.slug}/` }],
+      image: CONFIG.siteUrl + (PHOTOS["article:" + a.slug] ? photoFile("article:" + a.slug, "banner") : "assets/img/og.png"), author: authorLd(a.author || DEFAULT_AUTHOR), publisher: OWNER_LD, mainEntityOfPage: CONFIG.siteUrl + `articles/${a.slug}/` }],
     body: `${ab.html}
 <article class="article">
+${banner("article:" + a.slug, rel)}
 <header class="hero hero-crop">${articleIcon(a, rel, 120)}<div><h1>${esc(a.title)}</h1><p class="lede">${esc(a.description)}</p>
 <p class="byline">${avatar(rel, a.author || DEFAULT_AUTHOR)}<span>By <a href="${rel}about/#${a.author || DEFAULT_AUTHOR}">${AUTHORS[a.author || DEFAULT_AUTHOR].name}</a><br><span class="byline-d">Updated <time datetime="${CONFIG.updated}">${new Date(CONFIG.updated + "T12:00:00").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</time></span></span></p></div></header>
 <div class="prose">${a.body({ D, P, frost: frostFor, link: p => rel + p })}</div>
