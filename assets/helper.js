@@ -192,7 +192,7 @@
           return { html: "<strong>" + esc(t2[0]) + ".</strong> " + esc(t2[2]) + " " + link(base + "glossary/#" + t2[1], "Glossary") };
         }
         return { html: "Sorry, I didn't catch that. I know planting dates, spacing, sun, harvest and common problems for " + D.crops.length +
-          " plants in Oregon and Washington towns. Try one of these, or " + link(base + "when-to-plant/", "browse every plant") + ".", unknown: true };
+          " plants in Oregon and Washington towns. Try one of these:", after: link(base + "when-to-plant/", "Browse every plant"), unknown: true };
       }
 
       var name = lc(c.name), out;
@@ -225,7 +225,7 @@
 
   /* Browser: the floating "Ask" button and chat panel. */
   var doc = root.document, html = doc.documentElement, base = html.getAttribute("data-base") || "";
-  var EXAMPLES = ["When do I plant tomatoes?", "What can I plant now?", "How far apart are carrots?", "Last frost in Bend?"];
+  var EXAMPLES = [["tomatoes", "When do I plant tomatoes?"], ["", "What can I plant now?"], ["carrots", "How far apart are carrots?"], ["garlic", "When does garlic go in?"]];
   var engine = null, ctx = { base: base }, loading = null;
 
   function today() { var d = new Date(), m = d.getMonth(); return [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334][m] + Math.min(d.getDate(), m === 1 ? 28 : 31); }
@@ -250,26 +250,36 @@
     return loading;
   }
 
-  var SPROUT = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 21v-8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M12 13.5C12 9.4 9.3 7 5 7c0 4.1 2.7 6.5 7 6.5z" fill="currentColor"/><path d="M12 11c0-4.1 2.7-6.5 7-6.5 0 4.1-2.7 6.5-7 6.5z" fill="currentColor" opacity=".7"/></svg>';
+  var LOGO = '<img src="' + base + 'assets/icon.svg" width="22" height="22" alt="">';
+  var CAL = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 10h17M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="15" r="1.8" fill="currentColor"/></svg>';
+  function chipHtml(e) { return '<button type="button" class="hb-sug" data-q="' + e[1] + '"><span class="hb-sug-i">' + (e[0] ? '<img src="' + base + 'assets/img/crops/' + e[0] + '.svg" width="26" height="26" alt="">' : CAL) + '</span><span>' + e[1] + '</span></button>'; }
   var btn = doc.createElement("button");
   btn.type = "button"; btn.className = "hb-btn"; btn.setAttribute("aria-expanded", "false"); btn.setAttribute("aria-controls", "hb-panel");
-  btn.innerHTML = '<span class="hb-btn-ico">' + SPROUT + '</span><span class="hb-btn-t">Ask a plant question</span>';
+  btn.innerHTML = '<span class="hb-btn-ico">' + LOGO + '</span><span class="hb-btn-t">Ask Rainline</span><kbd class="hb-kbd">/</kbd>';
   var panel = doc.createElement("section");
-  panel.id = "hb-panel"; panel.className = "hb-panel"; panel.hidden = true; panel.setAttribute("aria-label", "Garden helper");
-  panel.innerHTML = '<header class="hb-head"><span class="hb-avatar">' + SPROUT + '</span><div class="hb-title"><strong>Garden helper</strong><span>Planting answers for Oregon and Washington</span></div>' +
-    '<button type="button" class="hb-close" aria-label="Close"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button></header>' +
-    '<div class="hb-log" aria-live="polite"><div class="hb-msg hb-bot">Hi! Ask me when to plant something, how far apart, how much sun it needs, when to harvest, or your frost dates. Mention your town or ZIP for local dates.</div></div>' +
-    '<div class="hb-suggest"><span>Try asking</span><div class="hb-chips">' + EXAMPLES.map(function (e) { return '<button type="button">' + e + "</button>"; }).join("") + "</div></div>" +
-    '<form class="hb-form"><label class="sr-only" for="hb-q">Your question</label><div class="hb-input"><input id="hb-q" type="text" autocomplete="off" maxlength="200" placeholder="Ask about a plant or your town">' +
-    '<button type="submit" aria-label="Send"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>' +
-    '<p class="hb-foot">Answers come from this site\'s planting data.</p></form>';
+  panel.id = "hb-panel"; panel.className = "hb-panel"; panel.hidden = true; panel.setAttribute("aria-label", "Rainline garden assistant");
+  panel.innerHTML = '<header class="hb-head"><span class="hb-logo">' + LOGO + '</span><div class="hb-title"><strong>Rainline Assistant</strong><span><i class="hb-dot"></i>Instant answers for OR and WA gardens</span></div>' +
+    '<button type="button" class="hb-icon hb-reset" aria-label="New chat" title="New chat"><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4.5h4.5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
+    '<button type="button" class="hb-icon hb-close" aria-label="Close" title="Close"><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button></header>' +
+    '<div class="hb-log" aria-live="polite"></div>' +
+    '<form class="hb-form"><label class="sr-only" for="hb-q">Your question</label><div class="hb-input"><input id="hb-q" type="text" autocomplete="off" maxlength="200" placeholder="Ask about a plant, a town or a ZIP">' +
+    '<button type="submit" class="hb-send" aria-label="Send" disabled><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>' +
+    '<p class="hb-foot">Answers come from Rainline Garden\'s planting data, NOAA and OSU Extension.</p></form>';
   doc.body.appendChild(panel); doc.body.appendChild(btn);
 
-  var log = panel.querySelector(".hb-log"), input = panel.querySelector("input"), suggest = panel.querySelector(".hb-suggest");
+  var log = panel.querySelector(".hb-log"), input = panel.querySelector("input"), send = panel.querySelector(".hb-send");
   var reduce = root.matchMedia && root.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function welcome() {
+    log.innerHTML = '<div class="hb-welcome"><span class="hb-logo hb-logo-lg">' + LOGO + '</span><h2>What are you growing?</h2>' +
+      '<p>Ask when to plant, how far apart, how much sun, when to harvest, or your frost dates. Mention your town or ZIP for local dates.</p>' +
+      '<div class="hb-sugs">' + EXAMPLES.map(chipHtml).join("") + '</div></div>';
+  }
   function add(cls, content, isHtml) {
     var d = doc.createElement("div"); d.className = "hb-msg " + cls;
-    if (isHtml) d.innerHTML = content; else d.textContent = content;
+    if (cls.indexOf("hb-bot") >= 0) {
+      d.innerHTML = '<span class="hb-logo hb-logo-sm" aria-hidden="true">' + LOGO + '</span><div class="hb-body"></div>';
+      var b = d.querySelector(".hb-body"); if (isHtml) b.innerHTML = content; else b.textContent = content;
+    } else d.textContent = content;
     log.appendChild(d); log.scrollTop = log.scrollHeight;
     return d;
   }
@@ -279,7 +289,8 @@
   }
   function ask(text) {
     text = text.trim(); if (!text) return;
-    add("hb-you", text, false); input.value = "";
+    var w = log.querySelector(".hb-welcome"); if (w) w.remove();
+    add("hb-you", text, false); input.value = ""; send.disabled = true;
     var typing = add("hb-bot hb-typing", '<i></i><i></i><i></i>', true);
     ready().then(function () {
       if (!ctx.place) ctx.place = pagePlace();
@@ -287,14 +298,20 @@
       var r = engine.answer(text, ctx);
       setTimeout(function () {
         typing.remove();
-        add("hb-bot", r.html, true);
-        suggest.hidden = !r.unknown;
-      }, reduce ? 0 : 350);
-    }, function () { typing.remove(); add("hb-bot", "Sorry, the helper couldn't load. Please refresh the page.", false); });
+        add("hb-bot", r.html + (r.unknown ? '<div class="hb-sugs hb-sugs-inline">' + EXAMPLES.map(chipHtml).join("") + '</div>' + (r.after || "") : ""), true);
+      }, reduce ? 0 : 380);
+    }, function () { typing.remove(); add("hb-bot", "Sorry, the assistant couldn't load. Please refresh the page.", false); });
   }
+  welcome();
+  input.addEventListener("input", function () { send.disabled = !input.value.trim(); });
+  panel.querySelector(".hb-reset").addEventListener("click", function () { ctx = { base: base }; welcome(); input.focus(); });
+  log.addEventListener("click", function (e) { var b = e.target.closest(".hb-sug"); if (b) ask(b.getAttribute("data-q")); });
+  doc.addEventListener("keydown", function (e) {
+    var t = e.target, typing = t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.tagName === "SELECT" || t.isContentEditable);
+    if (e.key === "/" && !typing && panel.hidden) { e.preventDefault(); open(true); }
+  });
   btn.addEventListener("click", function () { open(panel.hidden); });
   panel.querySelector(".hb-close").addEventListener("click", function () { open(false); });
   panel.querySelector("form").addEventListener("submit", function (e) { e.preventDefault(); ask(input.value); });
-  suggest.addEventListener("click", function (e) { if (e.target.tagName === "BUTTON") ask(e.target.textContent); });
   doc.addEventListener("keydown", function (e) { if (e.key === "Escape" && !panel.hidden) open(false); });
 })(this);
