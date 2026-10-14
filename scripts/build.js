@@ -82,7 +82,7 @@ const initials = n => n.split(/\s+/).map(w => w[0]).join("").slice(0, 2).toUpper
 
 function layout({ rel, title, description, canonical, current, body, scripts, jsonld, noindex }) {
   const base = rel; // relative prefix back to the site root, e.g. "../../"
-  const nav = [["", "Planner"], ["when-to-plant/", "When to plant"], ["frost-dates/", "Frost dates"], ["garden-calendar/", "Monthly chores"], ["beginners-guide/", "Beginner's guide"], ["articles/", "Articles"]]
+  const nav = [["", "Planner"], ["when-to-plant/", "When to plant"], ["frost-dates/", "Frost dates"], ["garden-calendar/", "Monthly chores"], ["beginners-guide/", "Beginner's guide"], ["articles/", "Articles"], ["my-garden/", "My garden plan"]]
     .map(([href, label]) => `<a href="${base}${href}"${current === href ? ' aria-current="page"' : ""}>${label}</a>`).join("");
   const ld = (jsonld || []).map(o => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, "\\u003c")}</script>`).join("\n");
   const ads = CONFIG.adsenseClient
@@ -238,6 +238,9 @@ write("", "index.html", layout({
 <section class="home-sec"><div class="sec-head"><h2>Browse by plant type</h2><a href="${WHEN_INDEX}">All ${D.crops.length} plants</a></div>
 ${categoryTiles("")}
 </section>
+<section class="home-sec plan-cta"><div><h2>Plan your garden</h2>
+<p>Pick your plants and get a dated to-do list for the year, with a cheat sheet for each plant. It saves as you go and prints on one page.</p></div>
+<a class="btn" href="my-garden/">Make my garden plan</a></section>
 <section class="home-sec starter"><div><h2>New to gardening?</h2>
 <p>Start with five forgiving crops that are hard to kill, then read the <a href="beginners-guide/">beginner's guide</a>.</p></div>
 <ul class="chips">${G.beginner.map(id => `<li><a href="${WHEN_INDEX}${id}/">${R.icon(id, "", 28)}${cropById(id).name}</a></li>`).join("")}</ul></section>
@@ -276,6 +279,7 @@ ${R.regionNote(p)}
 <h2>What to plant now</h2>
 <div id="now"><p class="empty">Turn on JavaScript to see what's in season today. The full calendar is below.</p></div>
 ${beginnerBox("../../", place.slug, place.city)}
+<p class="plan-link"><a class="btn btn-ghost" href="../../my-garden/?place=${place.slug}">Make a garden plan for ${esc(place.city)}</a> Pick your plants and get a dated, printable to-do list.</p>
 <h2>Planting calendar</h2>
 <div id="chart">${R.chart(p)}</div>
 ${ad("city-mid")}
@@ -495,6 +499,31 @@ ${ad("category-bottom")}
 <ul class="chips">${D.categories.filter(x => x.id !== k.id).map(x => `<li><a href="../${x.id}/">${R.icon(x.crops[0], rel, 24)}${x.name}</a></li>`).join("")}</ul>`
   }), "0.8");
 });
+
+/* My garden plan */
+const gpb = crumbs("../", [["My garden plan", null]]);
+write("../", "my-garden/index.html", layout({
+  rel: "../", canonical: "my-garden/", current: "my-garden/",
+  title: "My Garden Plan: Free Planting Planner for Oregon and Washington | Rainline Garden",
+  description: "Pick your town and the plants you want to grow. Get a dated to-do list for the next 12 months, a cheat sheet for each plant and space for notes. Saves on your device, prints cleanly and adds the dates to your calendar.",
+  jsonld: [gpb.ld],
+  body: `${gpb.html}
+<section class="hero"><h1>My garden plan</h1>
+<p class="lede">Pick your town and what you want to grow. You get a dated to-do list for the next 12 months, a cheat sheet for each plant and room for notes. It saves on this device as you go, and you can print it or add the dates to your phone's calendar.</p></section>
+<form id="gp-form" class="finder" novalidate>
+  <div class="field"><label for="gp-zip">ZIP code</label><input id="gp-zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" placeholder="97214"></div>
+  <span class="or">or</span>
+  <div class="field field-select"><label for="gp-place">Town</label><select id="gp-place"><option value="">Choose a town</option></select></div>
+  <button class="btn" type="submit">Use this town</button>
+</form>
+<p id="gp-msg" class="msg" role="status" aria-live="polite"></p>
+<details id="gp-pick" class="gp-pick" open><summary><span>What do you want to grow?</span> <span id="gp-count" class="gp-count"></span></summary>
+${D.categories.map(k => `<fieldset><legend>${k.name}</legend><div class="gp-opts">${k.crops.map(id => `<label class="gp-opt"><input type="checkbox" value="${id}">${R.icon(id, "../", 28)}<span>${cropById(id).name}</span></label>`).join("")}</div></fieldset>`).join("")}
+<p class="gp-pick-foot"><button type="button" class="linkish" id="gp-clear">Clear my plan</button> · Your plan stays in this browser. Nothing is sent to us.</p>
+</details>
+<section id="gp-out" class="gp-out" aria-live="polite"><p class="empty gp-empty">Choose your town and pick some plants to see your plan.</p></section>`,
+  scripts: ["data.js", "plan.js", "render.js", "helper-data.js", "garden.js"]
+}), "0.8");
 
 /* Beginner's guide */
 const bgb = crumbs("../", [["Beginner's guide", null]]);
