@@ -9,7 +9,7 @@ const D = require("../assets/data.js");
 const P = require("../assets/plan.js");
 const R = require("../assets/render.js");
 const G = require("./guide.js");
-const ARTICLES = require("./articles.js");
+const ARTICLES = require("./articles-2.js").concat(require("./articles.js")); // newest first
 
 const CONFIG = {
   siteName: "Rainline Garden",
