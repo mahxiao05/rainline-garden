@@ -19,14 +19,6 @@
   --sans: "Alegreya Sans", system-ui, sans-serif;
   color-scheme: light;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #11161B; --paper: #172029; --ink: #E3E8EC; --fir: #C9D8E6; --muted: #A0ACB6; --line: #2A3540;
-    --moss: #6FB0C0; --moss-soft: #1E3540; --ochre: #E08A5E; --frost: #3A4A58; --frost-hard: #566878;
-    --free: #2A2922; --warn: #F0A27A; --focus: #8CC0EA; color-scheme: dark;
-    --sand: #2A2620; --sky: #1B2A35; --leaf: #1F2E1D; --easy-bg: #1F3A1C; --easy: #A8D88E; --mod-bg: #3A2C14; --mod: #F0C27A; --hard-bg: #3E2119; --hard: #F4A98C;
-  }
-}
 :root[data-theme="dark"] {
   --bg: #11161B; --paper: #172029; --ink: #E3E8EC; --fir: #C9D8E6; --muted: #A0ACB6; --line: #2A3540;
   --moss: #6FB0C0; --moss-soft: #1E3540; --ochre: #E08A5E; --frost: #3A4A58; --frost-hard: #566878;
@@ -66,11 +58,6 @@ p { margin: 0 0 1rem; }
 .theme-btn .i-sun { display: none; }
 :root[data-theme="dark"] .theme-btn .i-sun { display: block; }
 :root[data-theme="dark"] .theme-btn .i-moon { display: none; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .theme-btn .i-sun { display: block; }
-  :root:not([data-theme="light"]) .theme-btn .i-moon { display: none; }
-  :root:not([data-theme="light"]) .hero-art img { filter: brightness(.82) saturate(.95); }
-}
 :root[data-theme="dark"] .hero-art img { filter: brightness(.82) saturate(.95); }
 .profile { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; margin: 2.5rem 0 1rem; max-width: 46rem; box-shadow: 0 10px 30px color-mix(in srgb, var(--fir) 10%, transparent); scroll-margin-top: 80px; }
 .profile-cover { height: 150px; background: var(--sky); }
@@ -267,6 +254,24 @@ table.plan { width: 100%; border-collapse: collapse; font-size: 1rem; background
 .article .prose li { margin-bottom: .5rem; }
 .month h2 { display: flex; align-items: center; gap: 10px; }
 
+/* Home sections and plant-type tiles */
+.home-sec { margin: 3rem 0 0; }
+.home-sec h2 { margin: 0; }
+.sec-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: .25rem 1rem; margin-bottom: 1rem; }
+.sec-head a { font-weight: 700; }
+.cat-tiles { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr)); gap: 12px; }
+.cat-tile { display: flex; flex-direction: column; gap: 4px; height: 100%; padding: 14px 16px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; text-decoration: none; color: var(--ink); transition: transform .15s, box-shadow .15s, border-color .15s; }
+.cat-tile:hover { transform: translateY(-2px); border-color: var(--moss); box-shadow: 0 6px 18px color-mix(in srgb, var(--fir) 12%, transparent); }
+.cat-icons { display: flex; margin-bottom: 6px; }
+.cat-icons .ico { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--paper); }
+.cat-icons .ico + .ico { margin-left: -10px; }
+.starter { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 12px 28px; align-items: center; background: var(--sand); border-radius: 14px; padding: 20px 24px; }
+.starter p { margin: .35rem 0 0; }
+.starter .chips { margin: 0; }
+.avatar-alt, .profile .avatar-alt { background: linear-gradient(135deg, var(--ochre), #7A3E22); }
+.grid-h a { color: inherit; text-decoration: none; }
+.grid-h a:hover { text-decoration: underline; }
+
 /* Ads: reserved space so the layout doesn't jump when ads load. */
 .ad-slot { margin: 2rem 0; min-height: 0; }
 .ad-slot:empty { display: none; }
@@ -286,6 +291,9 @@ table.plan { width: 100%; border-collapse: collapse; font-size: 1rem; background
 @media (max-width: 720px) {
   body { font-size: 1.05rem; }
   .finder { padding: 14px; }
+  .starter { grid-template-columns: 1fr; padding: 16px; }
+  .cat-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .cat-tile { padding: 12px; }
   .author-box { padding: 16px; gap: 14px; }
   .profile-body { padding: 0 18px 18px; }
   .profile-cover { height: 110px; }

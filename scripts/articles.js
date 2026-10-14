@@ -1,10 +1,11 @@
 /* Hand-written articles. Each body is a function so it can quote live numbers from the data.
- * Fields: slug, title (page title and H1), description (meta), crops (related crop ids),
+ * Fields: slug, author (id in AUTHORS in build.js), title (page title and H1), description (meta), crops (related crop ids),
  * published (YYYY-MM-DD), body(ctx) returning HTML. ctx = { D, P, frost(slug), link(path) }.
  */
 module.exports = [
   {
     slug: "best-tomatoes-for-the-northwest",
+    author: "jigmey-dorjee",
     title: "The Best Tomatoes for Cool Northwest Summers",
     description: "Which tomato varieties actually ripen in Portland, Seattle and the coast, and how to give them the heat they need.",
     crops: ["tomatoes"],
@@ -38,6 +39,7 @@ module.exports = [
   },
   {
     slug: "fall-and-winter-vegetable-garden",
+    author: "jigmey-dorjee",
     title: "Fall and Winter Vegetable Gardening West of the Cascades",
     description: "How to keep harvesting kale, carrots, garlic and greens through a mild Northwest winter, and when to plant for it.",
     crops: ["kale", "carrots", "garlic", "spinach", "broccoli", "cabbage", "lettuce"],
@@ -73,6 +75,7 @@ module.exports = [
   },
   {
     slug: "short-season-gardening-central-oregon",
+    author: "jigmey-dorjee",
     title: "Gardening in Bend and Central Oregon's Short Season",
     description: "How to grow vegetables where frost can come almost any month: what to plant, when, and how to protect it.",
     crops: ["tomatoes", "peas", "lettuce", "potatoes", "kale", "summer-squash"],
@@ -100,6 +103,7 @@ module.exports = [
   },
   {
     slug: "slugs",
+    author: "elaine-holloway",
     title: "How to Control Slugs in a Northwest Garden",
     description: "Practical, pet-safe ways to protect seedlings, lettuce and strawberries from the Pacific Northwest's most famous garden pest.",
     crops: ["lettuce", "strawberries", "beans", "dahlias"],
@@ -123,6 +127,7 @@ module.exports = [
   },
   {
     slug: "soil-temperature",
+    author: "elaine-holloway",
     title: "Why Northwest Gardeners Should Plant by Soil Temperature",
     description: "The air warms up long before the soil does here. A $10 soil thermometer tells you when it's really time to plant beans, squash and tomatoes.",
     crops: ["tomatoes", "beans", "corn", "summer-squash", "cucumbers", "peppers"],
