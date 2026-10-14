@@ -28,7 +28,7 @@
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-head"><div class="wrap">
 <a class="brand" href="../../"><img src="../../assets/icon.svg" width="30" height="30" alt="">Rainline Garden</a>
-<nav class="nav" aria-label="Main"><a href="../../">Planner</a><a href="../../when-to-plant/" aria-current="page">When to plant</a><a href="../../frost-dates/">Frost dates</a><a href="../../garden-calendar/">Monthly chores</a><a href="../../beginners-guide/">Beginner's guide</a><a href="../../articles/">Articles</a></nav>
+<nav class="nav" aria-label="Main"><a href="../../">Planner</a><a href="../../when-to-plant/" aria-current="page">When to plant</a><a href="../../frost-dates/">Frost dates</a><a href="../../garden-calendar/">Monthly chores</a><a href="../../beginners-guide/">Beginner's guide</a><a href="../../articles/">Articles</a><a href="../../my-garden/">My garden plan</a></nav>
 <button class="theme-btn" type="button" aria-label="Switch to dark mode" title="Light or dark mode"><svg class="i-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="currentColor"/></svg><svg class="i-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
 </div></header>
 <main id="main" class="wrap">
@@ -50,5 +50,6 @@
 </div></footer>
 <script>(function(){var r=document.documentElement,b=document.querySelector(".theme-btn");if(!b)return;function cur(){return r.dataset.theme==="dark"?"dark":"light"}function sync(){b.setAttribute("aria-label",cur()==="dark"?"Switch to light mode":"Switch to dark mode")}sync();b.addEventListener("click",function(){var n=cur()==="dark"?"light":"dark";r.dataset.theme=n;try{localStorage.setItem("rainline-theme",n)}catch(e){}sync()})})();</script>
 
+<script src="../../assets/helper.js" defer></script>
 </body>
 </html>

@@ -45,6 +45,7 @@
       (f.fall50 < 366 ? '<i class="band frost-hard" style="' + span(f.fall50, 366) + '"></i>' : "") +
       '</div></div>';
     D.categories.forEach(function (k) {
+      if (!p.crops.some(function (r) { return r.crop.cat === k.id; })) return;
       h += '<div class="row row-group"><div class="lbl">' + k.name + '</div></div>';
       p.crops.filter(function (r) { return r.crop.cat === k.id; }).forEach(function (r) {
         h += '<div class="row"><div class="lbl">' + r.crop.name + '</div><div class="track">';
