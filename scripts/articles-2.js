@@ -130,10 +130,10 @@ module.exports = [
     crops: ["strawberries"],
     published: "2026-10-14",
     body: ({ link }) => `
-<p>Northwest strawberries have a reputation, and they've earned it. The mild summers and cool nights produce berries with deep flavor, and local breeding programs at Oregon State University and Washington State University have developed varieties suited to this climate for decades. A small patch is easy to start and, with a little care, keeps producing for several years.</p>
+<p>Northwest strawberries have a reputation, and they've earned it. The mild summers and cool nights produce berries with deep flavor, and Northwest plant breeders have developed varieties suited to this climate for decades. A small patch is easy to start and, with a little care, keeps producing for several years.</p>
 <h2>Choose your type</h2>
 <ul>
-<li><strong>June-bearing</strong> plants produce one big crop over a few weeks in early summer. They're the classic choice for jam and freezing. Hood, an older variety from Oregon's breeding program, is famous for flavor; Shuksan and Tillamook are other Northwest-bred options.</li>
+<li><strong>June-bearing</strong> plants produce one big crop over a few weeks in early summer. They're the classic choice for jam and freezing. Hood, an older Oregon-bred variety, is famous for flavor; Shuksan and Tillamook are other Northwest-bred options.</li>
 <li><strong>Day-neutral</strong> plants, often sold as everbearing, produce smaller flushes from early summer into fall. Albion and Seascape are common choices. They're good for snacking and for small spaces like containers.</li>
 </ul>
 <p>Many gardeners grow some of each: June-bearers for a big harvest and day-neutrals to keep berries coming.</p>

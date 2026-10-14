@@ -264,7 +264,7 @@
     '<div class="hb-log" aria-live="polite"></div>' +
     '<form class="hb-form"><label class="sr-only" for="hb-q">Your question</label><div class="hb-input"><input id="hb-q" type="text" autocomplete="off" maxlength="200" placeholder="Ask about a plant, a town or a ZIP">' +
     '<button type="submit" class="hb-send" aria-label="Send" disabled><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>' +
-    '<p class="hb-foot">Answers come from Rainline Garden\'s planting data, NOAA and OSU Extension.</p></form>';
+    '<p class="hb-foot">Answers come from Rainline Garden\'s planting data and NOAA frost records.</p></form>';
   doc.body.appendChild(panel); doc.body.appendChild(btn);
 
   var log = panel.querySelector(".hb-log"), input = panel.querySelector("input"), send = panel.querySelector(".hb-send");

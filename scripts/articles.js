@@ -20,13 +20,13 @@ module.exports = [
 <li><strong>Stupice.</strong> A Czech heirloom with small, flavorful red fruit. It's one of the earliest tomatoes you can grow and keeps producing until fall.</li>
 <li><strong>Early Girl.</strong> A dependable hybrid that ripens medium-sized fruit well ahead of most slicers.</li>
 <li><strong>Sungold.</strong> An orange cherry tomato that's sweet, early and heavy-yielding. If you only grow one plant, many Northwest gardeners would pick this one.</li>
-<li><strong>Oregon Spring.</strong> Bred at Oregon State University for exactly this climate. It sets fruit in cool weather and ripens early.</li>
-<li><strong>Legend.</strong> Another OSU variety, with large fruit and some resistance to late blight.</li>
+<li><strong>Oregon Spring.</strong> Bred in Oregon for exactly this climate. It sets fruit in cool weather and ripens early.</li>
+<li><strong>Legend.</strong> Another Oregon-bred variety, with large fruit and some resistance to late blight.</li>
 </ul>
 <p>In general, cherry and small salad tomatoes are the safest bets, and big beefsteaks are the riskiest. Look at the "days to maturity" on the tag: under 70 days is a good sign for west-side gardens, and under 60 is better on the coast, where Astoria's summers rarely get truly hot.</p>
 <h2>Give them every bit of heat you can</h2>
 <ul>
-<li><strong>Plant late, not early.</strong> Oregon State University Extension advises waiting until the soil is consistently above 70°F. Tomatoes set out in cold April soil just sit and sulk. In Portland that usually means mid-May; <a href="${link("when-to-plant/tomatoes/portland-or/")}">see the exact window</a>.</li>
+<li><strong>Plant late, not early.</strong> Wait until the soil has warmed and nights stay mild. Tomatoes set out in cold April soil just sit and sulk. In Portland that usually means mid-May; <a href="${link("when-to-plant/tomatoes/portland-or/")}">see the exact window</a>.</li>
 <li><strong>Use the warmest spot.</strong> A south- or west-facing wall stores heat and gives it back at night.</li>
 <li><strong>Warm the soil.</strong> Black or red plastic mulch laid a week before planting can raise soil temperature several degrees.</li>
 <li><strong>Protect young plants.</strong> Wall-o-water rings or a simple plastic cloche keep nights warmer for the first few weeks.</li>
@@ -142,7 +142,7 @@ module.exports = [
 <li><strong>40°F and up:</strong> peas, spinach, lettuce, radishes and other cool-season crops will sprout, slowly.</li>
 <li><strong>50°F and up:</strong> carrots, beets, chard and onions grow well.</li>
 <li><strong>60°F and up:</strong> bush beans, sweet corn and cucumbers. Bean seeds planted into colder, wet soil often rot before they sprout.</li>
-<li><strong>65 to 70°F:</strong> tomatoes, peppers, squash and basil. Oregon State University Extension advises waiting until soil is consistently above 70°F for tomatoes, squash and peppers.</li>
+<li><strong>65 to 70°F:</strong> tomatoes, peppers, squash and basil.</li>
 </ul>
 <h2>How to measure it</h2>
 <p>Push a soil thermometer about 4 inches into the bed in the morning, when soil is coolest, and check it for several days in a row. Once it holds at the target for about a week, you're ready. Soil thermometers cost around $10 at garden centers, and it's the cheapest garden tool that pays for itself.</p>

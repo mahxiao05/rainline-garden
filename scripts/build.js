@@ -29,19 +29,7 @@ CONFIG.basePath = new URL(CONFIG.siteUrl).pathname; // "/" on a custom domain, "
 const YEAR = CONFIG.updated.slice(0, 4);
 
 const SOURCES = {
-  noaa: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals",
-  osuMonthly: "https://extension.oregonstate.edu/collection/monthly-garden-calendars",
-  osuApril: "https://extension.oregonstate.edu/catalog/em-9476-april-garden-calendar",
-  osuMay: "https://extension.oregonstate.edu/catalog/em-9688-may-garden-calendar",
-  osuMarch: "https://extension.oregonstate.edu/catalog/em-9714-march-garden-calendar",
-  osuCentral: "https://extension.oregonstate.edu/gardening/vegetables/central-oregon-vegetable-garden-calendar",
-  osuSoil: "https://extension.oregonstate.edu/news/let-soil-temperature-guide-you-when-planting-vegetables-0"
-};
-const MONTH_PUBS = {
-  1: "em-9698-january-garden-calendar", 2: "em-9689-february-garden-calendar", 3: "em-9714-march-garden-calendar",
-  4: "em-9476-april-garden-calendar", 5: "em-9688-may-garden-calendar", 6: "em-9528-june-garden-calendar",
-  7: "em-9543-july-garden-calendar", 8: "em-9539-august-garden-calendar", 9: "em-9587-september-garden-calendar",
-  10: "em-9611-october-garden-calendar", 11: "em-9615-november-garden-calendar", 12: "em-9684-december-garden-calendar"
+  noaa: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals"
 };
 
 const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -50,9 +38,9 @@ const OWNER_LD = { "@type": "Organization", name: CONFIG.owner, url: CONFIG.site
 const AUTHORS = {
   "jigmey-dorjee": {
     name: "Jigmey Dorjee", role: "Experienced home gardener", he: "He", cover: "author-jigmey.svg",
-    facts: ["Grew up in Oregon", "Years of growing vegetables at home", "Checks dates against NOAA and OSU Extension"],
-    bio: "Jigmey Dorjee grew up in Oregon, where gardening means working with the weather: cold, wet springs, dry summers and long, mild falls. He's an experienced home gardener who has grown his own vegetables for years, and he knows firsthand that a Northwest garden runs on a different calendar than the national planting charts. He writes about vegetables and planting timing for Rainline Garden and checks the advice against NOAA weather records and Oregon State University Extension guidance.",
-    short: "Jigmey Dorjee grew up in Oregon and has grown his own vegetables at home for years. He writes about vegetables and planting timing, and checks the advice against NOAA weather records and Oregon State University Extension guidance."
+    facts: ["Grew up in Oregon", "Years of growing vegetables at home", "Checks dates against NOAA weather records"],
+    bio: "Jigmey Dorjee grew up in Oregon, where gardening means working with the weather: cold, wet springs, dry summers and long, mild falls. He's an experienced home gardener who has grown his own vegetables for years, and he knows firsthand that a Northwest garden runs on a different calendar than the national planting charts. He writes about vegetables and planting timing for Rainline Garden and checks the advice against NOAA weather records and university research.",
+    short: "Jigmey Dorjee grew up in Oregon and has grown his own vegetables at home for years. He writes about vegetables and planting timing, and checks the advice against NOAA weather records and university research."
   },
   "elaine-holloway": {
     name: "Elaine Holloway", role: "Soil, native plants and perennials", he: "She", cover: "author-elaine.svg",
@@ -124,7 +112,7 @@ ${ld}
 ${body}
 </main>
 <footer class="site-foot"><div class="wrap">
-<p><strong class="foot-brand">Rainline Garden</strong><br>Free planting calendars for Oregon and Washington gardens.<br>Frost data from NOAA. Planting timing from OSU Extension guidance. Updated ${CONFIG.updated}.${CONFIG.amazonTag ? "<br>As an Amazon Associate, Rainline Garden earns from qualifying purchases." : ""}</p>
+<p><strong class="foot-brand">Rainline Garden</strong><br>Free planting calendars for Oregon and Washington gardens.<br>Frost data from NOAA climate normals. Updated ${CONFIG.updated}.${CONFIG.amazonTag ? "<br>As an Amazon Associate, Rainline Garden earns from qualifying purchases." : ""}</p>
 <nav aria-label="Footer"><a href="${base}glossary/">Glossary</a><a href="${base}how-it-works/">How it works</a><a href="${base}about/">About</a><a href="${base}contact/">Contact</a><a href="${base}privacy/">Privacy</a><a href="${base}terms/">Terms</a></nav>
 <p class="owner">&copy; ${YEAR} ${CONFIG.owner}. Rainline Garden is owned and operated by ${CONFIG.owner}.</p>
 </div></footer>
@@ -219,7 +207,7 @@ function categoryTiles(rel) {
 write("", "index.html", layout({
   rel: "", canonical: "", current: "",
   title: "Rainline Garden: Planting Calendar and Frost Dates for Oregon and Washington",
-  description: "When to plant vegetables where you live in Oregon and Washington. Enter your ZIP for local frost dates and a planting calendar built from NOAA data and OSU Extension guidance.",
+  description: "When to plant vegetables where you live in Oregon and Washington. Enter your ZIP for local frost dates and a planting calendar built from NOAA frost data and regional growing guidance.",
   jsonld: [{ "@context": "https://schema.org", "@type": "WebSite", name: "Rainline Garden", url: CONFIG.siteUrl, publisher: OWNER_LD }],
   body: `
 <div class="hero-art"><img src="assets/img/hero.svg" width="1200" height="440" alt="Two raised vegetable beds with tomatoes, beans, lettuce and kale inside a picket fence, with evergreen hills, a snowy volcano and a passing rain shower behind"></div>
@@ -250,7 +238,7 @@ ${articleCards("", ARTICLES.slice(0, 3))}</section>
 ${newsletter()}
 <section class="home-sec prose">
 <h2>Why Northwest planting dates are different</h2>
-<p>National charts key everything off the last frost date. Here that's only half the story: Portland's typical last frost is in mid-March, yet tomatoes planted then sit in cold, wet soil for two months, while the high desert can frost into June. Rainline Garden combines NOAA frost records for each area with Oregon State University Extension timing for when the soil is actually ready. <a href="how-it-works/">See how the dates are worked out</a>.</p>
+<p>National charts key everything off the last frost date. Here that's only half the story: Portland's typical last frost is in mid-March, yet tomatoes planted then sit in cold, wet soil for two months, while the high desert can frost into June. Rainline Garden combines NOAA frost records for each area with regional timing for when the soil is actually ready. <a href="how-it-works/">See how the dates are worked out</a>.</p>
 </section>`,
   scripts: SCRIPTS
 }), "1.0");
@@ -640,7 +628,7 @@ write("../", "garden-calendar/index.html", layout({
 <section class="hero"><h1>Monthly garden chores</h1>
 <p class="lede">What to do in a Northwest vegetable garden each month. For exact planting dates where you live, <a href="../">use the planner</a>.</p></section>
 <div class="months-list">${D.chores.map(c => `<section class="month" data-m="${c.m}"><h2>${R.icon(MONTH_ICONS[c.m - 1], "../", 40)}${c.title}</h2><ul>${c.items.map(i => `<li>${esc(i)}</li>`).join("")}</ul>
-<p class="src"><a href="https://extension.oregonstate.edu/catalog/${MONTH_PUBS[c.m]}">OSU Extension ${c.title} calendar</a></p></section>`).join("")}</div>
+</section>`).join("")}</div>
 ${ad("calendar-bottom")}`,
   scripts: ["data.js", "plan.js", "render.js", "app.js"]
 }), "0.8");
@@ -652,7 +640,7 @@ const stationRows = D.places.map(x => { const s = D.stations[x.station]; return 
 write("../", "how-it-works/index.html", layout({
   rel: "../", canonical: "how-it-works/", current: "how-it-works/",
   title: "How Rainline Garden Works: Data and Sources",
-  description: "The NOAA frost data and OSU Extension guidance behind Rainline Garden's planting dates, and exactly how each date is calculated.",
+  description: "The NOAA frost data and regional growing guidance behind Rainline Garden's planting dates, and exactly how each date is calculated.",
   body: `
 <section class="hero prose"><h1>How it works</h1>
 <p class="lede">Every date on this site comes from public data and a rule you can check. Here are both.</p></section>
@@ -665,7 +653,7 @@ write("../", "how-it-works/index.html", layout({
 <p>Most stations are at airports. Airports in valley bottoms can run colder than nearby hillsides, and city centers can run warmer. Your own garden may differ by a week or more.</p>
 <h2>Planting dates</h2>
 <p>Each crop gets the <em>later</em> of two dates:</p>
-<ol><li><strong>A regional date</strong> for when the soil is usually ready, taken from Oregon State University Extension's <a href="${SOURCES.osuMarch}">March</a>, <a href="${SOURCES.osuApril}">April</a> and <a href="${SOURCES.osuMay}">May</a> garden calendars, its <a href="${SOURCES.osuCentral}">Central Oregon vegetable calendar</a>, and its <a href="${SOURCES.osuSoil}">soil temperature guidance</a>. Washington areas use the closest matching Oregon region.</li>
+<ol><li><strong>A regional date</strong> for when the soil is usually ready, based on typical soil warming in each climate region (the table below lists them). Washington areas use the closest matching region.</li>
 <li><strong>A frost check</strong> against your local typical last frost: hardy early crops up to 6 weeks before it, frost-tolerant transplants up to 4 weeks before, warm-season transplants not before it, and warm-season seeds a week after it.</li></ol>
 <p>Seed-starting dates count back from the outdoor date (for example, tomatoes 6–8 weeks ahead). Fall planting dates count back from your typical first fall frost, capped at October 15 because fall crops need daylight to grow, not just mild weather. Warm-season crops are flagged when planting at the window's start leaves too few days before fall frost for a typical variety to produce.</p>
 </div>
@@ -684,7 +672,7 @@ write("../", "about/index.html", layout({
   jsonld: [{ "@context": "https://schema.org", "@type": "AboutPage", name: "About Rainline Garden", url: CONFIG.siteUrl + "about/", publisher: OWNER_LD, mainEntity: Object.keys(AUTHORS).map(id => ({ ...authorLd(id), description: AUTHORS[id].bio })) }],
   body: `<section class="hero prose"><h1>About Rainline Garden</h1>
 <p class="lede">A free planting calendar built for Pacific Northwest gardens, not adapted from a national chart.</p></section>
-<div class="prose"><p>National planting guides treat the whole country the same way. The Northwest doesn't cooperate: coastal gardens rarely frost but never get hot, west-side valleys have long seasons and cold spring soil, and the high desert can frost in July. Rainline Garden gives each area its own dates, built from NOAA weather records and Oregon State University Extension guidance.</p>
+<div class="prose"><p>National planting guides treat the whole country the same way. The Northwest doesn't cooperate: coastal gardens rarely frost but never get hot, west-side valleys have long seasons and cold spring soil, and the high desert can frost in July. Rainline Garden gives each area its own dates, built from NOAA weather records and regional growing research.</p>
 <h2>Who writes Rainline Garden</h2>
 <p>Two Oregon gardeners with different strengths: Jigmey covers vegetables and planting dates, and Elaine covers soil, perennials, herbs and native plants.</p>
 ${authorCard("../", "jigmey-dorjee", "Vegetables and planting dates")}
@@ -692,12 +680,12 @@ ${authorCard("../", "elaine-holloway", "Soil, perennials and native plants")}
 <h2>How we make this site</h2>
 <ul>
 <li><strong>Frost dates</strong> come from NOAA's 1991–2020 climate normals for the weather station nearest each town.</li>
-<li><strong>Planting windows</strong> follow Oregon State University Extension guidance for each crop, counted from those frost dates.</li>
+<li><strong>Planting windows</strong> follow regional timing for when the soil is ready for each kind of crop, checked against those frost dates.</li>
 <li><strong>Articles</strong> combine that research with hands-on growing experience. Each one is checked against the sources before it's published and updated when the guidance changes.</li>
 <li><strong>Corrections</strong> are welcome. If a date doesn't match your garden, <a href="../contact/">tell us</a> and we'll check it.</li>
 </ul>
 <h2>Who owns the site</h2>
-<p>Rainline Garden is owned and operated by ${CONFIG.owner}. The site is free and supported by advertising and affiliate links, which never decide what we recommend. It isn't affiliated with NOAA, Oregon State University or Washington State University.</p>
+<p>Rainline Garden is owned and operated by ${CONFIG.owner}. The site is free and supported by advertising and affiliate links, which never decide what we recommend. It isn't affiliated with NOAA or any university.</p>
 <p>Questions or corrections: <a href="mailto:${CONFIG.contactEmail}">${CONFIG.contactEmail}</a>.</p></div>`
 }), "0.3");
 
