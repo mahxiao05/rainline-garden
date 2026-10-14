@@ -39,6 +39,7 @@ h1, h2, h3 { font-family: var(--serif); color: var(--fir); line-height: 1.15; fo
 h1 { font-size: clamp(2.1rem, 5vw, 3.4rem); margin: 0 0 .5rem; letter-spacing: -0.01em; }
 h2 { font-size: clamp(1.5rem, 3vw, 2rem); margin: 2.5rem 0 .75rem; }
 h3 { font-size: 1.2rem; margin: 0 0 .5rem; }
+.science h3 { margin-top: 1.6rem; }
 p { margin: 0 0 1rem; }
 .skip { position: absolute; left: -999px; }
 .skip:focus { left: 16px; top: 8px; background: var(--paper); padding: 8px 12px; z-index: 10; }
