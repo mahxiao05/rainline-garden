@@ -37,18 +37,19 @@
   });
 
   var now = new Date(); now.setHours(0, 0, 0, 0);
-  // Turns a day-of-year into the next real date on or after two weeks ago, so the list rolls forward 12 months.
-  function realDate(n) {
-    var d = new Date(now.getFullYear(), 0, n);
-    if (d < new Date(+now - 14 * DAY)) d = new Date(now.getFullYear() + 1, 0, n);
-    return d;
+  // Turns a day-of-year into a real date so the list rolls forward 12 months. A job moves to next year only once
+  // it ended more than two weeks ago, so a planting window that's open right now stays in this year.
+  function realDate(n, endN) {
+    var y = now.getFullYear();
+    if (new Date(y, 0, endN || n) < new Date(+now - 14 * DAY)) y++;
+    return new Date(y, 0, n);
   }
   function short(d) { return MONTHS[d.getMonth()].slice(0, 3) + " " + d.getDate(); }
 
   function tasks(p) {
     var list = [], warm = [];
     function add(c, kind, doy, endDoy, text) {
-      var d = realDate(doy), e = endDoy ? new Date(+d + (endDoy - doy) * DAY) : null;
+      var d = realDate(doy, endDoy), e = endDoy ? new Date(+d + (endDoy - doy) * DAY) : null;
       list.push({ key: (c ? c.id : "all") + ":" + kind + ":" + d.getFullYear(), date: d, end: e, text: text, crop: c, kind: kind });
     }
     p.crops.forEach(function (r) {

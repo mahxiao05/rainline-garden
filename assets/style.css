@@ -329,6 +329,7 @@ table.plan { width: 100%; border-collapse: collapse; font-size: 1rem; background
   .row-head { top: 109px; }
   .nav { order: 3; flex-basis: 100%; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 12px 2px; }
   .nav::-webkit-scrollbar { display: none; }
+  .nav:not(.at-end) { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent); }
 }
 @media (max-width: 720px) {
   body { font-size: 1.05rem; }

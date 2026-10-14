@@ -118,6 +118,7 @@ ${body}
 <p class="owner">&copy; ${YEAR} ${CONFIG.owner}. Rainline Garden is owned and operated by ${CONFIG.owner}.</p>
 </div></footer>
 <script>(function(){var r=document.documentElement,b=document.querySelector(".theme-btn");if(!b)return;function cur(){return r.dataset.theme==="dark"?"dark":"light"}function sync(){b.setAttribute("aria-label",cur()==="dark"?"Switch to light mode":"Switch to dark mode")}sync();b.addEventListener("click",function(){var n=cur()==="dark"?"light":"dark";r.dataset.theme=n;try{localStorage.setItem("rainline-theme",n)}catch(e){}sync()})})();</script>
+<script>(function(){var n=document.querySelector(".nav"),a=n&&n.querySelector("[aria-current]");if(!n)return;if(a&&a.offsetLeft+a.offsetWidth>n.clientWidth)n.scrollLeft=a.offsetLeft-(n.clientWidth-a.offsetWidth)/2;function edge(){n.classList.toggle("at-end",n.scrollLeft+n.clientWidth>=n.scrollWidth-4)}edge();n.addEventListener("scroll",edge,{passive:true});addEventListener("resize",edge)})();</script>
 ${(scripts || []).map(s => `<script src="${base}assets/${s}"></script>`).join("\n")}
 <script src="${base}assets/helper.js" defer></script>
 </body>

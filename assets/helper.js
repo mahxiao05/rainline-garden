@@ -42,12 +42,12 @@
     ["problem", /\b(pests?|bugs?|problems?|slugs?|snails?|disease|diseased|aphids?|yellow(ing)?|dying|died|wilt(ing)?|holes|rot(ting)?|mildew|blight|rust|eating|mold|moles?|deer)\b/],
     ["spacing", /\b(apart|spacing|space|how close|how far|how many per|distance)\b/],
     ["depth", /\b(deep|depth)\b/],
-    ["sun", /\b(sun|sunny|shade|shady|light)\b/],
     ["varieties", /\b(variet(y|ies)|which kind|what kind|which type|what type|best kind|best type|cultivars?|recommend)\b/],
     ["care", /\b(water(ing)?|fertili[sz]e(r)?|feed(ing)?|prune|pruning|mulch|care|stake|staking)\b/],
     ["harvest", /\b(harvest(ing)?|pick(ing)?|ready|ripe|how long|days to|mature|maturity)\b/],
     ["indoor", /\b(indoors?|inside|start(ing)? (the )?seeds?|seedlings?|grow lights?)\b/],
     ["frost", /\b(frost|freeze|freezing)\b/],
+    ["sun", /\b(sun|sunny|shade|shady|light)\b/],
     ["easy", /\b(easy|easiest|beginners?|first time|hard|difficult|simple)\b/],
     ["now", /\b(now|today|right now|this week|this month|currently|what (can|should) i plant)\b/],
     ["when", /\b(when|what time|what month|plant(ing)?|sow(ing)?|put (in|out)|transplant|start|time to)\b/]
@@ -236,6 +236,11 @@
     if (m) return m[1];
     try { return localStorage.getItem("rainline-place"); } catch (e) { return null; }
   }
+  // On a plant's page, follow-ups like "how far apart?" mean that plant.
+  function pageCrop() {
+    var m = location.pathname.match(/\/when-to-plant\/([a-z-]+)\//);
+    return m && root.RainlineData.crops.some(function (c) { return c.id === m[1]; }) ? m[1] : null;
+  }
   function load(src) {
     return new Promise(function (ok, fail) { var s = doc.createElement("script"); s.src = base + "assets/" + src; s.onload = ok; s.onerror = fail; doc.head.appendChild(s); });
   }
@@ -294,6 +299,7 @@
     var typing = add("hb-bot hb-typing", '<i></i><i></i><i></i>', true);
     ready().then(function () {
       if (!ctx.place) ctx.place = pagePlace();
+      if (!ctx.crop) ctx.crop = pageCrop();
       ctx.today = today();
       var r = engine.answer(text, ctx);
       setTimeout(function () {
