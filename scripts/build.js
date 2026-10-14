@@ -412,8 +412,10 @@ D.crops.forEach(c => {
     rel: "../../", canonical: `when-to-plant/${c.id}/`, current: WHEN_INDEX,
     title: `When to Plant ${c.name} in Oregon and Washington, by City | Rainline Garden`,
     description: `${c.name} planting dates for 30 Oregon and Washington cities, from Portland and Seattle to Bend and Spokane, plus a beginner-friendly growing guide.`,
+    image: PHOTOS["crop:" + c.id] && photoFile("crop:" + c.id, "banner"),
     jsonld: [hb.ld],
     body: `${hb.html}
+${banner("crop:" + c.id, "../../")}
 <section class="hero hero-crop">${R.icon(c.id, "../../", 120)}<div>
 <h1>When to plant ${lc(c.name)} in Oregon and Washington</h1>
 <p class="lede">${g.fall ? g.fall.lede : `In Portland: ${answer(c, rowFor(port, c.id), null).replace(/<\/?strong>/g, "")} In Bend: ${P.fmtRange(win(rowFor(bend, c.id), "spring").start, win(rowFor(bend, c.id), "spring").end)}.`} Find your city below.</p></div></section>
