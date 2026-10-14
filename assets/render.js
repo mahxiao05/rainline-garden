@@ -33,8 +33,12 @@
   function chart(p, today) {
     var f = p.frost, h = "";
     h += '<div class="chart" role="img" aria-label="Planting calendar chart for ' + p.place.city + '. The table below lists the same dates.">';
+    var cur = -1;
+    if (today) for (var c = 0; c < 12; c++) if (today > P.CUM[c]) cur = c;
+    // Tint this month's column so you can read straight down to what's due.
+    if (cur >= 0) h += '<i class="month-now" style="--a:' + (P.CUM[cur] / 365).toFixed(4) + ';--w:' + (((cur < 11 ? P.CUM[cur + 1] : 365) - P.CUM[cur]) / 365).toFixed(4) + '"></i>';
     h += '<div class="row row-head"><div class="lbl"></div><div class="track months">';
-    for (var m = 0; m < 12; m++) h += '<span style="left:' + pct(P.CUM[m] + 1) + '">' + P.MONTHS[m] + '</span>';
+    for (var m = 0; m < 12; m++) h += '<span' + (m === cur ? ' class="is-now"' : '') + ' style="left:' + pct(P.CUM[m] + 1) + '" data-s="' + P.MONTHS[m].charAt(0) + '">' + P.MONTHS[m] + '</span>';
     h += '</div></div>';
     // Frost band.
     h += '<div class="row row-frost"><div class="lbl">Frost</div><div class="track">' +
@@ -56,14 +60,15 @@
         h += '</div></div>';
       });
     });
-    if (today) h += '<div class="today" style="--f:' + ((today - 1) / 365).toFixed(4) + '"><span>Today</span></div>';
+    if (today) h += '<div class="today" style="--f:' + ((today - 1) / 365).toFixed(4) + '"></div>';
     h += '</div>';
     h += '<ul class="legend">' +
       '<li><i class="key bar-in"></i>Start seeds indoors</li>' +
       '<li><i class="key bar-spring"></i>Plant in the garden</li>' +
       '<li><i class="key bar-fall"></i>Plant again for fall</li>' +
       '<li><i class="key frost-risk"></i>Frost possible</li>' +
-      '<li><i class="key frost-hard"></i>Frost likely</li></ul>' +
+      '<li><i class="key frost-hard"></i>Frost likely</li>' +
+      (today ? '<li><i class="key key-today"></i>Today, ' + P.fmt(today) + '</li>' : '') + '</ul>' +
       '<p class="howto">How to read this: each bar shows when to do that job. Dashed bars are for starting seeds indoors in trays; solid bars are for planting in the garden.</p>';
     return h;
   }
