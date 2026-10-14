@@ -103,7 +103,7 @@
     function cropLink(c, base, place) {
       return place ? base + "when-to-plant/" + c.id + "/" + place.slug + "/" : base + "when-to-plant/" + c.id + "/";
     }
-    function link(href, text) { return '<a href="' + href + '">' + esc(text) + "</a>"; }
+    function link(href, text) { return '<a class="hb-link" href="' + href + '">' + esc(text) + '<span aria-hidden="true"> &rsaquo;</span></a>'; }
 
     function timing(c, place, today) {
       var p = P.plan(D, place), r = null;
@@ -168,7 +168,7 @@
       if (cropId) ctx.crop = cropId;
 
       var place = placeBySlug[ctx.place];
-      if (!place) { place = placeBySlug["portland-or"]; note = ' <span class="hb-note">I used Portland. Add your town or ZIP for local dates.</span>'; }
+      if (!place) { place = placeBySlug["portland-or"]; note = ' <span class="hb-note">Using Portland. Add your town or ZIP for local dates.</span>'; }
       var c = cropById[cropId], g = c ? H.crops[c.id] || {} : null;
 
       if (intent === "define" && termId && !(cropId && !followUp && q.indexOf(stem(c.name)) >= 0 && !termId)) {
@@ -250,23 +250,28 @@
     return loading;
   }
 
+  var SPROUT = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 21v-8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M12 13.5C12 9.4 9.3 7 5 7c0 4.1 2.7 6.5 7 6.5z" fill="currentColor"/><path d="M12 11c0-4.1 2.7-6.5 7-6.5 0 4.1-2.7 6.5-7 6.5z" fill="currentColor" opacity=".7"/></svg>';
   var btn = doc.createElement("button");
   btn.type = "button"; btn.className = "hb-btn"; btn.setAttribute("aria-expanded", "false"); btn.setAttribute("aria-controls", "hb-panel");
-  btn.innerHTML = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.5 4v-4h0A1.5 1.5 0 0 1 4 14.5z" fill="currentColor"/><path d="M9 12c0-3 2-5 6-5 0 4-2 5.5-5 5.5M9 12l3-2.5" stroke="var(--paper)" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg><span>Ask a plant question</span>';
+  btn.innerHTML = '<span class="hb-btn-ico">' + SPROUT + '</span><span class="hb-btn-t">Ask a plant question</span>';
   var panel = doc.createElement("section");
-  panel.id = "hb-panel"; panel.className = "hb-panel"; panel.hidden = true; panel.setAttribute("aria-label", "Plant helper");
-  panel.innerHTML = '<div class="hb-head"><div><strong>Plant helper</strong><span>Answers from this site\'s planting data</span></div>' +
-    '<button type="button" class="hb-close" aria-label="Close">&times;</button></div>' +
-    '<div class="hb-log" aria-live="polite"><div class="hb-msg hb-bot">Hi! Ask me when to plant something, how far apart, how much sun, when to harvest, or your frost dates. Add your town or ZIP for local dates.</div></div>' +
-    '<div class="hb-chips">' + EXAMPLES.map(function (e) { return '<button type="button">' + e + "</button>"; }).join("") + "</div>" +
-    '<form class="hb-form"><label class="sr-only" for="hb-q">Your question</label><input id="hb-q" type="text" autocomplete="off" maxlength="200" placeholder="e.g. When do I plant garlic in Salem?"><button type="submit" aria-label="Send"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 11.5 20 4l-6.5 17-2.5-7z" fill="currentColor"/></svg></button></form>';
+  panel.id = "hb-panel"; panel.className = "hb-panel"; panel.hidden = true; panel.setAttribute("aria-label", "Garden helper");
+  panel.innerHTML = '<header class="hb-head"><span class="hb-avatar">' + SPROUT + '</span><div class="hb-title"><strong>Garden helper</strong><span>Planting answers for Oregon and Washington</span></div>' +
+    '<button type="button" class="hb-close" aria-label="Close"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button></header>' +
+    '<div class="hb-log" aria-live="polite"><div class="hb-msg hb-bot">Hi! Ask me when to plant something, how far apart, how much sun it needs, when to harvest, or your frost dates. Mention your town or ZIP for local dates.</div></div>' +
+    '<div class="hb-suggest"><span>Try asking</span><div class="hb-chips">' + EXAMPLES.map(function (e) { return '<button type="button">' + e + "</button>"; }).join("") + "</div></div>" +
+    '<form class="hb-form"><label class="sr-only" for="hb-q">Your question</label><div class="hb-input"><input id="hb-q" type="text" autocomplete="off" maxlength="200" placeholder="Ask about a plant or your town">' +
+    '<button type="submit" aria-label="Send"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>' +
+    '<p class="hb-foot">Answers come from this site\'s planting data.</p></form>';
   doc.body.appendChild(panel); doc.body.appendChild(btn);
 
-  var log = panel.querySelector(".hb-log"), input = panel.querySelector("input"), chips = panel.querySelector(".hb-chips");
+  var log = panel.querySelector(".hb-log"), input = panel.querySelector("input"), suggest = panel.querySelector(".hb-suggest");
+  var reduce = root.matchMedia && root.matchMedia("(prefers-reduced-motion: reduce)").matches;
   function add(cls, content, isHtml) {
     var d = doc.createElement("div"); d.className = "hb-msg " + cls;
     if (isHtml) d.innerHTML = content; else d.textContent = content;
     log.appendChild(d); log.scrollTop = log.scrollHeight;
+    return d;
   }
   function open(v) {
     panel.hidden = !v; btn.setAttribute("aria-expanded", String(v)); btn.classList.toggle("is-open", v);
@@ -275,17 +280,21 @@
   function ask(text) {
     text = text.trim(); if (!text) return;
     add("hb-you", text, false); input.value = "";
+    var typing = add("hb-bot hb-typing", '<i></i><i></i><i></i>', true);
     ready().then(function () {
       if (!ctx.place) ctx.place = pagePlace();
       ctx.today = today();
       var r = engine.answer(text, ctx);
-      add("hb-bot", r.html, true);
-      chips.hidden = !r.unknown;
-    }, function () { add("hb-bot", "Sorry, the helper couldn't load. Please refresh the page.", false); });
+      setTimeout(function () {
+        typing.remove();
+        add("hb-bot", r.html, true);
+        suggest.hidden = !r.unknown;
+      }, reduce ? 0 : 350);
+    }, function () { typing.remove(); add("hb-bot", "Sorry, the helper couldn't load. Please refresh the page.", false); });
   }
   btn.addEventListener("click", function () { open(panel.hidden); });
   panel.querySelector(".hb-close").addEventListener("click", function () { open(false); });
   panel.querySelector("form").addEventListener("submit", function (e) { e.preventDefault(); ask(input.value); });
-  chips.addEventListener("click", function (e) { if (e.target.tagName === "BUTTON") ask(e.target.textContent); });
+  suggest.addEventListener("click", function (e) { if (e.target.tagName === "BUTTON") ask(e.target.textContent); });
   doc.addEventListener("keydown", function (e) { if (e.key === "Escape" && !panel.hidden) open(false); });
 })(this);
