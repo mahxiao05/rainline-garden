@@ -1,6 +1,7 @@
 /* Rainline Garden HTML renderers. Shared by the browser and the static page builder. */
 (function (root) {
   var P = (typeof module !== "undefined" && module.exports) ? require("./plan.js") : root.RainlinePlan;
+  var D = (typeof module !== "undefined" && module.exports) ? require("./data.js") : root.RainlineData;
 
   function pct(n) { return (Math.max(0, Math.min(365, n - 1)) / 365 * 100).toFixed(2) + "%"; }
   function span(a, b) { return "left:" + pct(a) + ";width:" + (Math.max(1, Math.min(365, b) - a) / 365 * 100).toFixed(2) + "%"; }
@@ -43,14 +44,13 @@
       (f.fall10 < 366 ? '<i class="band frost-risk" style="' + span(f.fall10, Math.min(f.fall50, 366)) + '"></i>' : "") +
       (f.fall50 < 366 ? '<i class="band frost-hard" style="' + span(f.fall50, 366) + '"></i>' : "") +
       '</div></div>';
-    var groups = [["cool", "Cool-season crops"], ["warm", "Warm-season crops"], ["berry", "Berries"], ["fall", "Fall-planted"]];
-    groups.forEach(function (g) {
-      h += '<div class="row row-group"><div class="lbl">' + g[1] + '</div></div>';
-      p.crops.filter(function (r) { return r.crop.group === g[0]; }).forEach(function (r) {
+    D.categories.forEach(function (k) {
+      h += '<div class="row row-group"><div class="lbl">' + k.name + '</div></div>';
+      p.crops.filter(function (r) { return r.crop.cat === k.id; }).forEach(function (r) {
         h += '<div class="row"><div class="lbl">' + r.crop.name + '</div><div class="track">';
         if (r.indoor) h += '<i class="bar bar-in" style="' + span(r.indoor.start, r.indoor.end) + '" title="Start seeds indoors ' + P.fmtRange(r.indoor.start, r.indoor.end) + '"></i>';
         r.windows.forEach(function (w) {
-          h += '<i class="bar bar-' + w.kind + '" style="' + span(w.start, w.end) + '" title="' + (w.kind === "fall" ? "Plant again for fall " : "Plant in the garden ") + P.fmtRange(w.start, w.end) + '"></i>';
+          h += '<i class="bar bar-' + w.kind + '" style="' + span(w.start, w.end) + '" title="' + (w.kind === "fall" ? (r.windows.length > 1 ? "Plant again for fall " : "Plant in fall ") : "Plant in the garden ") + P.fmtRange(w.start, w.end) + '"></i>';
         });
         h += '</div></div>';
       });

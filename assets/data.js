@@ -126,8 +126,46 @@
     { id: "strawberries", name: "Strawberries", group: "berry", how: "Plant young plants", anchor: "coolTrans", win: 42, days: 0, note: "June-bearers give one big crop; everbearers and day-neutrals give smaller harvests through summer. Oregon and Washington breeding programs have produced many of the best varieties for this climate." },
     { id: "blueberries", name: "Blueberries", group: "berry", how: "Plant potted or bare-root bushes", anchor: "coolTrans", win: 49, days: 0, note: "Need acidic soil (pH 4.5 to 5.5), which much of western Oregon and Washington already has. Plant two varieties for better crops. West of the Cascades, fall planting works well too." },
     { id: "raspberries", name: "Raspberries", group: "berry", how: "Plant bare-root canes", anchor: "coolTrans", win: 42, days: 0, note: "Need well-drained soil; they die in soggy ground. A raised row helps in wet Northwest winters. West of the Cascades, fall planting works well too." },
-    { id: "garlic", name: "Garlic", group: "fall", how: "Plant cloves", anchor: "garlic", days: 0, note: "Planted in fall, harvested the next summer when the lower leaves brown." }
+    { id: "garlic", name: "Garlic", group: "fall", how: "Plant cloves", anchor: "garlic", days: 0, note: "Planted in fall, harvested the next summer when the lower leaves brown." },
+    { id: "cauliflower", name: "Cauliflower", group: "cool", how: "Plant young plants (starts)", anchor: "coolTrans", win: 28, days: 75, fall: [13, 11], indoor: [7, 5], note: "Fussier than broccoli: a setback from a cold snap or dry soil makes tiny 'button' heads. Fall crops are often the most reliable here." },
+    { id: "brussels-sprouts", name: "Brussels sprouts", group: "cool", how: "Plant young plants (starts)", anchor: "coolTrans", win: 42, days: 100, indoor: [8, 6], note: "A long-season crop picked in fall and winter, when frost sweetens the sprouts. West of the Cascades, plants keep producing well into winter." },
+    { id: "leeks", name: "Leeks", group: "cool", how: "Plant young plants (starts)", anchor: "coolTrans", win: 42, days: 120, indoor: [10, 8], note: "Slow but nearly foolproof. West of the Cascades they stand in the garden all winter, ready to dig as you need them." },
+    { id: "arugula", name: "Arugula", group: "cool", how: "Plant seeds in the ground", anchor: "coolEarly", win: 42, days: 35, fall: [7, 4], note: "Fast and frost-tolerant. It bolts in heat, so sow small batches in spring and again in late summer." },
+    { id: "bok-choy", name: "Bok choy", group: "cool", how: "Plant seeds or young plants", anchor: "coolEarly", win: 35, days: 45, fall: [8, 6], indoor: [5, 3], note: "Bolts as days lengthen, so get spring sowings in early. Fall crops are the easiest." },
+    { id: "turnips", name: "Turnips", group: "cool", how: "Plant seeds in the ground", anchor: "coolEarly", win: 42, days: 50, fall: [9, 7], note: "Harvest small for tender roots. Fall turnips sweeten after a light frost." },
+    { id: "kohlrabi", name: "Kohlrabi", group: "cool", how: "Plant seeds or young plants", anchor: "coolTrans", win: 42, days: 55, fall: [9, 7], indoor: [6, 4], note: "Pick when the bulb is about tennis-ball size; bigger ones turn woody." },
+    { id: "eggplant", name: "Eggplant", group: "warm", how: "Plant young plants (starts)", anchor: "warmTrans", win: 21, days: 80, indoor: [10, 8], note: "Needs even more heat than peppers. Small-fruited, early varieties do best west of the Cascades, helped by black plastic mulch or a warm wall. Hot eastern valleys grow them easily." },
+    { id: "melons", name: "Melons", group: "warm", how: "Plant seeds or young plants", anchor: "warmTrans", win: 21, days: 85, indoor: [4, 3], note: "The toughest heat lover for west-side gardens: choose short-season varieties and use black plastic and row cover. Eastern valleys grow them easily." },
+    { id: "pole-beans", name: "Pole beans", group: "warm", how: "Plant seeds in the ground", anchor: "warmSeed", win: 35, days: 65, note: "Climb 6 to 8 feet and keep producing for weeks. Put up the trellis before you sow. Like bush beans, they need warm soil." },
+    { id: "fava-beans", name: "Fava beans", group: "cool", how: "Plant seeds in the ground", anchor: "coolEarly", win: 35, days: 85, note: "Unlike other beans, favas love cool weather. West of the Cascades they can also be sown in October to overwinter for an early crop." },
+    { id: "shallots", name: "Shallots", group: "fall", how: "Plant bulbs", anchor: "garlic", days: 0, note: "Planted like garlic in fall, or as early in spring as the soil can be worked. Each bulb multiplies into a cluster." },
+    { id: "asparagus", name: "Asparagus", group: "berry", how: "Plant dormant crowns", anchor: "coolTrans", win: 42, days: 0, note: "A bed that produces for 15 to 20 years. Don't harvest the first year, pick lightly the second, then fully from year three." },
+    { id: "rhubarb", name: "Rhubarb", group: "berry", how: "Plant dormant crowns", anchor: "coolEarly", win: 42, days: 0, note: "Plant it where it can stay for a decade. Don't pick the first year, and never eat the leaves, which are poisonous." },
+    { id: "chives", name: "Chives", group: "cool", how: "Plant seeds or young plants", anchor: "coolTrans", win: 56, days: 60, indoor: [8, 6], note: "A tough perennial that comes back every spring. Divide clumps every few years." },
+    { id: "mint", name: "Mint", group: "cool", how: "Plant young plants", anchor: "coolTrans", win: 56, days: 0, note: "Spreads aggressively by underground runners, so grow it in a pot or a bottomless bucket sunk in the ground." },
+    { id: "rosemary", name: "Rosemary", group: "cool", how: "Plant young plants", anchor: "coolTrans", win: 49, days: 0, note: "Needs sharp drainage. It survives many west-side winters in a well-drained, sheltered spot; in colder eastern areas, grow it in a pot and bring it in for winter." },
+    { id: "thyme", name: "Thyme", group: "cool", how: "Plant young plants", anchor: "coolTrans", win: 56, days: 0, note: "Drought-tolerant once established and hates wet feet. Raised beds and rocky edges suit it." },
+    { id: "oregano", name: "Oregano", group: "cool", how: "Plant young plants", anchor: "coolTrans", win: 56, days: 0, note: "A hardy perennial that thrives on neglect. Flavor is strongest just before it flowers." },
+    { id: "sunflowers", name: "Sunflowers", group: "warm", how: "Plant seeds in the ground", anchor: "warmSeed", win: 42, days: 75, note: "Sow them where they'll grow; they dislike transplanting. Tall varieties need a spot out of the wind." },
+    { id: "sweet-peas", name: "Sweet peas", group: "cool", how: "Plant seeds in the ground", anchor: "coolEarly", win: 35, days: 80, note: "A classic cut flower that loves cool Northwest springs. Sow early, give them a trellis and pick often. The seeds are toxic, so these are for flowers only." },
+    { id: "tulips", name: "Tulips", group: "fall", how: "Plant bulbs", anchor: "garlic", days: 0, note: "Need winter chill to bloom, so they go in during fall. Washington's Skagit Valley tulip fields show how well they grow here." },
+    { id: "daffodils", name: "Daffodils", group: "fall", how: "Plant bulbs", anchor: "garlic", days: 0, note: "Deer and rodents leave them alone, and they come back for decades. Plant in fall once the soil cools." }
   ];
+
+  // Plant categories for browsing. Each crop belongs to exactly one.
+  var categories = [
+    { id: "salad-greens", name: "Salad greens", blurb: "Quick, leafy crops for spring and fall.", crops: ["lettuce", "spinach", "arugula", "chard"] },
+    { id: "cabbage-family", name: "Cabbage family", blurb: "Kale, broccoli and their cousins. Many get sweeter after frost.", crops: ["kale", "broccoli", "cabbage", "cauliflower", "brussels-sprouts", "bok-choy", "kohlrabi"] },
+    { id: "root-vegetables", name: "Root vegetables", blurb: "Carrots, beets, potatoes and other crops you dig.", crops: ["radishes", "carrots", "beets", "turnips", "potatoes"] },
+    { id: "onion-family", name: "Onion family", blurb: "Onions, garlic, leeks and shallots.", crops: ["onions", "garlic", "leeks", "shallots"] },
+    { id: "peas-and-beans", name: "Peas and beans", blurb: "Easy, big-seeded crops that feed the soil too.", crops: ["peas", "fava-beans", "beans", "pole-beans"] },
+    { id: "summer-vegetables", name: "Tomatoes and summer crops", blurb: "Heat lovers that wait for warm soil.", crops: ["tomatoes", "peppers", "eggplant", "corn"] },
+    { id: "squash-and-melons", name: "Squash, cucumbers and melons", blurb: "Sprawling vines for the warmest part of summer.", crops: ["cucumbers", "summer-squash", "winter-squash", "melons"] },
+    { id: "herbs", name: "Herbs", blurb: "Annual and perennial herbs for the kitchen.", crops: ["basil", "cilantro", "parsley", "dill", "chives", "mint", "rosemary", "thyme", "oregano"] },
+    { id: "berries-and-perennials", name: "Berries and perennial crops", blurb: "Plant once and harvest for years.", crops: ["strawberries", "blueberries", "raspberries", "asparagus", "rhubarb"] },
+    { id: "flowers", name: "Flowers", blurb: "Cut flowers and spring bulbs that thrive here.", crops: ["dahlias", "sunflowers", "sweet-peas", "tulips", "daffodils"] }
+  ];
+  categories.forEach(function (cat) { cat.crops.forEach(function (id) { crops.filter(function (c) { return c.id === id; })[0].cat = cat.id; }); });
 
   var chores = [
     { m: 1, title: "January", items: [
@@ -192,6 +230,6 @@
       "Rest. The seed catalogs are coming." ] }
   ];
 
-  var D = { stations: stations, zones: zones, places: places, crops: crops, chores: chores };
+  var D = { stations: stations, zones: zones, places: places, crops: crops, categories: categories, chores: chores };
   if (typeof module !== "undefined" && module.exports) module.exports = D; else root.RainlineData = D;
 })(this);

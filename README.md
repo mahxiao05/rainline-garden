@@ -20,7 +20,11 @@ Plain HTML, CSS and JavaScript, with no framework and no build tools to install 
 
 ## Author and owner
 
-The article byline and About page use `CONFIG.author` (Jigmey Dorjee); the footer, policies and structured data name `CONFIG.owner` (X Ventures LLC). Edit the bio in `AUTHOR_BIO` in `scripts/build.js`.
+Authors (Jigmey Dorjee, Elaine Holloway) live in `AUTHORS` in `scripts/build.js`; each article picks one with its `author` field in `scripts/articles.js`. Only list credentials the person actually holds. The footer, policies and structured data name `CONFIG.owner` (X Ventures LLC).
+
+## Plants and categories
+
+Crops are in `assets/data.js` (timing) and `scripts/guide.js` (growing guide). Every crop must belong to one entry in `categories` in `assets/data.js`, and needs an icon at `assets/img/crops/{id}.svg`. Crop-by-city pages are marked noindex and left out of the sitemap because they mostly repeat the crop guide with local dates; the crop, category and city pages are what search engines index.
 
 ## Making changes
 
