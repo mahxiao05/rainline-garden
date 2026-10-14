@@ -69,5 +69,6 @@
 </div></footer>
 <script>(function(){var r=document.documentElement,b=document.querySelector(".theme-btn");if(!b)return;function cur(){return r.dataset.theme==="dark"?"dark":"light"}function sync(){b.setAttribute("aria-label",cur()==="dark"?"Switch to light mode":"Switch to dark mode")}sync();b.addEventListener("click",function(){var n=cur()==="dark"?"light":"dark";r.dataset.theme=n;try{localStorage.setItem("rainline-theme",n)}catch(e){}sync()})})();</script>
 
+<script src="../../assets/helper.js" defer></script>
 </body>
 </html>
