@@ -117,17 +117,22 @@ img.avatar { object-fit: cover; padding: 0; }
 .empty { color: var(--muted); font-size: 1rem; }
 
 /* The season chart: the one bold element on the page. */
-.chart { position: relative; margin: 1rem 0 .5rem; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px 12px; }
-.row { display: grid; grid-template-columns: 11.5rem 1fr; align-items: center; min-height: 28px; }
+.chart { --pad: 14px; --lbl: 11.5rem; --plot: calc(100% - 2 * var(--pad) - var(--lbl)); position: relative; margin: 1rem 0 .5rem; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 0 var(--pad) 12px; }
+.row { display: grid; grid-template-columns: var(--lbl) 1fr; align-items: center; min-height: 28px; }
 .lbl { font-size: .98rem; padding-right: 10px; line-height: 1.2; }
 .track { position: relative; height: 18px; background-image: linear-gradient(to right, var(--line) 1px, transparent 1px); background-size: calc(100% / 12) 100%; }
+/* Month names stay in view under the site header while you scroll a long list. */
+.row-head { position: sticky; top: 61px; z-index: 3; margin: 0 calc(-1 * var(--pad)) 6px; padding: 8px var(--pad) 6px; background: var(--paper); border-bottom: 1px solid var(--line); border-radius: 8px 8px 0 0; }
 .row-head .track { height: 22px; background: none; }
-.months span { position: absolute; top: 0; font-size: .85rem; color: var(--muted); padding-left: 3px; }
+.months span { position: absolute; top: 0; font-size: .85rem; color: var(--muted); padding: 0 4px; border-radius: 999px; line-height: 22px; margin-left: -1px; }
+.months span.is-now { background: var(--ochre); color: var(--paper); font-weight: 700; }
+.month-now { position: absolute; z-index: 0; top: 0; bottom: 0; pointer-events: none; left: calc(var(--pad) + var(--lbl) + var(--plot) * var(--a)); width: calc(var(--plot) * var(--w)); background: color-mix(in srgb, var(--ochre) 9%, transparent); }
 .row-frost { margin-bottom: 4px; }
 .row-frost .lbl { color: var(--muted); }
 .row-frost .track { height: 22px; border-radius: 4px; overflow: hidden; }
 .row-group { min-height: 34px; align-items: end; }
 .row-group .lbl { font-family: var(--serif); font-weight: 700; color: var(--fir); grid-column: 1 / -1; padding-top: 8px; }
+.row:not(.row-head):not(.row-group):hover { background: color-mix(in srgb, var(--moss) 8%, transparent); border-radius: 4px; }
 .band, .bar, .key { position: absolute; top: 0; bottom: 0; display: block; }
 .frost-hard { background: repeating-linear-gradient(135deg, var(--frost-hard) 0 3px, var(--frost) 3px 7px); }
 .frost-risk { background: var(--frost); }
@@ -136,9 +141,8 @@ img.avatar { object-fit: cover; padding: 0; }
 .bar-spring { background: var(--moss); }
 .bar-fall { background: var(--ochre); }
 .bar-in { border: 2px dashed var(--moss); background: var(--moss-soft); }
-.today { position: absolute; top: 34px; bottom: 10px; pointer-events: none; border-left: 2px solid var(--warn);
-  left: calc(14px + 11.5rem + (100% - 28px - 11.5rem) * var(--f)); }
-.today span { position: absolute; top: -24px; left: -2px; font-size: .8rem; font-weight: 700; color: var(--warn); background: var(--paper); padding: 0 4px; }
+.today { position: absolute; z-index: 2; top: 0; bottom: 10px; pointer-events: none; border-left: 2px solid var(--warn); left: calc(var(--pad) + var(--lbl) + var(--plot) * var(--f)); }
+.key-today { width: 0; height: 16px; border-radius: 0; border-left: 2px solid var(--warn); margin: 0 10px; }
 .legend { display: flex; flex-wrap: wrap; gap: 6px 20px; list-style: none; padding: 0; margin: .5rem 0 0; font-size: .95rem; color: var(--muted); }
 .legend li { display: flex; align-items: center; gap: 8px; }
 .key { position: relative; width: 22px; height: 12px; border-radius: 3px; }
@@ -322,6 +326,7 @@ table.plan { width: 100%; border-collapse: collapse; font-size: 1rem; background
 
 @media (max-width: 860px) {
   .site-head .wrap { flex-wrap: wrap; }
+  .row-head { top: 109px; }
   .nav { order: 3; flex-basis: 100%; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 12px 2px; }
   .nav::-webkit-scrollbar { display: none; }
 }
@@ -338,13 +343,14 @@ table.plan { width: 100%; border-collapse: collapse; font-size: 1rem; background
   .facts { grid-template-columns: 1fr; }
   .fact + .fact { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
   .now { grid-template-columns: 1fr; gap: 16px; }
-  .chart { padding: 8px 10px 10px; }
-  .row { grid-template-columns: 1fr; min-height: 0; }
-  .lbl { padding: 6px 0 2px; font-size: .92rem; }
-  .row-head .lbl { display: none; }
-  .months span { font-size: .72rem; padding-left: 1px; }
-  .row-head .track { height: 18px; }
-  .today { top: 30px; left: calc(10px + (100% - 20px) * var(--f)); }
+  .chart { --pad: 10px; --lbl: 6.6rem; }
+  .row { min-height: 26px; }
+  .lbl { font-size: .86rem; padding-right: 6px; }
+  .track { height: 16px; }
+  .months span { font-size: 0; padding: 0; width: calc(100% / 12); text-align: center; margin: 0; }
+  .months span::before { content: attr(data-s); font-size: .78rem; }
+  .bar { min-width: 7px; }
+  .bar-in { border-width: 1.5px; }
   .field select { min-width: 0; width: 100%; }
   .field-select { flex: 1 1 100%; }
   .or { display: none; }
