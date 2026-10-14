@@ -3,9 +3,9 @@
  *   32°F freeze probabilities (ANN-TMIN-PRBLST-T32FP10/50/90, ANN-TMIN-PRBFST-T32FP10/50/90).
  *   spring50 = median last spring freeze; spring10 = only a 10% chance of a freeze after this date.
  *   fall50 = median first fall freeze; fall10 = only a 10% chance of a freeze before this date.
- * Planting windows: regional timing from OSU Extension monthly garden calendars (April EM 9476,
- *   May EM 9688, March EM 9714), OSU Central Oregon vegetable calendar (EM 9473), and OSU soil
- *   temperature guidance. Washington regions are matched to the closest OSU climate region.
+ * Planting windows: regional dates for when the soil is usually ready in each climate region
+ *   (west side, coast, southern valleys, high desert, inland valleys). Washington areas use the
+ *   closest matching region.
  * To update: edit the values below, then run `node scripts/build.js`.
  */
 (function (root) {
@@ -116,7 +116,7 @@
     { id: "cucumbers", name: "Cucumbers", group: "warm", how: "Plant seeds or young plants", anchor: "warmTrans", win: 28, days: 60, indoor: [4, 3], note: "Need warm soil and warm nights. Floating row cover helps in cool springs." },
     { id: "summer-squash", name: "Zucchini and summer squash", group: "warm", how: "Plant seeds or young plants", anchor: "warmTrans", win: 28, days: 55, indoor: [4, 3], note: "Two plants feed most families. Pick fruit small and often." },
     { id: "winter-squash", name: "Winter squash and pumpkins", group: "warm", how: "Plant seeds or young plants", anchor: "warmTrans", win: 21, days: 100, indoor: [4, 3], note: "Long season. Harvest before hard frost and cure in a warm spot for storage." },
-    { id: "tomatoes", name: "Tomatoes", group: "warm", how: "Plant young plants (starts)", anchor: "warmTrans", win: 28, days: 75, indoor: [8, 6], note: "OSU Extension advises waiting for soil consistently above 70°F. Early or cherry varieties ripen most reliably here." },
+    { id: "tomatoes", name: "Tomatoes", group: "warm", how: "Plant young plants (starts)", anchor: "warmTrans", win: 28, days: 75, indoor: [8, 6], note: "Wait for warm soil and mild nights before planting out. Early or cherry varieties ripen most reliably here." },
     { id: "peppers", name: "Peppers", group: "warm", how: "Plant young plants (starts)", anchor: "warmTrans", win: 21, days: 75, indoor: [10, 8], note: "Even more heat-hungry than tomatoes. A warm wall or black plastic mulch helps." },
     { id: "basil", name: "Basil", group: "warm", how: "Plant young plants (starts)", anchor: "warmTrans", win: 28, days: 60, indoor: [6, 4], note: "Blackens below about 40°F, so it's the last thing to go out." },
     { id: "dahlias", name: "Dahlias", group: "warm", how: "Plant tubers", anchor: "warmTrans", win: 28, days: 90, note: "Tubers rot in cold, wet soil, so wait until it warms. West of the Cascades many gardeners leave them in the ground over winter under thick mulch; east of the mountains, dig and store them after the first frost." },
