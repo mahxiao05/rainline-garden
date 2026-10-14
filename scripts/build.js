@@ -74,8 +74,29 @@ const initials = n => n.split(/\s+/).map(w => w[0]).join("").slice(0, 2).toUpper
 
 function layout({ rel, title, description, canonical, current, body, scripts, jsonld, noindex, image }) {
   const base = rel; // relative prefix back to the site root, e.g. "../../"
-  const nav = [["", "Planner"], ["when-to-plant/", "When to plant"], ["frost-dates/", "Frost dates"], ["garden-calendar/", "Monthly chores"], ["beginners-guide/", "Beginner's guide"], ["articles/", "Articles"], ["my-garden/", "My garden plan"]]
-    .map(([href, label]) => `<a href="${base}${href}"${current === href ? ' aria-current="page"' : ""}>${label}</a>`).join("");
+  const cur = href => current === href ? ' aria-current="page"' : "";
+  const LEARN = [["beginners-guide/", "Beginner's guide", "Start your first Northwest garden"], ["garden-calendar/", "Monthly chores", "What to do in the garden each month"],
+    ["articles/", "Articles", "Growing guides for Northwest weather"], ["glossary/", "Glossary", "Gardening words in plain language"], ["how-it-works/", "How it works", "Where our dates come from"]];
+  const learnOn = LEARN.some(([href]) => href === current);
+  const ICON = {
+    search: '<svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
+    chev: '<svg class="chev" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    plan: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="4" y="3.5" width="16" height="17" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="m8 9 1.5 1.5L12 8M8 15l1.5 1.5L12 14M14.5 9.5H17M14.5 15.5H17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    menu: '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path class="m1" d="M4 7h16"/><path class="m2" d="M4 12h16"/><path class="m3" d="M4 17h16"/></svg>'
+  };
+  const MAIN = [["", "Planner"], ["when-to-plant/", "When to plant"], ["frost-dates/", "Frost dates"]];
+  const nav = MAIN.map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("") +
+    `<div class="nav-more"><button type="button" class="nav-more-btn${learnOn ? " is-current" : ""}" aria-expanded="false" aria-controls="nav-learn">Learn${ICON.chev}</button>` +
+    `<div class="nav-menu" id="nav-learn" hidden>${LEARN.map(([href, label, sub]) => `<a href="${base}${href}"${cur(href)}><strong>${label}</strong><span>${sub}</span></a>`).join("")}</div></div>`;
+  const menu = `<div class="site-menu" id="site-menu" hidden><div class="wrap">
+<p class="menu-town" hidden></p>
+<div class="menu-cols"><div><p class="menu-h">Plan</p>${MAIN.concat([["my-garden/", "My garden plan"]]).map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("")}</div>
+<div><p class="menu-h">Learn</p>${LEARN.map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("")}</div></div>
+</div></div>`;
+  const search = `<div class="search-pop" id="search-pop" hidden><div class="wrap"><div class="search-box" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-owns="search-list">
+${ICON.search}<label for="search-q" class="sr">Search plants, towns and guides</label><input id="search-q" type="search" autocomplete="off" spellcheck="false" placeholder="Search plants, towns and guides" aria-autocomplete="list" aria-controls="search-list">
+<button type="button" class="search-close" aria-label="Close search">Esc</button></div>
+<ul id="search-list" class="search-list" role="listbox" aria-label="Results"></ul></div></div>`;
   const ld = (jsonld || []).map(o => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, "\\u003c")}</script>`).join("\n");
   const ads = CONFIG.adsenseClient
     ? `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${CONFIG.adsenseClient}" crossorigin="anonymous"></script>` : "";
@@ -108,8 +129,14 @@ ${ld}
 <header class="site-head"><div class="wrap">
 <a class="brand" href="${base}"><img src="${base}assets/icon.svg" width="30" height="30" alt="">Rainline Garden</a>
 <nav class="nav" aria-label="Main">${nav}</nav>
+<button type="button" class="head-search" aria-label="Search plants, towns and guides" aria-expanded="false" aria-controls="search-pop">${ICON.search}<span>Search</span><kbd class="head-kbd">Ctrl K</kbd></button>
+<a class="head-cta" href="${base}my-garden/"${cur("my-garden/")}>${ICON.plan}<span>My garden plan</span></a>
 <button class="theme-btn" type="button" aria-label="Switch to dark mode" title="Light or dark mode"><svg class="i-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="currentColor"/></svg><svg class="i-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
-</div></header>
+<button type="button" class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="site-menu">${ICON.menu}</button>
+</div>
+${menu}
+${search}
+</header>
 <main id="main" class="wrap">
 ${body}
 </main>
@@ -119,8 +146,8 @@ ${body}
 <p class="owner">&copy; ${YEAR} ${CONFIG.owner}. Rainline Garden is owned and operated by ${CONFIG.owner}.</p>
 </div></footer>
 <script>(function(){var r=document.documentElement,b=document.querySelector(".theme-btn");if(!b)return;function cur(){return r.dataset.theme==="dark"?"dark":"light"}function sync(){b.setAttribute("aria-label",cur()==="dark"?"Switch to light mode":"Switch to dark mode")}sync();b.addEventListener("click",function(){var n=cur()==="dark"?"light":"dark";r.dataset.theme=n;try{localStorage.setItem("rainline-theme",n)}catch(e){}sync()})})();</script>
-<script>(function(){var n=document.querySelector(".nav"),a=n&&n.querySelector("[aria-current]");if(!n)return;if(a&&a.offsetLeft+a.offsetWidth>n.clientWidth)n.scrollLeft=a.offsetLeft-(n.clientWidth-a.offsetWidth)/2;function edge(){n.classList.toggle("at-end",n.scrollLeft+n.clientWidth>=n.scrollWidth-4)}edge();n.addEventListener("scroll",edge,{passive:true});addEventListener("resize",edge)})();</script>
 ${(scripts || []).map(s => `<script src="${base}assets/${s}"></script>`).join("\n")}
+<script src="${base}assets/nav.js" defer></script>
 <script src="${base}assets/helper.js" defer></script>
 </body>
 </html>
@@ -726,18 +753,51 @@ write("../", "frost-dates/index.html", layout({
 }), "0.9");
 
 /* Monthly calendar */
+const CHORES = require("./chores.js");
 const MONTH_ICONS = ["potatoes", "onions", "peas", "lettuce", "tomatoes", "beans", "cucumbers", "corn", "winter-squash", "garlic", "cabbage", "kale"];
+const CHORE_KINDS = [["plant", "Plant and sow"], ["indoor", "Start indoors"], ["harvest", "Harvest"], ["care", "Garden care"], ["pests", "Pests and problems"], ["perennial", "Fruit, berries and flowers"]];
+const REGION_TAGS = { west: "West side", coast: "Coast", east: "East side", high: "High desert and inland" };
+// One town stands in for each climate region in the "planting by region" lists.
+const REGION_TOWNS = [["west", "portland-or", "West-side valleys"], ["coast", "astoria-or", "Coast"], ["east", "pendleton-or", "Columbia Basin and eastern valleys"], ["high", "bend-or", "High desert"], ["high", "spokane-wa", "Inland Northwest"]];
+function monthPlanting(m) {
+  const a = P.CUM[m - 1] + 1, b = m < 12 ? P.CUM[m] : 365;
+  const overlaps = w => w.start <= b && w.end >= a;
+  return REGION_TOWNS.map(([r, slug, label]) => {
+    const p = P.plan(D, P.findPlace(D, slug));
+    return { r, label, out: p.crops.filter(x => x.windows.some(overlaps)).map(x => x.crop), indoor: p.crops.filter(x => x.indoor && overlaps(x.indoor)).map(x => x.crop) };
+  });
+}
+const articleBySlug = Object.fromEntries(ARTICLES.map(a => [a.slug, a]));
+const chip = c => `<a class="mp-crop" href="../when-to-plant/${c.id}/">${R.icon(c.id, "../", 22)}${esc(c.name)}</a>`;
+const choreMonth = c => {
+  const name = P.MONTHS_LONG[c.m - 1], count = Object.values(c.tasks).reduce((n, t) => n + t.length, 0);
+  return `<section class="cm" id="${name.toLowerCase()}" data-m="${c.m}" aria-labelledby="cm-h-${c.m}">
+<header class="cm-head">${R.icon(MONTH_ICONS[c.m - 1], "../", 44)}<div><h2 id="cm-h-${c.m}">${name}</h2><p>${esc(c.intro)}</p></div><span class="cm-prog" data-total="${count}"></span></header>
+<div class="cm-grid">${CHORE_KINDS.filter(([k]) => c.tasks[k] && c.tasks[k].length).map(([k, label]) => `<div class="cm-card cm-${k}"><h3>${label}</h3><ul>${c.tasks[k].map(([t, r], i) =>
+    `<li${r ? ` data-r="${r}"` : ""}><label><input type="checkbox" data-id="${c.m}-${k}-${i}" disabled><span>${esc(t)}${r ? ` <span class="cm-tag cm-tag-${r}">${REGION_TAGS[r]}</span>` : ""}</span></label></li>`).join("")}</ul></div>`).join("")}</div>
+<details class="cm-byregion"><summary>What can be planted in ${name}, by region</summary><div class="cm-plant-body">${monthPlanting(c.m).map(x => `<div class="cm-region" data-r="${x.r}"><h4>${x.label}</h4>
+${x.out.length ? `<p><span class="cm-k">Outside</span>${x.out.map(chip).join("")}</p>` : `<p class="cm-none">Nothing outside this month.</p>`}
+${x.indoor.length ? `<p><span class="cm-k">Indoors</span>${x.indoor.map(chip).join("")}</p>` : ""}</div>`).join("")}
+<p class="station">Based on typical frost dates for one town in each region. <a href="../">Use the planner</a> for your exact dates.</p></div></details>
+${c.articles.length ? `<p class="cm-reads"><span>Read next:</span> ${c.articles.filter(s => articleBySlug[s]).map(s => `<a href="../articles/${s}/">${articleIcon(articleBySlug[s], "../", 22)}${esc(articleBySlug[s].title)}</a>`).join("")}</p>` : ""}
+</section>`;
+};
 write("../", "garden-calendar/index.html", layout({
   rel: "../", canonical: "garden-calendar/", current: "garden-calendar/",
   title: "Pacific Northwest Garden Calendar: Monthly Chores | Rainline Garden",
-  description: "Month-by-month vegetable garden chores for Oregon and Washington, from seed ordering in January to garlic planting in October.",
+  description: "Month-by-month garden chores for Oregon and Washington: what to plant, start indoors, harvest, prune and watch for, with notes for the coast, west side, east side and high desert.",
   body: `
 <section class="hero"><h1>Monthly garden chores</h1>
-<p class="lede">What to do in a Northwest vegetable garden each month. For exact planting dates where you live, <a href="../">use the planner</a>.</p></section>
-<div class="months-list">${D.chores.map(c => `<section class="month" data-m="${c.m}"><h2>${R.icon(MONTH_ICONS[c.m - 1], "../", 40)}${c.title}</h2><ul>${c.items.map(i => `<li>${esc(i)}</li>`).join("")}</ul>
-</section>`).join("")}</div>
+<p class="lede">What to do in a Northwest garden each month: what to plant and start indoors, what to harvest, and the care, pest and pruning jobs that keep things going. Tick jobs off as you go. For exact planting dates where you live, <a href="../">use the planner</a>.</p></section>
+<div class="cm-filter" role="group" aria-label="Show jobs for"><span>Show jobs for</span>${[["all", "Everywhere"], ["west", "West side"], ["coast", "Coast"], ["east", "East side"], ["high", "High desert and inland"]].map(([v, l]) => `<button type="button" data-region="${v}" aria-pressed="${v === "all"}">${l}</button>`).join("")}</div>
+<div class="cm-tools">
+<nav class="cm-months" aria-label="Months">${P.MONTHS.map((m, i) => `<a href="#${P.MONTHS_LONG[i].toLowerCase()}" data-m="${i + 1}">${m}</a>`).join("")}</nav>
+</div>
+<div id="cm-mine" class="cm-mine" hidden></div>
+<div class="cm-list">${CHORES.map(choreMonth).join("")}</div>
+<p class="station cm-foot">Region tags: <strong>West side</strong> is the Willamette Valley, Puget Sound and southern Oregon valleys; <strong>Coast</strong> is the outer coast; <strong>East side</strong> is the Columbia Basin and low eastern valleys; <strong>High desert and inland</strong> is Central Oregon, the Klamath Basin and Spokane. Jobs without a tag apply everywhere, a few weeks later the colder your garden is.</p>
 ${ad("calendar-bottom")}`,
-  scripts: ["data.js", "plan.js", "render.js", "app.js"]
+  scripts: ["data.js", "plan.js", "chores.js"]
 }), "0.8");
 
 /* How it works */
@@ -805,7 +865,7 @@ write("../", "privacy/index.html", layout({
 <div class="prose">
 <p>Rainline Garden is owned and operated by ${CONFIG.owner} ("we", "us"). This policy explains what happens to your information when you use the site.</p>
 <h2>What we collect</h2>
-<p>Rainline Garden has no accounts.${CONFIG.newsletterAction ? " If you sign up for the monthly email or frost alerts, your address goes to our email provider and is used only to send that email; every message has an unsubscribe link." : ""} The ZIP code you enter is matched to a city inside your browser and is never sent to our server. Your browser's local storage keeps three things on your own device: the last city you chose in the planner, your light or dark display choice, and your garden plan if you make one on the My garden plan page (the city, the plants you picked, tasks you checked off, bed sizes, your harvest log and your notes). None of it is sent to us. You can clear it by clearing site data in your browser or with the "Clear my plan" link on the plan page.</p>
+<p>Rainline Garden has no accounts.${CONFIG.newsletterAction ? " If you sign up for the monthly email or frost alerts, your address goes to our email provider and is used only to send that email; every message has an unsubscribe link." : ""} The ZIP code you enter is matched to a city inside your browser and is never sent to our server. Your browser's local storage keeps a few things on your own device: the last city you chose in the planner, your light or dark display choice, the jobs you tick off and the region you pick on the monthly chores page, and your garden plan if you make one on the My garden plan page (the city, the plants you picked, tasks you checked off, bed sizes, your harvest log and your notes). None of it is sent to us. You can clear it by clearing site data in your browser or with the "Clear my plan" link on the plan page.</p>
 <p>The plant question helper also runs entirely in your browser. Questions you type into it are answered from data already loaded on the page and are not sent to us or stored.</p>
 <h2>Advertising</h2>
 <p>This site uses Google AdSense to show ads. Google and its partners use cookies to serve ads based on your visits to this and other websites. You can opt out of personalized advertising at <a href="https://www.google.com/settings/ads">Google Ads Settings</a>, and learn more at <a href="https://policies.google.com/technologies/ads">How Google uses information from sites that use its services</a>.</p>
@@ -871,6 +931,20 @@ const helperData = {
 };
 fs.writeFileSync(path.join(ROOT, "assets/helper-data.js"),
   `/* Generated by scripts/build.js from scripts/guide.js. Do not edit by hand. */\nwindow.RainlineHelperData = ${JSON.stringify(helperData)};\n`);
+
+/* Header search index: plants, towns, articles and pages. Loaded by assets/nav.js the first time search opens. */
+const searchIndex = [
+  ...D.crops.map(c => ({ t: c.name, s: "Plant · " + (D.categories.find(k => k.crops.includes(c.id)) || {}).name, u: "when-to-plant/" + c.id + "/", k: "crop", c: c.id, i: "assets/img/crops/" + c.id + ".svg" })),
+  ...D.places.map(p => ({ t: p.city + ", " + p.state, s: "Frost dates and planting calendar", u: "frost-dates/" + p.slug + "/", k: "town", p: p.slug })),
+  ...D.categories.map(k => ({ t: k.name, s: k.crops.length + " plants", u: "when-to-plant/" + k.id + "/", k: "group", i: "assets/img/crops/" + k.crops[0] + ".svg" })),
+  ...ARTICLES.map(a => ({ t: a.title, s: "Article", u: "articles/" + a.slug + "/", k: "article", i: a.icon ? "assets/img/topics/" + a.icon + ".svg" : a.crops && a.crops[0] ? "assets/img/crops/" + a.crops[0] + ".svg" : "" })),
+  ...G.glossary.map(g => ({ t: g[0], s: "Glossary", u: "glossary/#" + g[1], k: "term" })),
+  ...[["", "Planner", "Your local planting calendar"], ["my-garden/", "My garden plan", "Plan, track and print your garden"], ["frost-dates/", "Frost dates by city", "Every town we cover"],
+    ["beginners-guide/", "Beginner's guide", "Start your first garden"], ["garden-calendar/", "Monthly chores", "What to do each month"], ["about/", "About", "Who writes Rainline Garden"], ["contact/", "Contact", "Questions and corrections"]]
+    .map(([u, t, sub]) => ({ t, s: sub, u, k: "page" }))
+];
+fs.writeFileSync(path.join(ROOT, "assets/search-index.js"),
+  `/* Generated by scripts/build.js. Do not edit by hand. */\nwindow.RainlineSearch = ${JSON.stringify(searchIndex)};\n`);
 
 /* sitemap, robots */
 fs.writeFileSync(path.join(ROOT, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>
