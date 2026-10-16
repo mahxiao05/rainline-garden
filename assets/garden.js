@@ -1,9 +1,10 @@
 /* Rainline Garden "My garden plan" page: pick a town and plants, get a dated to-do list, a "this week" card,
  * a bed planner, a plant cheat sheet, a harvest log and notes. Saved in this browser (localStorage); printable;
  * exports .ics with reminders. A shared link opens as a read-only preview until you save it as your own plan.
+ * Starter plans fill the picker in one tap, and a season check warns about plants that aren't in season right now.
  */
 (function () {
-  var D = window.RainlineData, P = window.RainlinePlan, R = window.RainlineRender, H = window.RainlineHelperData;
+  var D = window.RainlineData, P = window.RainlinePlan, R = window.RainlineRender, H = window.RainlineGuideData;
   var KEY = "rainline-garden-plan";
   var base = document.documentElement.getAttribute("data-base") || "";
   var form = document.getElementById("gp-form");
@@ -11,6 +12,7 @@
   var zip = document.getElementById("gp-zip"), sel = document.getElementById("gp-place"), msg = document.getElementById("gp-msg");
   var out = document.getElementById("gp-out"), pick = document.getElementById("gp-pick"), share = document.getElementById("gp-share");
   var alertTpl = document.getElementById("gp-alert-tpl");
+  var starters = document.getElementById("gp-starters"), pickNote = document.getElementById("gp-pick-note");
 
   var MONTHS = P.MONTHS_LONG, DAY = 864e5;
   var HOW = { "Plant seeds in the ground": "from seed", "Plant seeds or young plants": "from seed or as starts", "Plant small onion bulbs (sets)": "as sets",
@@ -27,6 +29,17 @@
     "hardy-kiwi": 144, artichokes: 42, huckleberries: 48, "oregon-grape": 48, "red-flowering-currant": 60, serviceberry: 96, camas: 5,
     lavender: 27, tomatillos: 36, zinnias: 10, peonies: 36 };
   var RATINGS = [["good", "Did well"], ["ok", "OK"], ["poor", "Struggled"]];
+  // One-tap starting points: plants plus bed sizes in feet.
+  var STARTERS = [
+    { id: "salad", name: "First salad bed", crops: ["lettuce", "spinach", "arugula", "radishes", "chard", "kale", "peas"], beds: [{ w: 4, l: 8 }] },
+    { id: "easy", name: "Five easy crops", crops: ["radishes", "lettuce", "beans", "summer-squash", "kale"], beds: [{ w: 4, l: 8 }] },
+    { id: "salsa", name: "Salsa garden", crops: ["tomatoes", "peppers", "tomatillos", "onions", "cilantro"], beds: [{ w: 4, l: 8 }] },
+    { id: "kids", name: "Kids' garden", crops: ["radishes", "peas", "beans", "sunflowers", "strawberries", "carrots"], beds: [{ w: 4, l: 8 }] },
+    { id: "pots", name: "Patio pots", crops: ["basil", "parsley", "chives", "mint", "thyme", "lettuce", "strawberries"], beds: [{ w: 2, l: 6 }] },
+    { id: "winter", name: "Fall and winter garden", crops: ["garlic", "kale", "fava-beans", "spinach", "leeks", "shallots"], beds: [{ w: 4, l: 8 }] },
+    { id: "bees", name: "Pollinator patch", crops: ["lavender", "sunflowers", "zinnias", "dill", "oregano", "red-flowering-currant", "camas"], beds: [{ w: 4, l: 10 }] }
+  ];
+  var TAG = { now: "Plant now", last: "Last chance", indoor: "Start indoors", soon: "Coming up", later: "Not in season" };
 
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function lc(n) { return n === "Swiss chard" ? n : n.toLowerCase().replace(/^brussels/, "Brussels").replace(/^oregon/, "Oregon"); }
@@ -75,6 +88,7 @@
   function short(d) { return MONTHS[d.getMonth()].slice(0, 3) + " " + d.getDate(); }
   function iso(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
   function fromIso(s) { var p = s.split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function today() { return P.CUM[now.getMonth()] + Math.min(now.getDate(), now.getMonth() === 1 ? 28 : 31); }
   function ordinal(n) { return ["", "first", "second", "third", "fourth", "fifth", "sixth", "seventh"][n] || n + "th"; }
 
   function tasks(p) {
@@ -101,6 +115,18 @@
       });
       if (spring && c.days) add(c, "harvest", spring.start + c.days, null, "First harvest of " + name + " is about due");
     });
+    // Watering follows the rain: west of the Cascades summers turn dry in July and the rains return in October;
+    // to the east, summer rain is rare from June on.
+    var west = p.place.zone === "west" || p.place.zone === "coast";
+    if (list.length) {
+      if (west) {
+        add(null, "water-start", P.doy("07-01"), null, "Dry season starts. Water deeply once or twice a week, about an inch in all, more in hot spells");
+        add(null, "water-end", P.doy("10-15"), null, "Fall rains usually return about now. Ease off watering once the soil stays damp");
+      } else {
+        add(null, "water-start", P.doy("06-01"), null, "Summer is dry east of the Cascades. Water deeply two or three times a week in hot weather");
+        add(null, "water-end", P.doy("09-30"), null, "Days are cooling. Water less as plants slow down, but give trees and perennials a deep soak before the ground freezes");
+      }
+    }
     var f = p.frost;
     if (warm.length) {
       add(null, "lastfrost", f.spring50, f.spring10, "Typical last frost. Keep covers handy for tender plants until " + P.fmtLong(f.spring10));
@@ -259,6 +285,73 @@
     return h + '</section>';
   }
 
+  /* Season check */
+  function when(n) { return P.fmtLong(n.w.start); }
+  function away(d) { return d <= 21 ? "in " + d + (d === 1 ? " day" : " days") : d < 60 ? "in about " + Math.round(d / 7) + " weeks" : "in about " + Math.round(d / 30.4) + " months"; }
+  function seasonText(r, s, place) {
+    var name = lc(r.crop.name), t;
+    if (s.k === "now") t = "In season now. Plant any time until " + P.fmtLong(s.w.end) + ".";
+    else if (s.k === "last") t = "Last chance this year: the window closes " + P.fmtLong(s.w.end) + ", so plant this week if you can.";
+    else if (s.k === "indoor") {
+      var out = r.windows.filter(function (w) { return w.kind === "spring"; })[0];
+      t = "Too early to plant outside, but it's time to start seeds indoors (until " + P.fmtLong(s.w.end) + ")." + (out ? " Plant them out from about " + P.fmtLong(out.start) + "." : "");
+    } else {
+      var n = s.next, step = n.kind === "indoor" ? "start seeds indoors from " + when(n) : (n.kind === "fall" && r.crop.anchor !== "garlic" ? "plant again for fall from " : "plant from ") + when(n);
+      if (s.k === "soon") t = "Coming up: " + step + " (" + away(n.d) + ").";
+      else if (s.missed) t = "Just missed it: the window closed " + P.fmtLong(s.missed.w.end) + ". Next chance: " + step + ", " + away(n.d) + ".";
+      else t = "Not the season for " + name + " in " + place.city + " yet. Next chance: " + step + ", " + away(n.d) + ".";
+    }
+    if (r.season === "short") t += " Heads up: the frost-free season in " + place.city + " is usually too short for " + name + " to ripen, so use the fastest variety you can find and cover plants on cold nights.";
+    else if (r.season === "tight") t += " The season here is tight for " + name + ", so pick a fast variety.";
+    return t;
+  }
+  function seasonCheck(p, place) {
+    var t = today(), rows = p.crops.filter(function (r) { return state.crops.indexOf(r.crop.id) >= 0; }).map(function (r) { return { r: r, s: P.season(r, t) }; });
+    var order = { last: 0, now: 1, indoor: 2, soon: 3, later: 4 };
+    var ready = rows.filter(function (x) { return (x.s.k === "now" || x.s.k === "last") && x.r.season !== "short"; });
+    var warn = rows.filter(function (x) { return ready.indexOf(x) < 0; })
+      .sort(function (a, b) { return order[a.s.k] - order[b.s.k] || (a.s.next ? a.s.next.d : 0) - (b.s.next ? b.s.next.d : 0); });
+    var lastOnes = ready.filter(function (x) { return x.s.k === "last"; });
+    var swaps = p.crops.filter(function (r) { return state.crops.indexOf(r.crop.id) < 0 && P.season(r, t).k === "now" && !r.season; })
+      .sort(function (a, b) { return ((H.crops[a.crop.id] || {}).difficulty || 2) - ((H.crops[b.crop.id] || {}).difficulty || 2) || a.crop.name.localeCompare(b.crop.name); }).slice(0, 6);
+    var h = '<section class="gp-sec gp-season" id="gp-season-sec" aria-labelledby="gp-season-h"><h2 id="gp-season-h">Season check</h2>' +
+      '<p>It\'s ' + MONTHS[now.getMonth()] + ' in ' + esc(place.city) + '. <strong>' + ready.length + ' of your ' + rows.length + ' plants</strong> can go in now' +
+      (warn.length ? '; ' + (warn.length === 1 ? 'one needs' : warn.length + ' need') + ' a different time.' : '. Everything you picked is in season.') + '</p>';
+    if (ready.length) h += '<p class="gp-ready"><span class="gp-st gp-st-now">' + TAG.now + '</span> ' + ready.map(function (x) { return esc(x.r.crop.name) + (x.s.k === "last" ? ' <span class="gp-st gp-st-last">closes ' + P.fmt(x.s.w.end) + '</span>' : ''); }).join(", ") + '</p>';
+    if (lastOnes.length || warn.length) h += '<ul class="gp-warns">' + lastOnes.concat(warn).map(function (x) {
+      var k = x.r.season === "short" && (x.s.k === "now" || x.s.k === "last") ? "later" : x.s.k;
+      return '<li class="gp-warn-' + k + '">' + R.icon(x.r.crop.id, base, 28) + '<div><p><strong>' + esc(x.r.crop.name) + '</strong> <span class="gp-st gp-st-' + k + '">' + (x.r.season === "short" ? "Hard here" : TAG[x.s.k]) + '</span></p>' +
+        '<p>' + esc(seasonText(x.r, x.s, place)) + '</p>' +
+        (k === "later" && !preview ? '<p class="gp-warn-act"><button type="button" class="linkish" data-act="rmcrop" data-crop="' + x.r.crop.id + '">Remove from my plan</button> or keep it and the dates stay in your to-do list.</p>' : '') + '</div></li>';
+    }).join("") + '</ul>';
+    if (swaps.length && !preview) h += '<div class="gp-swaps"><p>In season now in ' + esc(place.city) + ':</p><div>' + swaps.map(function (r) {
+      return '<button type="button" class="gp-swap" data-act="addcrop" data-crop="' + r.crop.id + '">' + R.icon(r.crop.id, base, 24) + '<span>+ ' + esc(r.crop.name) + '</span></button>';
+    }).join("") + '</div></div>';
+    return h + '</section>';
+  }
+  // Small season tags on the plant picker, so people see what's in season before they tick it.
+  function tagPicker(p) {
+    var t = today(), by = {};
+    if (p) p.crops.forEach(function (r) { by[r.crop.id] = r; });
+    Array.prototype.forEach.call(pick.querySelectorAll(".gp-opt"), function (lab) {
+      var inp = lab.querySelector("input"), tag = lab.querySelector(".gp-st"), r = by[inp.value];
+      if (!r) { if (tag) tag.remove(); return; }
+      var s = P.season(r, t), k = r.season === "short" ? "later" : s.k;
+      if (!tag) { tag = document.createElement("span"); lab.appendChild(tag); }
+      tag.className = "gp-st gp-st-" + k;
+      tag.textContent = r.season === "short" ? "Hard here" : k === "later" && s.next ? P.MONTHS[P.fromDoy(s.next.w.start).m] : TAG[k];
+      tag.title = seasonText(r, s, p.place);
+    });
+  }
+  function noteFor(id) {
+    var place = P.findPlace(D, state.place); if (!place || !pickNote) return;
+    var p = P.plan(D, place), r = p.crops.filter(function (x) { return x.crop.id === id; })[0]; if (!r) return;
+    var s = P.season(r, today());
+    if ((s.k === "now" || s.k === "last" || s.k === "indoor") && !r.season) { pickNote.textContent = ""; pickNote.hidden = true; return; }
+    pickNote.hidden = false;
+    pickNote.textContent = r.crop.name + ": " + seasonText(r, s, place) + (s.k === "soon" ? "" : " It stays in your plan with its dates.");
+  }
+
   function chosenCrops() { return D.crops.filter(function (c) { return state.crops.indexOf(c.id) >= 0; }); }
 
   function shareBanner() {
@@ -278,6 +371,7 @@
     Array.prototype.forEach.call(pick.querySelectorAll("input[type=checkbox]"), function (b) { b.checked = state.crops.indexOf(b.value) >= 0; });
     var count = document.getElementById("gp-count");
     if (count) count.textContent = state.crops.length ? state.crops.length + " picked" : "";
+    tagPicker(place ? P.plan(D, place) : null);
     if (!place || !state.crops.length) {
       out.innerHTML = '<p class="empty gp-empty">' + (!place ? "Choose your town" : "Pick at least one plant") + ' to see your plan.</p>';
       return;
@@ -291,8 +385,10 @@
       cur.items.push(t);
     });
     var doneCount = list.filter(function (t) { return state.done[t.key]; }).length;
-    var today = P.CUM[now.getMonth()] + Math.min(now.getDate(), now.getMonth() === 1 ? 28 : 31);
-    var jump = [["gp-week", "This week"], ["gp-todo-h", "To-do list"], ["gp-beds-sec", "Beds"], ["gp-cards-h", "Plants"]]
+    var side = place.zone === "coast" ? "On the coast, west of the rain line: mild, wet winters and cool, foggy summers."
+      : place.zone === "west" ? "West of the rain line: wet winters, dry summers and a long, mild season."
+      : "East of the rain line: little rain, hot summers and colder winters, so watering matters most.";
+    var jump = [["gp-season-sec", "Season check"], ["gp-week", "This week"], ["gp-todo-h", "To-do list"], ["gp-beds-sec", "Beds"], ["gp-cards-h", "Plants"]]
       .concat(preview ? [] : [["gp-log-sec", "Harvests"], ["gp-alert-sec", "Frost alerts"], ["gp-notes-h", "Notes"]]);
     out.innerHTML =
       (preview ? '' : '<div class="gp-bar"><button type="button" class="btn" data-act="print">Print or save as PDF</button>' +
@@ -300,13 +396,15 @@
       '<button type="button" class="btn btn-ghost" data-act="link">Copy link to this plan</button>' +
       '<span class="gp-saved" role="status">Saved on this device</span></div>') +
       '<header class="gp-title"><h2>Garden plan for ' + esc(place.city) + ', ' + place.state + '</h2>' +
-      '<p>' + chosen.length + ' plants · ' + doneCount + ' of ' + list.length + ' jobs done · made ' + short(now) + ', ' + YEAR + ' at rainlinegarden.org</p></header>' +
+      '<p>' + chosen.length + ' plants · ' + doneCount + ' of ' + list.length + ' jobs done · made ' + short(now) + ', ' + YEAR + ' at rainlinegarden.org</p>' +
+      '<p class="gp-rain"><a href="' + base + 'how-it-works/#rain-line">' + side + '</a></p></header>' +
       '<nav class="gp-jump" aria-label="Plan sections">' + jump.map(function (j) { return '<a href="#' + j[0] + '">' + j[1] + '</a>'; }).join("") + '</nav>' +
+      seasonCheck(p, place) +
       thisWeek(list) +
       R.frostFacts(p) +
       '<h2 id="gp-todo-h">Your to-do list</h2><p class="station">Tick jobs off as you go. Jobs due in the next two weeks are highlighted. Dates are a guide: check the soil and the forecast too.</p>' +
       groups.map(function (g) { return '<h3 class="gp-month">' + g.label + '</h3><ul class="gp-tasks">' + g.items.map(taskLi).join("") + '</ul>'; }).join("") +
-      '<h2>Season at a glance</h2><div class="reveal">' + R.chart(sub, today) + '</div>' +
+      '<h2>Season at a glance</h2><div class="reveal">' + R.chart(sub, today()) + '</div>' +
       beds(chosen) +
       '<h2 id="gp-cards-h">Plant cheat sheet</h2><div class="gp-cards">' + chosen.map(cheat).join("") + '</div>' +
       (preview ? '' : harvestLog(chosen) + frostAlerts(place, p) +
@@ -388,7 +486,22 @@
     state.crops = state.crops.filter(function (id) { return id !== b.value; });
     if (b.checked) state.crops.push(b.value);
     save(); render();
+    if (b.checked) noteFor(b.value); else if (pickNote) pickNote.hidden = true;
   });
+  if (starters) {
+    starters.innerHTML = '<p>Not sure where to start? Pick a ready-made plan, then change it however you like.</p><div class="gp-starter-list">' +
+      STARTERS.map(function (st) { return '<button type="button" class="gp-starter" data-starter="' + st.id + '">' + R.icon(st.crops[0], base, 26) + '<span>' + esc(st.name) + '<small>' + st.crops.length + ' plants</small></span></button>'; }).join("") + '</div>';
+    starters.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-starter]"); if (!b) return;
+      var st = STARTERS.filter(function (x) { return x.id === b.dataset.starter; })[0];
+      if (state.crops.length && !confirm("Swap your " + state.crops.length + " plants for the " + st.name + " plan? Your harvest log and notes stay.")) return;
+      state.crops = st.crops.slice(); state.beds = st.beds.map(function (x) { return { w: x.w, l: x.l }; }); state.space = {}; state.done = {};
+      save(); render();
+      if (pickNote) pickNote.hidden = true;
+      if (state.place) { pick.open = false; out.scrollIntoView({ behavior: "smooth", block: "start" }); }
+      else { msg.textContent = "Now choose your town to see your plan."; zip.focus(); }
+    });
+  }
   out.addEventListener("change", function (e) {
     var t = e.target;
     if (t.dataset.key) {
@@ -459,6 +572,14 @@
       s.value = b.dataset.crop;
       document.getElementById("gp-log-sec").scrollIntoView({ behavior: "smooth", block: "start" });
       document.getElementById("gp-log-note").focus({ preventScroll: true });
+    }
+    else if (act === "rmcrop" || act === "addcrop") {
+      var id = b.dataset.crop, c = cropOf(id);
+      state.crops = state.crops.filter(function (x) { return x !== id; });
+      if (act === "addcrop") state.crops.push(id);
+      save(); render();
+      var sec = document.getElementById("gp-season-sec"); if (sec) sec.scrollIntoView({ block: "nearest" });
+      flash(c.name + (act === "addcrop" ? " added to your plan" : " removed from your plan"));
     }
     else if (act === "rmlog") { state.harvests = state.harvests.filter(function (h) { return h.id !== b.dataset.id; }); save(); render(); flash("Harvest removed"); }
   });

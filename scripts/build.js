@@ -78,7 +78,7 @@ function layout({ rel, title, description, canonical, current, body, scripts, js
   const base = rel; // relative prefix back to the site root, e.g. "../../"
   const cur = href => current === href ? ' aria-current="page"' : "";
   const LEARN = [["beginners-guide/", "Beginner's guide", "Start your first Northwest garden"], ["garden-calendar/", "Monthly chores", "What to do in the garden each month"],
-    ["articles/", "Articles", "Growing guides for Northwest weather"], ["glossary/", "Glossary", "Gardening words in plain language"], ["how-it-works/", "How it works", "Where our dates come from"]];
+    ["articles/", "Articles", "Growing guides for Northwest weather"], ["glossary/", "Glossary", "Gardening words in plain language"], ["what-to-grow/", "Plant quiz", "Find the plants that suit you"], ["how-it-works/", "How it works", "Where our dates come from"]];
   const learnOn = LEARN.some(([href]) => href === current);
   const ICON = {
     search: '<svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
@@ -92,8 +92,8 @@ function layout({ rel, title, description, canonical, current, body, scripts, js
     `<div class="nav-menu" id="nav-learn" hidden>${LEARN.map(([href, label, sub]) => `<a href="${base}${href}"${cur(href)}><strong>${label}</strong><span>${sub}</span></a>`).join("")}</div></div>`;
   const menu = `<div class="site-menu" id="site-menu" hidden><div class="wrap">
 <p class="menu-town" hidden></p>
-<div class="menu-cols"><div><p class="menu-h">Plan</p>${MAIN.concat([["my-garden/", "My garden plan"]]).map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("")}</div>
-<div><p class="menu-h">Learn</p>${LEARN.map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("")}</div></div>
+<div class="menu-cols"><div><p class="menu-h">Plan</p>${MAIN.concat([["my-garden/", "My garden plan"], ["what-to-grow/", "Plant quiz"]]).map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("")}</div>
+<div><p class="menu-h">Learn</p>${LEARN.filter(([href]) => href !== "what-to-grow/").map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("")}</div></div>
 </div></div>`;
   const search = `<div class="search-pop" id="search-pop" hidden><div class="wrap"><div class="search-box" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-owns="search-list">
 ${ICON.search}<label for="search-q" class="sr">Search plants, towns and guides</label><input id="search-q" type="search" autocomplete="off" spellcheck="false" placeholder="Search plants, towns and guides" aria-autocomplete="list" aria-controls="search-list">
@@ -150,7 +150,6 @@ ${body}
 <script>(function(){var r=document.documentElement,b=document.querySelector(".theme-btn");if(!b)return;function cur(){return r.dataset.theme==="dark"?"dark":"light"}function sync(){b.setAttribute("aria-label",cur()==="dark"?"Switch to light mode":"Switch to dark mode")}sync();b.addEventListener("click",function(){var n=cur()==="dark"?"light":"dark";r.dataset.theme=n;try{localStorage.setItem("rainline-theme",n)}catch(e){}sync()})})();</script>
 ${(scripts || []).map(s => `<script src="${base}assets/${s}"></script>`).join("\n")}
 <script src="${base}assets/nav.js" defer></script>
-<script src="${base}assets/helper.js" defer></script>
 </body>
 </html>
 `;
@@ -342,7 +341,7 @@ write("", "index.html", layout({
 ${photo("hero", "", { big: "hero", small: "heroSm", cls: "hero-art", sizes: "(min-width: 70rem) 66rem, calc(100vw - 32px)", eager: true })}
 <section class="hero">
 <h1>Plant on Northwest time.</h1>
-<p class="lede">Enter your ZIP or pick a city for local frost dates, what to plant this week, and a full-year planting calendar for Oregon and Washington gardens.</p>
+<p class="lede">The Cascades draw a rain line through Oregon and Washington, and which side you're on decides when you plant. Enter your ZIP or pick a city for local frost dates, what to plant this week, and a full-year planting calendar.</p>
 <form id="finder" class="finder" novalidate>
   <div class="field"><label for="zip">ZIP code</label><input id="zip" name="zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" placeholder="97214"></div>
   <span class="or">or</span>
@@ -352,12 +351,12 @@ ${photo("hero", "", { big: "hero", small: "heroSm", cls: "hero-art", sizes: "(mi
 <p id="msg" class="msg" role="status" aria-live="polite"></p>
 </section>
 <section id="result" aria-live="polite"></section>
+<section class="home-sec plan-cta"><div><h2>Plan your garden</h2>
+<p>Pick your plants, or start from a ready-made plan like a salad bed or a salsa garden, and get a dated to-do list for the year. It warns you when a plant isn't in season, saves as you go and prints on one page.</p></div>
+<div class="plan-cta-btns"><a class="btn" href="my-garden/">Make my garden plan</a><a class="btn btn-ghost" href="what-to-grow/">Not sure what to grow? Take the quiz</a></div></section>
 <section class="home-sec"><div class="sec-head"><h2>Browse by plant type</h2><a href="${WHEN_INDEX}">All ${D.crops.length} plants</a></div>
 ${categoryTiles("")}
 </section>
-<section class="home-sec plan-cta"><div><h2>Plan your garden</h2>
-<p>Pick your plants and get a dated to-do list for the year, with a cheat sheet for each plant. It saves as you go and prints on one page.</p></div>
-<a class="btn" href="my-garden/">Make my garden plan</a></section>
 <section class="home-sec starter"><div><h2>New to gardening?</h2>
 <p>Start with five forgiving crops that are hard to kill, then read the <a href="beginners-guide/">beginner's guide</a>.</p></div>
 <ul class="chips">${G.beginner.map(id => `<li><a href="${WHEN_INDEX}${id}/">${R.icon(id, "", 28)}${cropById(id).name}</a></li>`).join("")}</ul></section>
@@ -658,6 +657,9 @@ write("../", "my-garden/index.html", layout({
 <p id="gp-msg" class="msg" role="status" aria-live="polite"></p>
 <section id="gp-share" class="gp-share" hidden aria-live="polite"></section>
 <details id="gp-pick" class="gp-pick" open><summary><span>What do you want to grow?</span> <span id="gp-count" class="gp-count"></span></summary>
+<div id="gp-starters" class="gp-starters"></div>
+<p class="gp-pick-help">Or pick plants one by one. Once you choose a town, each plant shows <em>Plant now</em>, or the month its next step starts. Not sure what suits you? <a href="../what-to-grow/">Take the plant quiz</a>.</p>
+<p id="gp-pick-note" class="gp-pick-note" role="status" aria-live="polite" hidden></p>
 ${D.categories.map(k => `<fieldset><legend>${k.name}</legend><div class="gp-opts">${k.crops.map(id => `<label class="gp-opt"><input type="checkbox" value="${id}">${R.icon(id, "../", 28)}<span>${cropById(id).name}</span></label>`).join("")}</div></fieldset>`).join("")}
 <p class="gp-pick-foot"><button type="button" class="linkish" id="gp-clear">Clear my plan</button> · Your plan stays in this browser. Nothing is sent to us.</p>
 </details>
@@ -667,8 +669,22 @@ ${D.categories.map(k => `<fieldset><legend>${k.name}</legend><div class="gp-opts
 <input type="hidden" name="${esc(CONFIG.newsletterTagField)}" value="frost-alert"><input type="hidden" name="${esc(CONFIG.newsletterTagField)}" value="frost-{slug}">
 <label for="gp-alert-email" class="sr">Email address</label><input id="gp-alert-email" type="email" name="${esc(CONFIG.newsletterField)}" placeholder="you@example.com" required autocomplete="email">
 <button class="btn" type="submit">Email me</button></form></template>` : ""}`,
-  scripts: ["data.js", "plan.js", "render.js", "helper-data.js", "garden.js"]
+  scripts: ["data.js", "plan.js", "render.js", "guide-data.js", "garden.js"]
 }), "0.8");
+
+/* Plant quiz */
+const qzb = crumbs("../", [["Plant quiz", null]]);
+write("../", "what-to-grow/index.html", layout({
+  rel: "../", canonical: "what-to-grow/", current: "what-to-grow/",
+  title: "What Should I Grow? Plant Quiz for Oregon and Washington Gardens | Rainline Garden",
+  description: "Answer eight quick questions about your town, space, sun and time, and get the vegetables, herbs, fruit and flowers that suit your Northwest garden, with local planting dates.",
+  jsonld: [qzb.ld],
+  body: `${qzb.html}
+<section class="hero"><h1>What should I grow?</h1>
+<p class="lede">Eight quick questions about your town, space, sun and time. You get the plants that suit you, whether each one can go in now, and a one-tap garden plan.</p></section>
+<section id="quiz" class="quiz" aria-live="polite"><noscript><p>The quiz needs JavaScript. You can still <a href="../when-to-plant/">browse every plant</a> or read the <a href="../beginners-guide/">beginner's guide</a>.</p></noscript></section>`,
+  scripts: ["data.js", "plan.js", "render.js", "guide-data.js", "quiz.js"]
+}), "0.7");
 
 /* Beginner's guide */
 const bgb = crumbs("../", [["Beginner's guide", null]]);
@@ -851,6 +867,8 @@ write("../", "how-it-works/index.html", layout({
 <li><strong>9-in-10 safe date:</strong> the date after which there's only a 10% chance.</li>
 <li><strong>Typical first fall frost:</strong> the date by which there's a 50% chance of the first freeze.</li></ul>
 <p>Most stations are at airports. Airports in valley bottoms can run colder than nearby hillsides, and city centers can run warmer. Your own garden may differ by a week or more.</p>
+<h2 id="rain-line">West and east of the rain line</h2>
+<p>The Cascades split the region in two. West of the mountains (the coast, the Willamette Valley, Puget Sound and the southern Oregon valleys), winters are wet and mild and summers are dry, usually from July until the fall rains return in October. East of the mountains, in the rain shadow, rain is scarce all year, summers are hot and winters are colder. My garden plan uses your side of the line for its watering reminders: west-side plans get a reminder to start watering in early July and to ease off in mid October; east-side plans get one in early June and another at the end of September.</p>
 <h2>Planting dates</h2>
 <p>Each crop gets the <em>later</em> of two dates:</p>
 <ol><li><strong>A regional date</strong> for when the soil is usually ready, based on typical soil warming in each climate region (the table below lists them). Washington areas use the closest matching region.</li>
@@ -874,6 +892,8 @@ write("../", "about/index.html", layout({
   body: `<section class="hero prose"><h1>About Rainline Garden</h1>
 <p class="lede">A free planting calendar built for Pacific Northwest gardens, not adapted from a national chart.</p></section>
 <div class="prose"><p>National planting guides treat the whole country the same way. The Northwest doesn't cooperate: coastal gardens rarely frost but never get hot, west-side valleys have long seasons and cold spring soil, and the high desert can frost in July. Rainline Garden gives each area its own dates, built from NOAA weather records and regional growing research.</p>
+<h2 id="name">Why "Rainline"?</h2>
+<p>The Cascade Mountains draw a line through Oregon and Washington. West of it, Pacific storms drop their rain: winters are wet and mild, summers are dry, and the soil stays cold into May. East of it sits the rain shadow, with little rain, hot summers and hard winters. That rain line is the biggest reason a planting date for Portland is wrong for Bend, and it's why this site gives every town its own dates. The rain also sets the garden's rhythm on both sides: when the spring rains ease, when the summer dry spell means watering, and when the fall rains return.</p>
 <h2>Who writes Rainline Garden</h2>
 <p>Two Oregon gardeners with different strengths: Jigmey covers vegetables and planting dates, and Elaine covers soil, perennials, herbs and native plants.</p>
 ${authorCard("../", "jigmey-dorjee", "Vegetables and planting dates")}
@@ -899,8 +919,7 @@ write("../", "privacy/index.html", layout({
 <div class="prose">
 <p>Rainline Garden is owned and operated by ${CONFIG.owner} ("we", "us"). This policy explains what happens to your information when you use the site.</p>
 <h2>What we collect</h2>
-<p>Rainline Garden has no accounts.${CONFIG.newsletterAction ? " If you sign up for the monthly email or frost alerts, your address goes to our email provider and is used only to send that email; every message has an unsubscribe link." : ""} The ZIP code you enter is matched to a city inside your browser and is never sent to our server. Your browser's local storage keeps a few things on your own device: the last city you chose in the planner, your light or dark display choice, the jobs you tick off and the region you pick on the monthly chores page, and your garden plan if you make one on the My garden plan page (the city, the plants you picked, tasks you checked off, bed sizes, your harvest log and your notes). None of it is sent to us. You can clear it by clearing site data in your browser or with the "Clear my plan" link on the plan page.</p>
-<p>The plant question helper also runs entirely in your browser. Questions you type into it are answered from data already loaded on the page and are not sent to us or stored.</p>
+<p>Rainline Garden has no accounts.${CONFIG.newsletterAction ? " If you sign up for the monthly email or frost alerts, your address goes to our email provider and is used only to send that email; every message has an unsubscribe link." : ""} The ZIP code you enter is matched to a city inside your browser and is never sent to our server. Your browser's local storage keeps a few things on your own device: the last city you chose in the planner, your light or dark display choice, the jobs you tick off and the region you pick on the monthly chores page, and your garden plan if you make one on the My garden plan page (the city, the plants you picked, tasks you checked off, bed sizes, your harvest log and your notes). None of it is sent to us. The plant quiz runs in your browser too: your answers are kept in the page address so you can share your results, and are never sent to us. You can clear it by clearing site data in your browser or with the "Clear my plan" link on the plan page.</p>
 <h2>Advertising</h2>
 <p>This site uses Google AdSense to show ads. Google and its partners use cookies to serve ads based on your visits to this and other websites. You can opt out of personalized advertising at <a href="https://www.google.com/settings/ads">Google Ads Settings</a>, and learn more at <a href="https://policies.google.com/technologies/ads">How Google uses information from sites that use its services</a>.</p>
 <h2>Affiliate links</h2>
@@ -948,7 +967,7 @@ const B = CONFIG.basePath;
 fs.writeFileSync(path.join(ROOT, "404.html"), layout({
   rel: B, canonical: "", current: null,
   title: "Page not found | Rainline Garden", description: "That page doesn't exist.",
-  body: `<section class="hero prose"><h1>That page doesn't exist.</h1><p class="lede">Try the <a href="${B}">planner</a>, the <a href="${B}when-to-plant/">crop guides</a> or the <a href="${B}frost-dates/">list of cities</a>.</p></section>`
+  body: `<section class="hero prose"><h1>That page doesn't exist.</h1><p class="lede">Try the <a href="${B}">planner</a>, the <a href="${B}what-to-grow/">plant quiz</a>, the <a href="${B}when-to-plant/">crop guides</a> or the <a href="${B}frost-dates/">list of cities</a>.</p></section>`
 }));
 
 /* Custom domain: GitHub Pages reads the CNAME file. */
@@ -956,15 +975,14 @@ const cname = path.join(ROOT, "CNAME");
 if (CONFIG.customDomain) fs.writeFileSync(cname, CONFIG.customDomain + "\n");
 else if (fs.existsSync(cname)) fs.unlinkSync(cname);
 
-/* Plant helper data: the guide facts the in-browser question box answers from. */
-const helperData = {
+/* Guide facts My garden plan reads (sun, spacing, harvest and so on). */
+const guideData = {
   crops: Object.fromEntries(Object.entries(G.crops).map(([id, g]) => [id, Object.fromEntries(
     ["difficulty", "sun", "spacing", "depth", "plantText", "firstHarvest", "harvest", "problem", "varieties", "care", "frost"]
       .filter(k => g[k] !== undefined).map(k => [k, g[k]]))])),
-  glossary: G.glossary, beginner: G.beginner, beginnerWhy: G.beginnerWhy
 };
-fs.writeFileSync(path.join(ROOT, "assets/helper-data.js"),
-  `/* Generated by scripts/build.js from scripts/guide.js. Do not edit by hand. */\nwindow.RainlineHelperData = ${JSON.stringify(helperData)};\n`);
+fs.writeFileSync(path.join(ROOT, "assets/guide-data.js"),
+  `/* Generated by scripts/build.js from scripts/guide.js. Do not edit by hand. */\nwindow.RainlineGuideData = ${JSON.stringify(guideData)};\n`);
 
 /* Header search index: plants, towns, articles and pages. Loaded by assets/nav.js the first time search opens. */
 const searchIndex = [
@@ -973,7 +991,7 @@ const searchIndex = [
   ...D.categories.map(k => ({ t: k.name, s: k.crops.length + " plants", u: "when-to-plant/" + k.id + "/", k: "group", i: "assets/img/crops/" + k.crops[0] + ".webp" })),
   ...ARTICLES.map(a => ({ t: a.title, s: "Article", u: "articles/" + a.slug + "/", k: "article", i: a.icon ? "assets/img/topics/" + a.icon + ".svg" : a.crops && a.crops[0] ? "assets/img/crops/" + a.crops[0] + ".webp" : "" })),
   ...G.glossary.map(g => ({ t: g[0], s: "Glossary", u: "glossary/#" + g[1], k: "term" })),
-  ...[["", "Planner", "Your local planting calendar"], ["my-garden/", "My garden plan", "Plan, track and print your garden"], ["frost-dates/", "Frost dates by city", "Every town we cover"],
+  ...[["", "Planner", "Your local planting calendar"], ["my-garden/", "My garden plan", "Plan, track and print your garden"], ["what-to-grow/", "Plant quiz", "Find the plants that suit your space and time"], ["frost-dates/", "Frost dates by city", "Every town we cover"],
     ["beginners-guide/", "Beginner's guide", "Start your first garden"], ["garden-calendar/", "Monthly chores", "What to do each month"], ["about/", "About", "Who writes Rainline Garden"], ["contact/", "Contact", "Questions and corrections"]]
     .map(([u, t, sub]) => ({ t, s: sub, u, k: "page" }))
 ];
