@@ -882,6 +882,178 @@ const notes = {
     ]
   },
 
+  collards: {
+    keys: [["Soil pH","6.0–7.5"], ["Spacing","18–24 inches"], ["Cold hardiness","Down to about 10°F"], ["Biggest risk","Cabbage worms"]],
+    sections: [
+      ["Why collards suit Northwest winters",
+        "Collards are a loose-leaf member of the cabbage family, very close to kale. They're tougher than most of their cousins: established plants usually ride out freezes into the low teens, and cold weather turns some of the starch in the leaves to sugar, which is why winter collards taste milder and sweeter than summer ones.",
+        "West of the Cascades, a planting set out in midsummer gives leaves from fall right through to spring. East of the Cascades, hard winters can kill them, but fall harvests are still excellent."],
+      ["Soil, feeding and picking",
+        "Like all leafy cabbage-family crops, collards want rich soil with plenty of nitrogen and a pH of about 6.0 to 7.5. Mix in compost before planting and side-dress with a balanced fertilizer a month later. Keep the soil evenly moist; stressed plants get tough, bitter leaves.",
+        "Pick from the bottom up, taking two or three leaves per plant at a time and leaving the growing tip alone. A well-fed plant keeps making new leaves for months."],
+      ["Keeping pests off",
+        "The white cabbage butterfly lays eggs on the leaves, and the green caterpillars that hatch chew big holes. Aphids cluster under leaves in late summer. Insect netting or row cover laid over hoops from planting day is the simplest fix. Hand-pick any caterpillars you find, and knock aphids off with a strong spray of water.",
+        "Don't grow collards in the same spot as kale, cabbage or broccoli two years running. That breaks the cycle of clubroot and other soil diseases the family shares."]
+    ],
+    faq: [
+      ["What's the difference between collards and kale?", "They're the same species with different leaves. Collards have broad, flat, smooth leaves; most kales are curly or crinkled. Collards are a bit more heat-tolerant and slightly milder."],
+      ["When do collards taste best?", "After a few frosts. Cold makes the plant store sugar in its leaves, so fall and winter collards are noticeably sweeter."],
+      ["Can I grow collards in summer?", "Yes, they handle heat better than most cabbage-family greens. In hot eastern valleys, give them afternoon shade and steady water."]
+    ]
+  },
+  parsnips: {
+    keys: [["Days to sprout","14–28"], ["Days to harvest","110–130"], ["Seed life","About 1 year"], ["Biggest risk","Poor sprouting"]],
+    sections: [
+      ["Getting parsnips to sprout",
+        "Most parsnip failures happen before the seedlings appear. The seed is short-lived, so buy fresh seed every year. It takes two to four weeks to sprout in cool spring soil, and the bed has to stay moist the whole time. A light board or burlap laid over the row, lifted as soon as you see green, helps keep the surface from crusting.",
+        "Sow a few radish seeds in the same row. They come up fast, mark where the row is and break the crust for the slower parsnips."],
+      ["Soil for long roots",
+        "Parsnips grow a root 8 to 12 inches long, so they need deep, loose soil with no rocks or lumps of fresh manure, which cause forked roots. Raised beds or deeply dug soil work best in heavy Northwest clay. They're not heavy feeders; well-rotted compost dug in before sowing is enough."],
+      ["Frost, sweetness and winter storage",
+        "Parsnips are a long-season crop meant to be dug after cold weather arrives. A few frosts turn their stored starch into sugar, and the roots get much sweeter. West of the Cascades, just leave them in the ground and dig as needed through winter. East of the Cascades, mulch the row heavily with straw so the ground doesn't freeze solid, or dig and store them in a cold, humid fridge drawer.",
+        "Wear gloves and long sleeves when handling the leaves on sunny days: the sap can make skin blister when it's exposed to sunlight."]
+    ],
+    faq: [
+      ["Why didn't my parsnips come up?", "Usually old seed or a seedbed that dried out during the long sprouting time. Use seed packed for this year and keep the surface moist for up to four weeks."],
+      ["When should I dig parsnips?", "From late fall onward, after a few frosts. In mild west-side gardens they can stay in the ground until early spring, when they start to regrow."],
+      ["Why are my parsnips forked?", "Rocks, hard soil or fresh manure in the bed. Loosen the soil deeply and use only well-aged compost."]
+    ]
+  },
+  celery: {
+    keys: [["Start indoors","10–12 weeks before"], ["Nights before planting","Above 50°F"], ["Water","1–2 inches a week"], ["Biggest risk","Bolting"]],
+    sections: [
+      ["Starting celery from seed",
+        "Celery seed is tiny and slow. Sow it indoors 10 to 12 weeks before planting time, pressing it onto the surface of the mix without covering it, since it needs light to sprout. Keep it at about 70°F; it can take two to three weeks to come up. Seedlings grow slowly at first, so be patient. Buying starts is a good shortcut."],
+      ["Why timing matters",
+        "Celery is a biennial: it normally makes leaves one year and flowers the next. A week or more of nights below about 50°F convinces a young plant it has been through winter, and it bolts to seed in summer instead of making stalks. That's why the planting dates here wait for warmer nights than other cool-season crops.",
+        "Harden seedlings off gradually, and if a cold snap comes after planting, cover them with row cover."],
+      ["Water, food and blanching",
+        "Celery has shallow roots and comes from marshy ground, so it needs water every week of summer. Dry soil gives you stringy, bitter, hollow stalks. Mulch the bed and use a soaker hose. Feed with compost at planting and a balanced fertilizer once a month.",
+        "Blanching (wrapping stalks in paper or cardboard for the last two weeks) makes them paler and milder, but it's optional. Many gardeners prefer the darker, stronger-flavored green stalks for cooking."]
+    ],
+    faq: [
+      ["Why is my celery bitter and stringy?", "Usually not enough water or heat stress. Celery needs steady moisture all season; mulch and water deeply every week."],
+      ["Why did my celery flower in its first summer?", "It got too many cold nights while young. Wait until nights stay above about 50°F before planting out."],
+      ["Can I regrow celery from the base?", "A store-bought base will sprout leaves in water or soil, but it rarely makes full stalks. It's a fun project, not a crop."]
+    ]
+  },
+  "ground-cherries": {
+    keys: [["Soil to sprout","70–85°F"], ["Days to harvest","65–75"], ["Plant height","1–2 feet, sprawling"], ["Biggest risk","Flea beetles"]],
+    sections: [
+      ["What ground cherries are",
+        "Ground cherries are small relatives of tomatillos and tomatoes. Each marble-sized golden fruit grows in a papery husk and tastes like a mix of pineapple and tomato. Unlike tomatillos, a single plant pollinates itself, so one or two plants are enough.",
+        "They ripen earlier and more reliably than most tomatoes, which makes them a good bet for cool west-side and coastal summers."],
+      ["Growing and picking",
+        "Start seeds indoors about seven weeks before planting out, and plant them in warm soil after the last frost, buried a little deeper than they grew in the pot. They're low, sprawling plants, so give them room and skip the cage. Average soil is fine; too much nitrogen gives leaves instead of fruit.",
+        "The fruit drops to the ground when it's ready. Collect it every few days. Fruit in dry husks keeps for several weeks at room temperature."],
+      ["Volunteers next year",
+        "Fruit you miss drops seed, and seedlings will pop up in that bed next year. Pull the extras or move a few to where you want them. Like tomatoes, don't grow them where tomatoes, peppers, eggplants or potatoes grew last year."]
+    ],
+    faq: [
+      ["Are ground cherries the same as tomatillos?", "They're close relatives, but ground cherries are smaller, sweeter and self-pollinating. Tomatillos are tart and need two plants to set fruit."],
+      ["Are green ground cherries safe to eat?", "No. Eat only fully golden fruit. Unripe fruit, leaves and husks contain compounds that can upset your stomach."],
+      ["How do I know they're ripe?", "They fall off the plant. The husk turns dry and tan, and the fruit inside is golden yellow."]
+    ]
+  },
+  "sweet-potatoes": {
+    keys: [["Soil to plant","Above 65°F"], ["Days to harvest","90–120"], ["Curing","1–2 weeks at 80–85°F"], ["Biggest risk","Cool summers"]],
+    sections: [
+      ["Can you grow them here?",
+        "Sweet potatoes are a tropical crop, and they grow roots only when soil and nights are warm. The hot valleys east of the Cascades grow good crops without much fuss. West of the Cascades and on the coast, harvests are smaller and less certain, but a short-season variety in the warmest spot you have, on black plastic, often gives a worthwhile crop in a warm summer."],
+      ["Slips and planting",
+        "Sweet potatoes are grown from slips, rooted shoots sprouted from a stored root. Buy them from a nursery or mail-order supplier in spring, or sprout your own from a store-bought root about two months ahead. Plant them deep in loose, raised rows once the soil is truly warm, usually a week or two after tomato planting. Water well for the first two weeks, then water less; too much water and nitrogen give you lush vines and small roots."],
+      ["Harvest, curing and storage",
+        "Dig carefully with a fork before the soil cools in early fall, since cold soil damages the roots. Freshly dug sweet potatoes are starchy and bland. Curing them somewhere warm and humid (around 80 to 85°F) for one to two weeks heals skin wounds and turns starch to sugar. Store them at about 55 to 60°F. The fridge gives them a hard core and an off taste."]
+    ],
+    faq: [
+      ["Can I grow sweet potatoes in Portland or Seattle?", "Yes, in a warm summer with the right variety. Use a short-season type like Georgia Jet, black plastic mulch and your sunniest spot, and expect a smaller crop than east of the Cascades."],
+      ["Can I plant a sweet potato from the store?", "Not directly. Sprout it in water or damp soil to grow slips, then plant the rooted slips. Store roots are sometimes treated to stop sprouting, so organic ones work best."],
+      ["Why are my sweet potatoes not sweet?", "They need curing. Keep them warm and humid for a week or two, then wait a few more weeks in storage; the flavor keeps improving."]
+    ]
+  },
+  pumpkins: {
+    keys: [["Soil to sprout","70–90°F"], ["Days to harvest","90–120"], ["Space per plant","25–50 sq ft"], ["Biggest risk","Powdery mildew"]],
+    sections: [
+      ["Timing for Halloween",
+        "Most carving pumpkins need 90 to 110 days from planting to ripe. Count back from early October: in most of the Northwest that means plants should be in the ground by late May or early June. Starting them indoors three to four weeks early gives you a head start in cool springs. Pumpkins that ripen in September keep fine in a cool, dry spot until Halloween."],
+      ["Space, feeding and pollination",
+        "Pumpkin vines run 10 to 20 feet. Give each plant a hill of soil mixed with plenty of compost, and let the vines sprawl, or grow small pie types on a sturdy fence. They're heavy feeders and need deep watering once or twice a week, especially once fruit starts to swell.",
+        "Each plant has separate male and female flowers. Bees move the pollen; if young fruits shrivel, pollination failed. You can help by brushing pollen from a male flower onto the center of a female one (the one with a tiny pumpkin behind it) in the morning."],
+      ["Ripening and curing",
+        "A ripe pumpkin is fully colored, has a hard rind and sounds hollow when tapped. Cut it with a few inches of stem, never carry it by the stem, and cure it somewhere warm for about a week to harden the skin. Bring them in before a hard frost, which damages the rind and shortens storage."]
+    ],
+    faq: [
+      ["When should I plant pumpkins for Halloween?", "Late May to early June for most varieties. Check the days to maturity on the seed packet and count back from early October."],
+      ["Why are my baby pumpkins turning yellow and falling off?", "They weren't pollinated. It's common early in the season or in cool, rainy weather when bees are scarce. Later fruits usually set fine, or hand-pollinate in the morning."],
+      ["Can I grow a giant pumpkin here?", "Yes, but it needs a long season, a sunny spot of several hundred square feet, rich soil and lots of water. Start indoors and plant out as soon as it's warm."]
+    ]
+  },
+  honeyberries: {
+    keys: [["Cold hardiness","Below -40°F"], ["Soil pH","5.5–7.5"], ["First full crops","Year 4–5"], ["Biggest risk","Birds"]],
+    sections: [
+      ["The earliest berry of the year",
+        "Honeyberries (also called haskap) are a blue-fruited honeysuckle from cold northern regions. The bushes bloom in late winter, and the flowers shrug off frosts that would ruin other fruit. Berries ripen in late spring, a couple of weeks before the first strawberries. They taste like a mix of blueberry and raspberry with a tart edge."],
+      ["Pollination partners",
+        "A single honeyberry bush sets little or no fruit. Plant at least two different varieties that bloom at the same time; nurseries list which ones pair up. Early bees and bumblebees do the pollinating, so a site that gets winter sun helps."],
+      ["Easy care",
+        "Unlike blueberries, honeyberries aren't fussy about soil pH and grow in most garden soils that drain well. Mulch, water through the first two summers and prune lightly in late winter once bushes are a few years old, removing old, weak or crossing stems. Net them before the berries color; birds love them."]
+    ],
+    faq: [
+      ["What do honeyberries taste like?", "Most people describe a mix of blueberry and raspberry, sometimes with a slightly tart finish. Flavor varies by variety and ripeness."],
+      ["Why don't my honeyberries have fruit?", "Usually they're too young or have no compatible partner nearby. Plant two varieties that bloom together, and give them three to five years."],
+      ["Are honeyberries the same as other honeysuckles?", "No. Only blue honeysuckle varieties sold for fruit are edible. Many ornamental honeysuckles have berries that should not be eaten."]
+    ]
+  },
+  currants: {
+    keys: [["Sun","Full sun to part shade"], ["Soil pH","5.5–7.0"], ["Productive life","15–20 years"], ["Biggest risk","Currantworm"]],
+    sections: [
+      ["Red, white and black currants",
+        "Red and white currants make sparkling, tart jelly and are lovely raw in small amounts. Black currants are stronger and musky, best for jam, syrup and cordial. All are hardy, long-lived bushes that crop well in cool summers and in spots with a few hours of shade, which makes them good fits for Northwest gardens."],
+      ["White pine blister rust",
+        "Black currants (and to a lesser extent other currants and gooseberries) are an alternate host of white pine blister rust, a disease that kills five-needle pines like western white pine. Plant rust-resistant black currant varieties such as Titania, Consort or Crusader, especially if you live near forests with white pines."],
+      ["Pruning and pests",
+        "Currants fruit best on two- and three-year-old wood. Each late winter, cut out stems older than three or four years at ground level and keep about ten stems of mixed ages. Black currants fruit on younger wood, so prune them a bit harder.",
+        "In spring, watch for imported currantworm: green, spotted larvae that start under the lower leaves and can strip a bush in a week. Pick them off or spray with spinosad. Net the bushes as berries color."]
+    ],
+    faq: [
+      ["Can currants grow in shade?", "Yes, better than most fruit. A few hours of direct sun is enough, and afternoon shade helps in hot eastern valleys."],
+      ["Is red-flowering currant the same plant?", "It's a related native shrub grown for its spring flowers. Its berries are edible but dry and bland; grow red, white or black currants for fruit."],
+      ["Do I need two currant bushes?", "Red and white currants are self-fertile and crop well alone. Black currants set fruit alone too, but most give bigger crops with a second variety nearby."]
+    ]
+  },
+  gooseberries: {
+    keys: [["Sun","Full sun to part shade"], ["Soil pH","6.0–7.0"], ["Productive life","15–20 years"], ["Biggest risk","Powdery mildew"]],
+    sections: [
+      ["Green, red and dessert gooseberries",
+        "Gooseberries ripen from early to midsummer. Picked green and firm, they're tart and perfect for pies, sauces and jam. Left to ripen, many turn red, yellow or purple and get sweet enough to eat fresh. They're compact, very hardy bushes that do well in cool summers."],
+      ["Mildew and currantworm",
+        "Powdery mildew is the main disease: a white, felty coating on leaves and fruit. Plant mildew-resistant varieties like Invicta, Hinnonmaki Red or Captivator, keep the center of the bush open and avoid heavy nitrogen feeding.",
+        "In spring, imported currantworm larvae can strip leaves fast. Check the undersides of lower leaves from April and pick them off or spray with spinosad."],
+      ["Pruning",
+        "Gooseberries fruit on one- to three-year-old wood. In late winter, remove stems older than three years and any that cross or crowd the center. Pruning to an open, goblet shape improves airflow (fewer disease problems) and makes the thorny bush easier to pick."]
+    ],
+    faq: [
+      ["When are gooseberries ripe?", "For cooking, pick when full-sized but still firm. For eating fresh, wait until they soften slightly and reach full color."],
+      ["Are there thornless gooseberries?", "Captivator is nearly thornless. Most other varieties have thorns, so wear thick gloves."],
+      ["Can gooseberries spread white pine blister rust?", "They can host it, though less readily than black currants. Rust-resistant varieties reduce the risk."]
+    ]
+  },
+  elderberries: {
+    keys: [["Shrub size","6–12 feet"], ["Soil","Most, even damp"], ["First crops","Year 2–3"], ["Biggest risk","Raw berries and stems"]],
+    sections: [
+      ["Which elderberries to grow",
+        "Blue elderberry is native across much of the Northwest, from sunny west-side valleys to the dry east side, and its berries are the edible kind when cooked. American and European elderberry varieties like York, Adams and Nova are bred for bigger fruit clusters and grow well on both sides of the Cascades. Red elderberry, the common native on the west side, is lovely for birds but its berries are not for eating."],
+      ["Safety in the kitchen",
+        "Elderberry leaves, stems, roots and unripe berries contain compounds that can cause nausea and vomiting. Strip ripe berries off every bit of stem (freezing the clusters first makes it easy), and always cook them into syrup, jam or pie. The flowers are also edible and make a classic cordial."],
+      ["Planting and care",
+        "Elderberries are fast, tough shrubs that tolerate damp soil, some shade and neglect. Plant two varieties for better crops, water through the first summer and keep mulch around the shallow roots. Canes fruit best in their second and third years; cut out older ones at ground level in late winter. They spread by suckers, so give them room or mow around them."]
+    ],
+    faq: [
+      ["Can you eat raw elderberries?", "No. Raw berries can cause stomach upset. Cook them first, and remove all stems and leaves."],
+      ["Is the native red elderberry edible?", "Its berries are not recommended for eating. Grow blue elderberry or a fruiting variety like York or Adams if you want berries."],
+      ["Do I need two elderberry plants?", "Most set some fruit alone, but you'll get much bigger crops with two different varieties planted near each other."]
+    ]
+  },
   peonies: {
     keys: [["Eye depth","1–2 inches, no deeper"], ["Soil pH","6.0–7.0"], ["Sun","6+ hours"], ["Biggest risk","Botrytis in wet springs"]],
     sections: [

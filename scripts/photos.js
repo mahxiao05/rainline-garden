@@ -115,5 +115,15 @@ module.exports = {
   "crop:lavender": { src: "pexels:4242688", alt: "Rows of purple lavender in bloom" },
   "crop:tomatillos": { src: "pexels:35525515", alt: "Green tomatillos in their papery husks" },
   "crop:zinnias": { src: "pexels:23615938", alt: "Coral-pink zinnias blooming in a garden bed" },
-  "crop:peonies": { src: "pexels:1260753", alt: "Coral-pink peonies blooming on a leafy bush" }
+  "crop:peonies": { src: "pexels:1260753", alt: "Coral-pink peonies blooming on a leafy bush" },
+  "crop:collards": { src: "pexels:29829320", alt: "Hands cupping a young collard plant with broad, veined leaves" },
+  "crop:parsnips": { src: "pexels:28797269", alt: "Freshly pulled parsnips with their leafy tops" },
+  "crop:celery": { src: "pexels:13044694", alt: "Crisp green celery stalks with leaves" },
+  "crop:ground-cherries": { src: "pexels:5945905", alt: "A golden ground cherry in its open papery husk" },
+  "crop:sweet-potatoes": { src: "pexels:2797395", alt: "A pile of freshly dug sweet potatoes" },
+  "crop:pumpkins": { src: "pexels:5538417", alt: "Orange pumpkins lying in a harvested field" },
+  "crop:honeyberries": { src: "pexels:10097289", alt: "A handful of elongated blue honeyberries" },
+  "crop:currants": { src: "pexels:8734194", alt: "Strings of ripe red currants hanging on the bush" },
+  "crop:gooseberries": { src: "pexels:8971015", alt: "Green gooseberries ripening on a leafy branch" },
+  "crop:elderberries": { src: "pexels:39209291", alt: "Clusters of ripe dark elderberries among green leaves" }
 };

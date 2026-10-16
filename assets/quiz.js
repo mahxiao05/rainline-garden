@@ -12,29 +12,29 @@
   // Plant traits the quiz filters on. Plants not listed in POT need a bed or the ground.
   var POT = ["lettuce", "spinach", "arugula", "chard", "kale", "radishes", "bok-choy", "peas", "beans", "carrots", "beets", "onions", "garlic",
     "shallots", "tomatoes", "peppers", "eggplant", "basil", "cilantro", "parsley", "dill", "chives", "mint", "rosemary", "thyme", "oregano",
-    "lavender", "strawberries", "blueberries", "figs", "zinnias", "sweet-peas", "tulips", "daffodils", "kohlrabi", "turnips"];
+    "lavender", "strawberries", "blueberries", "figs", "zinnias", "sweet-peas", "tulips", "daffodils", "kohlrabi", "turnips", "collards", "ground-cherries", "celery"];
   // Too big for a single raised bed: trees, big shrubs and long-lived spreading plants.
   var BIG = ["apples", "pears", "plums", "cherries", "peaches", "figs", "hazelnuts", "blackberries", "grapes", "hardy-kiwi", "serviceberry",
-    "red-flowering-currant", "oregon-grape", "huckleberries", "blueberries", "raspberries", "asparagus", "rhubarb", "artichokes", "peonies"];
+    "red-flowering-currant", "oregon-grape", "huckleberries", "blueberries", "raspberries", "asparagus", "rhubarb", "artichokes", "peonies", "honeyberries", "currants", "gooseberries", "elderberries"];
   var TREES = ["apples", "pears", "plums", "cherries", "peaches", "figs", "hazelnuts"];
-  var SPRAWL = ["winter-squash", "melons", "summer-squash", "cucumbers", "blackberries", "hardy-kiwi", "grapes"];
+  var SPRAWL = ["winter-squash", "melons", "summer-squash", "cucumbers", "blackberries", "hardy-kiwi", "grapes", "pumpkins", "sweet-potatoes"];
   var PERENNIAL = ["strawberries", "blueberries", "raspberries", "blackberries", "grapes", "hardy-kiwi", "asparagus", "rhubarb", "artichokes",
     "chives", "mint", "rosemary", "thyme", "oregano", "lavender", "apples", "pears", "plums", "cherries", "peaches", "figs", "hazelnuts",
-    "huckleberries", "oregon-grape", "red-flowering-currant", "serviceberry", "camas", "daffodils", "peonies", "tulips"];
+    "huckleberries", "oregon-grape", "red-flowering-currant", "serviceberry", "camas", "daffodils", "peonies", "tulips", "honeyberries", "currants", "gooseberries", "elderberries"];
   // Plants deer usually leave alone (strong-smelling, bitter or poisonous). No plant is fully deer-proof.
   var DEER_OK = ["garlic", "onions", "leeks", "shallots", "chives", "rosemary", "thyme", "oregano", "lavender", "mint", "dill", "daffodils",
     "rhubarb", "oregon-grape", "peonies", "potatoes", "fava-beans"];
   // Plants slugs go for first in wet Northwest springs.
-  var SLUG = ["lettuce", "spinach", "chard", "bok-choy", "cabbage", "beans", "pole-beans", "basil", "strawberries", "dahlias", "zinnias", "sunflowers", "cucumbers"];
+  var SLUG = ["lettuce", "spinach", "chard", "bok-choy", "cabbage", "celery", "beans", "pole-beans", "basil", "strawberries", "dahlias", "zinnias", "sunflowers", "cucumbers"];
   var GOALS = [
-    ["salad", "Salads and greens", ["lettuce", "spinach", "arugula", "chard", "kale", "bok-choy", "radishes", "peas"]],
-    ["summer", "Summer favorites", ["tomatoes", "summer-squash", "cucumbers", "beans", "pole-beans", "peppers", "corn", "basil", "tomatillos", "eggplant", "melons"]],
+    ["salad", "Salads and greens", ["lettuce", "spinach", "arugula", "chard", "kale", "collards", "bok-choy", "radishes", "peas"]],
+    ["summer", "Summer favorites", ["tomatoes", "summer-squash", "cucumbers", "beans", "pole-beans", "peppers", "corn", "basil", "tomatillos", "eggplant", "melons", "ground-cherries", "sweet-potatoes"]],
     ["herbs", "Cooking herbs", ["basil", "cilantro", "parsley", "dill", "chives", "mint", "rosemary", "thyme", "oregano"]],
-    ["pantry", "Food that stores", ["garlic", "onions", "shallots", "potatoes", "winter-squash", "carrots", "beets", "leeks"]],
-    ["fruit", "Fruit and berries", ["strawberries", "blueberries", "raspberries", "blackberries", "grapes", "hardy-kiwi", "apples", "pears", "plums", "cherries", "peaches", "figs", "huckleberries", "melons", "rhubarb"]],
+    ["pantry", "Food that stores", ["garlic", "onions", "shallots", "potatoes", "winter-squash", "carrots", "beets", "leeks", "pumpkins", "parsnips", "sweet-potatoes"]],
+    ["fruit", "Fruit and berries", ["strawberries", "blueberries", "raspberries", "blackberries", "grapes", "hardy-kiwi", "apples", "pears", "plums", "cherries", "peaches", "figs", "huckleberries", "melons", "rhubarb", "honeyberries", "currants", "gooseberries", "elderberries", "ground-cherries"]],
     ["flowers", "Flowers to cut", ["dahlias", "sunflowers", "zinnias", "sweet-peas", "tulips", "daffodils", "peonies", "lavender"]],
-    ["bees", "Feeding bees and birds", ["lavender", "sunflowers", "zinnias", "oregano", "thyme", "rosemary", "dill", "chives", "red-flowering-currant", "camas", "serviceberry", "oregon-grape", "huckleberries", "blueberries", "raspberries"]],
-    ["kids", "A project with kids", ["radishes", "peas", "beans", "sunflowers", "strawberries", "carrots", "winter-squash", "potatoes"]]
+    ["bees", "Feeding bees and birds", ["lavender", "sunflowers", "zinnias", "oregano", "thyme", "rosemary", "dill", "chives", "red-flowering-currant", "camas", "serviceberry", "oregon-grape", "huckleberries", "blueberries", "raspberries", "elderberries"]],
+    ["kids", "A project with kids", ["radishes", "peas", "beans", "sunflowers", "strawberries", "carrots", "pumpkins", "ground-cherries", "potatoes"]]
   ];
 
   var QUESTIONS = [
