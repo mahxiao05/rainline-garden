@@ -390,7 +390,7 @@ table.plan { width: 100%; border-collapse: collapse; font-size: 1rem; background
 
 /* Ads: reserved space so the layout doesn't jump when ads load. */
 .ad-slot { margin: 2rem 0; min-height: 0; }
-.ad-slot:empty { display: none; }
+.ad-slot:empty, .ad-slot:has(ins[data-ad-status="unfilled"]) { display: none; }
 
 .site-foot { margin-top: 4rem; border-top: 1px solid var(--line); background: var(--paper); padding: 2rem 0 2.5rem; font-size: .95rem; color: var(--muted); }
 .foot-brand { font-family: var(--serif); font-size: 1.2rem; color: var(--fir); }
