@@ -436,6 +436,7 @@ function why(c, r, p) {
   if (G.crops[c.id].fall) return `${G.crops[c.id].fall.why} In ${city} the first fall frost usually comes around ${P.fmtLong(f.fall50)}.`;
   const last = `${city}'s typical last spring frost is ${P.fmtLong(f.spring50)}.`;
   const anchor = P.doy(p.zone.anchors[c.anchor]);
+  if (c.id === "celery") return last + ` Celery handles light frost, but a week or two of nights below about 50°F makes young plants bolt to seed, so planting waits until nights warm up, around ${P.fmtLong(sp.start)}.`;
   if (c.group === "cool" || c.group === "berry") {
     const hardy = c.group === "berry" ? "As a hardy perennial" : "As a cool-season crop that handles light frost";
     const weeks = Math.round((f.spring50 - sp.start) / 7);

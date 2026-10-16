@@ -535,6 +535,67 @@ module.exports = {
     {"name":"Profusion","type":"Compact, mildew-resistant","days":"Blooms early summer to frost","where":"Both sides","note":"A low, spreading zinnia that blooms nonstop with little care. Strong resistance to powdery mildew makes it ideal for west-side gardens."},
     {"name":"Oklahoma","type":"Small-flowered cut zinnia","days":"Blooms midsummer to frost","where":"Both sides","note":"Small, double flowers in bright colors on tall stems. It has better mildew tolerance than many tall zinnias and is popular for bouquets."}
   ],
+  "collards": [
+    {"name":"Champion","type":"Vates type, compact","days":"60 days","where":"Both sides","note":"An improved Vates collard with dark blue-green leaves on compact plants. It is very cold-hardy and slow to bolt, so it keeps producing from fall well into spring."},
+    {"name":"Georgia Southern","type":"Tall heirloom","days":"75 days","where":"Both sides","note":"The classic Southern collard: tall plants with big, smooth, blue-green leaves. It handles both summer heat and hard frost, and the flavor sweetens after cold weather."},
+    {"name":"Vates","type":"Low, compact heirloom","days":"75 days","where":"Both sides","note":"A short, sturdy collard with broad, slightly crinkled leaves. Long a favorite for overwintering, it stands up to cold, wind and rain."},
+    {"name":"Flash","type":"Hybrid, smooth leaves","days":"55 days","where":"Both sides","note":"A fast hybrid with smooth, dark leaves and good bolt resistance. A dependable pick for spring plantings, when other collards may bolt early."}
+  ],
+  "parsnips": [
+    {"name":"Hollow Crown","type":"Long heirloom","days":"120 days","where":"Both sides","note":"A long-grown heirloom with smooth, white, tapered roots and sweet flavor after frost. It needs deep, loose soil to reach full length."},
+    {"name":"Harris Model","type":"Smooth, white heirloom","days":"120 days","where":"Both sides","note":"Clean, white roots with smooth skin and fine-grained, sweet flesh. A reliable standard that stores well in the ground through west-side winters."},
+    {"name":"Gladiator","type":"Hybrid, canker-resistant","days":"110 days","where":"Both sides","note":"A vigorous hybrid with smooth, uniform roots that sprouts more evenly than most and resists parsnip canker. A good choice for first-time growers."},
+    {"name":"Javelin","type":"Slender, canker-resistant","days":"110 days","where":"Both sides","note":"Long, slender roots with good canker resistance and sweet flavor. Its narrow shape suits heavier soils a little better than wide-shouldered types."}
+  ],
+  "celery": [
+    {"name":"Tango","type":"Green, smooth stalks","days":"85 days from transplant","where":"Both sides","note":"Tender, smooth, light-green stalks with little stringiness and good bolt resistance. One of the easiest celeries for home gardens."},
+    {"name":"Utah 52-70","type":"Classic tall green","days":"100 days from transplant","where":"Both sides","note":"The standard dark-green celery with thick, crisp stalks. It needs steady water all summer but rewards you with full-sized heads."},
+    {"name":"Ventura","type":"Tall green, vigorous","days":"80 days from transplant","where":"Both sides","note":"Tall, upright plants with smooth, crisp stalks and good tolerance of cool weather, which suits west-side gardens."},
+    {"name":"Golden Self-Blanching","type":"Pale yellow-green","days":"85 days from transplant","where":"West side","note":"Naturally pale, mild stalks with no wrapping needed. Plants are shorter and earlier than green types, which helps in shorter seasons."}
+  ],
+  "ground-cherries": [
+    {"name":"Aunt Molly's","type":"Heirloom, sweet","days":"70 days","where":"Both sides","note":"The classic ground cherry, with sweet, citrusy golden fruit. Compact, sprawling plants produce heavily from midsummer until frost."},
+    {"name":"Goldie","type":"Heirloom, golden","days":"75 days","where":"Both sides","note":"Small, golden fruits with a sweet, tropical flavor. Productive and easy, it is a good one for kids to pick off the ground."},
+    {"name":"Cossack Pineapple","type":"Heirloom, pineapple flavor","days":"65 days","where":"Short seasons","note":"An early heirloom with a pronounced pineapple flavor. Its quick ripening makes it a good pick for the coast and short-season gardens."}
+  ],
+  "sweet-potatoes": [
+    {"name":"Georgia Jet","type":"Red skin, orange flesh","days":"90 days","where":"Both sides","note":"One of the fastest sweet potatoes, producing big, moist orange roots in a short, cool season. The best bet for west-side gardens."},
+    {"name":"Covington","type":"Rose skin, orange flesh","days":"100 days","where":"East side","note":"Smooth, uniform roots with sweet orange flesh that bakes beautifully. It yields well in hot summers and stores for months after curing."},
+    {"name":"Beauregard","type":"Red-purple skin, orange flesh","days":"100 days","where":"East side","note":"The most widely grown sweet potato in the U.S., with heavy yields of sweet, moist roots. Best where summers are reliably hot."},
+    {"name":"Murasaki","type":"Purple skin, white flesh","days":"105 days","where":"East side","note":"A Japanese-type sweet potato with purple skin and dry, nutty, chestnut-sweet white flesh. It needs a warm, long summer to size up."}
+  ],
+  "pumpkins": [
+    {"name":"Howden","type":"Classic carving pumpkin","days":"115 days","where":"Both sides","note":"The original jack-o'-lantern pumpkin: round, deep orange, 20 to 25 pounds, with a sturdy handle. Plant by early June for Halloween."},
+    {"name":"Small Sugar","type":"Pie pumpkin","days":"100 days","where":"Both sides","note":"A small, sweet heirloom pumpkin of about 5 to 8 pounds with smooth flesh for pies. It ripens more reliably here than big carving types."},
+    {"name":"Jack Be Little","type":"Miniature","days":"95 days","where":"Both sides","note":"Tiny, flattened orange pumpkins that fit in your palm, many per vine. Great for decorations and for kids, and they keep for months."},
+    {"name":"Cinderella (Rouge Vif d'Etampes)","type":"Flattened French heirloom","days":"110 days","where":"Both sides","note":"Deep red-orange, flattened, ribbed pumpkins that look like a fairy-tale coach. Good for both decorating and cooking."},
+    {"name":"Atlantic Giant","type":"Giant","days":"120+ days","where":"Both sides","note":"The variety behind most giant pumpkin records. In the Northwest it needs an early start indoors, a large sunny plot and a lot of water and feeding."}
+  ],
+  "honeyberries": [
+    {"name":"Aurora","type":"Large, sweet","days":"Ripens late spring","where":"Both sides","note":"One of the sweetest and most productive varieties, with large, flavorful berries. It pairs well with Borealis and Honey Bee for pollination."},
+    {"name":"Borealis","type":"Compact, sweet","days":"Ripens late spring","where":"Both sides","note":"A smaller bush with large, sweet berries, good for small gardens. It needs a compatible partner like Aurora or Tundra."},
+    {"name":"Boreal Blizzard","type":"Very large berries","days":"Ripens early summer","where":"Both sides","note":"Big, sweet, elongated berries on a vigorous bush. It blooms a little later than many, so match it with another late-blooming variety."},
+    {"name":"Indigo Gem","type":"Productive, tangy","days":"Ripens late spring","where":"Both sides","note":"A reliable, heavy producer with chewy, tangy-sweet berries. Many growers pair it with Tundra or Honey Bee."}
+  ],
+  "currants": [
+    {"name":"Rovada","type":"Red, long clusters","days":"Ripens July","where":"Both sides","note":"Long strings of large, bright red berries that are easy to pick. Late-flowering, which helps it avoid spring frost damage, and very productive."},
+    {"name":"Red Lake","type":"Red, classic","days":"Ripens July","where":"Both sides","note":"A long-time favorite red currant with medium-large, tart berries ideal for jelly. Hardy and dependable."},
+    {"name":"Blanka","type":"White","days":"Ripens July","where":"Both sides","note":"Translucent white berries that are a little sweeter and milder than red currants, good for eating fresh. Heavy yields on a sturdy bush."},
+    {"name":"Titania","type":"Black, rust-resistant","days":"Ripens July","where":"Both sides","note":"A vigorous, high-yielding black currant resistant to white pine blister rust. Rich, full flavor for jam and syrup."},
+    {"name":"Consort","type":"Black, rust-resistant","days":"Ripens July","where":"Both sides","note":"An older rust-resistant black currant with strong, musky flavor. Self-fertile and very hardy."}
+  ],
+  "gooseberries": [
+    {"name":"Invicta","type":"Green, mildew-resistant","days":"Ripens early summer","where":"Both sides","note":"Heavy crops of large green berries for cooking, on a vigorous, thorny bush with good resistance to powdery mildew."},
+    {"name":"Hinnonmaki Red","type":"Red, mildew-resistant","days":"Ripens midsummer","where":"Both sides","note":"Medium berries that turn dark red and sweet when ripe, with a tart skin. Compact, very hardy and mildew-resistant."},
+    {"name":"Pixwell","type":"Green to pink, classic","days":"Ripens midsummer","where":"Both sides","note":"An old, very hardy American variety with berries that hang away from the thorns, making picking easier. Good for pies and jam."},
+    {"name":"Captivator","type":"Red, nearly thornless","days":"Ripens midsummer","where":"Both sides","note":"Nearly thornless stems and teardrop-shaped berries that ripen pink-red and sweet. A good pick for gardens with kids."}
+  ],
+  "elderberries": [
+    {"name":"Blue elderberry","type":"Native, large shrub","days":"Ripens late summer","where":"Both sides","note":"The Northwest native with dusty blue berries that make excellent syrup when cooked. It feeds birds and pollinators and handles summer drought once established."},
+    {"name":"York","type":"American, large berries","days":"Ripens late summer","where":"Both sides","note":"One of the largest-fruited American elderberries, with big, heavy clusters. Plant with Adams or Nova for pollination."},
+    {"name":"Adams","type":"American, heavy cropper","days":"Ripens late summer","where":"Both sides","note":"A vigorous, productive variety with large clusters of dark berries that ripen together. A good partner for York."},
+    {"name":"Nova","type":"American, sweet","days":"Ripens late summer","where":"Both sides","note":"A compact, productive elderberry with relatively sweet berries for syrup and jam. Partners well with York or Adams."}
+  ],
   "peonies": [
     {"name":"Sarah Bernhardt","type":"Double pink, late","days":"Blooms late May to June","where":"Both sides","note":"The best-known peony, with large, fragrant, double pink blooms. It blooms late in the season and is a reliable choice for cutting and borders."},
     {"name":"Festiva Maxima","type":"Double white, fragrant","days":"Blooms late May","where":"Both sides","note":"Large white double flowers with red flecks in the center and a strong, sweet fragrance. An heirloom that has been a garden favorite for generations."},

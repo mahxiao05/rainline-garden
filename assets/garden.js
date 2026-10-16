@@ -27,7 +27,9 @@
     asparagus: 15, rhubarb: 42, chives: 10, mint: 18, rosemary: 30, thyme: 12, oregano: 15, sunflowers: 15, "sweet-peas": 5, tulips: 5, daffodils: 5,
     apples: 120, pears: 150, plums: 150, cherries: 120, figs: 144, peaches: 144, hazelnuts: 180, blackberries: 60, grapes: 84,
     "hardy-kiwi": 144, artichokes: 42, huckleberries: 48, "oregon-grape": 48, "red-flowering-currant": 60, serviceberry: 96, camas: 5,
-    lavender: 27, tomatillos: 36, zinnias: 10, peonies: 36 };
+    lavender: 27, tomatillos: 36, zinnias: 10, peonies: 36,
+    collards: 21, parsnips: 4, celery: 11, "ground-cherries": 30, "sweet-potatoes": 15, pumpkins: 60, honeyberries: 54, currants: 54,
+    gooseberries: 54, elderberries: 84 };
   var RATINGS = [["good", "Did well"], ["ok", "OK"], ["poor", "Struggled"]];
   // One-tap starting points: plants plus bed sizes in feet.
   var STARTERS = [
