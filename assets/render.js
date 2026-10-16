@@ -27,7 +27,8 @@
   function regionNote(p) {
     return '<p class="region"><strong>' + p.zone.name + '.</strong> ' + p.zone.blurb + '</p>' +
       '<p class="station">Frost dates are 1991–2020 NOAA climate normals for ' + p.station.name +
-      ' (' + p.station.elev + ' m elevation). Gardens in cold hollows or at higher elevation can frost later in spring and earlier in fall.</p>';
+      ' (' + p.station.elev + ' m elevation). Gardens in cold hollows or at higher elevation can frost later in spring and earlier in fall; city gardens and warm, south-facing spots often run a week or so ahead.' +
+      (p.place.note ? ' ' + p.place.note : '') + '</p>';
   }
 
   function chart(p, today) {
@@ -77,7 +78,7 @@
     var out = [];
     if (r.season === "short") out.push('<span class="flag flag-warn">Season is short here: use transplants, a fast variety and row cover</span>');
     else if (r.season === "tight") out.push('<span class="flag">Tight season: choose an early variety</span>');
-    if (r.cover) out.push('<span class="flag">Keep frost cover handy at first</span>');
+    if (r.cover) out.push('<span class="flag' + (r.coverDays > 14 ? ' flag-warn' : '') + '">Frost possible until about ' + P.fmt(r.coverUntil) + ': keep frost cover handy</span>');
     return out.join(" ");
   }
 
