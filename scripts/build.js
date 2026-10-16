@@ -354,6 +354,7 @@ ${photo("hero", "", { big: "hero", small: "heroSm", cls: "hero-art", sizes: "(mi
 <p id="msg" class="msg" role="status" aria-live="polite"></p>
 </section>
 <section id="result" aria-live="polite"></section>
+<section id="season-now" class="home-sec season-now" aria-live="polite" hidden></section>
 <section class="home-sec plan-cta"><div><h2>Plan your garden</h2>
 <p>Pick your plants, or start from a ready-made plan like a salad bed or a salsa garden, and get a dated to-do list for the year. It warns you when a plant isn't in season, saves as you go and prints on one page.</p></div>
 <div class="plan-cta-btns"><a class="btn" href="my-garden/">Make my garden plan</a><a class="btn btn-ghost" href="what-to-grow/">Not sure what to grow? Take the quiz</a></div></section>
