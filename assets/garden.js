@@ -307,7 +307,7 @@
       '<p>' + chosen.length + ' plants · ' + doneCount + ' of ' + list.length + ' jobs done · made ' + short(now) + ', ' + YEAR + ' at rainlinegarden.org</p></header>' +
       '<nav class="gp-jump" aria-label="Plan sections">' + jump.map(function (j) { return '<a href="#' + j[0] + '">' + j[1] + '</a>'; }).join("") + '</nav>' +
       thisWeek(list) +
-      R.frostFacts(p) +
+      R.frostFacts(p, base) +
       '<h2 id="gp-todo-h">Your to-do list</h2><p class="station">Tick jobs off as you go. Jobs due in the next two weeks are highlighted. Dates are a guide: check the soil and the forecast too.</p>' +
       groups.map(function (g) { return '<h3 class="gp-month">' + g.label + '</h3><ul class="gp-tasks">' + g.items.map(taskLi).join("") + '</ul>'; }).join("") +
       '<h2>Season at a glance</h2><div class="reveal">' + R.chart(sub, today) + '</div>' +

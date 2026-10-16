@@ -12,16 +12,35 @@
   }
   function cropUrl(id, slug, base) { return (base || "") + 'when-to-plant/' + id + '/' + slug + '/'; }
 
-  function frostFacts(p) {
+  // Plain-word dates: "early April", "mid April", "late April".
+  function soft(n) { var x = P.fromDoy(n); return (x.d <= 10 ? "early " : x.d <= 20 ? "mid " : "late ") + P.MONTHS_LONG[x.m]; }
+  function softRange(a, b) {
+    var x = P.fromDoy(a), y = P.fromDoy(b);
+    if (x.m === y.m) { var s1 = soft(a).split(" ")[0], s2 = soft(b).split(" ")[0]; return s1 === s2 ? soft(a) : s1 + " to " + s2 + " " + P.MONTHS_LONG[x.m]; }
+    return soft(a) + " to " + soft(b);
+  }
+  function weeks(d) { return d < 10 ? "about a week" : "about " + Math.round(d / 7) + " weeks"; }
+
+  function frostFacts(p, base) {
     var f = p.frost;
     return '<div class="facts">' +
-      '<div class="fact"><span class="fact-k">Last spring frost</span><span class="fact-v">' + P.fmtLong(f.spring50) + '</span>' +
-      '<span class="fact-s">Typical date. Frost is over by ' + P.fmt(f.spring10) + ' in 9 years out of 10.</span></div>' +
-      '<div class="fact"><span class="fact-k">First fall frost</span><span class="fact-v">' + P.fmtLong(f.fall50) + '</span>' +
-      '<span class="fact-s">Typical date. Comes as early as ' + P.fmt(f.fall10) + ' in 1 year out of 10.</span></div>' +
-      '<div class="fact"><span class="fact-k">Frost-free season</span><span class="fact-v">' + f.season + ' days</span>' +
-      '<span class="fact-s">Your growing season for frost-tender crops like tomatoes and squash.</span></div>' +
-      '</div>';
+      '<div class="fact"><span class="fact-k">Last spring frost</span><span class="fact-v">' + P.fmt(f.spring50) + '</span>' +
+      '<span class="fact-s">Typical date</span></div>' +
+      '<div class="fact"><span class="fact-k">First fall frost</span><span class="fact-v">' + P.fmt(f.fall50) + '</span>' +
+      '<span class="fact-s">Typical date</span></div>' +
+      '<div class="fact"><span class="fact-k">Growing season</span><span class="fact-v">' + f.season + ' days</span>' +
+      '<span class="fact-s">Frost-free</span></div>' +
+      '</div>' + frostNote(p, base);
+  }
+
+  // Frost dates are averages; say how far off they can be, using this town's own spread.
+  function frostNote(p, base) {
+    var f = p.frost;
+    return '<p class="frost-note"><strong>These are averages, not promises.</strong> In ' + p.place.city + ', the last frost is over by ' +
+      P.fmt(f.spring10) + ' in 9 years out of 10, ' + weeks(f.spring10 - f.spring50) + ' after the typical date. ' +
+      (f.fall10 < 366 ? 'In fall, the first frost can come as early as ' + P.fmt(f.fall10) + '. ' : '') +
+      'Any single year can be earlier or later, so check the forecast before planting tender crops. ' +
+      '<a href="' + (base || "") + 'articles/frost-dates-explained/">What frost dates really mean</a></p>';
   }
 
   function regionNote(p) {
@@ -95,26 +114,49 @@
     return h + '</tbody></table></div>';
   }
 
-  function nowBlock(p, today, base) {
-    var n = P.nowList(p, today);
-    var item = function (x, verb) {
-      return '<li>' + icon(x.r.crop.id, base) + '<div><a href="' + cropUrl(x.r.crop.id, p.place.slug, base) + '"><strong>' + x.r.crop.name + '</strong></a> <span>' + verb + ' through ' + P.fmt(x.w.end) + '</span></div></li>';
-    };
-    var h = '<div class="now">';
-    h += '<div class="now-col"><h3>Plant in the garden now</h3>';
-    h += n.sow.length ? '<ul>' + n.sow.map(function (x) { return item(x, x.r.crop.how); }).join("") + '</ul>'
-      : '<p class="empty">Nothing goes in the ground right now. ' + (n.soon.length ? 'Next up: ' + n.soon[0].r.crop.name + ' on ' + P.fmt(n.soon[0].w.start) + '.' : 'Use the time to plan, order seeds and tend beds.') + '</p>';
-    h += '</div><div class="now-col"><h3>Start seeds indoors now</h3>';
-    h += n.indoor.length ? '<ul>' + n.indoor.map(function (x) { return item(x, "Sow in trays"); }).join("") + '</ul>'
-      : '<p class="empty">No seeds to start indoors right now.</p>';
-    h += '</div><div class="now-col"><h3>Coming up in the next 3 weeks</h3>';
-    h += n.soon.length ? '<ul>' + n.soon.slice(0, 6).map(function (x) {
-      return '<li>' + icon(x.r.crop.id, base) + '<div><a href="' + cropUrl(x.r.crop.id, p.place.slug, base) + '"><strong>' + x.r.crop.name + '</strong></a> <span>' + (x.w.kind === "fall" ? "plant for fall" : "plant in the garden") + ' from ' + P.fmt(x.w.start) + '</span></div></li>';
-    }).join("") + '</ul>' : '<p class="empty">Nothing new starts in the next three weeks.</p>';
-    h += '</div></div>';
-    return h;
+  // One plain answer per plant for a given day: plant now, start indoors now, wait, or later in the year.
+  function status(r, today) {
+    var jobs = [];
+    if (r.indoor) jobs.push({ kind: "indoor", start: r.indoor.start, end: r.indoor.end });
+    r.windows.forEach(function (w) { jobs.push({ kind: w.kind === "fall" ? "fall" : "plant", start: w.start, end: w.end }); });
+    var open = jobs.filter(function (j) { return j.kind !== "indoor" && today >= j.start && today <= j.end; })[0];
+    if (open) return { kind: "now", job: open, text: "Plant now, through " + soft(open.end) };
+    var inside = jobs.filter(function (j) { return j.kind === "indoor" && today >= j.start && today <= j.end; })[0];
+    if (inside) return { kind: "indoor", job: inside, text: "Start seeds indoors now, plant out " + soft(r.windows[0].start) };
+    var next = jobs.map(function (j) { return { kind: j.kind, start: j.start > today ? j.start : j.start + 365, end: j.end }; })
+      .sort(function (a, b) { return a.start - b.start; })[0];
+    var verb = next.kind === "indoor" ? "Start indoors" : next.kind === "fall" ? "Plant for fall" : "Plant";
+    var d = next.start - today;
+    return { kind: d <= 42 ? "soon" : "later", job: next, wait: d,
+      text: d <= 42 ? verb + " in " + weeks(d) + ", " + soft(next.start) : verb + " " + soft(next.start) };
   }
 
-  var API = { icon: icon, cropUrl: cropUrl, frostFacts: frostFacts, regionNote: regionNote, chart: chart, table: table, nowBlock: nowBlock };
+  var GROUPS = [
+    ["now", "Plant now", "These can go in the garden today."],
+    ["indoor", "Start seeds indoors now", "Sow these in trays inside, then plant them out later."],
+    ["soon", "Coming up in the next 6 weeks", "Get seeds or starts ready."]
+  ];
+  function nowBlock(p, today, base) {
+    var all = p.crops.map(function (r) { return { r: r, s: status(r, today) }; });
+    var card = function (x) {
+      return '<li class="st st-' + x.s.kind + '"><a href="' + cropUrl(x.r.crop.id, p.place.slug, base) + '">' + icon(x.r.crop.id, base, 36) +
+        '<span><strong>' + x.r.crop.name + '</strong><span class="st-t">' + x.s.text + '</span></span></a></li>';
+    };
+    var h = '<div class="now-groups">';
+    GROUPS.forEach(function (g) {
+      var list = all.filter(function (x) { return x.s.kind === g[0]; });
+      if (!list.length && g[0] !== "now") return;
+      if (g[0] === "soon") list.sort(function (a, b) { return a.s.wait - b.s.wait; });
+      h += '<section class="st-group st-group-' + g[0] + '"><h3><i class="st-dot"></i>' + g[1] + ' <span class="st-n">' + list.length + '</span></h3>';
+      h += list.length ? '<ul class="st-list">' + list.map(card).join("") + '</ul>'
+        : '<p class="empty">' + (g[0] === "now" ? "Nothing goes in the ground right now. Use the time to plan, order seeds and tend beds." : g[0] === "indoor" ? "No seeds to start indoors right now." : "Nothing new starts in the next six weeks.") + '</p>';
+      h += '</section>';
+    });
+    var later = all.filter(function (x) { return x.s.kind === "later"; }).sort(function (a, b) { return a.s.wait - b.s.wait; });
+    if (later.length) h += '<details class="st-later"><summary>Later in the year <span class="st-n">' + later.length + '</span></summary><ul class="st-list">' + later.map(card).join("") + '</ul></details>';
+    return h + '</div>';
+  }
+
+  var API = { icon: icon, cropUrl: cropUrl, soft: soft, softRange: softRange, status: status, frostFacts: frostFacts, frostNote: frostNote, regionNote: regionNote, chart: chart, table: table, nowBlock: nowBlock };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else root.RainlineRender = API;
 })(this);

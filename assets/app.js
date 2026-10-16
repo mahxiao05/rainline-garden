@@ -8,6 +8,34 @@
 
   function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
 
+  // Live frost warning from the National Weather Service forecast (public domain, free to use).
+  // Shown only in the gardening season, when a night in the next three days is forecast at 34°F or colder.
+  function frostWatch(el, place) {
+    if (!el || !place || !place.lat || !window.fetch) return;
+    var f = P.plan(D, place).frost;
+    if (today < f.spring50 - 30 || today > Math.min(f.fall50, 365) + 14) return;
+    var key = "rainline-nws-" + place.slug, cached = null;
+    try { cached = JSON.parse(sessionStorage.getItem(key)); } catch (e) { /* ignore */ }
+    var got = cached && Date.now() - cached.t < 36e5 ? Promise.resolve(cached.periods)
+      : fetch("https://api.weather.gov/points/" + place.lat + "," + place.lon, { headers: { Accept: "application/geo+json" } })
+        .then(function (r) { if (!r.ok) throw r; return r.json(); })
+        .then(function (j) { return fetch(j.properties.forecast, { headers: { Accept: "application/geo+json" } }); })
+        .then(function (r) { if (!r.ok) throw r; return r.json(); })
+        .then(function (j) {
+          var periods = j.properties.periods.slice(0, 7).map(function (x) { return { n: x.name, d: x.isDaytime, t: x.temperature, u: x.temperatureUnit }; });
+          try { sessionStorage.setItem(key, JSON.stringify({ t: Date.now(), periods: periods })); } catch (e) { /* ignore */ }
+          return periods;
+        });
+    got.then(function (periods) {
+      var cold = periods.filter(function (x) { return !x.d && x.u === "F" && x.t <= 34; })[0];
+      if (!cold) return;
+      el.innerHTML = '<strong>Frost possible ' + (cold.n.toLowerCase() === "tonight" ? "tonight" : cold.n) + ' in ' + place.city + '.</strong> ' +
+        'The forecast low is ' + cold.t + '°F. Cover tender plants or bring pots inside, and hold off on planting warm-season crops. ' +
+        '<span class="fw-src">Forecast from the National Weather Service.</span>';
+      el.hidden = false;
+    }).catch(function () { /* no forecast, no warning */ });
+  }
+
   // City pages: add today's marker and the "what to plant now" list.
   var live = document.getElementById("live");
   if (live) {
@@ -18,6 +46,7 @@
       if (nowEl) nowEl.innerHTML = R.nowBlock(p, today, base);
       var chartEl = document.getElementById("chart");
       if (chartEl) chartEl.innerHTML = R.chart(p, today);
+      frostWatch(document.querySelector(".frost-watch"), place);
     }
   }
 
@@ -49,10 +78,12 @@
       '<div class="result-head"><h2>' + place.city + ', ' + place.state + '</h2>' +
       '<a href="' + base + 'frost-dates/' + place.slug + '/">Printable page for ' + place.city + '</a></div>' +
       (viaZip ? '<p class="station">Using the nearest NOAA station we have for that ZIP. If another city on the list is closer to you, pick it instead.</p>' : '') +
-      R.frostFacts(p) + R.regionNote(p) +
+      R.frostFacts(p, base) + '<div class="frost-watch" hidden></div>' +
       '<h2>What to plant now</h2>' + R.nowBlock(p, today, base) +
-      '<h2>Your year at a glance</h2><div class="reveal">' + R.chart(p, today) + '</div>' +
-      '<h2>Planting dates</h2>' + R.table(p, base);
+      '<p class="plan-link"><a class="btn btn-ghost" href="' + base + 'my-garden/?place=' + place.slug + '">Pick my plants and make a plan</a> Only growing a few things? Get dates for just those, on one printable page.</p>' +
+      '<details class="year"><summary>See the whole year: chart and all ' + p.crops.length + ' planting dates</summary>' +
+      R.regionNote(p) + '<div class="reveal">' + R.chart(p, today) + '</div>' + R.table(p, base) + '</details>';
+    frostWatch(out.querySelector(".frost-watch"), place);
     if (history.replaceState) history.replaceState(null, "", "?place=" + place.slug);
   }
 

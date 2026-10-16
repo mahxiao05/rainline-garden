@@ -335,20 +335,17 @@ ${photo("hero", "", { big: "hero", small: "heroSm", cls: "hero-art", sizes: "(mi
 <section class="home-sec"><div class="sec-head"><h2>Browse by plant type</h2><a href="${WHEN_INDEX}">All ${D.crops.length} plants</a></div>
 ${categoryTiles("")}
 </section>
-<section class="home-sec plan-cta"><div><h2>Plan your garden</h2>
-<p>Pick your plants and get a dated to-do list for the year, with a cheat sheet for each plant. It saves as you go and prints on one page.</p></div>
-<a class="btn" href="my-garden/">Make my garden plan</a></section>
-<section class="home-sec starter"><div><h2>New to gardening?</h2>
-<p>Start with five forgiving crops that are hard to kill, then read the <a href="beginners-guide/">beginner's guide</a>.</p></div>
-<ul class="chips">${G.beginner.map(id => `<li><a href="${WHEN_INDEX}${id}/">${R.icon(id, "", 28)}${cropById(id).name}</a></li>`).join("")}</ul></section>
+<section class="home-sec"><h2>Get started</h2>
+<ul class="start-cards">
+<li><a class="card" href="my-garden/"><span class="card-t">Make my garden plan</span><span class="card-s">Pick your plants and get a dated to-do list for the year. Saves as you go and prints on one page.</span></a></li>
+<li><a class="card" href="beginners-guide/"><span class="card-t">New to gardening?</span><span class="card-s">Start with five forgiving crops: ${G.beginner.map(id => lc(cropById(id).name)).join(", ").replace(/, ([^,]+)$/, " and $1")}.</span></a></li>
+<li><a class="card" href="garden-calendar/"><span class="card-t">This month in the garden</span><span class="card-s">What to plant, harvest, prune and watch for each month, with a checklist you can tick off.</span></a></li>
+</ul></section>
 ${ad("home-mid")}
 <section class="home-sec"><div class="sec-head"><h2>Guides for Northwest gardeners</h2><a href="articles/">All articles</a></div>
 ${articleCards("", ARTICLES.slice(0, 3))}</section>
 ${newsletter()}
-<section class="home-sec prose">
-<h2>Why Northwest planting dates are different</h2>
-<p>National charts key everything off the last frost date. Here that's only half the story: Portland's typical last frost is in mid-March, yet tomatoes planted then sit in cold, wet soil for two months, while the high desert can frost into June. Rainline Garden combines NOAA frost records for each area with regional timing for when the soil is actually ready. <a href="how-it-works/">See how the dates are worked out</a>.</p>
-</section>`,
+<p class="station home-why">Northwest dates are different: soil here stays cold and wet long after the last frost, so the planner uses NOAA frost records for each area plus regional timing for when the soil is actually ready. <a href="how-it-works/">See how the dates are worked out</a>.</p>`,
   scripts: SCRIPTS
 }), "1.0");
 
@@ -361,28 +358,45 @@ D.places.forEach(place => {
   const tomato = win(rowFor(p, "tomatoes"), "spring");
   const peas = win(rowFor(p, "peas"), "spring");
   const bc = crumbs("../../", [["Frost dates", "frost-dates/"], [placeLabel(place), null]]);
+  const garlic = win(rowFor(p, "garlic"), "fall");
+  const fallCrops = p.crops.filter(r => win(r, "fall") && r.crop.id !== "garlic").map(r => lc(r.crop.name));
+  const cityQas = [
+    [`When is the last frost in ${placeLabel(place)}?`, `The typical last spring frost in ${place.city} is ${P.fmtLong(f.spring50)}. In 9 years out of 10, frost is over by ${P.fmtLong(f.spring10)}. These are 1991–2020 NOAA climate normals for ${p.station.name}, so any single year can be earlier or later.`],
+    [`When is the first frost in ${placeLabel(place)}?`, f.fall50 > 365 ? `Fall frost is rare in ${place.city}; in a typical year it doesn't come until after New Year's.` : `The typical first fall frost in ${place.city} is ${P.fmtLong(f.fall50)}. In 1 year out of 10 it comes by ${P.fmtLong(f.fall10)}.`],
+    [`How long is the growing season in ${place.city}?`, `About ${f.season} frost-free days, from the typical last spring frost to the typical first fall frost. That's the window for frost-tender crops like tomatoes, squash and beans.`],
+    [`When should I plant tomatoes in ${place.city}?`, `Plant tomato starts outside from ${P.fmtLong(tomato.start)}, once nights stay above 50°F, and start seeds indoors about six to eight weeks before that.${rowFor(p, "tomatoes").season === "short" ? " The season is short here, so use a fast variety, transplants and row cover." : ""}`],
+    [`What can I plant in ${place.city} for a fall harvest?`, fallCrops.length ? `Plant ${fallCrops.slice(0, 6).join(", ")} in mid to late summer for fall and winter harvests. Plant garlic ${R.softRange(garlic.start, garlic.end)} for next summer.` : `The fall season is short here, so focus on garlic, planted ${R.softRange(garlic.start, garlic.end)} for next summer.`]
+  ];
+  const cityReads = ["frost-dates-explained", place.zone === "high" || place.zone === "inland" ? "short-season-gardening-central-oregon" : "best-tomatoes-for-the-northwest", "hardening-off-seedlings"]
+    .map(slug => ARTICLES.find(a => a.slug === slug)).filter(Boolean);
   write("../../", `frost-dates/${place.slug}/index.html`, layout({
     rel: "../../", canonical: `frost-dates/${place.slug}/`, current: "frost-dates/",
     title: `${placeLabel(place)} Frost Dates and Planting Calendar | Rainline Garden`,
     description: `The typical last spring frost in ${placeLabel(place)} is ${P.fmtLong(f.spring50)} and the first fall frost is ${P.fmtLong(f.fall50)}. See when to plant tomatoes, peas, garlic and ${D.crops.length - 3} more crops.`,
-    jsonld: [bc.ld],
+    jsonld: [bc.ld, faqLd(cityQas)],
     body: `${bc.html}
 <section class="hero" id="live" data-place="${place.slug}">
 <h1>${esc(place.city)}, ${place.state} frost dates and planting calendar</h1>
 <p class="lede">The typical last spring frost in ${esc(place.city)} is ${P.fmtLong(f.spring50)}, and the first fall frost is around ${P.fmtLong(f.fall50)}. Plant peas from ${P.fmt(peas.start)}; plant tomatoes from ${P.fmt(tomato.start)}.</p>
 </section>
-${R.frostFacts(p)}
-${R.regionNote(p)}
+${R.frostFacts(p, "../../")}
+<div class="frost-watch" data-place="${place.slug}" hidden></div>
 <h2>What to plant now</h2>
 <div id="now"><p class="empty">Turn on JavaScript to see what's in season today. The full calendar is below.</p></div>
-${beginnerBox("../../", place.slug, place.city)}
-<p class="plan-link"><a class="btn btn-ghost" href="../../my-garden/?place=${place.slug}">Make a garden plan for ${esc(place.city)}</a> Pick your plants and get a dated, printable to-do list.</p>
-<h2>Planting calendar</h2>
+<p class="plan-link"><a class="btn btn-ghost" href="../../my-garden/?place=${place.slug}">Make a garden plan for ${esc(place.city)}</a> Pick your plants and get dates for just those, on one printable page.</p>
+<details class="year"><summary>See the whole year: chart and all ${p.crops.length} planting dates</summary>
+${R.regionNote(p)}
 <div id="chart">${R.chart(p)}</div>
-${ad("city-mid")}
 <h2>Planting dates for ${esc(place.city)}</h2>
 ${R.table(p, "../../")}
 <p class="station">Dates are a guide, not a guarantee. Check the soil before planting: cool-season crops need it workable and not soggy; warm-season crops need it warm. A $10 soil thermometer pays for itself. Unfamiliar terms are explained in the <a href="../../glossary/">glossary</a>.</p>
+</details>
+${ad("city-mid")}
+${beginnerBox("../../", place.slug, place.city)}
+<h2 id="faq">Common questions about gardening in ${esc(place.city)}</h2>
+${faqHtml(cityQas)}
+<h2>Read more</h2>
+${articleCards("../../", cityReads)}
 ${newsletter(place.city)}
 <h2>Nearby areas with similar weather</h2>
 <ul class="places">${nearby.map(x => `<li><a href="../${x.slug}/">${esc(placeLabel(x))}</a></li>`).join("")}</ul>

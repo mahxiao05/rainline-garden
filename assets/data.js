@@ -6,6 +6,7 @@
  * Planting windows: regional dates for when the soil is usually ready in each climate region
  *   (west side, coast, southern valleys, high desert, inland valleys). Washington areas use the
  *   closest matching region.
+ * lat/lon: the town center, used only to ask the National Weather Service for the local forecast (frost warnings).
  * To update: edit the values below, then run `node scripts/build.js`.
  */
 (function (root) {
@@ -59,36 +60,36 @@
 
   /* Places people can pick. zip3 = default for 3-digit ZIP prefixes; zips = specific 5-digit overrides. */
   var places = [
-    { slug: "portland-or", city: "Portland", state: "OR", station: "USW00024229", zone: "west", zip3: ["970", "971", "972"] },
-    { slug: "gresham-or", city: "Gresham", state: "OR", station: "USW00024242", zone: "west", zips: ["97030", "97080", "97060", "97024", "97019"] },
-    { slug: "wilsonville-or", city: "Wilsonville and Canby", state: "OR", station: "USW00094281", zone: "west", zips: ["97070", "97013", "97002", "97071", "97032"] },
-    { slug: "salem-or", city: "Salem", state: "OR", station: "USW00024232", zone: "west", zip3: ["973"] },
-    { slug: "eugene-or", city: "Eugene", state: "OR", station: "USW00024221", zone: "west", zip3: ["974"] },
-    { slug: "roseburg-or", city: "Roseburg", state: "OR", station: "USW00024231", zone: "west", zips: ["97470", "97471"] },
-    { slug: "medford-or", city: "Medford", state: "OR", station: "USW00024225", zone: "west", zip3: ["975"] },
-    { slug: "astoria-or", city: "Astoria", state: "OR", station: "USW00094224", zone: "coast", zips: ["97103", "97138", "97146", "97121", "97110"] },
-    { slug: "coos-bay-or", city: "Coos Bay and North Bend", state: "OR", station: "USW00024284", zone: "coast", zips: ["97420", "97459", "97439", "97411", "97458"] },
-    { slug: "bend-or", city: "Bend and Redmond", state: "OR", station: "USW00024230", zone: "high", zip3: ["977"] },
-    { slug: "klamath-falls-or", city: "Klamath Falls", state: "OR", station: "USW00094236", zone: "high", zip3: ["976"] },
-    { slug: "burns-or", city: "Burns", state: "OR", station: "USW00094185", zone: "high", zips: ["97720", "97738"] },
-    { slug: "baker-city-or", city: "Baker City", state: "OR", station: "USW00024130", zone: "high", zip3: ["979"] },
-    { slug: "pendleton-or", city: "Pendleton", state: "OR", station: "USW00024155", zone: "east", zip3: ["978"] },
-    { slug: "the-dalles-or", city: "The Dalles", state: "OR", station: "USW00024219", zone: "east", zips: ["97058", "98617", "97040"] },
-    { slug: "seattle-wa", city: "Seattle and Tacoma", state: "WA", station: "USW00024233", zone: "west", zip3: ["980", "981", "983", "984"] },
-    { slug: "everett-wa", city: "Everett", state: "WA", station: "USW00024222", zone: "west", zip3: ["982"] },
-    { slug: "bellingham-wa", city: "Bellingham", state: "WA", station: "USW00024217", zone: "west", zips: ["98225", "98226", "98227", "98228", "98229", "98248", "98264"] },
-    { slug: "olympia-wa", city: "Olympia", state: "WA", station: "USW00024227", zone: "west", zip3: ["985"] },
-    { slug: "vancouver-wa", city: "Vancouver", state: "WA", station: "USW00094298", zone: "west", zip3: ["986"] },
-    { slug: "aberdeen-wa", city: "Aberdeen and Hoquiam", state: "WA", station: "USW00094225", zone: "coast", zips: ["98520", "98550", "98569", "98563"] },
-    { slug: "forks-wa", city: "Forks", state: "WA", station: "USW00094240", zone: "coast", zips: ["98331"] },
-    { slug: "yakima-wa", city: "Yakima", state: "WA", station: "USW00024243", zone: "east", zip3: ["989"] },
-    { slug: "wenatchee-wa", city: "Wenatchee", state: "WA", station: "USW00094239", zone: "east", zip3: ["988"] },
-    { slug: "tri-cities-wa", city: "Tri-Cities (Pasco, Kennewick, Richland)", state: "WA", station: "USW00024163", zone: "east", zip3: ["993"] },
-    { slug: "walla-walla-wa", city: "Walla Walla", state: "WA", station: "USW00024160", zone: "east", zip3: ["994"], zips: ["99362"] },
-    { slug: "moses-lake-wa", city: "Moses Lake", state: "WA", station: "USW00024110", zone: "east", zips: ["98837"] },
-    { slug: "ellensburg-wa", city: "Ellensburg", state: "WA", station: "USW00024220", zone: "inland", zips: ["98926"] },
-    { slug: "spokane-wa", city: "Spokane", state: "WA", station: "USW00024157", zone: "inland", zip3: ["990", "991", "992"] },
-    { slug: "omak-wa", city: "Omak and Okanogan", state: "WA", station: "USW00094197", zone: "inland", zips: ["98841", "98840", "98856"] }
+    { slug: "portland-or", lat: 45.52, lon: -122.68, city: "Portland", state: "OR", station: "USW00024229", zone: "west", zip3: ["970", "971", "972"] },
+    { slug: "gresham-or", lat: 45.5, lon: -122.43, city: "Gresham", state: "OR", station: "USW00024242", zone: "west", zips: ["97030", "97080", "97060", "97024", "97019"] },
+    { slug: "wilsonville-or", lat: 45.3, lon: -122.77, city: "Wilsonville and Canby", state: "OR", station: "USW00094281", zone: "west", zips: ["97070", "97013", "97002", "97071", "97032"] },
+    { slug: "salem-or", lat: 44.94, lon: -123.04, city: "Salem", state: "OR", station: "USW00024232", zone: "west", zip3: ["973"] },
+    { slug: "eugene-or", lat: 44.05, lon: -123.09, city: "Eugene", state: "OR", station: "USW00024221", zone: "west", zip3: ["974"] },
+    { slug: "roseburg-or", lat: 43.22, lon: -123.34, city: "Roseburg", state: "OR", station: "USW00024231", zone: "west", zips: ["97470", "97471"] },
+    { slug: "medford-or", lat: 42.33, lon: -122.87, city: "Medford", state: "OR", station: "USW00024225", zone: "west", zip3: ["975"] },
+    { slug: "astoria-or", lat: 46.19, lon: -123.83, city: "Astoria", state: "OR", station: "USW00094224", zone: "coast", zips: ["97103", "97138", "97146", "97121", "97110"] },
+    { slug: "coos-bay-or", lat: 43.37, lon: -124.22, city: "Coos Bay and North Bend", state: "OR", station: "USW00024284", zone: "coast", zips: ["97420", "97459", "97439", "97411", "97458"] },
+    { slug: "bend-or", lat: 44.06, lon: -121.31, city: "Bend and Redmond", state: "OR", station: "USW00024230", zone: "high", zip3: ["977"] },
+    { slug: "klamath-falls-or", lat: 42.22, lon: -121.78, city: "Klamath Falls", state: "OR", station: "USW00094236", zone: "high", zip3: ["976"] },
+    { slug: "burns-or", lat: 43.59, lon: -119.05, city: "Burns", state: "OR", station: "USW00094185", zone: "high", zips: ["97720", "97738"] },
+    { slug: "baker-city-or", lat: 44.77, lon: -117.83, city: "Baker City", state: "OR", station: "USW00024130", zone: "high", zip3: ["979"] },
+    { slug: "pendleton-or", lat: 45.67, lon: -118.79, city: "Pendleton", state: "OR", station: "USW00024155", zone: "east", zip3: ["978"] },
+    { slug: "the-dalles-or", lat: 45.59, lon: -121.18, city: "The Dalles", state: "OR", station: "USW00024219", zone: "east", zips: ["97058", "98617", "97040"] },
+    { slug: "seattle-wa", lat: 47.61, lon: -122.33, city: "Seattle and Tacoma", state: "WA", station: "USW00024233", zone: "west", zip3: ["980", "981", "983", "984"] },
+    { slug: "everett-wa", lat: 47.98, lon: -122.2, city: "Everett", state: "WA", station: "USW00024222", zone: "west", zip3: ["982"] },
+    { slug: "bellingham-wa", lat: 48.75, lon: -122.48, city: "Bellingham", state: "WA", station: "USW00024217", zone: "west", zips: ["98225", "98226", "98227", "98228", "98229", "98248", "98264"] },
+    { slug: "olympia-wa", lat: 47.04, lon: -122.9, city: "Olympia", state: "WA", station: "USW00024227", zone: "west", zip3: ["985"] },
+    { slug: "vancouver-wa", lat: 45.64, lon: -122.66, city: "Vancouver", state: "WA", station: "USW00094298", zone: "west", zip3: ["986"] },
+    { slug: "aberdeen-wa", lat: 46.98, lon: -123.82, city: "Aberdeen and Hoquiam", state: "WA", station: "USW00094225", zone: "coast", zips: ["98520", "98550", "98569", "98563"] },
+    { slug: "forks-wa", lat: 47.95, lon: -124.39, city: "Forks", state: "WA", station: "USW00094240", zone: "coast", zips: ["98331"] },
+    { slug: "yakima-wa", lat: 46.6, lon: -120.51, city: "Yakima", state: "WA", station: "USW00024243", zone: "east", zip3: ["989"] },
+    { slug: "wenatchee-wa", lat: 47.42, lon: -120.31, city: "Wenatchee", state: "WA", station: "USW00094239", zone: "east", zip3: ["988"] },
+    { slug: "tri-cities-wa", lat: 46.23, lon: -119.15, city: "Tri-Cities (Pasco, Kennewick, Richland)", state: "WA", station: "USW00024163", zone: "east", zip3: ["993"] },
+    { slug: "walla-walla-wa", lat: 46.06, lon: -118.34, city: "Walla Walla", state: "WA", station: "USW00024160", zone: "east", zip3: ["994"], zips: ["99362"] },
+    { slug: "moses-lake-wa", lat: 47.13, lon: -119.28, city: "Moses Lake", state: "WA", station: "USW00024110", zone: "east", zips: ["98837"] },
+    { slug: "ellensburg-wa", lat: 47.0, lon: -120.55, city: "Ellensburg", state: "WA", station: "USW00024220", zone: "inland", zips: ["98926"] },
+    { slug: "spokane-wa", lat: 47.66, lon: -117.43, city: "Spokane", state: "WA", station: "USW00024157", zone: "inland", zip3: ["990", "991", "992"] },
+    { slug: "omak-wa", lat: 48.41, lon: -119.53, city: "Omak and Okanogan", state: "WA", station: "USW00094197", zone: "inland", zips: ["98841", "98840", "98856"] }
   ];
 
   /* Crops.

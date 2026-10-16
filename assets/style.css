@@ -229,7 +229,7 @@ table.plan { width: 100%; border-collapse: collapse; font-size: 1rem; background
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 .ico { flex: none; display: inline-block; vertical-align: middle; }
 .hero-art, .photo-banner { position: relative; margin: 1.25rem 0 0; border-radius: 14px; overflow: hidden; background: var(--sky); }
-.hero-art { height: clamp(190px, 34vw, 380px); }
+.hero-art { height: clamp(120px, 20vw, 240px); }
 .photo-banner { aspect-ratio: 12 / 5; max-height: 320px; width: 100%; }
 .hero-art picture, .photo-banner picture { display: block; height: 100%; }
 .hero-art img, .photo-banner img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -721,4 +721,46 @@ details.cm-byregion > summary { cursor: pointer; padding: 10px 14px; font-weight
   .gp-cards { grid-template-columns: 1fr 1fr; }
   .gp-mini input, .gp-notes { border: 0; border-bottom: 1px solid #999; border-radius: 0; background: none; }
   .gp-notes { min-height: 12em; border: 1px solid #999; }
+}
+
+/* Frost note, live frost warning and the plain-answer planting list (render.js nowBlock). Colors come from the variables above. */
+.frost-note { font-size: .98rem; color: var(--muted); max-width: 46rem; margin: .9rem 0 0; }
+.frost-note strong { color: var(--ink); }
+.frost-watch { margin: 1rem 0 0; padding: 12px 16px; border-radius: 10px; background: var(--hard-bg); color: var(--ink); border-left: 4px solid var(--warn); max-width: 46rem; }
+.frost-watch strong { color: var(--warn); }
+.fw-src { display: block; font-size: .88rem; color: var(--muted); margin-top: 4px; }
+.now-groups { display: grid; gap: 18px; margin: 1rem 0 0; }
+.st-group h3 { display: flex; align-items: center; gap: 8px; font-size: 1.2rem; margin: 0 0 8px; }
+.st-n { font-family: var(--sans); font-size: .9rem; font-weight: 700; color: var(--muted); background: var(--paper); border: 1px solid var(--line); border-radius: 999px; padding: 0 8px; }
+.st-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--frost-hard); flex: none; }
+.st-group-now .st-dot { background: var(--easy); }
+.st-group-indoor .st-dot { background: var(--moss); }
+.st-group-soon .st-dot { background: var(--mod); }
+.st-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 8px; }
+.st a { display: flex; align-items: center; gap: 10px; padding: 8px 12px 8px 8px; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; color: var(--ink); text-decoration: none; height: 100%; }
+.st a:hover { border-color: var(--moss); }
+.st a > span { display: flex; flex-direction: column; line-height: 1.25; }
+.st-t { font-size: .93rem; color: var(--muted); }
+.st-now a { border-left: 4px solid var(--easy); }
+.st-indoor a { border-left: 4px solid var(--moss); }
+.st-soon a { border-left: 4px solid var(--mod); }
+details.st-later > summary, details.year > summary { cursor: pointer; font-weight: 700; color: var(--fir); padding: 10px 14px; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; }
+details.st-later[open] > summary, details.year[open] > summary { margin-bottom: 12px; }
+details.year { margin: 1.5rem 0; }
+details.year > summary { font-size: 1.05rem; }
+@media (max-width: 720px) {
+  .facts { grid-template-columns: repeat(3, 1fr); }
+  .fact { padding: 10px 6px 10px 0; }
+  .fact + .fact { padding-left: 8px; border-left: 1px solid var(--line); border-top: 0; }
+  .fact-v { font-size: 1.3rem; }
+  .fact-k, .fact-s { font-size: .82rem; }
+  .st-list { grid-template-columns: 1fr; }
+}
+.start-cards { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 12px; }
+.start-cards .card { height: 100%; }
+.home-why { margin-top: 2.5rem; }
+@media (max-width: 720px) {
+  /* Plant types scroll sideways on phones instead of stacking ten tiles. */
+  .home-sec .cat-tiles { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 10px; padding-bottom: 6px; margin-right: -16px; padding-right: 16px; }
+  .home-sec .cat-tiles > li { flex: 0 0 11rem; scroll-snap-align: start; }
 }
