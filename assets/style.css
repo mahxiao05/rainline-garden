@@ -764,3 +764,23 @@ details.year > summary { font-size: 1.05rem; }
   .home-sec .cat-tiles { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 10px; padding-bottom: 6px; margin-right: -16px; padding-right: 16px; }
   .home-sec .cat-tiles > li { flex: 0 0 11rem; scroll-snap-align: start; }
 }
+/* Glossary search (assets/glossary.js) */
+.gl-tools { position: sticky; top: 61px; z-index: 5; background: var(--bg); padding: 10px 0 8px; border-bottom: 1px solid var(--line); }
+.gl-search { display: flex; align-items: center; gap: 10px; max-width: 34rem; padding: 0 14px; height: 48px; border: 1.5px solid var(--line); border-radius: 12px; background: var(--paper); color: var(--muted); }
+.gl-search:focus-within { border-color: var(--moss); }
+.gl-search input { flex: 1; border: 0; outline: 0; background: none; font: inherit; font-size: 1.05rem; color: var(--ink); min-width: 0; }
+.gl-topics { margin-top: 10px; }
+.gl-topics button[aria-pressed="true"] { background: var(--fir); color: var(--bg); border-color: var(--fir); }
+.gl-az { display: flex; flex-wrap: wrap; gap: 2px; margin-top: 8px; }
+.gl-az a { min-width: 28px; text-align: center; padding: 2px 4px; border-radius: 6px; font-weight: 700; text-decoration: none; }
+.gl-az a:hover { background: var(--moss-soft); }
+.gl-count { margin: 6px 0 0; font-size: .92rem; color: var(--muted); min-height: 1.2em; }
+.gl-letter h2 { margin: 1.5rem 0 0; font-size: 1.6rem; color: var(--moss); }
+.gl-letter { scroll-margin-top: 230px; }
+.gl-list .glossary div { scroll-margin-top: 230px; }
+.glossary .gl-tag { display: inline-block; margin-top: 6px; font-size: .82rem; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 0 8px; }
+.gl-see { font-size: .95rem; white-space: nowrap; }
+.glossary mark { background: var(--mod-bg); color: inherit; border-radius: 3px; padding: 0 1px; }
+.gl-none { margin: 2rem 0; font-size: 1.05rem; }
+.linkish { font: inherit; background: none; border: 0; padding: 0; color: var(--fir); text-decoration: underline; cursor: pointer; }
+@media (max-width: 720px) { .gl-tools { position: static; } .gl-letter, .gl-list .glossary div { scroll-margin-top: 70px; } }

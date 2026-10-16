@@ -745,15 +745,41 @@ ${articleCards("../", ARTICLES.filter(a => a.topic === id))}</section>`).join("\
 
 /* Glossary */
 const glb = crumbs("../", [["Glossary", null]]);
+// Glossary topics, and the guide that goes deeper on a term.
+const GLOSSARY_TOPICS = [["weather", "Frost and weather"], ["planting", "Seeds and planting"], ["soil", "Soil and water"], ["care", "Plant care"], ["problems", "Pests and problems"], ["harvest", "Harvest and storage"]];
+const GLOSSARY_SEE = {
+  "last-frost": "articles/frost-dates-explained/", "first-frost": "articles/frost-dates-explained/", "climate-normals": "how-it-works/", "frost-pocket": "articles/frost-dates-explained/",
+  "start-indoors": "articles/starting-seeds-indoors/", "leggy": "articles/starting-seeds-indoors/", "damping-off": "articles/starting-seeds-indoors/", "true-leaves": "articles/starting-seeds-indoors/",
+  "hardening-off": "articles/hardening-off-seedlings/", "soil-temperature": "articles/soil-temperature/", "germination": "articles/soil-temperature/", "succession": "articles/succession-planting/",
+  "cover-crop": "articles/winter-cover-crops/", "raised-bed": "articles/raised-beds-for-rainy-gardens/", "clay-soil": "articles/raised-beds-for-rainy-gardens/", "soil-ph": "articles/soil-ph-and-lime/",
+  "lime": "articles/soil-ph-and-lime/", "soil-test": "articles/soil-ph-and-lime/", "drip-irrigation": "articles/watering-vegetables-in-dry-summers/", "soaker-hose": "articles/watering-vegetables-in-dry-summers/",
+  "rain-shadow": "articles/watering-vegetables-in-dry-summers/", "slugs": "articles/slugs/", "late-blight": "articles/tomato-late-blight/", "pollination": "articles/native-pollinator-garden/",
+  "determinate": "articles/best-tomatoes-for-the-northwest/", "suckers": "articles/best-tomatoes-for-the-northwest/", "hardneck-softneck": "articles/planting-garlic-in-the-northwest/", "scapes": "when-to-plant/garlic/",
+  "seed-potatoes": "articles/growing-potatoes-in-the-northwest/", "chitting": "articles/growing-potatoes-in-the-northwest/", "hilling": "articles/growing-potatoes-in-the-northwest/",
+  "overwintering": "articles/fall-and-winter-vegetable-garden/", "chill-hours": "articles/growing-blueberries-in-the-northwest/", "onion-sets": "when-to-plant/onions/",
+  "row-cover": "articles/short-season-gardening-central-oregon/", "cloche": "articles/short-season-gardening-central-oregon/"
+};
+Object.values(GLOSSARY_SEE).forEach(u => { if (!fs.existsSync(path.join(ROOT, u, "index.html")) && !u.startsWith("when-to-plant/") && !u.startsWith("how-it-works/") && !u.startsWith("beginners-guide/")) throw new Error("Glossary link to missing page " + u); });
+const GLOSSARY = G.glossary.slice().sort((x, y) => x[0].localeCompare(y[0]));
+const LETTERS = [...new Set(GLOSSARY.map(g => g[0][0].toUpperCase()))];
 write("../", "glossary/index.html", layout({
   rel: "../", canonical: "glossary/", current: "glossary/",
-  title: "Vegetable Gardening Terms Explained | Rainline Garden Glossary",
-  description: "Plain-language definitions of gardening terms like last frost date, hardening off, starts, bolting and row cover.",
-  jsonld: [glb.ld, { "@context": "https://schema.org", "@type": "DefinedTermSet", name: "Rainline Garden glossary", hasDefinedTerm: G.glossary.map(([t, , d]) => ({ "@type": "DefinedTerm", name: t, description: d })) }],
+  title: "Gardening Glossary: 70+ Terms Explained | Rainline Garden",
+  description: `Plain-language definitions of ${GLOSSARY.length} gardening terms, from last frost date and hardening off to bolting, clubroot and N-P-K. Search any word.`,
+  jsonld: [glb.ld, { "@context": "https://schema.org", "@type": "DefinedTermSet", name: "Rainline Garden glossary", hasDefinedTerm: GLOSSARY.map(([t, , d]) => ({ "@type": "DefinedTerm", name: t, description: d })) }],
   body: `${glb.html}
 <section class="hero"><h1>Gardening terms, explained</h1>
-<p class="lede">The words you'll see on seed packets and planting charts, in plain language.</p></section>
-<dl class="glossary prose">${G.glossary.map(([t, id, d]) => `<div id="${id}"><dt>${esc(t)}</dt><dd>${esc(d)}</dd></div>`).join("")}</dl>`
+<p class="lede">${GLOSSARY.length} words you'll see on seed packets, planting charts and in our guides, in plain language.</p></section>
+<div class="gl-tools">
+<div class="gl-search">${'<svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>'}<label for="gl-q" class="sr">Search the glossary</label><input id="gl-q" type="search" placeholder="Search a word, like bolting or pH" autocomplete="off" spellcheck="false"></div>
+<div class="cm-filter gl-topics" role="group" aria-label="Show terms about"><span>Show</span><button type="button" data-topic="all" aria-pressed="true">All</button>${GLOSSARY_TOPICS.map(([id, l]) => `<button type="button" data-topic="${id}" aria-pressed="false">${l}</button>`).join("")}</div>
+<nav class="gl-az" aria-label="Jump to letter">${LETTERS.map(l => `<a href="#letter-${l.toLowerCase()}">${l}</a>`).join("")}</nav>
+<p class="gl-count" role="status" aria-live="polite"></p>
+</div>
+<div class="gl-list">${LETTERS.map(l => `<section class="gl-letter" id="letter-${l.toLowerCase()}"><h2>${l}</h2>
+<dl class="glossary prose">${GLOSSARY.filter(g => g[0][0].toUpperCase() === l).map(([t, id, d, topic]) => `<div id="${id}" data-topic="${topic}"><dt>${esc(t)}</dt><dd>${esc(d)}${GLOSSARY_SEE[id] ? ` <a class="gl-see" href="../${GLOSSARY_SEE[id]}">Read more</a>` : ""}</dd><dd class="gl-tag">${GLOSSARY_TOPICS.find(x => x[0] === topic)[1]}</dd></div>`).join("")}</dl></section>`).join("\n")}</div>
+<p class="gl-none" hidden>No glossary words match. <button type="button" class="linkish gl-site">Search the whole site instead</button></p>`,
+  scripts: ["glossary.js"]
 }), "0.5");
 
 /* Frost dates index */
