@@ -238,6 +238,9 @@ Object.keys(PHOTOS).forEach(key => sizesFor(key).forEach(s => ["webp", "jpg"].fo
   const f = `assets/img/photos/${fileBase(key)}-${SIZES[s].w}.${ext}`;
   if (!fs.existsSync(path.join(ROOT, f))) throw new Error(`Missing ${f}: run node scripts/fetch-photos.js`);
 })));
+D.crops.forEach(c => {
+  if (!fs.existsSync(path.join(ROOT, `assets/img/crops/${c.id}.webp`))) throw new Error(`Missing icon assets/img/crops/${c.id}.webp: add a "crop:${c.id}" photo and run node scripts/fetch-photos.js (hardy-kiwi.webp is rendered from hardy-kiwi.svg, since no photo of it exists)`);
+});
 const photoFile = (key, size, ext = "jpg") => `assets/img/photos/${fileBase(key)}-${SIZES[size].w}.${ext}`;
 function photoCredit(src) {
   const [site, id] = src.split(":");
@@ -935,10 +938,10 @@ fs.writeFileSync(path.join(ROOT, "assets/helper-data.js"),
 
 /* Header search index: plants, towns, articles and pages. Loaded by assets/nav.js the first time search opens. */
 const searchIndex = [
-  ...D.crops.map(c => ({ t: c.name, s: "Plant · " + (D.categories.find(k => k.crops.includes(c.id)) || {}).name, u: "when-to-plant/" + c.id + "/", k: "crop", c: c.id, i: "assets/img/crops/" + c.id + ".svg" })),
+  ...D.crops.map(c => ({ t: c.name, s: "Plant · " + (D.categories.find(k => k.crops.includes(c.id)) || {}).name, u: "when-to-plant/" + c.id + "/", k: "crop", c: c.id, i: "assets/img/crops/" + c.id + ".webp" })),
   ...D.places.map(p => ({ t: p.city + ", " + p.state, s: "Frost dates and planting calendar", u: "frost-dates/" + p.slug + "/", k: "town", p: p.slug })),
-  ...D.categories.map(k => ({ t: k.name, s: k.crops.length + " plants", u: "when-to-plant/" + k.id + "/", k: "group", i: "assets/img/crops/" + k.crops[0] + ".svg" })),
-  ...ARTICLES.map(a => ({ t: a.title, s: "Article", u: "articles/" + a.slug + "/", k: "article", i: a.icon ? "assets/img/topics/" + a.icon + ".svg" : a.crops && a.crops[0] ? "assets/img/crops/" + a.crops[0] + ".svg" : "" })),
+  ...D.categories.map(k => ({ t: k.name, s: k.crops.length + " plants", u: "when-to-plant/" + k.id + "/", k: "group", i: "assets/img/crops/" + k.crops[0] + ".webp" })),
+  ...ARTICLES.map(a => ({ t: a.title, s: "Article", u: "articles/" + a.slug + "/", k: "article", i: a.icon ? "assets/img/topics/" + a.icon + ".svg" : a.crops && a.crops[0] ? "assets/img/crops/" + a.crops[0] + ".webp" : "" })),
   ...G.glossary.map(g => ({ t: g[0], s: "Glossary", u: "glossary/#" + g[1], k: "term" })),
   ...[["", "Planner", "Your local planting calendar"], ["my-garden/", "My garden plan", "Plan, track and print your garden"], ["frost-dates/", "Frost dates by city", "Every town we cover"],
     ["beginners-guide/", "Beginner's guide", "Start your first garden"], ["garden-calendar/", "Monthly chores", "What to do each month"], ["about/", "About", "Who writes Rainline Garden"], ["contact/", "Contact", "Questions and corrections"]]

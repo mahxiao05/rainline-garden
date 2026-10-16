@@ -277,7 +277,7 @@
 
   var LOGO = '<img src="' + base + 'assets/icon.svg" width="22" height="22" alt="">';
   var CAL = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 10h17M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="15" r="1.8" fill="currentColor"/></svg>';
-  function chipHtml(e) { return '<button type="button" class="hb-sug" data-q="' + e[1] + '"><span class="hb-sug-i">' + (e[0] ? '<img src="' + base + 'assets/img/crops/' + e[0] + '.svg" width="26" height="26" alt="">' : CAL) + '</span><span>' + e[1] + '</span></button>'; }
+  function chipHtml(e) { return '<button type="button" class="hb-sug" data-q="' + e[1] + '"><span class="hb-sug-i">' + (e[0] ? '<img src="' + base + 'assets/img/crops/' + e[0] + '.webp" width="26" height="26" alt="">' : CAL) + '</span><span>' + e[1] + '</span></button>'; }
   var btn = doc.createElement("button");
   btn.type = "button"; btn.className = "hb-btn"; btn.setAttribute("aria-expanded", "false"); btn.setAttribute("aria-controls", "hb-panel");
   btn.innerHTML = '<span class="hb-btn-ico">' + LOGO + '</span><span class="hb-btn-t">Ask Rainline</span><kbd class="hb-kbd">/</kbd>';
