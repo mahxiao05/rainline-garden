@@ -34,7 +34,27 @@
     tulips: ["tulip bulbs"],
     daffodils: ["narcissus", "daffodil bulbs"],
     garlic: ["garlic cloves"],
-    sunflowers: ["sunflower"]
+    sunflowers: ["sunflower"],
+    apples: ["apple", "apple tree", "apples", "honeycrisp"],
+    pears: ["pear", "pear tree", "pears", "asian pear"],
+    plums: ["plum", "plum tree", "plums", "prune plum", "italian prune"],
+    cherries: ["cherry", "cherry tree", "cherries", "sweet cherry", "sour cherry"],
+    figs: ["fig", "fig tree", "figs"],
+    peaches: ["peach", "peach tree", "peaches", "nectarine", "nectarines"],
+    hazelnuts: ["hazelnut", "hazelnuts", "filbert", "filberts", "hazelnut tree"],
+    blackberries: ["blackberry", "marionberry", "marionberries", "boysenberry", "boysenberries", "thornless blackberry"],
+    grapes: ["grape", "grape vine", "grapevine", "grapes"],
+    "hardy-kiwi": ["kiwi", "kiwis", "kiwiberry", "kiwiberries", "hardy kiwi"],
+    artichokes: ["artichoke"],
+    huckleberries: ["huckleberry", "evergreen huckleberry", "red huckleberry"],
+    "oregon-grape": ["oregon grape", "mahonia"],
+    "red-flowering-currant": ["currant", "flowering currant", "red flowering currant", "ribes"],
+    serviceberry: ["serviceberries", "saskatoon", "saskatoons", "juneberry", "amelanchier"],
+    camas: ["camas lily", "camassia"],
+    lavender: ["lavenders"],
+    tomatillos: ["tomatillo"],
+    zinnias: ["zinnia"],
+    peonies: ["peony"]
   };
 
   var INTENTS = [
@@ -65,9 +85,9 @@
     });
   }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
-  function lc(n) { return n === "Swiss chard" ? n : n.toLowerCase().replace(/^brussels/, "Brussels"); }
+  function lc(n) { return n === "Swiss chard" ? n : n.toLowerCase().replace(/^brussels/, "Brussels").replace(/^oregon/, "Oregon"); }
   function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
-  function pl(c) { return /s$| and /.test(c.name) && c.id !== "asparagus"; }
+  function pl(c) { return /s$| and /.test(c.name) && c.id !== "asparagus" && c.id !== "camas"; }
   var HOW = { "Plant seeds in the ground": " from seed", "Plant seeds or young plants": " from seed or as starts", "Plant small onion bulbs (sets)": " as sets (small bulbs)",
     "Plant young plants (starts)": " as starts (young plants)", "Plant seed potatoes": " using seed potatoes", "Plant young plants": " as young plants" };
   function list(a) { return a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]; }
@@ -257,7 +277,7 @@
 
   var LOGO = '<img src="' + base + 'assets/icon.svg" width="22" height="22" alt="">';
   var CAL = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 10h17M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="15" r="1.8" fill="currentColor"/></svg>';
-  function chipHtml(e) { return '<button type="button" class="hb-sug" data-q="' + e[1] + '"><span class="hb-sug-i">' + (e[0] ? '<img src="' + base + 'assets/img/crops/' + e[0] + '.svg" width="26" height="26" alt="">' : CAL) + '</span><span>' + e[1] + '</span></button>'; }
+  function chipHtml(e) { return '<button type="button" class="hb-sug" data-q="' + e[1] + '"><span class="hb-sug-i">' + (e[0] ? '<img src="' + base + 'assets/img/crops/' + e[0] + '.webp" width="26" height="26" alt="">' : CAL) + '</span><span>' + e[1] + '</span></button>'; }
   var btn = doc.createElement("button");
   btn.type = "button"; btn.className = "hb-btn"; btn.setAttribute("aria-expanded", "false"); btn.setAttribute("aria-controls", "hb-panel");
   btn.innerHTML = '<span class="hb-btn-ico">' + LOGO + '</span><span class="hb-btn-t">Ask Rainline</span><kbd class="hb-kbd">/</kbd>';

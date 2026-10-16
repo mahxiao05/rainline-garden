@@ -22,11 +22,14 @@
     potatoes: 12, beans: 4, corn: 12, cucumbers: 12, "summer-squash": 36, "winter-squash": 48, tomatoes: 24, peppers: 18, basil: 12, dahlias: 21,
     cilantro: 4, parsley: 8, dill: 12, strawberries: 15, blueberries: 54, raspberries: 30, garlic: 6, cauliflower: 21, "brussels-sprouts": 24,
     leeks: 6, arugula: 4, "bok-choy": 8, turnips: 4, kohlrabi: 6, eggplant: 21, melons: 30, "pole-beans": 5, "fava-beans": 6, shallots: 7,
-    asparagus: 15, rhubarb: 42, chives: 10, mint: 18, rosemary: 30, thyme: 12, oregano: 15, sunflowers: 15, "sweet-peas": 5, tulips: 5, daffodils: 5 };
+    asparagus: 15, rhubarb: 42, chives: 10, mint: 18, rosemary: 30, thyme: 12, oregano: 15, sunflowers: 15, "sweet-peas": 5, tulips: 5, daffodils: 5,
+    apples: 120, pears: 150, plums: 150, cherries: 120, figs: 144, peaches: 144, hazelnuts: 180, blackberries: 60, grapes: 84,
+    "hardy-kiwi": 144, artichokes: 42, huckleberries: 48, "oregon-grape": 48, "red-flowering-currant": 60, serviceberry: 96, camas: 5,
+    lavender: 27, tomatillos: 36, zinnias: 10, peonies: 36 };
   var RATINGS = [["good", "Did well"], ["ok", "OK"], ["poor", "Struggled"]];
 
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
-  function lc(n) { return n === "Swiss chard" ? n : n.toLowerCase().replace(/^brussels/, "Brussels"); }
+  function lc(n) { return n === "Swiss chard" ? n : n.toLowerCase().replace(/^brussels/, "Brussels").replace(/^oregon/, "Oregon"); }
   function cropOf(id) { for (var i = 0; i < D.crops.length; i++) if (D.crops[i].id === id) return D.crops[i]; return null; }
   function fresh(s) {
     s = s || {};

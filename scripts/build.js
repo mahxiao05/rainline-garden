@@ -11,6 +11,7 @@ const R = require("../assets/render.js");
 const G = require("./guide.js");
 const PHOTOS = require("./photos.js");
 const SCIENCE = require("./crop-science.js");
+const NOTES = require("./crop-notes.js");
 const { SIZES, fileBase, sizesFor } = require("./photo-sizes.js");
 const ARTICLES = require("./articles-3.js").concat(require("./articles-2.js"), require("./articles.js")); // newest first
 
@@ -179,7 +180,7 @@ ${OPEN_MY_AREA}`;
 }
 
 /* Shared pieces */
-const lc = n => n === "Swiss chard" ? n : n.toLowerCase().replace(/^brussels/, "Brussels");
+const lc = n => n === "Swiss chard" ? n : n.toLowerCase().replace(/^brussels/, "Brussels").replace(/^oregon/, "Oregon");
 const DIFF = { 1: ["Easy", "easy"], 2: ["Moderate", "moderate"], 3: ["Tricky here", "tricky"] };
 const badge = d => `<span class="badge badge-${DIFF[d][1]}">${DIFF[d][0]}</span>`;
 const cropById = id => D.crops.find(c => c.id === id);
@@ -249,6 +250,9 @@ Object.keys(PHOTOS).forEach(key => sizesFor(key).forEach(s => ["webp", "jpg"].fo
   const f = `assets/img/photos/${fileBase(key)}-${SIZES[s].w}.${ext}`;
   if (!fs.existsSync(path.join(ROOT, f))) throw new Error(`Missing ${f}: run node scripts/fetch-photos.js`);
 })));
+D.crops.forEach(c => {
+  if (!fs.existsSync(path.join(ROOT, `assets/img/crops/${c.id}.webp`))) throw new Error(`Missing icon assets/img/crops/${c.id}.webp: add a "crop:${c.id}" photo and run node scripts/fetch-photos.js (hardy-kiwi.webp is rendered from hardy-kiwi.svg, since no photo of it exists)`);
+});
 const photoFile = (key, size, ext = "jpg") => `assets/img/photos/${fileBase(key)}-${SIZES[size].w}.${ext}`;
 function photoCredit(src) {
   const [site, id] = src.split(":");
@@ -272,12 +276,12 @@ function faqLd(qas) {
   return { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: qas.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) };
 }
 
-// Cleaner layout for crops with in-depth notes in scripts/crop-science.js.
+// Cleaner layout for crops with notes in scripts/crop-science.js (in depth) or scripts/crop-notes.js (shorter).
 const FEATURED_CITIES = ["portland-or", "seattle-wa", "eugene-or", "spokane-wa", "bend-or", "tri-cities-wa"];
 function scienceBody(c, g, sci, { head, rowHtml, plans, port }) {
   const featured = FEATURED_CITIES.map(slug => plans.find(p => p.place.slug === slug));
   return `${quickFacts(c, g)}
-${JUMP}
+${jump(sci)}
 <p class="callout">${esc(c.note)}</p>
 <h2 id="dates">${c.name} planting dates</h2>
 <div class="table-wrap"><table class="plan"><thead>${head}</thead><tbody>${featured.map(rowHtml).join("")}</tbody></table></div>
@@ -293,19 +297,19 @@ ${gearBox(g.gear)}
 ${faqHtml(sci.faq)}
 ${relatedArticles("../../", c.id, 4)}`;
 }
-const JUMP = `<nav class="jump" aria-label="On this page"><a href="#dates">Planting dates</a><a href="#grow">How to grow</a><a href="#numbers">Key numbers</a><a href="#science">How it works</a><a href="#faq">Questions</a></nav>`;
+const jump = sci => `<nav class="jump" aria-label="On this page"><a href="#dates">Planting dates</a><a href="#grow">How to grow</a><a href="#numbers">Key numbers</a><a href="#science">${sci.notes ? "Growing notes" : "How it works"}</a><a href="#faq">Questions</a></nav>`;
 const faqHtml = qas => `<div class="faq">${qas.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("")}</div>`;
 const sideCard = (g, note) => `<aside class="side-card"><h3>Varieties that do well here</h3><ul class="vars">${g.varieties.map(v => `<li>${esc(v)}</li>`).join("")}</ul>
 <h3>Watch out for</h3><p>${esc(g.problem)}</p>${note ? `<p class="note">${esc(note)}</p>` : ""}</aside>`;
 function scienceParts(sci) {
   return `<h2 id="numbers">Key numbers</h2>
 <ul class="keys">${sci.keys.map(([l, v]) => `<li><span class="k-v">${esc(v)}</span><span class="k-l">${esc(l)}</span></li>`).join("")}</ul>
-<h2 id="science">How it works</h2>
-<p class="lede-sm">The plant biology behind the advice above, in plain language.</p>
+<h2 id="science">${sci.notes ? "Growing notes" : "How it works"}</h2>
+<p class="lede-sm">${sci.notes ? "What makes the difference in Northwest gardens, in plain language." : "The plant biology behind the advice above, in plain language."}</p>
 <div class="sci-cards">${sci.sections.map(([h, ...ps]) => `<section class="sci-card"><h3>${esc(h)}</h3>${ps.map(p => `<p>${esc(p)}</p>`).join("")}</section>`).join("\n")}</div>`;
 }
 function stepsForHub(c, g, port) {
-  return steps(c, rowFor(port, c.id), g).replace(/(Start seeds indoors|Plant them in the garden|Plant seeds|Plant seed potatoes|Plant onion sets|Break bulbs into cloves and plant them|Plant them|Plant again|Plant [a-z ]+?) [A-Z][a-z]{2} \d+(–\d+| – [A-Z][a-z]{2} \d+)/g, "$1 on your city's dates");
+  return steps(c, rowFor(port, c.id), g).replace(/(Start seeds indoors|Plant them in the garden|Plant seeds|Plant seed potatoes|Plant onion sets|Break bulbs into cloves and plant them|Plant them|Plant again|Plant [A-Za-z -]+?) [A-Z][a-z]{2} \d+(–\d+| – [A-Z][a-z]{2} \d+)/g, "$1 on your city's dates");
 }
 
 const WHEN_INDEX = "when-to-plant/";
@@ -486,7 +490,7 @@ D.crops.forEach(c => {
   const sorted = plans.slice().sort((a, b) => a.place.state.localeCompare(b.place.state) || a.place.city.localeCompare(b.place.city));
   const port = plans.find(p => p.place.slug === "portland-or"), bend = plans.find(p => p.place.slug === "bend-or");
   const hb = crumbs("../../", [["When to plant", WHEN_INDEX], [catById(c.cat).name, `${WHEN_INDEX}${c.cat}/`], [c.name, null]]);
-  const sci = SCIENCE[c.id];
+  const sci = SCIENCE[c.id] || NOTES[c.id];
   write("../../", `when-to-plant/${c.id}/index.html`, layout({
     rel: "../../", canonical: `when-to-plant/${c.id}/`, current: WHEN_INDEX,
     title: `When to Plant ${c.name} in Oregon and Washington, by City | Rainline Garden`,
@@ -547,7 +551,7 @@ ${banner("crop:" + c.id, rel)}
 <p class="answer">${answer(c, r, city)}</p>
 <p class="meta">${badge(g.difficulty)} <span>${esc(c.how)}</span></p></div></section>
 ${sci ? `${quickFacts(c, g)}
-${JUMP}
+${jump(sci)}
 <h2 id="dates">Why these dates</h2>
 <p class="prose">${why(c, r, p)}</p>
 <p class="region prose"><strong>${p.zone.name}.</strong> ${p.zone.blurb}</p>
@@ -954,10 +958,10 @@ fs.writeFileSync(path.join(ROOT, "assets/helper-data.js"),
 
 /* Header search index: plants, towns, articles and pages. Loaded by assets/nav.js the first time search opens. */
 const searchIndex = [
-  ...D.crops.map(c => ({ t: c.name, s: "Plant · " + (D.categories.find(k => k.crops.includes(c.id)) || {}).name, u: "when-to-plant/" + c.id + "/", k: "crop", c: c.id, i: "assets/img/crops/" + c.id + ".svg" })),
+  ...D.crops.map(c => ({ t: c.name, s: "Plant · " + (D.categories.find(k => k.crops.includes(c.id)) || {}).name, u: "when-to-plant/" + c.id + "/", k: "crop", c: c.id, i: "assets/img/crops/" + c.id + ".webp" })),
   ...D.places.map(p => ({ t: p.city + ", " + p.state, s: "Frost dates and planting calendar", u: "frost-dates/" + p.slug + "/", k: "town", p: p.slug })),
-  ...D.categories.map(k => ({ t: k.name, s: k.crops.length + " plants", u: "when-to-plant/" + k.id + "/", k: "group", i: "assets/img/crops/" + k.crops[0] + ".svg" })),
-  ...ARTICLES.map(a => ({ t: a.title, s: "Article", u: "articles/" + a.slug + "/", k: "article", i: a.icon ? "assets/img/topics/" + a.icon + ".svg" : a.crops && a.crops[0] ? "assets/img/crops/" + a.crops[0] + ".svg" : "" })),
+  ...D.categories.map(k => ({ t: k.name, s: k.crops.length + " plants", u: "when-to-plant/" + k.id + "/", k: "group", i: "assets/img/crops/" + k.crops[0] + ".webp" })),
+  ...ARTICLES.map(a => ({ t: a.title, s: "Article", u: "articles/" + a.slug + "/", k: "article", i: a.icon ? "assets/img/topics/" + a.icon + ".svg" : a.crops && a.crops[0] ? "assets/img/crops/" + a.crops[0] + ".webp" : "" })),
   ...G.glossary.map(g => ({ t: g[0], s: "Glossary", u: "glossary/#" + g[1], k: "term" })),
   ...[["", "Planner", "Your local planting calendar"], ["my-garden/", "My garden plan", "Plan, track and print your garden"], ["frost-dates/", "Frost dates by city", "Every town we cover"],
     ["beginners-guide/", "Beginner's guide", "Start your first garden"], ["garden-calendar/", "Monthly chores", "What to do each month"], ["about/", "About", "Who writes Rainline Garden"], ["contact/", "Contact", "Questions and corrections"]]

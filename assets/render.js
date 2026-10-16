@@ -8,7 +8,7 @@
 
   function icon(id, base, size) {
     size = size || 28;
-    return '<img class="ico" src="' + (base || "") + 'assets/img/crops/' + id + '.svg" width="' + size + '" height="' + size + '" alt="" loading="lazy">';
+    return '<img class="ico" src="' + (base || "") + 'assets/img/crops/' + id + '.webp" width="' + size + '" height="' + size + '" alt="" loading="lazy">';
   }
   function cropUrl(id, slug, base) { return (base || "") + 'when-to-plant/' + id + '/' + slug + '/'; }
 

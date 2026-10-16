@@ -1,5 +1,5 @@
 /* In-depth, science-based growing notes for the most-searched Northwest crops, shown on the crop hub
- * pages (/when-to-plant/{crop}/) only. Crops not listed here keep the standard guide.
+ * pages (/when-to-plant/{crop}/) only. Every other crop has shorter notes in scripts/crop-notes.js.
  * Per crop: keys ([label, value] numbers to scan at a glance), sections ([heading, ...paragraphs]) and faq ([question, answer]); the FAQ is also emitted
  * as FAQPage structured data. Plain text only (escaped when rendered). Keep numbers to well-established
  * horticultural research, and keep them consistent with scripts/guide.js. */
