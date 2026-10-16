@@ -796,3 +796,7 @@ details.year > summary { font-size: 1.05rem; }
 .md-ask { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .md-ask select { font: inherit; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); }
 .updated { font-size: .92rem; color: var(--muted); margin: .75rem 0 0; max-width: 46rem; }
+@media (max-width: 720px) {
+  .beginner .cards { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 10px; padding-bottom: 6px; }
+  .beginner .cards > li { flex: 0 0 12rem; scroll-snap-align: start; }
+}

@@ -11,7 +11,9 @@ Plain HTML, CSS and JavaScript, with no framework and no build tools to install 
 - `assets/data.js`: all the data (NOAA frost dates, regional planting anchors, crops, cities, monthly chores), with sources noted at the top.
 - `assets/plan.js`: the planting-date rules.
 - `assets/render.js`: turns a plan into HTML (used by both the browser and the builder).
-- `assets/app.js`: the ZIP/city planner and live "plant now" lists.
+- `assets/app.js`: the ZIP/city planner, the live "plant now" lists and the frost warning. The warning asks the National Weather Service forecast (api.weather.gov, public domain) for each town's `lat`/`lon` in `assets/data.js`, and shows only in the gardening season when a night in the next three days is forecast at 34°F or colder.
+- `assets/crop.js`: "Your dates" on crop guides, for the town saved on this device.
+- `assets/glossary.js`: glossary search and topic buttons. Terms live in `scripts/guide.js` with a topic; `GLOSSARY_SEE` in `scripts/build.js` links a term to a guide.
 - `assets/img/`: the crop and topic illustrations, all drawn for this site, and the social share image (`og.jpg`: the homepage photo with the logo).
 - Logo and icons: `assets/icon.svg` is the logo. `favicon.ico`, `apple-touch-icon.png` and `assets/icon-{96,192,512}.png` are PNG copies of it for Google results, phones and home screens; redraw them if the logo changes.
 - `assets/img/photos/`: real photos for the homepage, category pages, crop guide pages and article headers, all from Pexels or Unsplash (free licenses). The list lives in `scripts/photos.js`; after changing it run `node scripts/fetch-photos.js` (needs curl and ImageMagick) to download and resize them, then rebuild.
