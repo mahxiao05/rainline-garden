@@ -394,6 +394,7 @@
       (preview ? '' : '<div class="gp-bar"><button type="button" class="btn" data-act="print">Print or save as PDF</button>' +
       '<button type="button" class="btn btn-ghost" data-act="ics">Add dates to my calendar</button>' +
       '<button type="button" class="btn btn-ghost" data-act="link">Copy link to this plan</button>' +
+      '<button type="button" class="btn btn-ghost gp-reset" data-act="reset">Reset plan</button>' +
       '<span class="gp-saved" role="status">Saved on this device</span></div>') +
       '<header class="gp-title"><h2>Garden plan for ' + esc(place.city) + ', ' + place.state + '</h2>' +
       '<p>' + chosen.length + ' plants · ' + doneCount + ' of ' + list.length + ' jobs done · made ' + short(now) + ', ' + YEAR + ' at rainlinegarden.org</p>' +
@@ -580,6 +581,16 @@
       save(); render();
       var sec = document.getElementById("gp-season-sec"); if (sec) sec.scrollIntoView({ block: "nearest" });
       flash(c.name + (act === "addcrop" ? " added to your plan" : " removed from your plan"));
+    }
+    else if (act === "reset") {
+      if (!confirm("Reset your garden plan? This clears your town, plants, ticks, beds, notes and harvest log on this device. It can't be undone.")) return;
+      state = mine = fresh({});
+      try { localStorage.removeItem("rainline-place"); } catch (err) { /* ignore */ }
+      zip.value = ""; sel.value = ""; msg.textContent = "";
+      save(); render();
+      pick.open = true;
+      msg.textContent = "Your plan was reset. Choose a town and plants to start a new one.";
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
     else if (act === "rmlog") { state.harvests = state.harvests.filter(function (h) { return h.id !== b.dataset.id; }); save(); render(); flash("Harvest removed"); }
   });

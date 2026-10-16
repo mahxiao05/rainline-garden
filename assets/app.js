@@ -30,6 +30,32 @@
   if (!form) return;
   var zip = document.getElementById("zip"), sel = document.getElementById("place"), msg = document.getElementById("msg");
   var out = document.getElementById("result");
+  var seasonEl = document.getElementById("season-now");
+
+  // "In season now": the year chart cut down to the plants you can sow, plant or start indoors today.
+  var SEASON_ROWS = 8;
+  function seasonNow(place, all) {
+    if (!seasonEl) return;
+    var p = P.plan(D, place), n = P.nowList(p, today), ids = {};
+    n.sow.concat(n.indoor).forEach(function (x) { ids[x.r.crop.id] = 1; });
+    var rows = p.crops.filter(function (r) { return ids[r.crop.id]; });
+    var where = place.city + ', ' + place.state;
+    var h = '<div class="sec-head"><h2>In season now</h2><a href="' + base + 'frost-dates/' + place.slug + '/">Full calendar for ' + place.city + '</a></div>';
+    if (!rows.length) {
+      h += '<p class="season-empty">Nothing is in season to plant in ' + where + ' right now. ' +
+        (n.soon.length ? 'Next up: ' + n.soon[0].r.crop.name + ' from ' + P.fmt(n.soon[0].w.start) + '.' : 'It\'s a good time to plan, order seeds and tend your beds.') + '</p>';
+    } else {
+      var shown = all ? rows : rows.slice(0, SEASON_ROWS);
+      h += '<p class="season-sub">' + rows.length + (rows.length === 1 ? ' plant' : ' plants') + ' you can plant or start indoors in ' + where + ' as of ' + P.fmt(today) + '.' +
+        (out.innerHTML ? '' : ' Pick your town above to change it.') + '</p>' +
+        '<div class="reveal">' + R.chart({ place: p.place, station: p.station, zone: p.zone, frost: p.frost, crops: shown }, today) + '</div>' +
+        (rows.length > shown.length ? '<button type="button" class="btn btn-ghost btn-sm season-more">Show all ' + rows.length + ' in season</button>' : '');
+    }
+    seasonEl.innerHTML = h;
+    seasonEl.hidden = false;
+    var more = seasonEl.querySelector(".season-more");
+    if (more) more.addEventListener("click", function () { seasonNow(place, true); });
+  }
 
   P.fillPlaceSelect(sel, D);
 
@@ -47,6 +73,7 @@
       '<h2>Your year at a glance</h2><div class="reveal">' + R.chart(p, today) + '</div>' +
       '<h2>Planting dates</h2>' + R.table(p, base);
     if (history.replaceState) history.replaceState(null, "", "?place=" + place.slug);
+    seasonNow(place);
   }
 
   form.addEventListener("submit", function (e) {
@@ -67,4 +94,5 @@
   var q = new URLSearchParams(location.search).get("place") || store("rainline-place");
   var start = q && P.findPlace(D, q);
   if (start) show(start, false);
+  else seasonNow(P.findPlace(D, "portland-or"));
 })();

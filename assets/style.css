@@ -472,6 +472,7 @@ a.btn { display: inline-flex; align-items: center; text-decoration: none; }
 .gp-out { scroll-margin-top: 80px; }
 .gp-empty { padding: 1rem 0 2rem; }
 .gp-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 1rem 0; }
+.gp-reset { color: var(--hard); }
 .gp-saved { font-size: .95rem; color: var(--muted); }
 .gp-saved.is-on { color: var(--moss); font-weight: 700; }
 .gp-title h2 { margin-bottom: .2rem; }
@@ -724,6 +725,14 @@ details.cm-byregion > summary { cursor: pointer; padding: 10px 14px; font-weight
   .quiz-opts { grid-template-columns: 1fr; }
   .quiz-actions .btn, .plan-cta-btns .btn { width: 100%; text-align: center; }
 }
+
+/* Homepage "In season now" chart */
+.season-now .sec-head { margin-bottom: .25rem; }
+.season-sub, .season-empty { margin: 0 0 .75rem; color: var(--muted); }
+.season-empty { color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+.season-now .howto { display: none; }
+.season-now .legend { margin-bottom: 0; }
+.season-more { margin-top: .75rem; }
 
 /* Homepage on phones: same sections as desktop, packed tighter so the page isn't twice as long */
 @media (max-width: 720px) {
