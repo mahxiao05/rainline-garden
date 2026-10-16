@@ -115,7 +115,7 @@ ${noindex ? '<meta name="robots" content="noindex, follow">\n' : ""}<link rel="c
 <meta property="og:image" content="${CONFIG.siteUrl}${image || "assets/img/og.png"}">
 <meta property="og:site_name" content="Rainline Garden">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#F2F4F6">
+<meta name="theme-color" content="#F5F4EF">
 <script>try{var t=localStorage.getItem("rainline-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="icon" href="${base}assets/icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="${base}assets/fonts/fonts.css">
