@@ -31,14 +31,7 @@
   var zip = document.getElementById("zip"), sel = document.getElementById("place"), msg = document.getElementById("msg");
   var out = document.getElementById("result");
 
-  ["OR", "WA"].forEach(function (s) {
-    var g = document.createElement("optgroup");
-    g.label = s === "OR" ? "Oregon" : "Washington";
-    D.places.filter(function (x) { return x.state === s; })
-      .sort(function (a, b) { return a.city.localeCompare(b.city); })
-      .forEach(function (x) { var o = document.createElement("option"); o.value = x.slug; o.textContent = x.city + ", " + x.state; g.appendChild(o); });
-    sel.appendChild(g);
-  });
+  P.fillPlaceSelect(sel, D);
 
   function show(place, viaZip) {
     var p = P.plan(D, place);
