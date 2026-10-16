@@ -12,6 +12,7 @@ const G = require("./guide.js");
 const PHOTOS = require("./photos.js");
 const SCIENCE = require("./crop-science.js");
 const NOTES = require("./crop-notes.js");
+const VARIETIES = require("./varieties.js");
 const { SIZES, fileBase, sizesFor } = require("./photo-sizes.js");
 const ARTICLES = require("./articles-3.js").concat(require("./articles-2.js"), require("./articles.js")); // newest first
 
@@ -116,7 +117,7 @@ ${noindex ? '<meta name="robots" content="noindex, follow">\n' : ""}<link rel="c
 <meta property="og:image" content="${CONFIG.siteUrl}${image || "assets/img/og.png"}">
 <meta property="og:site_name" content="Rainline Garden">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#F5F4EF">
+<meta name="theme-color" content="#FAF7F0">
 <script>try{var t=localStorage.getItem("rainline-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="icon" href="${base}assets/icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="${base}assets/fonts/fonts.css">
@@ -281,7 +282,7 @@ const FEATURED_CITIES = ["portland-or", "seattle-wa", "eugene-or", "spokane-wa",
 function scienceBody(c, g, sci, { head, rowHtml, plans, port }) {
   const featured = FEATURED_CITIES.map(slug => plans.find(p => p.place.slug === slug));
   return `${quickFacts(c, g)}
-${jump(sci)}
+${jump(sci, VARIETIES[c.id])}
 <p class="callout">${esc(c.note)}</p>
 <h2 id="dates">${c.name} planting dates</h2>
 <div class="table-wrap"><table class="plan"><thead>${head}</thead><tbody>${featured.map(rowHtml).join("")}</tbody></table></div>
@@ -291,16 +292,25 @@ ${ad("crop-mid")}
 <h2 id="grow">How to grow ${lc(c.name)}</h2>
 <div class="grow-grid"><div>${stepsForHub(c, g, port)}</div>
 ${sideCard(g)}</div>
+${varietyCards(c)}
 ${scienceParts(sci)}
 ${gearBox(g.gear)}
 <h2 id="faq">Common questions about growing ${lc(c.name)}</h2>
 ${faqHtml(sci.faq)}
 ${relatedArticles("../../", c.id, 4)}`;
 }
-const jump = sci => `<nav class="jump" aria-label="On this page"><a href="#dates">Planting dates</a><a href="#grow">How to grow</a><a href="#numbers">Key numbers</a><a href="#science">${sci.notes ? "Growing notes" : "How it works"}</a><a href="#faq">Questions</a></nav>`;
+const jump = (sci, vars) => `<nav class="jump" aria-label="On this page"><a href="#dates">Planting dates</a><a href="#grow">How to grow</a>${vars ? '<a href="#varieties">Varieties</a>' : ""}<a href="#numbers">Key numbers</a><a href="#science">${sci.notes ? "Growing notes" : "How it works"}</a><a href="#faq">Questions</a></nav>`;
 const faqHtml = qas => `<div class="faq">${qas.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("")}</div>`;
 const sideCard = (g, note) => `<aside class="side-card"><h3>Varieties that do well here</h3><ul class="vars">${g.varieties.map(v => `<li>${esc(v)}</li>`).join("")}</ul>
 <h3>Watch out for</h3><p>${esc(g.problem)}</p>${note ? `<p class="note">${esc(note)}</p>` : ""}</aside>`;
+// Popular variety cards from scripts/varieties.js, shown on each plant's main page.
+function varietyCards(c) {
+  const vs = VARIETIES[c.id];
+  if (!vs) return "";
+  return `<h2 id="varieties">Popular ${lc(c.name)} varieties</h2>
+<p class="lede-sm">Widely sold picks that do well somewhere in Oregon or Washington. The tag says which side of the mountains suits each one best.</p>
+<div class="var-cards">${vs.map(v => `<section class="var-card"><h3>${esc(v.name)}</h3><p class="var-meta">${esc(v.type)}${v.days ? ` <span>&middot; ${esc(v.days)}</span>` : ""}</p><p>${esc(v.note)}</p><p class="var-where">${esc(v.where)}</p></section>`).join("")}</div>`;
+}
 function scienceParts(sci) {
   return `<h2 id="numbers">Key numbers</h2>
 <ul class="keys">${sci.keys.map(([l, v]) => `<li><span class="k-v">${esc(v)}</span><span class="k-l">${esc(l)}</span></li>`).join("")}</ul>
