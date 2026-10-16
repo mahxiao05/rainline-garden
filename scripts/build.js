@@ -165,6 +165,18 @@ function write(rel, file, html, priority) {
 const ad = name => `<div class="ad-slot" data-ad="${name}"></div>`;
 const SCRIPTS = ["data.js", "plan.js", "render.js", "app.js"];
 const placeLabel = p => `${p.city}, ${p.state}`;
+// Up to n towns near a place: same area first, then the same climate region.
+const nearbyOf = (place, n = 6) => {
+  const others = D.places.filter(x => x.slug !== place.slug);
+  return others.filter(x => x.area === place.area).concat(others.filter(x => x.area !== place.area && x.zone === place.zone)).slice(0, n);
+};
+// One collapsed table per area so a crop's dates for every town don't make one very long page.
+// The small script opens the area of the visitor's saved town.
+const OPEN_MY_AREA = `<script>try{var s=localStorage.getItem("rainline-place");if(s)document.querySelectorAll("details[data-towns]").forEach(function(d){if((" "+d.dataset.towns+" ").indexOf(" "+s+" ")>=0)d.open=true})}catch(e){}</script>`;
+function areaTables(head, rowHtml, plans) {
+  return `<div class="area-groups">${P.byArea(D).map(g => `<details class="area-group" data-towns="${g.places.map(x => x.slug).join(" ")}"><summary>${esc(g.area.name)}, ${g.area.state} <span>${g.places.length} towns</span></summary><div class="table-wrap"><table class="plan"><thead>${head}</thead><tbody>${g.places.map(pl => rowHtml(plans.find(p => p.place.slug === pl.slug))).join("")}</tbody></table></div></details>`).join("")}</div>
+${OPEN_MY_AREA}`;
+}
 
 /* Shared pieces */
 const lc = n => n === "Swiss chard" ? n : n.toLowerCase().replace(/^brussels/, "Brussels");
@@ -269,7 +281,8 @@ ${JUMP}
 <p class="callout">${esc(c.note)}</p>
 <h2 id="dates">${c.name} planting dates</h2>
 <div class="table-wrap"><table class="plan"><thead>${head}</thead><tbody>${featured.map(rowHtml).join("")}</tbody></table></div>
-<details class="more-cities"><summary>All ${plans.length} Oregon and Washington cities</summary><div class="table-wrap"><table class="plan"><thead>${head}</thead><tbody>${plans.map(rowHtml).join("")}</tbody></table></div></details>
+<h3 class="area-h">Find your town</h3>
+${areaTables(head, rowHtml, plans)}
 ${ad("crop-mid")}
 <h2 id="grow">How to grow ${lc(c.name)}</h2>
 <div class="grow-grid"><div>${stepsForHub(c, g, port)}</div>
@@ -346,11 +359,10 @@ ${newsletter()}
 }), "1.0");
 
 /* City pages */
-const byState = s => D.places.filter(p => p.state === s).sort((a, b) => a.city.localeCompare(b.city));
 D.places.forEach(place => {
   const p = P.plan(D, place);
   const f = p.frost;
-  const nearby = D.places.filter(x => x.zone === place.zone && x.slug !== place.slug).slice(0, 6);
+  const nearby = nearbyOf(place);
   const tomato = win(rowFor(p, "tomatoes"), "spring");
   const peas = win(rowFor(p, "peas"), "spring");
   const bc = crumbs("../../", [["Frost dates", "frost-dates/"], [placeLabel(place), null]]);
@@ -472,14 +484,13 @@ D.crops.forEach(c => {
     return `<tr><th scope="row"><a href="${p.place.slug}/">${esc(placeLabel(p.place))}</a></th>${cols.map(([l, get]) => { const w = get(r); return `<td data-label="${l}">${w ? P.fmtRange(w.start, w.end) : '<span class="none">—</span>'}</td>`; }).join("")}</tr>`;
   };
   const sorted = plans.slice().sort((a, b) => a.place.state.localeCompare(b.place.state) || a.place.city.localeCompare(b.place.city));
-  const rows = sorted.map(rowHtml).join("");
   const port = plans.find(p => p.place.slug === "portland-or"), bend = plans.find(p => p.place.slug === "bend-or");
   const hb = crumbs("../../", [["When to plant", WHEN_INDEX], [catById(c.cat).name, `${WHEN_INDEX}${c.cat}/`], [c.name, null]]);
   const sci = SCIENCE[c.id];
   write("../../", `when-to-plant/${c.id}/index.html`, layout({
     rel: "../../", canonical: `when-to-plant/${c.id}/`, current: WHEN_INDEX,
     title: `When to Plant ${c.name} in Oregon and Washington, by City | Rainline Garden`,
-    description: `${c.name} planting dates for 30 Oregon and Washington cities, from Portland and Seattle to Bend and Spokane, plus a beginner-friendly growing guide.`,
+    description: `${c.name} planting dates for ${D.places.length} Oregon and Washington towns, from Portland and Seattle to Bend and Spokane, plus a beginner-friendly growing guide.`,
     image: PHOTOS["crop:" + c.id] && photoFile("crop:" + c.id, "banner"),
     jsonld: sci ? [hb.ld, faqLd(sci.faq)] : [hb.ld],
     body: `${hb.html}
@@ -490,7 +501,9 @@ ${banner("crop:" + c.id, "../../")}
 ${sci ? scienceBody(c, g, sci, { head, rowHtml, plans: sorted, port }) : `${quickFacts(c, g)}
 <p class="callout">${esc(c.note)}</p>
 <h2>${c.name} planting dates by city</h2>
-<div class="table-wrap"><table class="plan"><thead>${head}</thead><tbody>${rows}</tbody></table></div>
+<div class="table-wrap"><table class="plan"><thead>${head}</thead><tbody>${FEATURED_CITIES.map(slug => rowHtml(plans.find(p => p.place.slug === slug))).join("")}</tbody></table></div>
+<h3 class="area-h">Find your town</h3>
+${areaTables(head, rowHtml, plans)}
 ${ad("crop-mid")}
 <h2>How to grow ${lc(c.name)}</h2>
 ${stepsForHub(c, g, port)}
@@ -518,7 +531,7 @@ ${newsletter()}
     else if (c.days) qas.push([`How long until I can harvest ${lc(c.name)}?`, `About ${c.days} days after planting. ${g.harvest}`]);
     const ref = g.fall ? fa : sp;
     const same = p.crops.filter(x => x.crop.id !== c.id && x.windows.some(w => w.kind === ref.kind && w.start <= ref.end && w.end >= ref.start)).slice(0, 8);
-    const near = plans.filter(x => x.place.zone === place.zone && x.place.slug !== place.slug).slice(0, 6);
+    const near = nearbyOf(place).map(x => plans.find(pp => pp.place.slug === x.slug));
     const cb = crumbs(rel, [["When to plant", WHEN_INDEX], [c.name, `when-to-plant/${c.id}/`], [city, null]]);
     const plain = answer(c, r, city).replace(/<\/?strong>/g, "");
     write(rel, `when-to-plant/${c.id}/${place.slug}/index.html`, layout({
@@ -575,7 +588,7 @@ const wb = crumbs("../", [["When to plant", null]]);
 write("../", "when-to-plant/index.html", layout({
   rel: "../", canonical: WHEN_INDEX, current: WHEN_INDEX,
   title: "When to Plant Vegetables, Herbs and Berries in Oregon and Washington | Rainline Garden",
-  description: `Planting dates for ${D.crops.length} vegetables, herbs, berries and flowers in 30 Oregon and Washington cities, with difficulty ratings and beginner-friendly growing guides.`,
+  description: `Planting dates for ${D.crops.length} vegetables, herbs, berries and flowers in ${D.places.length} Oregon and Washington towns, with difficulty ratings and beginner-friendly growing guides.`,
   jsonld: [wb.ld],
   body: `${wb.html}
 <section class="hero"><h1>When to plant vegetables, herbs and berries in the Northwest</h1>
@@ -736,19 +749,25 @@ write("../", "glossary/index.html", layout({
 }), "0.5");
 
 /* Frost dates index */
-const placeList = s => byState(s).map(x => {
+const placeItem = x => {
   const st = D.stations[x.station];
-  return `<li><a href="${x.slug}/">${esc(x.city)}</a> <span>last frost ${P.fmt(P.doy(st.spring50))}, first frost ${P.fmt(P.doy(st.fall50))}</span></li>`;
-}).join("");
+  return `<li data-q="${esc((x.city + " " + x.state).toLowerCase())}"><a href="${x.slug}/">${esc(x.city)}</a> <span>last frost ${P.fmt(P.doy(st.spring50))}, first frost ${P.fmt(P.doy(st.fall50))}</span></li>`;
+};
+const areaLists = s => P.byArea(D).filter(g => g.area.state === s).map(g => `<section class="area-list"><h3>${esc(g.area.name)}</h3><ul class="places">${g.places.map(placeItem).join("")}</ul></section>`).join("");
 write("../", "frost-dates/index.html", layout({
   rel: "../", canonical: "frost-dates/", current: "frost-dates/",
   title: "Oregon and Washington Frost Dates by City | Rainline Garden",
-  description: "Typical last spring and first fall frost dates for 30 Oregon and Washington cities, from 1991-2020 NOAA climate normals, with a planting calendar for each.",
+  description: `Typical last spring and first fall frost dates for ${D.places.length} Oregon and Washington towns, from 1991-2020 NOAA climate normals, with a planting calendar for each.`,
   body: `
 <section class="hero"><h1>Frost dates by city</h1>
 <p class="lede">Typical last spring and first fall frost dates for Oregon and Washington, from NOAA's 1991–2020 climate normals. Pick a city for its full planting calendar.</p></section>
-<h2>Oregon</h2><ul class="places">${placeList("OR")}</ul>
-<h2>Washington</h2><ul class="places">${placeList("WA")}</ul>
+<div class="field town-filter"><label for="town-q">Find a town</label><input id="town-q" type="search" autocomplete="off" placeholder="Start typing, like Hood River"></div>
+<p id="town-none" class="empty" hidden>No town by that name yet. Try the nearest bigger town, or <a href="../">use your ZIP code</a>.</p>
+<div id="town-lists">
+<h2 data-state>Oregon</h2>${areaLists("OR")}
+<h2 data-state>Washington</h2>${areaLists("WA")}
+</div>
+<script>(function(){var q=document.getElementById("town-q"),none=document.getElementById("town-none");if(!q)return;q.addEventListener("input",function(){var v=q.value.trim().toLowerCase(),any=false;document.querySelectorAll("#town-lists .area-list").forEach(function(sec){var n=0;sec.querySelectorAll("li").forEach(function(li){var m=!v||li.dataset.q.indexOf(v)>=0;li.hidden=!m;if(m)n++});sec.hidden=!n;if(n)any=true});document.querySelectorAll("#town-lists [data-state]").forEach(function(h){var e=h.nextElementSibling,vis=false;while(e&&!e.hasAttribute("data-state")){if(!e.hidden)vis=true;e=e.nextElementSibling}h.hidden=!vis});none.hidden=any})})();</script>
 <p class="callout">"Typical" means the median: in half of years the last spring frost comes later. Each city page also shows the date when frost is over in 9 years out of 10.</p>`
 }), "0.9");
 
@@ -827,7 +846,8 @@ write("../", "how-it-works/index.html", layout({
 <h2>Regional dates used</h2>
 <div class="table-wrap"><table class="plan"><thead><tr><th scope="col">Region</th><th scope="col">Hardy early crops</th><th scope="col">Cool transplants</th><th scope="col">Warm seeds</th><th scope="col">Warm transplants</th><th scope="col">Garlic</th></tr></thead><tbody>${zoneRows}</tbody></table></div>
 <h2>Station data</h2>
-<div class="table-wrap"><table class="plan"><thead><tr><th scope="col">Area</th><th scope="col">NOAA station</th><th scope="col">Last frost (50%)</th><th scope="col">Last frost (10%)</th><th scope="col">First frost (50%)</th><th scope="col">First frost (10%)</th></tr></thead><tbody>${stationRows}</tbody></table></div>
+<details class="area-group"><summary>All ${D.places.length} towns and their NOAA stations</summary>
+<div class="table-wrap"><table class="plan"><thead><tr><th scope="col">Area</th><th scope="col">NOAA station</th><th scope="col">Last frost (50%)</th><th scope="col">Last frost (10%)</th><th scope="col">First frost (50%)</th><th scope="col">First frost (10%)</th></tr></thead><tbody>${stationRows}</tbody></table></div></details>
 <p class="station">Spotted something that looks wrong? Email <a href="mailto:${CONFIG.contactEmail}">${CONFIG.contactEmail}</a>.</p>`
 }), "0.5");
 
