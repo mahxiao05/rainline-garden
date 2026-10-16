@@ -725,6 +725,32 @@ details.cm-byregion > summary { cursor: pointer; padding: 10px 14px; font-weight
   .quiz-actions .btn, .plan-cta-btns .btn { width: 100%; text-align: center; }
 }
 
+/* Homepage on phones: same sections as desktop, packed tighter so the page isn't twice as long */
+@media (max-width: 720px) {
+  .hero-art { height: 150px; }
+  .hero-art + .hero { padding-top: 1.25rem; padding-bottom: .5rem; }
+  .hero-art + .hero .lede { font-size: 1.05rem; margin-bottom: 0; }
+  .hero-art + .hero .finder { margin-top: 1rem; gap: 10px 12px; }
+  .hero-art + .hero .finder .field input { width: 6.5rem; }
+  .hero-art + .hero .finder .field-select { flex: 1 1 9rem; }
+  .hero-art + .hero .finder .btn { flex: 1 1 100%; }
+  .home-sec { margin-top: 2rem; }
+  .home-sec.plan-cta { padding: 18px; gap: 12px; }
+  .home-sec .sec-head { margin-bottom: .6rem; }
+  .home-sec .cat-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 0; }
+  .home-sec .cat-tile { padding: 0 8px 9px; gap: 2px; border-radius: 12px; }
+  .home-sec .cat-photo { width: calc(100% + 16px); margin: 0 -8px 6px; aspect-ratio: 16 / 9; border-radius: 11px 11px 0 0; }
+  .home-sec .cat-icons { display: none; }
+  .home-sec .cat-tile .card-t { font-size: .9rem; }
+  .home-sec .cat-tile .card-s { font-size: .78rem; }
+  .home-sec.starter { padding: 16px; gap: 10px; }
+  .home-sec .reads-grid { gap: 8px; margin: 0; }
+  .home-sec .reads-grid .card { flex-direction: row; align-items: center; gap: 12px; padding: 12px; }
+  .home-sec .reads-grid .ico { width: 36px; height: 36px; flex: none; }
+  .home-sec .reads-grid .card-t { font-size: 1rem; }
+  .home-sec .reads-grid .card-s { display: none; }
+}
+
 /* Screen-reader-only text */
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 @media print {
