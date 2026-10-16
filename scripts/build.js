@@ -23,6 +23,7 @@ const CONFIG = {
   owner: "X Ventures LLC", // the company that owns and runs the site
   // Article authors are in AUTHORS below. Only list credentials the person actually holds.
   adsenseClient: "ca-pub-7867146450299069", // AdSense publisher ID; also written to ads.txt
+  adsenseSlot: "7360740911", // AdSense display ad unit (responsive) shown in each page's ad slot; empty leaves the slots blank
   amazonTag: "", // Amazon Associates tracking ID, e.g. "rainline-20"; product links work without it but earn nothing
   newsletterAction: "", // email signup form URL, e.g. "https://buttondown.com/api/emails/embed-subscribe/rainline"; signup boxes stay hidden until set
   newsletterField: "email", // the form field name your email provider expects
@@ -166,7 +167,10 @@ function write(rel, file, html, priority) {
   if (priority !== null) pages.push({ loc, priority: priority || "0.6" });
 }
 
-const ad = name => `<div class="ad-slot" data-ad="${name}"></div>`;
+// One responsive display unit per slot. Unfilled units (e.g. while AdSense reviews the site) are hidden by CSS.
+const ad = name => CONFIG.adsenseClient && CONFIG.adsenseSlot
+  ? `<div class="ad-slot" data-ad="${name}"><ins class="adsbygoogle" style="display:block" data-ad-client="${CONFIG.adsenseClient}" data-ad-slot="${CONFIG.adsenseSlot}" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>`
+  : `<div class="ad-slot" data-ad="${name}"></div>`;
 const SCRIPTS = ["data.js", "plan.js", "render.js", "app.js"];
 const placeLabel = p => `${p.city}, ${p.state}`;
 // Up to n towns near a place: same area first, then the same climate region.
