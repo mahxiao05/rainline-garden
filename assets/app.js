@@ -33,6 +33,13 @@
 
   P.fillPlaceSelect(sel, D);
 
+  // Collapsible result sections: open on desktop, closed on phones, and the reader's last choice wins.
+  function fold(key, title, body) {
+    var saved = store("rainline-fold-" + key);
+    var open = saved ? saved === "1" : !matchMedia("(max-width: 720px)").matches;
+    return '<details class="fold" data-fold="' + key + '"' + (open ? " open" : "") + '><summary><h2>' + title + '</h2></summary>' + body + '</details>';
+  }
+
   function show(place, viaZip) {
     var p = P.plan(D, place);
     sel.value = place.slug;
@@ -44,8 +51,11 @@
       (viaZip ? '<p class="station">Using the nearest NOAA station we have for that ZIP. If another city on the list is closer to you, pick it instead.</p>' : '') +
       R.frostFacts(p) + R.regionNote(p) +
       '<h2>What to plant now</h2>' + R.nowBlock(p, today, base) +
-      '<h2>Your year at a glance</h2><div class="reveal">' + R.chart(p, today) + '</div>' +
-      '<h2>Planting dates</h2>' + R.table(p, base);
+      fold("year", "Your year at a glance", '<div class="reveal">' + R.chart(p, today) + '</div>') +
+      fold("dates", "Planting dates", R.table(p, base));
+    out.querySelectorAll("details.fold").forEach(function (d) {
+      d.addEventListener("toggle", function () { store("rainline-fold-" + d.getAttribute("data-fold"), d.open ? "1" : "0"); });
+    });
     if (history.replaceState) history.replaceState(null, "", "?place=" + place.slug);
   }
 
