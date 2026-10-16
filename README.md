@@ -12,7 +12,8 @@ Plain HTML, CSS and JavaScript, with no framework and no build tools to install 
 - `assets/plan.js`: the planting-date rules.
 - `assets/render.js`: turns a plan into HTML (used by both the browser and the builder).
 - `assets/app.js`: the ZIP/city planner and live "plant now" lists.
-- `assets/img/`: the crop and topic illustrations and social share image (`og.png`), all drawn for this site.
+- `assets/img/`: the crop and topic illustrations, all drawn for this site, and the social share image (`og.jpg`: the homepage photo with the logo).
+- Logo and icons: `assets/icon.svg` is the logo. `favicon.ico`, `apple-touch-icon.png` and `assets/icon-{96,192,512}.png` are PNG copies of it for Google results, phones and home screens; redraw them if the logo changes.
 - `assets/img/photos/`: real photos for the homepage, category pages, crop guide pages and article headers, all from Pexels or Unsplash (free licenses). The list lives in `scripts/photos.js`; after changing it run `node scripts/fetch-photos.js` (needs curl and ImageMagick) to download and resize them, then rebuild.
 - `scripts/articles.js`: the hand-written articles. Add one by copying an entry; it gets its own page, a spot on the articles page and links from related crop pages.
 - `scripts/guide.js`: growing-guide text per crop (difficulty, spacing, varieties, gear), the beginner picks and the glossary.

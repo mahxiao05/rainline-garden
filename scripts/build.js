@@ -39,6 +39,9 @@ const SOURCES = {
 const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const pages = [];
 const OWNER_LD = { "@type": "Organization", name: CONFIG.owner, url: CONFIG.siteUrl };
+// The brand Google shows next to search results: name, logo and the company behind it.
+const BRAND_LD = { "@type": "Organization", name: CONFIG.siteName, url: CONFIG.siteUrl, logo: CONFIG.siteUrl + "assets/icon-512.png",
+  email: CONFIG.contactEmail, parentOrganization: OWNER_LD };
 const AUTHORS = {
   "jigmey-dorjee": {
     name: "Jigmey Dorjee", role: "Experienced home gardener", he: "He", cover: "author-jigmey.svg",
@@ -112,12 +115,15 @@ ${noindex ? '<meta name="robots" content="noindex, follow">\n' : ""}<link rel="c
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="${CONFIG.siteUrl}${canonical}">
-<meta property="og:image" content="${CONFIG.siteUrl}${image || "assets/img/og.png"}">
+<meta property="og:image" content="${CONFIG.siteUrl}${image || "assets/img/og.jpg"}">
 <meta property="og:site_name" content="Rainline Garden">
-<meta name="twitter:card" content="summary_large_image">
+${image ? "" : '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n'}<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#F2F4F6">
 <script>try{var t=localStorage.getItem("rainline-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="icon" href="${base}favicon.ico" sizes="48x48">
 <link rel="icon" href="${base}assets/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="${base}apple-touch-icon.png">
+<link rel="manifest" href="${base}site.webmanifest">
 <link rel="stylesheet" href="${base}assets/fonts/fonts.css">
 <link rel="stylesheet" href="${base}assets/style.css">
 ${ads}
@@ -308,9 +314,10 @@ function categoryTiles(rel) {
 /* Home */
 write("", "index.html", layout({
   rel: "", canonical: "", current: "",
-  title: "Rainline Garden: Planting Calendar and Frost Dates for Oregon and Washington",
-  description: "When to plant vegetables where you live in Oregon and Washington. Enter your ZIP for local frost dates and a planting calendar built from NOAA frost data and regional growing guidance.",
-  jsonld: [{ "@context": "https://schema.org", "@type": "WebSite", name: "Rainline Garden", url: CONFIG.siteUrl, publisher: OWNER_LD }],
+  title: "Rainline Garden: Northwest Planting Calendar and Frost Dates",
+  description: `What to plant this week in Oregon and Washington. Enter your ZIP for local frost dates and a free planting calendar for ${D.crops.length} vegetables, herbs, berries and flowers.`,
+  jsonld: [{ "@context": "https://schema.org", "@type": "WebSite", name: "Rainline Garden", alternateName: ["Rainline", "rainlinegarden.org"], url: CONFIG.siteUrl, publisher: BRAND_LD },
+    { "@context": "https://schema.org", ...BRAND_LD }],
   body: `
 ${photo("hero", "", { big: "hero", small: "heroSm", cls: "hero-art", sizes: "(min-width: 70rem) 66rem, calc(100vw - 32px)", eager: true })}
 <section class="hero">
@@ -691,7 +698,7 @@ ARTICLES.forEach(a => {
     title: `${a.title} | Rainline Garden`, description: a.description,
     image: PHOTOS["article:" + a.slug] && photoFile("article:" + a.slug, "banner"),
     jsonld: [ab.ld, { "@context": "https://schema.org", "@type": "Article", headline: a.title, description: a.description, datePublished: a.published, dateModified: CONFIG.updated,
-      image: CONFIG.siteUrl + (PHOTOS["article:" + a.slug] ? photoFile("article:" + a.slug, "banner") : "assets/img/og.png"), author: authorLd(a.author || DEFAULT_AUTHOR), publisher: OWNER_LD, mainEntityOfPage: CONFIG.siteUrl + `articles/${a.slug}/` }],
+      image: CONFIG.siteUrl + (PHOTOS["article:" + a.slug] ? photoFile("article:" + a.slug, "banner") : "assets/img/og.jpg"), author: authorLd(a.author || DEFAULT_AUTHOR), publisher: BRAND_LD, mainEntityOfPage: CONFIG.siteUrl + `articles/${a.slug}/` }],
     body: `${ab.html}
 <article class="article">
 ${banner("article:" + a.slug, rel)}
@@ -952,6 +959,11 @@ fs.writeFileSync(path.join(ROOT, "sitemap.xml"), `<?xml version="1.0" encoding="
 ${pages.map(p => `  <url><loc>${CONFIG.siteUrl}${p.loc}</loc><lastmod>${CONFIG.updated}</lastmod><priority>${p.priority}</priority></url>`).join("\n")}
 </urlset>
 `);
+/* Web app manifest: the icon phones use when someone adds the site to their home screen. */
+fs.writeFileSync(path.join(ROOT, "site.webmanifest"), JSON.stringify({
+  name: CONFIG.siteName, short_name: "Rainline", start_url: CONFIG.basePath, display: "standalone", background_color: "#F2F4F6", theme_color: "#24374A",
+  icons: [{ src: "assets/icon-192.png", sizes: "192x192", type: "image/png" }, { src: "assets/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any maskable" }]
+}, null, 2) + "\n");
 fs.writeFileSync(path.join(ROOT, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${CONFIG.siteUrl}sitemap.xml\n`);
 fs.writeFileSync(path.join(ROOT, ".nojekyll"), "");
 /* ads.txt: AdSense checks it at the root of the domain, so it only works with a custom domain. */
