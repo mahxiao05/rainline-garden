@@ -52,6 +52,13 @@
     else if (!mine.crops.length) { mine.place = shared.place || mine.place; mine.crops = shared.crops; clearQuery(); }
     else { state = shared; preview = true; }
   } else if (qPlace) mine.place = qPlace;
+  // "Add to my garden plan" links from crop pages: ?add=tomatoes (with &place= from a city page).
+  var qAdd = qs.get("add");
+  if (qAdd && !qs.get("plants") && cropOf(qAdd)) {
+    if (mine.crops.indexOf(qAdd) < 0) mine.crops.push(qAdd);
+    clearQuery();
+    if (msg) msg.textContent = "Added " + lc(cropOf(qAdd).name) + " to your plan." + (mine.place ? "" : " Pick your town to see the dates.");
+  }
   if (!state.place) { try { state.place = localStorage.getItem("rainline-place") || ""; } catch (e) { /* ignore */ } }
   if (!preview) save();
 

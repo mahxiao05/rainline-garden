@@ -29,7 +29,8 @@
     got.then(function (periods) {
       var cold = periods.filter(function (x) { return !x.d && x.u === "F" && x.t <= 34; })[0];
       if (!cold) return;
-      el.innerHTML = '<strong>Frost possible ' + (cold.n.toLowerCase() === "tonight" ? "tonight" : cold.n) + ' in ' + place.city + '.</strong> ' +
+      var when = /^tonight$/i.test(cold.n) ? "tonight" : "on " + cold.n.replace(/ Night$/, " night");
+      el.innerHTML = '<strong>Frost possible ' + when + ' in ' + place.city + '.</strong> ' +
         'The forecast low is ' + cold.t + '°F. Cover tender plants or bring pots inside, and hold off on planting warm-season crops. ' +
         '<span class="fw-src">Forecast from the National Weather Service.</span>';
       el.hidden = false;

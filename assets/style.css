@@ -784,3 +784,15 @@ details.year > summary { font-size: 1.05rem; }
 .gl-none { margin: 2rem 0; font-size: 1.05rem; }
 .linkish { font: inherit; background: none; border: 0; padding: 0; color: var(--fir); text-decoration: underline; cursor: pointer; }
 @media (max-width: 720px) { .gl-tools { position: static; } .gl-letter, .gl-list .glossary div { scroll-margin-top: 70px; } }
+/* Crop guides: your dates for the saved town (assets/crop.js) */
+.my-dates { margin: 1.25rem 0 0; padding: 14px 16px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; max-width: 46rem; }
+.md-head { display: flex; gap: 12px; align-items: flex-start; }
+.md-head .st-dot { margin-top: 7px; }
+.md-now { background: var(--easy); } .md-indoor { background: var(--moss); } .md-soon { background: var(--mod); }
+.md-k { margin: 0; font-size: .92rem; color: var(--muted); }
+.md-v { margin: 2px 0 0; font-family: var(--serif); font-weight: 700; font-size: 1.3rem; color: var(--fir); }
+.md-j { margin: 4px 0 0; font-size: .95rem; color: var(--muted); }
+.md-links { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; margin: 12px 0 0; }
+.md-ask { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.md-ask select { font: inherit; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); }
+.updated { font-size: .92rem; color: var(--muted); margin: .75rem 0 0; max-width: 46rem; }

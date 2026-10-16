@@ -38,6 +38,7 @@ const SOURCES = {
 
 const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const pages = [];
+const longDate = iso => new Date(iso + "T12:00:00").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
 const OWNER_LD = { "@type": "Organization", name: CONFIG.owner, url: CONFIG.siteUrl };
 // The brand Google shows next to search results: name, logo and the company behind it.
 const BRAND_LD = { "@type": "Organization", name: CONFIG.siteName, url: CONFIG.siteUrl, logo: CONFIG.siteUrl + "assets/icon-512.png",
@@ -287,6 +288,14 @@ ${faqHtml(sci.faq)}
 ${relatedArticles("../../", c.id, 4)}`;
 }
 const JUMP = `<nav class="jump" aria-label="On this page"><a href="#dates">Planting dates</a><a href="#grow">How to grow</a><a href="#numbers">Key numbers</a><a href="#science">How it works</a><a href="#faq">Questions</a></nav>`;
+// Long articles get "On this page" links built from their section headings.
+const slugify = t => t.toLowerCase().replace(/<[^>]+>/g, "").replace(/&[a-z]+;/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+function withJump(html) {
+  const heads = [];
+  html = html.replace(/<h2>(.*?)<\/h2>/g, (m, t) => { const id = slugify(t); heads.push([id, t.replace(/<[^>]+>/g, "")]); return `<h2 id="${id}">${t}</h2>`; });
+  const nav = heads.length >= 4 ? `<nav class="jump" aria-label="On this page">${heads.map(([id, t]) => `<a href="#${id}">${t}</a>`).join("")}</nav>\n` : "";
+  return `${nav}<div class="prose">${html}</div>`;
+}
 const faqHtml = qas => `<div class="faq">${qas.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("")}</div>`;
 const sideCard = (g, note) => `<aside class="side-card"><h3>Varieties that do well here</h3><ul class="vars">${g.varieties.map(v => `<li>${esc(v)}</li>`).join("")}</ul>
 <h3>Watch out for</h3><p>${esc(g.problem)}</p>${note ? `<p class="note">${esc(note)}</p>` : ""}</aside>`;
@@ -503,11 +512,14 @@ D.crops.forEach(c => {
     description: `${c.name} planting dates for 30 Oregon and Washington cities, from Portland and Seattle to Bend and Spokane, plus a beginner-friendly growing guide.`,
     image: PHOTOS["crop:" + c.id] && photoFile("crop:" + c.id, "banner"),
     jsonld: sci ? [hb.ld, faqLd(sci.faq)] : [hb.ld],
+    scripts: ["data.js", "plan.js", "render.js", "crop.js"],
     body: `${hb.html}
 ${banner("crop:" + c.id, "../../")}
 <section class="hero hero-crop">${R.icon(c.id, "../../", 120)}<div>
 <h1>When to plant ${lc(c.name)} in Oregon and Washington</h1>
 <p class="lede">${g.fall ? g.fall.lede : `In Portland: ${answer(c, rowFor(port, c.id), null).replace(/<\/?strong>/g, "")} In Bend: ${P.fmtRange(win(rowFor(bend, c.id), "spring").start, win(rowFor(bend, c.id), "spring").end)}.`} Find your city below.</p></div></section>
+<div class="my-dates" data-crop="${c.id}" hidden></div>
+<p class="updated">Updated <time datetime="${CONFIG.updated}">${longDate(CONFIG.updated)}</time> · Dates from NOAA frost records for 30 towns. Any single year can be earlier or later. <a href="../../articles/frost-dates-explained/">What frost dates really mean</a></p>
 ${sci ? scienceBody(c, g, sci, { head, rowHtml, plans: sorted, port }) : `${quickFacts(c, g)}
 <p class="callout">${esc(c.note)}</p>
 <h2>${c.name} planting dates by city</h2>
@@ -554,6 +566,8 @@ ${banner("crop:" + c.id, rel)}
 <h1>When to plant ${lc(c.name)} in ${esc(city)}, ${place.state}</h1>
 <p class="answer">${answer(c, r, city)}</p>
 <p class="meta">${badge(g.difficulty)} <span>${esc(c.how)}</span></p></div></section>
+<p class="plan-link"><a class="btn btn-ghost" href="${rel}my-garden/?add=${c.id}&amp;place=${place.slug}">Add ${lc(c.name)} to my garden plan</a> Get a dated to-do list and reminders for everything you grow in ${esc(city)}.</p>
+${R.frostNote(p, rel)}
 ${sci ? `${quickFacts(c, g)}
 ${JUMP}
 <h2 id="dates">Why these dates</h2>
@@ -718,7 +732,7 @@ ARTICLES.forEach(a => {
 ${banner("article:" + a.slug, rel)}
 <header class="hero hero-crop">${articleIcon(a, rel, 120)}<div><h1>${esc(a.title)}</h1><p class="lede">${esc(a.description)}</p>
 <p class="byline">${avatar(rel, a.author || DEFAULT_AUTHOR)}<span>By <a href="${rel}about/#${a.author || DEFAULT_AUTHOR}">${AUTHORS[a.author || DEFAULT_AUTHOR].name}</a><br><span class="byline-d">Updated <time datetime="${CONFIG.updated}">${new Date(CONFIG.updated + "T12:00:00").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</time></span></span></p></div></header>
-<div class="prose">${a.body({ D, P, frost: frostFor, link: p => rel + p })}</div>
+${withJump(a.body({ D, P, frost: frostFor, link: p => rel + p }))}
 ${(au => `<aside class="author-box">${avatar(rel, au, "avatar-lg")}<div><h2>About the author</h2><p>${esc(AUTHORS[au].short)}</p><a href="${rel}about/#${au}">More about ${AUTHORS[au].name.split(" ")[0]}</a></div></aside>`)(a.author || DEFAULT_AUTHOR)}
 </article>
 ${ad("article-bottom")}
