@@ -119,7 +119,10 @@ ${noindex ? '<meta name="robots" content="noindex, follow">\n' : ""}<link rel="c
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#FAF7F0">
 <script>try{var t=localStorage.getItem("rainline-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="icon" href="${base}favicon.ico" sizes="48x48">
 <link rel="icon" href="${base}assets/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="${base}apple-touch-icon.png">
+<link rel="manifest" href="${base}site.webmanifest">
 <link rel="stylesheet" href="${base}assets/fonts/fonts.css">
 <link rel="stylesheet" href="${base}assets/style.css">
 ${ads}
@@ -1004,6 +1007,11 @@ fs.writeFileSync(path.join(ROOT, "sitemap.xml"), `<?xml version="1.0" encoding="
 ${pages.map(p => `  <url><loc>${CONFIG.siteUrl}${p.loc}</loc><lastmod>${CONFIG.updated}</lastmod><priority>${p.priority}</priority></url>`).join("\n")}
 </urlset>
 `);
+/* Web app manifest: the icon phones use when someone adds the site to their home screen. */
+fs.writeFileSync(path.join(ROOT, "site.webmanifest"), JSON.stringify({
+  name: CONFIG.siteName, short_name: "Rainline", start_url: CONFIG.basePath, display: "standalone", background_color: "#FAF7F0", theme_color: "#173B2E",
+  icons: [{ src: "assets/icon-192.png", sizes: "192x192", type: "image/png" }, { src: "assets/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any maskable" }]
+}, null, 2) + "\n");
 fs.writeFileSync(path.join(ROOT, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${CONFIG.siteUrl}sitemap.xml\n`);
 fs.writeFileSync(path.join(ROOT, ".nojekyll"), "");
 /* ads.txt: AdSense checks it at the root of the domain, so it only works with a custom domain. */
