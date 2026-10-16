@@ -18,6 +18,8 @@ module.exports = {
   "cat:squash-and-melons": { src: "pexels:4750381", alt: "A zucchini plant with yellow flowers and a young squash" },
   "cat:herbs": { src: "pexels:4750311", alt: "Rosemary, curry plant and basil growing in a wooden crate" },
   "cat:berries-and-perennials": { src: "pexels:16678046", alt: "Ripe and unripe strawberries hanging from the plant" },
+  "cat:fruit-trees": { src: "pexels:5529540", alt: "Ripe red apples hanging on a leafy apple tree branch" },
+  "cat:native-plants": { src: "pexels:1435557", alt: "Purple lupines and orange lilies blooming in a wild meadow" },
   "cat:flowers": { src: "unsplash:1597848212624-a19eb35e2651", alt: "A tall sunflower in bloom against a blue sky", focus: "Center" },
 
   "article:planting-garlic-in-the-northwest": { src: "pexels:10258187", alt: "A pile of cured garlic bulbs" },
