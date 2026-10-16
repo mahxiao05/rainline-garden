@@ -58,14 +58,7 @@
   function clearQuery() { if (history.replaceState) history.replaceState(null, "", location.pathname); }
 
   // Town picker.
-  ["OR", "WA"].forEach(function (s) {
-    var g = document.createElement("optgroup");
-    g.label = s === "OR" ? "Oregon" : "Washington";
-    D.places.filter(function (x) { return x.state === s; })
-      .sort(function (a, b) { return a.city.localeCompare(b.city); })
-      .forEach(function (x) { var o = document.createElement("option"); o.value = x.slug; o.textContent = x.city + ", " + x.state; g.appendChild(o); });
-    sel.appendChild(g);
-  });
+  P.fillPlaceSelect(sel, D);
 
   var now = new Date(); now.setHours(0, 0, 0, 0);
   var YEAR = now.getFullYear();

@@ -222,6 +222,17 @@ table.plan { width: 100%; border-collapse: collapse; font-size: 1rem; background
 .places { columns: 2 16rem; column-gap: 40px; list-style: none; padding: 0; }
 .places li { padding: 6px 0; break-inside: avoid; }
 .places span { color: var(--muted); font-size: .95rem; }
+.area-list h3 { font-size: 1.1rem; margin: 1.25rem 0 .25rem; }
+.area-list .places { margin-top: 0; }
+.town-filter { margin: 0 0 1rem; max-width: 22rem; }
+.town-filter input { width: 100%; letter-spacing: 0; }
+.area-h { margin: 1.5rem 0 .5rem; }
+.area-groups { max-width: 52rem; margin-bottom: 1.5rem; border-top: 1px solid var(--line); }
+.area-group { border-bottom: 1px solid var(--line); }
+.area-group summary { cursor: pointer; font-weight: 700; padding: 12px 0; }
+.area-group summary span { font-weight: 400; color: var(--muted); font-size: .95rem; margin-left: 6px; }
+.area-group[open] summary { padding-bottom: 6px; }
+.area-group .table-wrap { margin-bottom: 12px; }
 .callout { border-left: 3px solid var(--moss); padding: 4px 0 4px 16px; margin: 1.5rem 0; max-width: 46rem; }
 
 

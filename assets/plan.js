@@ -93,7 +93,26 @@
     return { sow: sow, indoor: indoor, soon: soon };
   }
 
+  // Towns grouped by area (D.areas order), each group sorted by name.
+  function byArea(D) {
+    return D.areas.map(function (a) {
+      return { area: a, places: D.places.filter(function (x) { return x.area === a.id; })
+        .sort(function (x, y) { return x.city.localeCompare(y.city); }) };
+    });
+  }
+
+  // Fills a town <select> with one group per area so the long list stays scannable.
+  function fillPlaceSelect(sel, D) {
+    byArea(D).forEach(function (g) {
+      var og = document.createElement("optgroup");
+      og.label = g.area.name + " (" + g.area.state + ")";
+      g.places.forEach(function (x) { var o = document.createElement("option"); o.value = x.slug; o.textContent = x.city + ", " + x.state; og.appendChild(o); });
+      sel.appendChild(og);
+    });
+  }
+
   var API = { MONTHS: MONTHS, MONTHS_LONG: MONTHS_LONG, CUM: CUM, doy: doy, fromDoy: fromDoy, fmt: fmt, fmtLong: fmtLong,
-    fmtRange: fmtRange, plan: plan, nowList: nowList, findPlace: findPlace, placeForZip: placeForZip };
+    fmtRange: fmtRange, plan: plan, nowList: nowList, findPlace: findPlace, placeForZip: placeForZip,
+    byArea: byArea, fillPlaceSelect: fillPlaceSelect };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else root.RainlinePlan = API;
 })(this);
