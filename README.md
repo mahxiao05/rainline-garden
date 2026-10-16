@@ -12,6 +12,7 @@ Plain HTML, CSS and JavaScript, with no framework and no build tools to install 
 - `assets/plan.js`: the planting-date rules.
 - `assets/render.js`: turns a plan into HTML (used by both the browser and the builder).
 - `assets/app.js`: the ZIP/city planner and live "plant now" lists.
+- `assets/garden.js`: My garden plan (starter plans, season check, to-do list, bed planner, harvest log). `assets/quiz.js`: the plant quiz at /what-to-grow/. Both read `assets/guide-data.js`, which the build writes from `scripts/guide.js`.
 - `assets/img/`: the crop and topic illustrations and social share image (`og.png`), all drawn for this site.
 - `assets/img/photos/`: real photos for the homepage, category pages, crop guide pages and article headers, all from Pexels or Unsplash (free licenses). The list lives in `scripts/photos.js`; after changing it run `node scripts/fetch-photos.js` (needs curl and ImageMagick) to download and resize them, then rebuild.
 - `scripts/articles.js`: the hand-written articles. Add one by copying an entry; it gets its own page, a spot on the articles page and links from related crop pages.

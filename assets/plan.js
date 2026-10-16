@@ -93,6 +93,28 @@
     return { sow: sow, indoor: indoor, soon: soon };
   }
 
+  // Days forward from day b to day a, wrapping around the year.
+  function ahead(a, b) { return ((a - b) % 365 + 365) % 365; }
+  // Where a crop stands on a given day of year: "now" or "last" (window open, closing within a week), "indoor"
+  // (time to start seeds inside), "soon" (next step within 3 weeks) or "later". `next` is the next window to open,
+  // `missed` a window that closed in the last 45 days.
+  function season(r, today) {
+    var i, w, len, into, cands = [], missed = null;
+    for (i = 0; i < r.windows.length; i++) {
+      w = r.windows[i]; len = w.end - w.start; into = ahead(today, w.start);
+      if (into <= len) return { k: len - into <= 7 ? "last" : "now", w: w };
+    }
+    if (r.indoor && ahead(today, r.indoor.start) <= r.indoor.end - r.indoor.start) return { k: "indoor", w: r.indoor };
+    r.windows.forEach(function (x) {
+      cands.push({ w: x, kind: x.kind, d: ahead(x.start, today) });
+      var since = ahead(today, x.end);
+      if (since <= 45 && (!missed || since < missed.since)) missed = { w: x, since: since };
+    });
+    if (r.indoor) cands.push({ w: r.indoor, kind: "indoor", d: ahead(r.indoor.start, today) });
+    cands.sort(function (a, b) { return a.d - b.d; });
+    return { k: cands[0].d <= 21 ? "soon" : "later", next: cands[0], missed: missed };
+  }
+
   // Towns grouped by area (D.areas order), each group sorted by name.
   function byArea(D) {
     return D.areas.map(function (a) {
@@ -112,7 +134,7 @@
   }
 
   var API = { MONTHS: MONTHS, MONTHS_LONG: MONTHS_LONG, CUM: CUM, doy: doy, fromDoy: fromDoy, fmt: fmt, fmtLong: fmtLong,
-    fmtRange: fmtRange, plan: plan, nowList: nowList, findPlace: findPlace, placeForZip: placeForZip,
+    fmtRange: fmtRange, plan: plan, nowList: nowList, season: season, findPlace: findPlace, placeForZip: placeForZip,
     byArea: byArea, fillPlaceSelect: fillPlaceSelect };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else root.RainlinePlan = API;
 })(this);
