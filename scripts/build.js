@@ -370,7 +370,7 @@ ${articleCards("", ARTICLES.slice(0, 3))}</section>
 ${newsletter()}
 <section class="home-sec prose">
 <h2>Why Northwest planting dates are different</h2>
-<p>National charts key everything off the last frost date. Here that's only half the story: Portland's typical last frost is in mid-March, yet tomatoes planted then sit in cold, wet soil for two months, while the high desert can frost into June. Rainline Garden combines NOAA frost records for each area with regional timing for when the soil is actually ready. <a href="how-it-works/">See how the dates are worked out</a>.</p>
+<p>National charts key everything off the last frost date. Here that's only half the story: the Portland airport's typical last frost is in mid-March, yet tomatoes planted then sit in cold, wet soil for two months, while the high desert can frost into June. Rainline Garden combines NOAA frost records for each area with regional timing for when the soil is actually ready. <a href="how-it-works/">See how the dates are worked out</a>.</p>
 </section>`,
   scripts: SCRIPTS
 }), "1.0");
@@ -426,9 +426,10 @@ function answer(c, r, city) {
   else if (r.indoor)
     s = `Plant ${lc(c.name)} in the garden${where} <strong>${P.fmtRange(sp.start, sp.end)}</strong>, either as seeds or as young plants started indoors <strong>${P.fmtRange(r.indoor.start, r.indoor.end)}</strong>.`;
   else if (c.id === "potatoes") s = `Plant seed potatoes${where} <strong>${P.fmtRange(sp.start, sp.end)}</strong>.`;
-  else if (c.id === "onions") s = `Plant onion sets${where} <strong>${P.fmtRange(sp.start, sp.end)}</strong>.`;
+  else if (c.id === "onions") s = `Plant onion starts or sets${where} <strong>${P.fmtRange(sp.start, sp.end)}</strong>.`;
   else s = `Plant ${lc(c.name)} from seed, directly in the garden${where}, <strong>${P.fmtRange(sp.start, sp.end)}</strong>.`;
-  if (fa) s += ` For a fall harvest, plant again <strong>${P.fmtRange(fa.start, fa.end)}</strong>.`;
+  if (fa && fa.over) s += ` West of the Cascades you can also sow them <strong>${P.fmtRange(fa.start, fa.end)}</strong> to overwinter for an early crop.`;
+  else if (fa) s += ` For a fall harvest, plant again <strong>${P.fmtRange(fa.start, fa.end)}</strong>.`;
   return s;
 }
 
@@ -449,7 +450,8 @@ function why(c, r, p) {
   return last + (sp.start - f.spring50 > 10
     ? ` Frost kills ${lc(c.name)}, and warm-season crops also need warm soil. Soil here stays cold for weeks after the last frost, so planting waits until about ${P.fmtLong(sp.start)}.`
     : ` Frost kills ${lc(c.name)}, so planting starts once frost risk drops, around ${P.fmtLong(sp.start)}.`)
-    + (r.cover ? " Keep row cover or a frost blanket handy for the first couple of weeks, since a late frost is still possible." : "")
+    + (c.anchor === "hotTrans" ? ` It also needs warmer nights than tomatoes, so it goes in a little later.` : "")
+    + (r.cover ? ` A late frost is still possible until about ${P.fmtLong(r.coverUntil)} (that's when frost is over in 9 years out of 10), so keep row cover or a frost blanket handy${r.coverDays > 14 ? " and use it on any night forecast below about 35°F" : " for the first couple of weeks"}.` : "")
     + (r.season === "short" && c.id === "dahlias" ? ` The season here is short for dahlias: start tubers in pots indoors about a month early, choose smaller early-blooming varieties, and cover plants on cool nights.` : r.season === "short" ? ` The season here is short for this crop: use young plants rather than seeds, choose the fastest variety you can find, and cover plants on cool nights.` : r.season === "tight" ? " The season is a little tight here, so an early variety is the safer choice." : "");
 }
 
@@ -470,7 +472,7 @@ function steps(c, r, g) {
   } else {
     out.push(`Prepare the bed: loosen the soil and mix in an inch or two of compost.`);
     if (c.id === "potatoes") out.push(`Plant seed potatoes ${P.fmtRange(sp.start, sp.end)}, ${g.depth}, ${g.spacing}. Cut large ones into pieces with at least two eyes each.`);
-    else if (c.id === "onions") out.push(`Plant onion sets ${P.fmtRange(sp.start, sp.end)}, ${g.spacing}, ${g.depth.charAt(0).toLowerCase() + g.depth.slice(1)}.`);
+    else if (c.id === "onions") out.push(`Plant onion starts or sets ${P.fmtRange(sp.start, sp.end)}, ${g.spacing}, ${g.depth.charAt(0).toLowerCase() + g.depth.slice(1)}.`);
     else out.push(`Plant seeds ${P.fmtRange(sp.start, sp.end)}, ${g.depth}, ${g.spacing}.`);
     out.push(c.id === "potatoes" ? `As plants grow, pile soil or straw around the stems so the potatoes stay covered.` : c.id === "onions" ? `Water regularly and keep the bed weeded; onions don't compete well.` : `Keep the soil evenly moist until sprouts appear, which can take one to three weeks in cool soil.`);
   }
@@ -494,7 +496,7 @@ D.crops.forEach(c => {
   const plans = D.places.map(pl => P.plan(D, pl));
 
   /* Crop hub */
-  const cols = [["Start seeds indoors", r => r.indoor], ["Plant in the garden", r => win(r, "spring")], [g.fall ? "Plant in fall" : "Plant again for fall", r => win(r, "fall")]]
+  const cols = [["Start seeds indoors", r => r.indoor], ["Plant in the garden", r => win(r, "spring")], [g.fall ? "Plant in fall" : c.overwinter ? "Sow to overwinter" : "Plant again for fall", r => win(r, "fall")]]
     .filter(([, get]) => plans.some(p => get(rowFor(p, c.id))));
   const head = `<tr><th scope="col">City</th>${cols.map(([l]) => `<th scope="col">${l}</th>`).join("")}</tr>`;
   const rowHtml = p => {
@@ -856,7 +858,7 @@ ${ad("calendar-bottom")}`,
 
 /* How it works */
 const z = D.zones;
-const zoneRows = Object.keys(z).map(k => `<tr><th scope="row">${z[k].name}</th><td>${P.fmt(P.doy(z[k].anchors.coolEarly))}</td><td>${P.fmt(P.doy(z[k].anchors.coolTrans))}</td><td>${P.fmt(P.doy(z[k].anchors.warmSeed))}</td><td>${P.fmt(P.doy(z[k].anchors.warmTrans))}</td><td>${P.fmtRange(P.doy(z[k].anchors.garlicStart), P.doy(z[k].anchors.garlicEnd))}</td></tr>`).join("");
+const zoneRows = Object.keys(z).map(k => `<tr><th scope="row">${z[k].name}</th><td>${P.fmt(P.doy(z[k].anchors.coolEarly))}</td><td>${P.fmt(P.doy(z[k].anchors.coolTrans))}</td><td>${P.fmt(P.doy(z[k].anchors.warmSeed))}</td><td>${P.fmt(P.doy(z[k].anchors.warmTrans))}</td><td>${P.fmt(P.doy(z[k].anchors.hotTrans))}</td><td>${P.fmtRange(P.doy(z[k].anchors.garlicStart), P.doy(z[k].anchors.garlicEnd))}</td></tr>`).join("");
 const stationRows = D.places.map(x => { const s = D.stations[x.station]; return `<tr><th scope="row">${esc(placeLabel(x))}</th><td>${esc(s.name)} (${x.station})</td><td>${P.fmt(P.doy(s.spring50))}</td><td>${P.fmt(P.doy(s.spring10))}</td><td>${P.fmt(P.doy(s.fall50))}</td><td>${P.fmt(P.doy(s.fall10))}</td></tr>`; }).join("");
 write("../", "how-it-works/index.html", layout({
   rel: "../", canonical: "how-it-works/", current: "how-it-works/",
@@ -871,17 +873,18 @@ write("../", "how-it-works/index.html", layout({
 <ul><li><strong>Typical last spring frost:</strong> the date after which there's a 50% chance of another freeze.</li>
 <li><strong>9-in-10 safe date:</strong> the date after which there's only a 10% chance.</li>
 <li><strong>Typical first fall frost:</strong> the date by which there's a 50% chance of the first freeze.</li></ul>
+<p>A frost here means 32°F, which damages tender crops like tomatoes and basil. A hard freeze, about 28°F or colder, is what finally stops hardy crops like kale and cabbage.</p>
 <p>Most stations are at airports. Airports in valley bottoms can run colder than nearby hillsides, and city centers can run warmer. Your own garden may differ by a week or more.</p>
 <h2 id="rain-line">West and east of the rain line</h2>
 <p>The Cascades split the region in two. West of the mountains (the coast, the Willamette Valley, Puget Sound and the southern Oregon valleys), winters are wet and mild and summers are dry, usually from July until the fall rains return in October. East of the mountains, in the rain shadow, rain is scarce all year, summers are hot and winters are colder. My garden plan uses your side of the line for its watering reminders: west-side plans get a reminder to start watering in early July and to ease off in mid October; east-side plans get one in early June and another at the end of September.</p>
 <h2>Planting dates</h2>
 <p>Each crop gets the <em>later</em> of two dates:</p>
 <ol><li><strong>A regional date</strong> for when the soil is usually ready, based on typical soil warming in each climate region (the table below lists them). Washington areas use the closest matching region.</li>
-<li><strong>A frost check</strong> against your local typical last frost: hardy early crops up to 6 weeks before it, frost-tolerant transplants up to 4 weeks before, warm-season transplants not before it, and warm-season seeds a week after it.</li></ol>
+<li><strong>A frost check</strong> against your local typical last frost: hardy early crops up to 6 weeks before it, frost-tolerant transplants up to 4 weeks before, warm-season transplants not before it, warm-season seeds and heat lovers like peppers, eggplant, melons and basil a week after it.</li></ol>
 <p>Seed-starting dates count back from the outdoor date (for example, tomatoes 6–8 weeks ahead). Fall planting dates count back from your typical first fall frost, capped at October 15 because fall crops need daylight to grow, not just mild weather. Warm-season crops are flagged when planting at the window's start leaves too few days before fall frost for a typical variety to produce.</p>
 </div>
 <h2>Regional dates used</h2>
-<div class="table-wrap"><table class="plan"><thead><tr><th scope="col">Region</th><th scope="col">Hardy early crops</th><th scope="col">Cool transplants</th><th scope="col">Warm seeds</th><th scope="col">Warm transplants</th><th scope="col">Garlic</th></tr></thead><tbody>${zoneRows}</tbody></table></div>
+<div class="table-wrap"><table class="plan"><thead><tr><th scope="col">Region</th><th scope="col">Hardy early crops</th><th scope="col">Cool transplants</th><th scope="col">Warm seeds</th><th scope="col">Warm transplants</th><th scope="col">Heat lovers</th><th scope="col">Garlic</th></tr></thead><tbody>${zoneRows}</tbody></table></div>
 <h2>Station data</h2>
 <details class="area-group"><summary>All ${D.places.length} towns and their NOAA stations</summary>
 <div class="table-wrap"><table class="plan"><thead><tr><th scope="col">Area</th><th scope="col">NOAA station</th><th scope="col">Last frost (50%)</th><th scope="col">Last frost (10%)</th><th scope="col">First frost (50%)</th><th scope="col">First frost (10%)</th></tr></thead><tbody>${stationRows}</tbody></table></div></details>

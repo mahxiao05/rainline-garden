@@ -74,7 +74,7 @@ module.exports = [
 <li><strong>Cold shock.</strong> Warm-season plants like tomatoes, peppers and basil stop growing for a while after a cold night, and can be badly set back.</li>
 </ul>
 <h2>A 7 to 10 day schedule</h2>
-<p>Start about a week to ten days before you plan to plant. Rainline Garden's window for planting tomatoes out in Portland is ${tom.range}, so Portland gardeners would begin hardening off tomato seedlings around the start of May.</p>
+<p>Start about a week to ten days before you plan to plant. Rainline Garden's window for planting tomatoes out in Portland is ${tom.range}, so Portland gardeners would begin hardening off tomato seedlings in early May.</p>
 <ol>
 <li><strong>Days 1 and 2:</strong> Set the seedlings outside for an hour or two in a shady spot out of the wind, then bring them back in.</li>
 <li><strong>Days 3 and 4:</strong> Leave them out for half the day, with an hour or two of gentle morning sun.</li>

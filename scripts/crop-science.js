@@ -5,7 +5,7 @@
  * horticultural research, and keep them consistent with scripts/guide.js. */
 module.exports = {
   tomatoes: {
-    keys: [["Soil to sprout", "75–85°F"], ["Plant out when", "Nights stay above 50°F"], ["Best fruit set", "Nights 60–70°F"], ["Soil pH", "6.2–6.8"], ["Water", "1+ inch a week, steady"], ["Biggest risk", "Late blight in fall rain"]],
+    keys: [["Soil to sprout", "75–85°F"], ["Plant out when", "Soil 60°F, nights near 50°F"], ["Best fruit set", "Nights 60–70°F"], ["Soil pH", "6.2–6.8"], ["Water", "1+ inch a week, steady"], ["Biggest risk", "Late blight in fall rain"]],
     sections: [
       ["Soil and feeding",
         "Tomatoes do best in loose, well-drained soil with a pH of about 6.2 to 6.8. Work in a couple of inches of compost before planting and add a balanced vegetable fertilizer. Go easy on nitrogen: too much grows big, leafy plants that flower late and set less fruit, which is the last thing you want in a short Northwest summer.",

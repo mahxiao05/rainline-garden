@@ -15,7 +15,7 @@
   var starters = document.getElementById("gp-starters"), pickNote = document.getElementById("gp-pick-note");
 
   var MONTHS = P.MONTHS_LONG, DAY = 864e5;
-  var HOW = { "Plant seeds in the ground": "from seed", "Plant seeds or young plants": "from seed or as starts", "Plant small onion bulbs (sets)": "as sets",
+  var HOW = { "Plant seeds in the ground": "from seed", "Plant seeds or young plants": "from seed or as starts", "Plant young plants or sets": "as starts or sets",
     "Plant young plants (starts)": "as starts", "Plant seed potatoes": "using seed potatoes", "Plant young plants": "as young plants" };
   // Quick crops that do best sown a little at a time.
   var REPEAT = ["radishes", "lettuce", "spinach", "beans", "carrots", "beets", "arugula", "cilantro", "bok-choy", "turnips", "kohlrabi", "dill"];
@@ -110,7 +110,7 @@
         var how = HOW[c.how] ? " " + HOW[c.how] : "";
         if (w.kind === "spring") add(c, "plant", w.start, w.end, "Plant " + (g.plantText || name + how));
         else if (c.anchor === "garlic") add(c, "plant", w.start, w.end, "Plant " + (g.plantText || name) + " for next year");
-        else add(c, "fall", w.start, w.end, "Plant " + name + " again for a fall harvest");
+        else add(c, "fall", w.start, w.end, "Plant " + name + (w.over ? " again to overwinter for an early crop" : " again for a fall harvest"));
         // Repeat sowings: a short row every few weeks while the window is open.
         if (every) for (var k = 1, n = 2; w.start + k * every <= w.end && k < 7; k++, n++)
           add(c, w.kind + "-sow" + n, w.start + k * every, null, "Sow a " + ordinal(n) + " row of " + name + (w.kind === "fall" ? " for fall" : ""));

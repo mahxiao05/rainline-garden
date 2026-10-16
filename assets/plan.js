@@ -19,7 +19,7 @@
   }
 
   // How the local median last frost limits each kind of planting (days relative to median).
-  var FROST_FLOOR = { coolEarly: -42, coolTrans: -28, warmSeed: 7, warmTrans: 0 };
+  var FROST_FLOOR = { coolEarly: -42, coolTrans: -28, warmSeed: 7, warmTrans: 0, hotTrans: 7 };
   var FALL_CAP = 288; // Oct 15
 
   function findPlace(D, slug) {
@@ -66,6 +66,9 @@
         var fs = fallRef - c.fall[0] * 7, fe = fallRef - c.fall[1] * 7;
         if (fs > end + 14 && fe <= 365) r.windows.push({ kind: "fall", start: fs, end: fe });
       }
+      // Overwintering sowings (e.g. fava beans sown in October), only where winters are mild enough.
+      if (c.overwinter && c.overwinter.zones.indexOf(place.zone) >= 0)
+        r.windows.push({ kind: "fall", over: true, start: doy(c.overwinter.start), end: doy(c.overwinter.end) });
       // Season-length check for warm crops: does planting at the window start leave enough time?
       if (c.group === "warm") {
         var spare = f.fall50 - (start + c.days);
@@ -73,7 +76,7 @@
         else if (spare < 21) r.season = "tight";
       }
       // Frost cover reminder: warm crops planted before the 90%-safe date.
-      if (c.group === "warm" && start < f.spring10) r.cover = true;
+      if (c.group === "warm" && start < f.spring10) { r.cover = true; r.coverUntil = f.spring10; r.coverDays = f.spring10 - start; }
       out.push(r);
     });
     return { place: place, station: st, zone: zone, frost: f, crops: out };
