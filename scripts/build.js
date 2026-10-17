@@ -13,6 +13,7 @@ const PHOTOS = require("./photos.js");
 const SCIENCE = require("./crop-science.js");
 const NOTES = require("./crop-notes.js");
 const VARIETIES = require("./varieties.js");
+const VIDEOS = require("./videos.js");
 const { SIZES, fileBase, sizesFor } = require("./photo-sizes.js");
 const ARTICLES = require("./articles-3.js").concat(require("./articles-2.js"), require("./articles.js")); // newest first
 
@@ -297,7 +298,7 @@ ${areaTables(head, rowHtml, plans)}
 ${ad("crop-mid")}
 <h2 id="grow">How to grow ${lc(c.name)}</h2>
 <div class="grow-grid"><div>${stepsForHub(c, g, port)}</div>
-${sideCard(g)}</div>
+${sideCard(g)}</div>${videoBox(c)}
 ${varietyCards(c)}
 ${scienceParts(sci)}
 ${gearBox(g.gear)}
@@ -316,6 +317,18 @@ function varietyCards(c) {
   return `<h2 id="varieties">Popular ${lc(c.name)} varieties</h2>
 <p class="lede-sm">Widely sold picks that do well somewhere in Oregon or Washington. The tag says which side of the mountains suits each one best.</p>
 <div class="var-cards">${vs.map(v => `<section class="var-card"><h3>${esc(v.name)}</h3><p class="var-meta">${esc(v.type)}${v.days ? ` <span>&middot; ${esc(v.days)}</span>` : ""}</p><p>${esc(v.note)}</p><p class="var-where">${esc(v.where)}</p></section>`).join("")}</div>`;
+}
+// Click-to-load how-to video from scripts/videos.js: shows the plant's own photo until clicked, then YouTube's official player.
+function videoBox(c) {
+  const v = VIDEOS[c.id];
+  if (!v) return "";
+  const poster = PHOTOS["crop:" + c.id] ? `<img src="../../${photoFile("crop:" + c.id, "bannerSm", "webp")}" width="720" height="300" alt="" loading="lazy" decoding="async">` : "";
+  return `
+<section class="video" aria-label="How-to video">
+<button type="button" class="video-play" data-yt="${v.id}" aria-label="Play video: ${esc(v.title)}">${poster}<span class="video-icon" aria-hidden="true"></span><span class="video-t">${esc(v.title)}</span></button>
+<p class="video-meta">Video by ${esc(v.channel)}. Plays from YouTube when you click it. <a href="https://www.youtube.com/watch?v=${v.id}" rel="noopener" target="_blank">Watch on YouTube</a></p>
+<script>document.querySelectorAll(".video-play").forEach(function(b){b.addEventListener("click",function(){var f=document.createElement("iframe");f.src="https://www.youtube-nocookie.com/embed/"+b.dataset.yt+"?autoplay=1&rel=0";f.title=b.getAttribute("aria-label").replace(/^Play video: /,"");f.allow="autoplay; encrypted-media; picture-in-picture; fullscreen";f.allowFullscreen=true;f.referrerPolicy="strict-origin-when-cross-origin";f.className="video-frame";b.replaceWith(f);f.focus()})})</script>
+</section>`;
 }
 function scienceParts(sci) {
   return `<h2 id="numbers">Key numbers</h2>
