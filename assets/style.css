@@ -448,7 +448,9 @@ table.plan { width: 100%; border-collapse: collapse; font-size: 1rem; background
   .author-box { padding: 16px; gap: 14px; }
   .profile-body { padding: 0 18px 18px; }
   .profile-cover { height: 110px; }
-  .results-grid { grid-template-columns: 1fr; }
+  .results-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; margin: 0 -18px; padding: 0 18px 6px; scroll-padding: 0 18px; -webkit-overflow-scrolling: touch; }
+  .results-grid li { flex: 0 0 72%; scroll-snap-align: start; }
+  .results-note::after { content: " Swipe to see more."; }
   .facts { grid-template-columns: 1fr; }
   .fact + .fact { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
   .now { grid-template-columns: 1fr; gap: 16px; }
