@@ -12,6 +12,7 @@ const G = require("./guide.js");
 const PHOTOS = require("./photos.js");
 const SCIENCE = require("./crop-science.js");
 const NOTES = require("./crop-notes.js");
+const CARE_TIPS = require("./care-tips.js");
 const VARIETIES = require("./varieties.js");
 const VIDEOS = require("./videos.js");
 const { SIZES, fileBase, sizesFor } = require("./photo-sizes.js");
@@ -337,7 +338,7 @@ ${ad("crop-mid")}
 <div class="grow-grid"><div>${stepsForHub(c, g, port)}</div>
 ${sideCard(g)}</div>${videoBox(c)}
 ${varietyCards(c)}
-${scienceParts(sci)}
+${scienceParts(sci, c)}
 ${gearBox(g.gear)}
 <h2 id="faq">Common questions about growing ${lc(c.name)}</h2>
 ${faqHtml(sci.faq)}
@@ -367,9 +368,11 @@ function videoBox(c) {
 <script>document.querySelectorAll(".video-play").forEach(function(b){b.addEventListener("click",function(){var f=document.createElement("iframe");f.src="https://www.youtube-nocookie.com/embed/"+b.dataset.yt+"?autoplay=1&rel=0";f.title=b.getAttribute("aria-label").replace(/^Play video: /,"");f.allow="autoplay; encrypted-media; picture-in-picture; fullscreen";f.allowFullscreen=true;f.referrerPolicy="strict-origin-when-cross-origin";f.className="video-frame";b.replaceWith(f);f.focus()})})</script>
 </section>`;
 }
-function scienceParts(sci) {
+function scienceParts(sci, c) {
+  const tip = CARE_TIPS[c.id];
   return `<h2 id="numbers">Key numbers</h2>
-<ul class="keys">${sci.keys.map(([l, v]) => `<li><span class="k-v">${esc(v)}</span><span class="k-l">${esc(l)}</span></li>`).join("")}</ul>
+<ul class="keys">${sci.keys.map(([l, v]) => `<li><span class="k-v">${esc(v)}</span><span class="k-l">${esc(l)}</span></li>`).join("")}</ul>${tip ? `
+<p class="care-tip"><strong>Top care tip:</strong> ${esc(tip)}</p>` : ""}
 <h2 id="science">${sci.notes ? "Growing notes" : "How it works"}</h2>
 <p class="lede-sm">${sci.notes ? "What makes the difference in Northwest gardens, in plain language." : "The plant biology behind the advice above, in plain language."}</p>
 <div class="sci-cards">${sci.sections.map(([h, ...ps]) => `<section class="sci-card"><h3>${esc(h)}</h3>${ps.map(p => `<p>${esc(p)}</p>`).join("")}</section>`).join("\n")}</div>`;
@@ -626,7 +629,7 @@ ${jump(sci)}
 <div class="grow-grid"><div>${steps(c, r, g)}</div>
 ${sideCard(g, c.note)}</div>
 ${ad("cropcity-mid")}
-${scienceParts(sci)}
+${scienceParts(sci, c)}
 ${gearBox(g.gear)}
 <h2 id="faq">Common questions</h2>
 ${faqHtml(qas.concat(sci.faq))}
