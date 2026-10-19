@@ -237,7 +237,17 @@ table.plan { width: 100%; border-collapse: collapse; font-size: 1rem; background
 .town-filter { margin: 0 0 1rem; max-width: 22rem; }
 .town-filter input { width: 100%; letter-spacing: 0; }
 .area-h { margin: 1.5rem 0 .5rem; }
-.area-groups { max-width: 52rem; margin-bottom: 1.5rem; border-top: 1px solid var(--line); }
+.town-pick { max-width: 52rem; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-bottom: 8px; }
+.town-pick label { display: block; font-weight: 700; margin-bottom: 6px; }
+.town-pick select { width: 100%; max-width: 26rem; font: inherit; padding: 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: inherit; }
+.town-pick-out { margin-top: 12px; }
+.town-pick-out p { margin: 0 0 4px; }
+.town-pick-out b { font-size: 1.25rem; margin-right: 8px; }
+.town-pick-out span { color: var(--muted); }
+.town-pick-out a { display: inline-block; margin-top: 6px; }
+.all-towns { max-width: 52rem; margin-bottom: 1.5rem; }
+.all-towns > summary { cursor: pointer; font-weight: 700; padding: 12px 0; }
+.area-groups { border-top: 1px solid var(--line); }
 .area-group { border-bottom: 1px solid var(--line); }
 .area-group summary { cursor: pointer; font-weight: 700; padding: 12px 0; }
 .area-group summary span { font-weight: 400; color: var(--muted); font-size: .95rem; margin-left: 6px; }

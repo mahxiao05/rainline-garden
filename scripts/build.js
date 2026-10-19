@@ -179,12 +179,31 @@ const nearbyOf = (place, n = 6) => {
   const others = D.places.filter(x => x.slug !== place.slug);
   return others.filter(x => x.area === place.area).concat(others.filter(x => x.area !== place.area && x.zone === place.zone)).slice(0, n);
 };
-// One collapsed table per area so a crop's dates for every town don't make one very long page.
-// The small script opens the area of the visitor's saved town.
-const OPEN_MY_AREA = `<script>try{var s=localStorage.getItem("rainline-place");if(s)document.querySelectorAll("details[data-towns]").forEach(function(d){if((" "+d.dataset.towns+" ").indexOf(" "+s+" ")>=0)d.open=true})}catch(e){}</script>`;
-function areaTables(head, rowHtml, plans) {
-  return `<div class="area-groups">${P.byArea(D).map(g => `<details class="area-group" data-towns="${g.places.map(x => x.slug).join(" ")}"><summary>${esc(g.area.name)}, ${g.area.state} <span>${g.places.length} towns</span></summary><div class="table-wrap"><table class="plan"><thead>${head}</thead><tbody>${g.places.map(pl => rowHtml(plans.find(p => p.place.slug === pl.slug))).join("")}</tbody></table></div></details>`).join("")}</div>
-${OPEN_MY_AREA}`;
+// Towns whose dates match share one row, so the tables don't repeat the same dates town after town.
+// Each link carries data-slug so the town picker can find a town's row.
+function groupedRows(plans, dates) {
+  const groups = new Map();
+  plans.forEach(p => { const k = dates(p); if (!groups.has(k)) groups.set(k, []); groups.get(k).push(p); });
+  return [...groups].map(([k, ps]) => `<tr><th scope="row">${ps.map(p => `<a href="${p.place.slug}/" data-slug="${p.place.slug}">${esc(placeLabel(p.place))}</a>`).join(", ")}</th>${k}</tr>`).join("");
+}
+// "Find your town": a picker that shows one town's dates, with every town folded under one toggle.
+// The picker reads its dates from the town's row in the tables below, so it needs no extra data.
+const TOWN_PICK_JS = `<script>(function(){var box=document.querySelector(".town-pick"),sel=box.querySelector("select"),out=box.querySelector(".town-pick-out");
+function show(slug){var a=document.querySelector('.area-groups a[data-slug="'+slug+'"]');if(!a)return false;sel.value=slug;
+var h=[].map.call(a.closest("tr").querySelectorAll("td"),function(td){return '<p><b>'+td.innerHTML+'</b> <span>'+td.getAttribute("data-label")+'</span></p>'}).join("");
+out.innerHTML=h+'<a href="'+a.getAttribute("href")+'">Full plan for '+a.textContent+' &rarr;</a>';return true}
+try{var s=localStorage.getItem("rainline-place");if(s)show(s)}catch(e){}
+sel.addEventListener("change",function(){if(show(sel.value)){try{localStorage.setItem("rainline-place",sel.value)}catch(e){}}})})()</script>`;
+function areaTables(head, dates, plans) {
+  const bySlug = slug => plans.find(p => p.place.slug === slug);
+  const first = bySlug("portland-or"), firstRow = groupedRows([first], dates);
+  const pickOut = firstRow.replace(/^.*?<\/th>/, "").replace(/<\/tr>$/, "").replace(/<td data-label="([^"]*)">(.*?)<\/td>/g, '<p><b>$2</b> <span>$1</span></p>');
+  return `<div class="town-pick"><label for="town-pick">Your town</label>
+<select id="town-pick">${P.byArea(D).map(g => `<optgroup label="${esc(g.area.name)} (${g.area.state})">${g.places.map(pl => `<option value="${pl.slug}"${pl.slug === "portland-or" ? " selected" : ""}>${esc(placeLabel(pl))}</option>`).join("")}</optgroup>`).join("")}</select>
+<div class="town-pick-out" aria-live="polite">${pickOut}<a href="portland-or/">Full plan for Portland, OR &rarr;</a></div></div>
+<details class="all-towns"><summary>See every town (${plans.length})</summary>
+<div class="area-groups">${P.byArea(D).map(g => `<details class="area-group"><summary>${esc(g.area.name)}, ${g.area.state} <span>${g.places.length} towns</span></summary><div class="table-wrap"><table class="plan"><thead>${head}</thead><tbody>${groupedRows(g.places.map(pl => bySlug(pl.slug)), dates)}</tbody></table></div></details>`).join("")}</div></details>
+${TOWN_PICK_JS}`;
 }
 
 /* Shared pieces */
@@ -286,15 +305,15 @@ function faqLd(qas) {
 
 // Cleaner layout for crops with notes in scripts/crop-science.js (in depth) or scripts/crop-notes.js (shorter).
 const FEATURED_CITIES = ["portland-or", "seattle-wa", "eugene-or", "spokane-wa", "bend-or", "tri-cities-wa"];
-function scienceBody(c, g, sci, { head, rowHtml, plans, port }) {
+function scienceBody(c, g, sci, { head, dates, plans, port }) {
   const featured = FEATURED_CITIES.map(slug => plans.find(p => p.place.slug === slug));
   return `${quickFacts(c, g)}
 ${jump(sci, VARIETIES[c.id])}
 <p class="callout">${esc(c.note)}</p>
 <h2 id="dates">${c.name} planting dates</h2>
-<div class="table-wrap"><table class="plan"><thead>${head}</thead><tbody>${featured.map(rowHtml).join("")}</tbody></table></div>
+<div class="table-wrap"><table class="plan"><thead>${head}</thead><tbody>${groupedRows(featured, dates)}</tbody></table></div>
 <h3 class="area-h">Find your town</h3>
-${areaTables(head, rowHtml, plans)}
+${areaTables(head, dates, plans)}
 ${ad("crop-mid")}
 <h2 id="grow">How to grow ${lc(c.name)}</h2>
 <div class="grow-grid"><div>${stepsForHub(c, g, port)}</div>
@@ -515,11 +534,8 @@ D.crops.forEach(c => {
   /* Crop hub */
   const cols = [["Start seeds indoors", r => r.indoor], ["Plant in the garden", r => win(r, "spring")], [g.fall ? "Plant in fall" : c.overwinter ? "Sow to overwinter" : "Plant again for fall", r => win(r, "fall")]]
     .filter(([, get]) => plans.some(p => get(rowFor(p, c.id))));
-  const head = `<tr><th scope="col">City</th>${cols.map(([l]) => `<th scope="col">${l}</th>`).join("")}</tr>`;
-  const rowHtml = p => {
-    const r = rowFor(p, c.id);
-    return `<tr><th scope="row"><a href="${p.place.slug}/">${esc(placeLabel(p.place))}</a></th>${cols.map(([l, get]) => { const w = get(r); return `<td data-label="${l}">${w ? P.fmtRange(w.start, w.end) : '<span class="none">—</span>'}</td>`; }).join("")}</tr>`;
-  };
+  const head = `<tr><th scope="col">Towns</th>${cols.map(([l]) => `<th scope="col">${l}</th>`).join("")}</tr>`;
+  const dates = p => { const r = rowFor(p, c.id); return cols.map(([l, get]) => { const w = get(r); return `<td data-label="${l}">${w ? P.fmtRange(w.start, w.end) : '<span class="none">—</span>'}</td>`; }).join(""); };
   const sorted = plans.slice().sort((a, b) => a.place.state.localeCompare(b.place.state) || a.place.city.localeCompare(b.place.city));
   const port = plans.find(p => p.place.slug === "portland-or"), bend = plans.find(p => p.place.slug === "bend-or");
   const hb = crumbs("../../", [["When to plant", WHEN_INDEX], [catById(c.cat).name, `${WHEN_INDEX}${c.cat}/`], [c.name, null]]);
@@ -535,12 +551,12 @@ ${banner("crop:" + c.id, "../../")}
 <section class="hero hero-crop">${R.icon(c.id, "../../", 120)}<div>
 <h1>When to plant ${lc(c.name)} in Oregon and Washington</h1>
 <p class="lede">${g.fall ? g.fall.lede : `In Portland: ${answer(c, rowFor(port, c.id), null).replace(/<\/?strong>/g, "")} In Bend: ${P.fmtRange(win(rowFor(bend, c.id), "spring").start, win(rowFor(bend, c.id), "spring").end)}.`} Find your city below.</p></div></section>
-${sci ? scienceBody(c, g, sci, { head, rowHtml, plans: sorted, port }) : `${quickFacts(c, g)}
+${sci ? scienceBody(c, g, sci, { head, dates, plans: sorted, port }) : `${quickFacts(c, g)}
 <p class="callout">${esc(c.note)}</p>
 <h2>${c.name} planting dates by city</h2>
-<div class="table-wrap"><table class="plan"><thead>${head}</thead><tbody>${FEATURED_CITIES.map(slug => rowHtml(plans.find(p => p.place.slug === slug))).join("")}</tbody></table></div>
+<div class="table-wrap"><table class="plan"><thead>${head}</thead><tbody>${groupedRows(FEATURED_CITIES.map(slug => plans.find(p => p.place.slug === slug)), dates)}</tbody></table></div>
 <h3 class="area-h">Find your town</h3>
-${areaTables(head, rowHtml, plans)}
+${areaTables(head, dates, plans)}
 ${ad("crop-mid")}
 <h2>How to grow ${lc(c.name)}</h2>
 ${stepsForHub(c, g, port)}
