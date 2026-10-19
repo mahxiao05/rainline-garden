@@ -472,6 +472,8 @@ table.plan { width: 100%; border-collapse: collapse; font-size: 1rem; background
   .plan td { display: grid; grid-template-columns: 8.5rem 1fr; gap: 8px; }
   .plan td::before { content: attr(data-label); color: var(--muted); font-size: .9rem; }
   .plan td div { grid-column: 2; }
+  /* On phones a crop row skips its empty columns instead of repeating "—". */
+  .plan td:has(> .none:only-child) { display: none; }
 }
 @media (prefers-reduced-motion: no-preference) {
   .reveal .bar { animation: grow .6s ease-out both; transform-origin: left center; }
@@ -540,6 +542,9 @@ a.btn { display: inline-flex; align-items: center; text-decoration: none; }
 .cm-mine-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; }
 .cm-mine h2 { margin: 0 0 .5rem; font-size: 1.4rem; }
 .cm-mine .station { margin: .5rem 0 0; }
+.cm-list.one-month .cm:not(.is-shown) { display: none; }
+.cm-months a.is-shown { border-color: var(--fir); box-shadow: inset 0 0 0 1px var(--fir); }
+.cm-all { display: block; margin: .5rem 0 1rem; }
 .cm { padding: 1.75rem 0 1rem; border-top: 1px solid var(--line); scroll-margin-top: 125px; }
 .cm:first-child { border-top: 0; }
 .cm.is-now { border-top: 3px solid var(--ochre); }
