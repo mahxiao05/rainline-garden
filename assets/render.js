@@ -82,18 +82,23 @@
     return out.join(" ");
   }
 
+  // Planting dates for every crop, one collapsed table per plant type so 80-odd rows don't make one very long list.
   function table(p, base) {
-    var h = '<div class="table-wrap"><table class="plan"><thead><tr><th scope="col">Crop</th><th scope="col">Start seeds indoors</th>' +
-      '<th scope="col">Plant in the garden</th><th scope="col">Plant again for fall</th></tr></thead><tbody>';
-    p.crops.forEach(function (r) {
+    var row = function (r) {
       var spring = r.windows.filter(function (w) { return w.kind === "spring"; })[0];
       var fall = r.windows.filter(function (w) { return w.kind === "fall"; })[0];
-      h += '<tr><th scope="row"><div class="crop-cell">' + icon(r.crop.id, base, 32) + '<div><a href="' + cropUrl(r.crop.id, p.place.slug, base) + '">' + r.crop.name + '</a><span class="how">' + r.crop.how + '</span></div></div></th>' +
+      return '<tr><th scope="row"><div class="crop-cell">' + icon(r.crop.id, base, 32) + '<div><a href="' + cropUrl(r.crop.id, p.place.slug, base) + '">' + r.crop.name + '</a><span class="how">' + r.crop.how + '</span></div></div></th>' +
         '<td data-label="Start seeds indoors">' + (r.indoor ? P.fmtRange(r.indoor.start, r.indoor.end) : '<span class="none">—</span>') + '</td>' +
         '<td data-label="Plant in the garden">' + (spring ? P.fmtRange(spring.start, spring.end) : '<span class="none">—</span>') + (flags(r) ? '<div>' + flags(r) + '</div>' : '') + '</td>' +
         '<td data-label="Plant again for fall">' + (fall ? P.fmtRange(fall.start, fall.end) : '<span class="none">—</span>') + '</td></tr>';
-    });
-    return h + '</tbody></table></div>';
+    };
+    var head = '<thead><tr><th scope="col">Crop</th><th scope="col">Start seeds indoors</th><th scope="col">Plant in the garden</th><th scope="col">Plant again for fall</th></tr></thead>';
+    return '<div class="area-groups">' + D.categories.map(function (cat) {
+      var rows = p.crops.filter(function (r) { return r.crop.cat === cat.id; });
+      if (!rows.length) return "";
+      return '<details class="area-group"><summary>' + cat.name + ' <span>' + rows.length + (rows.length === 1 ? ' plant' : ' plants') + '</span></summary>' +
+        '<div class="table-wrap"><table class="plan">' + head + '<tbody>' + rows.map(row).join("") + '</tbody></table></div></details>';
+    }).join("") + '</div>';
   }
 
   function nowBlock(p, today, base) {

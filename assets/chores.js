@@ -22,6 +22,35 @@
     var strip = tab.parentNode; strip.scrollLeft = tab.offsetLeft - (strip.clientWidth - tab.offsetWidth) / 2;
   }
 
+  // One month at a time so the page isn't a year of lists: the month strip switches months,
+  // and "Show all months" lists the whole year again.
+  var months = list.querySelectorAll(".cm"), links = document.querySelectorAll(".cm-months a");
+  var all = document.createElement("a");
+  all.href = "#"; all.className = "cm-all";
+  list.parentNode.insertBefore(all, list);
+  function showMonth(m) {
+    list.classList.toggle("one-month", m > 0);
+    Array.prototype.forEach.call(months, function (s) { s.classList.toggle("is-shown", +s.dataset.m === m); });
+    Array.prototype.forEach.call(links, function (a) { a.classList.toggle("is-shown", +a.dataset.m === m); });
+    all.textContent = m > 0 ? "Show all months" : "Show one month at a time";
+  }
+  Array.prototype.forEach.call(links, function (a) {
+    a.addEventListener("click", function (e) {
+      if (!list.classList.contains("one-month")) return;
+      e.preventDefault(); showMonth(+a.dataset.m);
+      if (history.replaceState) history.replaceState(null, "", a.getAttribute("href"));
+    });
+  });
+  all.addEventListener("click", function (e) {
+    e.preventDefault(); showMonth(list.classList.contains("one-month") ? 0 : month);
+  });
+  var start = location.hash && list.querySelector(".cm" + location.hash.replace(/[^#a-z]/g, ""));
+  showMonth(start ? +start.dataset.m : month);
+  window.addEventListener("hashchange", function () {
+    var s = list.querySelector(".cm" + location.hash.replace(/[^#a-z]/g, ""));
+    if (s && list.classList.contains("one-month")) showMonth(+s.dataset.m);
+  });
+
   // Checkboxes and progress.
   function progress(sec) {
     var boxes = sec.querySelectorAll("li:not([hidden]) input"), n = 0;
