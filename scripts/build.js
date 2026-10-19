@@ -54,7 +54,18 @@ const AUTHORS = {
     name: "Elaine Holloway", role: "Soil, native plants and perennials", he: "She", cover: "author-elaine.svg",
     facts: ["Born and raised in the Portland area", "Studied environmental science at Portland State", "Focus: soil health, native and pollinator plants"],
     bio: "Elaine Holloway was born and raised in the greater Portland area, where she grew up helping family tend backyard vegetable plots, native plant borders and container gardens. A lifelong gardener, she focuses on regional horticulture: building healthy soil, managing moisture through wet Northwest winters and dry summers, choosing native and climate-adapted plants, and adding pollinator-friendly, low-maintenance plantings to home gardens. She studied environmental science with a focus on horticulture at Portland State University, including plant ecology, sustainable agriculture and native plants. Where Jigmey covers vegetables and planting dates, Elaine covers the soil underneath them and the perennials, herbs and flowers around them.",
-    short: "Elaine Holloway was born and raised in the Portland area, has gardened all her life and studied environmental science at Portland State. She writes about soil, moisture, perennials and native and pollinator-friendly plants for Northwest gardens."
+    short: "Elaine Holloway was born and raised in the Portland area, has gardened all her life and studied environmental science at Portland State. She writes about soil, moisture, perennials and native and pollinator-friendly plants for Northwest gardens.",
+    // Harvest photos in assets/img/results/{img}-480/-800 (.jpg + .webp, 4:5). Caption parts: plain text, or [text, crop id] to link a plant page.
+    results: [
+      { img: "elaine-summer-basket", alt: "A basket of eggplant, long green peppers and beans beside a bottle gourd, luffa, small cucumbers, and a dish of tomatoes, cherry tomatoes and strawberries",
+        caption: [["Eggplant", "eggplant"], ", long green ", ["peppers", "peppers"], " and ", ["beans", "beans"], " in the basket, with a bottle gourd, luffa, small ", ["cucumbers", "cucumbers"], ", slicing, yellow and cherry ", ["tomatoes", "tomatoes"], " and ", ["strawberries", "strawberries"], "."] },
+      { img: "elaine-okra-luffa-tomatoes", alt: "Dark striped heirloom tomatoes, speckled beans, red okra pods and ridged luffa on a counter, with a bag of leafy greens",
+        caption: ["Dark heirloom ", ["tomatoes", "tomatoes"], ", speckled ", ["beans", "beans"], ", red okra and ridged luffa, with a bag of leafy greens."] },
+      { img: "elaine-red-okra", alt: "A hand holding four red okra pods in front of the okra plant",
+        caption: ["Red okra, picked young and tender, with more pods still growing on the plant."] },
+      { img: "elaine-gourd-squash-roots", alt: "A large bottle gourd, a green winter squash, and a colander of carrots, red potatoes and a tomato",
+        caption: ["A bottle gourd and a green ", ["winter squash", "winter-squash"], ", with ", ["carrots", "carrots"], ", red ", ["potatoes", "potatoes"], " and a ", ["tomato", "tomatoes"], "."] }
+    ]
   }
 };
 const DEFAULT_AUTHOR = "jigmey-dorjee";
@@ -73,7 +84,14 @@ ${avatar(rel, id, "avatar-xl")}
 <p class="profile-role">${a.role}</p>
 <ul class="profile-facts">${a.facts.map(f => `<li>${esc(f)}</li>`).join("")}</ul>
 <p>${esc(a.bio)}</p>
+${a.results ? resultsGallery(rel, a.results) : ""}
 </div></section>`; };
+const resultsGallery = (rel, list) => `<h3 class="results-h" id="growing-results">Growing results</h3>
+<p class="results-note">Harvests from the home garden.</p>
+<ul class="results-grid">${list.map(r => { const src = ext => `${rel}assets/img/results/${r.img}-480.${ext} 480w, ${rel}assets/img/results/${r.img}-800.${ext} 800w`;
+  return `<li><figure><picture><source type="image/webp" srcset="${src("webp")}" sizes="(min-width: 46rem) 20rem, calc(100vw - 72px)">
+<img src="${rel}assets/img/results/${r.img}-800.jpg" srcset="${src("jpg")}" sizes="(min-width: 46rem) 20rem, calc(100vw - 72px)" width="800" height="1000" alt="${esc(r.alt)}" loading="lazy" decoding="async"></picture>
+<figcaption>${r.caption.map(c => typeof c === "string" ? esc(c) : `<a href="${rel}when-to-plant/${c[1]}/">${esc(c[0])}</a>`).join("")}</figcaption></figure></li>`; }).join("")}</ul>`;
 const initials = n => n.split(/\s+/).map(w => w[0]).join("").slice(0, 2).toUpperCase();
 
 function layout({ rel, title, description, canonical, current, body, scripts, jsonld, noindex, image }) {
