@@ -126,6 +126,11 @@ p { margin: 0 0 1rem; }
 .results-grid figure { margin: 0; }
 .results-grid img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 10px; display: block; background: var(--sky); }
 .results-grid figcaption { font-size: .9rem; line-height: 1.45; color: var(--muted); margin-top: .45rem; }
+.garden-photos { margin: 2rem 0; }
+.garden-grid { margin-bottom: 1rem; }
+.garden-grid img { aspect-ratio: 4 / 3; }
+.garden-single { grid-template-columns: minmax(0, 32rem); }
+.photo-credit { display: block; font-size: .82rem; margin-top: .15rem; }
 .byline { display: flex; align-items: center; gap: 12px; margin: .25rem 0 0; font-size: 1rem; line-height: 1.35; }
 .byline a { font-weight: 700; }
 .byline-d { color: var(--muted); font-size: .92rem; }
@@ -466,6 +471,7 @@ table.plan { width: 100%; border-collapse: collapse; font-size: 1rem; background
   .profile-cover { height: 110px; }
   .results-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; margin: 0 -18px; padding: 0 18px 6px; scroll-padding: 0 18px; -webkit-overflow-scrolling: touch; }
   .results-grid li { flex: 0 0 72%; scroll-snap-align: start; }
+  .garden-single li { flex-basis: 100%; }
   .results-note::after { content: " Swipe to see more."; }
   .facts { grid-template-columns: 1fr; }
   .fact + .fact { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }

@@ -102,6 +102,48 @@ const resultsGallery = (rel, list) => `<h3 class="results-h" id="growing-results
   return `<li><figure><picture><source type="image/webp" srcset="${src("webp")}" sizes="(min-width: 46rem) 20rem, calc(100vw - 72px)">
 <img src="${rel}assets/img/results/${r.img}-800.jpg" srcset="${src("jpg")}" sizes="(min-width: 46rem) 20rem, calc(100vw - 72px)" width="800" height="1000" alt="${esc(r.alt)}" loading="lazy" decoding="async"></picture>
 <figcaption>${r.caption.map(c => typeof c === "string" ? esc(c) : `<a href="${rel}when-to-plant/${c[1]}/">${esc(c[0])}</a>`).join("")}</figcaption></figure></li>`; }).join("")}</ul>`;
+// Photo contributors, shown on the About page. Only say what the person actually does; never name their town or street.
+const CONTRIBUTORS = {
+  "janelle-burklund": { name: "Janelle Burklund", role: "Hobby gardener, Portland", kicker: "Contributor: garden photos", cover: "janelle-raised-beds",
+    bio: "Janelle Burklund is a Portland local and an Oregonian who gardens as a hobby and grows her own food. She shares photos from her garden so you can see these plants growing in a Northwest yard." }
+};
+// Contributor photos from their own gardens, used with permission: assets/img/results/{img}-480/-800 (.jpg + .webp, 4:3).
+// by: a CONTRIBUTORS id. crops: plant pages that show it; home: shown on the home page.
+const GARDEN_PHOTOS = [
+  { by: "janelle-burklund", img: "janelle-broccoli-head", crops: ["broccoli"], alt: "Top-down view of a broccoli plant in a wooden raised bed, with a small green head forming among wide blue-green leaves",
+    caption: ["A broccoli head starting to form in the middle of the plant."] },
+  { by: "janelle-burklund", img: "janelle-broccoli-leaves", crops: ["broccoli"], alt: "A full broccoli head seen from above, surrounded by large blue-green leaves",
+    caption: ["A full-size head, ready to cut while the buds are still tight."] },
+  { by: "janelle-burklund", img: "janelle-kohlrabi-bed", crops: ["kohlrabi"], alt: "Young kohlrabi plants in a raised bed, with pale green bulbs swelling at the base of their leaves",
+    caption: ["Kohlrabi bulbs swelling just above the soil in a raised bed."] },
+  { by: "janelle-burklund", img: "janelle-red-cabbage-bed", crops: ["cabbage"], alt: "Red cabbage heads in a metal raised bed edged with orange marigolds, beside a wood-chip path",
+    caption: ["Red cabbage in a raised bed, with marigolds planted along the edge."] },
+  { by: "janelle-burklund", img: "janelle-raised-beds", home: true, alt: "A backyard vegetable garden of raised beds with red and green cabbage, tomatoes and marigolds, backed by tall arborvitae",
+    caption: ["Raised beds of ", ["cabbage", "cabbage"], ", ", ["tomatoes", "tomatoes"], " and marigolds in late summer."] },
+  { by: "janelle-burklund", img: "janelle-summer-harvest", home: true, alt: "A summer harvest on a kitchen counter: cherry tomatoes, green beans, eggplant, purple and yellow peppers and cucumbers",
+    caption: ["A summer harvest: cherry ", ["tomatoes", "tomatoes"], ", ", ["beans", "beans"], ", ", ["eggplant", "eggplant"], ", ", ["peppers", "peppers"], " and ", ["cucumbers", "cucumbers"], "."] }
+];
+const gardenGrid = (rel, list, credit = true) => `<ul class="results-grid garden-grid${list.length === 1 ? " garden-single" : ""}">${list.map(r => { const src = ext => `${rel}assets/img/results/${r.img}-480.${ext} 480w, ${rel}assets/img/results/${r.img}-800.${ext} 800w`;
+  return `<li><figure><picture><source type="image/webp" srcset="${src("webp")}" sizes="(min-width: 46rem) 30rem, calc(100vw - 36px)">
+<img src="${rel}assets/img/results/${r.img}-800.jpg" srcset="${src("jpg")}" sizes="(min-width: 46rem) 30rem, calc(100vw - 36px)" width="800" height="600" alt="${esc(r.alt)}" loading="lazy" decoding="async"></picture>
+<figcaption>${r.caption.map(c => typeof c === "string" ? esc(c) : `<a href="${rel}when-to-plant/${c[1]}/">${esc(c[0])}</a>`).join("")}${credit ? ` <span class="photo-credit">Photo: <a href="${rel}about/#${r.by}">${esc(CONTRIBUTORS[r.by].name)}</a>, contributor</span>` : ""}</figcaption></figure></li>`; }).join("")}</ul>`;
+const contributorCard = (rel, id) => { const c = CONTRIBUTORS[id]; return `<section class="profile" id="${id}">
+<div class="profile-cover"><img src="${rel}assets/img/results/${c.cover}-800.jpg" alt="" aria-hidden="true" width="800" height="600" loading="lazy" decoding="async"></div>
+<div class="profile-body">
+<span class="avatar avatar-xl avatar-alt" aria-hidden="true">${initials(c.name)}</span>
+<p class="profile-kicker">${esc(c.kicker)}</p>
+<h2 class="profile-name">${esc(c.name)}</h2>
+<p class="profile-role">${esc(c.role)}</p>
+<p>${esc(c.bio)}</p>
+<h3 class="results-h">From ${esc(c.name.split(" ")[0])}'s garden</h3>
+${gardenGrid(rel, GARDEN_PHOTOS.filter(r => r.by === id), false)}
+</div></section>`; };
+const cropGarden = (rel, c) => { const list = GARDEN_PHOTOS.filter(r => (r.crops || []).includes(c.id));
+  return list.length ? `<section class="garden-photos" id="local-garden"><h2>${c.name} in a Northwest garden</h2>
+${gardenGrid(rel, list)}</section>\n` : ""; };
+GARDEN_PHOTOS.forEach(r => [480, 800].forEach(w => ["jpg", "webp"].forEach(ext => {
+  if (!fs.existsSync(path.join(ROOT, `assets/img/results/${r.img}-${w}.${ext}`))) throw new Error(`Missing assets/img/results/${r.img}-${w}.${ext}`);
+})));
 const initials = n => n.split(/\s+/).map(w => w[0]).join("").slice(0, 2).toUpperCase();
 
 // Search engines cut titles past about 70 characters, so long ones drop the site name.
@@ -354,7 +396,7 @@ ${ad("crop-mid")}
 <h2 id="grow">How to grow ${lc(c.name)}</h2>
 <div class="grow-grid"><div>${stepsForHub(c, g, port)}</div>
 ${sideCard(g)}</div>${videoBox(c)}
-${varietyCards(c)}
+${cropGarden("../../", c)}${varietyCards(c)}
 ${scienceParts(sci, c)}
 ${gearBox(g.gear)}
 <h2 id="faq">Common questions about growing ${lc(c.name)}</h2>
@@ -444,6 +486,8 @@ ${categoryTiles("")}
 ${ad("home-mid")}
 <section class="home-sec"><div class="sec-head"><h2>Guides for Northwest gardeners</h2><a href="articles/">All articles</a></div>
 ${articleCards("", ARTICLES.slice(0, 3))}</section>
+<section class="home-sec garden-photos"><h2>From a Northwest garden</h2>
+${gardenGrid("", GARDEN_PHOTOS.filter(r => r.home))}</section>
 ${newsletter()}
 <section class="home-sec prose">
 <h2>Why Northwest planting dates are different</h2>
@@ -619,7 +663,7 @@ ${stepsForHub(c, g, port)}
 <h2>Varieties that do well in the Northwest</h2>
 <ul class="vars">${g.varieties.map(v => `<li>${esc(v)}</li>`).join("")}</ul>
 <h2>Watch out for</h2><p>${esc(g.problem)}</p>
-${gearBox(g.gear)}
+${cropGarden("../../", c)}${gearBox(g.gear)}
 ${relatedArticles("../../", c.id)}`}
 ${newsletter()}
 <h2>More ${catById(c.cat).name.toLowerCase()}</h2>
@@ -984,6 +1028,9 @@ write("../", "about/index.html", layout({
 <p>Two Oregon gardeners with different strengths: Jigmey covers vegetables and planting dates, and Elaine covers soil, perennials, herbs and native plants.</p>
 ${authorCard("../", "jigmey-dorjee", "Vegetables and planting dates")}
 ${authorCard("../", "elaine-holloway", "Soil, perennials and native plants")}
+<h2 id="contributors">Contributors</h2>
+<p>Local gardeners who share photos from their own gardens.</p>
+${Object.keys(CONTRIBUTORS).map(id => contributorCard("../", id)).join("\n")}
 <h2>How we make this site</h2>
 <ul>
 <li><strong>Frost dates</strong> come from NOAA's 1991–2020 climate normals for the weather station nearest each town.</li>
