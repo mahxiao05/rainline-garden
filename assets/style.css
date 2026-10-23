@@ -271,8 +271,6 @@ table.plan { width: 100%; border-collapse: collapse; font-size: 1rem; background
 .photo-banner { aspect-ratio: 12 / 5; max-height: 320px; width: 100%; }
 .hero-art picture, .photo-banner picture { display: block; height: 100%; }
 .hero-art img, .photo-banner img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.hero-art figcaption, .photo-banner figcaption { position: absolute; right: 8px; bottom: 8px; font-size: .72rem; line-height: 1; padding: 4px 7px; border-radius: 6px; background: rgb(0 0 0 / .45); color: #fff; }
-.hero-art figcaption a, .photo-banner figcaption a { color: inherit; }
 .photo-banner + .hero { padding-top: 1.5rem; }
 :root[data-theme="dark"] .photo-banner img { filter: brightness(.85); }
 .hero-art + .hero { padding-top: 1.75rem; }
@@ -331,7 +329,7 @@ table.plan { width: 100%; border-collapse: collapse; font-size: 1rem; background
 .jump { display: flex; flex-wrap: wrap; gap: 8px; margin: -0.5rem 0 1.5rem; }
 .jump a { padding: 6px 14px; border-radius: 999px; background: var(--moss-soft); color: var(--fir); text-decoration: none; font-size: .95rem; font-weight: 700; }
 .jump a:hover { background: var(--moss); color: var(--paper); }
-#dates, #grow, #numbers, #science, #faq { scroll-margin-top: 84px; }
+#dates, #grow, #numbers, #science, #varieties, #faq { scroll-margin-top: 84px; }
 .more-cities { margin: -0.25rem 0 1rem; max-width: 46rem; }
 .more-cities summary { cursor: pointer; font-weight: 700; color: var(--moss); padding: 6px 0; }
 .grow-grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 32px; align-items: start; }
