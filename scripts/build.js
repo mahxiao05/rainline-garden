@@ -80,13 +80,13 @@ const authorLd = id => ({ "@type": "Person", name: AUTHORS[id].name, url: `${CON
 // author: "site" bylines an article to Rainline Garden itself, for general guides no one person wrote or checked.
 const SITE_BY = "site";
 const byLd = id => id === SITE_BY ? { "@type": "Organization", name: CONFIG.siteName, url: CONFIG.siteUrl } : authorLd(id);
-const byAvatar = (rel, id, cls) => id === SITE_BY ? `<img class="avatar avatar-site ${cls || ""}" src="${rel}assets/icon.svg" alt="" width="96" height="96">` : avatar(rel, id, cls);
+const byAvatar = (rel, id, cls) => id === SITE_BY ? `<img class="avatar avatar-site ${cls || ""}" src="${rel}assets/icon.svg" alt="Rainline Garden logo" aria-hidden="true" width="96" height="96">` : avatar(rel, id, cls);
 const byName = (rel, id) => id === SITE_BY ? `<a href="${rel}about/">${CONFIG.siteName}</a>` : `<a href="${rel}about/#${id}">${AUTHORS[id].name}</a>`;
 const byBox = (rel, id) => id === SITE_BY
   ? `<aside class="author-box">${byAvatar(rel, id, "avatar-lg")}<div><h2>About Rainline Garden</h2><p>Free planting calendars and growing guides for Oregon and Washington gardens, built from NOAA frost records for ${D.places.length} towns.</p><a href="${rel}about/">More about us</a></div></aside>`
   : `<aside class="author-box">${avatar(rel, id, "avatar-lg")}<div><h2>About the author</h2><p>${esc(AUTHORS[id].short)}</p><a href="${rel}about/#${id}">More about ${AUTHORS[id].name.split(" ")[0]}</a></div></aside>`;
 const authorCard = (rel, id, heading) => { const a = AUTHORS[id]; return `<section class="profile" id="${id}">
-<div class="profile-cover"><img src="${rel}assets/img/${a.cover}" alt="" width="1200" height="320" loading="lazy"></div>
+<div class="profile-cover"><img src="${rel}assets/img/${a.cover}" alt="Garden illustration for ${a.name}" aria-hidden="true" width="1200" height="320" loading="lazy"></div>
 <div class="profile-body">
 ${avatar(rel, id, "avatar-xl")}
 <p class="profile-kicker">${heading}</p>
@@ -103,6 +103,10 @@ const resultsGallery = (rel, list) => `<h3 class="results-h" id="growing-results
 <img src="${rel}assets/img/results/${r.img}-800.jpg" srcset="${src("jpg")}" sizes="(min-width: 46rem) 20rem, calc(100vw - 72px)" width="800" height="1000" alt="${esc(r.alt)}" loading="lazy" decoding="async"></picture>
 <figcaption>${r.caption.map(c => typeof c === "string" ? esc(c) : `<a href="${rel}when-to-plant/${c[1]}/">${esc(c[0])}</a>`).join("")}</figcaption></figure></li>`; }).join("")}</ul>`;
 const initials = n => n.split(/\s+/).map(w => w[0]).join("").slice(0, 2).toUpperCase();
+
+// Search engines cut titles past about 70 characters, so long ones drop the site name.
+const TITLE_MAX = 70;
+const shortTitle = t => t.length > TITLE_MAX ? t.replace(/ \| Rainline Garden$/, "") : t;
 
 function layout({ rel, title, description, canonical, current, body, scripts, jsonld, noindex, image }) {
   const base = rel; // relative prefix back to the site root, e.g. "../../"
@@ -139,7 +143,7 @@ ${ICON.search}<label for="search-q" class="sr">Search plants, towns and guides</
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(title)}</title>
+<title>${esc(shortTitle(title))}</title>
 <meta name="description" content="${esc(description)}">
 ${noindex ? '<meta name="robots" content="noindex, follow">\n' : ""}<link rel="canonical" href="${CONFIG.siteUrl}${canonical}">
 <meta property="og:title" content="${esc(title)}">
@@ -164,7 +168,7 @@ ${ld}
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-head"><div class="wrap">
-<a class="brand" href="${base}"><img src="${base}assets/icon.svg" width="30" height="30" alt="">Rainline Garden</a>
+<a class="brand" href="${base}"><img src="${base}assets/icon.svg" width="30" height="30" alt="Rainline Garden logo" aria-hidden="true">Rainline Garden</a>
 <nav class="nav" aria-label="Main">${nav}</nav>
 <button type="button" class="head-search" aria-label="Search plants, towns and guides" aria-expanded="false" aria-controls="search-pop">${ICON.search}<span>Search</span><kbd class="head-kbd">Ctrl K</kbd></button>
 <a class="head-cta" href="${base}my-garden/"${cur("my-garden/")}>${ICON.plan}<span>My garden plan</span></a>
@@ -306,7 +310,7 @@ ARTICLES.forEach(a => {
   if (a.icon && !fs.existsSync(path.join(ROOT, "assets/img/topics", a.icon + ".svg"))) throw new Error(`Missing topic icon ${a.icon}`);
 });
 const articleIcon = (a, rel, size) => a.icon
-  ? `<img class="ico" src="${rel}assets/img/topics/${a.icon}.svg" width="${size}" height="${size}" alt="" loading="lazy">`
+  ? `<img class="ico" src="${rel}assets/img/topics/${a.icon}.svg" width="${size}" height="${size}" alt="${a.icon.replace(/-/g, " ")} icon" aria-hidden="true" loading="lazy">`
   : R.icon(a.crops[0], rel, size);
 
 /* Real photos (scripts/photos.js). photo() returns a <figure> with WebP and JPEG sources at two widths. */
@@ -378,7 +382,7 @@ function varietyCards(c) {
 function videoBox(c) {
   const v = VIDEOS[c.id];
   if (!v) return "";
-  const poster = PHOTOS["crop:" + c.id] ? `<img src="../../${photoFile("crop:" + c.id, "bannerSm", "webp")}" width="720" height="300" alt="" loading="lazy" decoding="async">` : "";
+  const poster = PHOTOS["crop:" + c.id] ? `<img src="../../${photoFile("crop:" + c.id, "bannerSm", "webp")}" width="720" height="300" alt="${esc(PHOTOS["crop:" + c.id].alt)}" loading="lazy" decoding="async">` : "";
   return `
 <section class="video" aria-label="How-to video">
 <button type="button" class="video-play" data-yt="${v.id}" aria-label="Play video: ${esc(v.title)}">${poster}<span class="video-icon" aria-hidden="true"></span><span class="video-t">${esc(v.title)}</span></button>
@@ -406,13 +410,13 @@ function cropGrid(rel, linkFor) {
   return D.categories.map(k => `<h3 class="grid-h"><a href="${rel}${WHEN_INDEX}${k.id}/">${k.name}</a></h3><p class="grid-d">${k.blurb}</p><ul class="cards cards-sm">${k.crops.map(id => cropCard(rel, cropById(id), linkFor(cropById(id)))).join("")}</ul>`).join("");
 }
 function categoryTiles(rel) {
-  return `<ul class="cat-tiles">${D.categories.map(k => `<li><a class="cat-tile" href="${rel}${WHEN_INDEX}${k.id}/">${PHOTOS["cat:" + k.id] ? `<img class="cat-photo" src="${rel}${photoFile("cat:" + k.id, "thumb", "webp")}" width="480" height="240" alt="" loading="lazy" decoding="async">` : ""}<span class="cat-icons">${k.crops.slice(0, 3).map(id => R.icon(id, rel, 40)).join("")}</span><span class="card-t">${k.name}</span><span class="card-s">${k.crops.length} plants</span></a></li>`).join("")}</ul>`;
+  return `<ul class="cat-tiles">${D.categories.map(k => `<li><a class="cat-tile" href="${rel}${WHEN_INDEX}${k.id}/">${PHOTOS["cat:" + k.id] ? `<img class="cat-photo" src="${rel}${photoFile("cat:" + k.id, "thumb", "webp")}" width="480" height="240" alt="${esc(PHOTOS["cat:" + k.id].alt)}" aria-hidden="true" loading="lazy" decoding="async">` : ""}<span class="cat-icons">${k.crops.slice(0, 3).map(id => R.icon(id, rel, 40)).join("")}</span><span class="card-t">${k.name}</span><span class="card-s">${k.crops.length} plants</span></a></li>`).join("")}</ul>`;
 }
 
 /* Home */
 write("", "index.html", layout({
   rel: "", canonical: "", current: "",
-  title: "Rainline Garden: Planting Calendar and Frost Dates for Oregon and Washington",
+  title: "Rainline Garden: Oregon & Washington Planting Calendar and Frost Dates",
   description: "When to plant vegetables where you live in Oregon and Washington. Enter your ZIP for local frost dates and a planting calendar built from NOAA frost data and regional growing guidance.",
   jsonld: [{ "@context": "https://schema.org", "@type": "WebSite", name: "Rainline Garden", url: CONFIG.siteUrl, publisher: OWNER_LD }],
   body: `
@@ -499,7 +503,7 @@ D.places.forEach(place => {
   const bc = crumbs("../../", [["Frost dates", "frost-dates/"], [placeLabel(place), null]]);
   write("../../", `frost-dates/${place.slug}/index.html`, layout({
     rel: "../../", canonical: `frost-dates/${place.slug}/`, current: "frost-dates/",
-    title: `${placeLabel(place)} Frost Dates and Planting Calendar | Rainline Garden`,
+    title: (t => t.length > TITLE_MAX ? `${placeLabel(place)} Frost Dates` : t)(`${placeLabel(place)} Frost Dates and Planting Calendar`),
     description: `The typical last spring frost in ${placeLabel(place)} is ${P.fmtLong(f.spring50)} and the first fall frost is ${P.fmtLong(f.fall50)}. See when to plant tomatoes, peas, garlic and ${D.crops.length - 3} more crops.`,
     jsonld: [bc.ld],
     body: `${bc.html}
@@ -596,7 +600,7 @@ D.crops.forEach(c => {
   const sci = SCIENCE[c.id] || NOTES[c.id];
   write("../../", `when-to-plant/${c.id}/index.html`, layout({
     rel: "../../", canonical: `when-to-plant/${c.id}/`, current: WHEN_INDEX,
-    title: `When to Plant ${c.name} in Oregon and Washington, by City | Rainline Garden`,
+    title: (t => t.length > TITLE_MAX ? t.replace(", by City", "") : t)(`When to Plant ${c.name} in Oregon and Washington, by City`),
     description: `${c.name} planting dates for ${D.places.length} Oregon and Washington towns, from Portland and Seattle to Bend and Spokane, plus a beginner-friendly growing guide.`,
     image: PHOTOS["crop:" + c.id] && photoFile("crop:" + c.id, "banner"),
     jsonld: sci ? [hb.ld, faqLd(sci.faq)] : [hb.ld],

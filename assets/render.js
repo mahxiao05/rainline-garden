@@ -6,9 +6,11 @@
   function pct(n) { return (Math.max(0, Math.min(365, n - 1)) / 365 * 100).toFixed(2) + "%"; }
   function span(a, b) { return "left:" + pct(a) + ";width:" + (Math.max(1, Math.min(365, b) - a) / 365 * 100).toFixed(2) + "%"; }
 
+  // Icons sit beside the plant's name, so they carry alt text for crawlers but stay hidden from screen readers.
   function icon(id, base, size) {
     size = size || 28;
-    return '<img class="ico" src="' + (base || "") + 'assets/img/crops/' + id + '.webp" width="' + size + '" height="' + size + '" alt="" loading="lazy">';
+    var c = D.crops.filter(function (x) { return x.id === id; })[0];
+    return '<img class="ico" src="' + (base || "") + 'assets/img/crops/' + id + '.webp" width="' + size + '" height="' + size + '" alt="' + (c ? c.name : id) + '" aria-hidden="true" loading="lazy">';
   }
   function cropUrl(id, slug, base) { return (base || "") + 'when-to-plant/' + id + '/?town=' + slug + '#your-town'; }
 
