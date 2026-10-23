@@ -104,8 +104,8 @@ const resultsGallery = (rel, list) => `<h3 class="results-h" id="growing-results
 <figcaption>${r.caption.map(c => typeof c === "string" ? esc(c) : `<a href="${rel}when-to-plant/${c[1]}/">${esc(c[0])}</a>`).join("")}</figcaption></figure></li>`; }).join("")}</ul>`;
 // Photo contributors, shown on the About page. Only say what the person actually does; never name their town or street.
 const CONTRIBUTORS = {
-  "janelle-burklund": { name: "Janelle Burklund", role: "Home gardener in Oregon", kicker: "Contributor: garden photos", cover: "janelle-raised-beds",
-    bio: "Janelle Burklund grows vegetables in raised beds in her Oregon backyard, from broccoli, cabbage and kohlrabi to summer tomatoes, beans and peppers. She shares photos from her garden so you can see these plants growing in a Northwest yard, not just read about them." }
+  "janelle-burklund": { name: "Janelle Burklund", role: "Hobby gardener, Portland", kicker: "Contributor: garden photos", cover: "janelle-raised-beds",
+    bio: "Janelle Burklund is a Portland local and an Oregonian who gardens as a hobby and grows her own food. She shares photos from her garden so you can see these plants growing in a Northwest yard." }
 };
 // Contributor photos from their own gardens, used with permission: assets/img/results/{img}-480/-800 (.jpg + .webp, 4:3).
 // by: a CONTRIBUTORS id. crops: plant pages that show it; home: shown on the home page.
