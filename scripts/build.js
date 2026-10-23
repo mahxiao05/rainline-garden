@@ -743,6 +743,7 @@ write("../", "my-garden/index.html", layout({
   <div class="field field-select"><label for="gp-place">Town</label><select id="gp-place"><option value="">Choose a town</option></select></div>
   <button class="btn" type="submit">Use this town</button>
 </form>
+<button type="button" id="near-me" class="btn btn-ghost near-btn" hidden>Use my location</button>
 <p id="gp-msg" class="msg" role="status" aria-live="polite"></p>
 <section id="gp-share" class="gp-share" hidden aria-live="polite"></section>
 <details id="gp-pick" class="gp-pick" open><summary><span>What do you want to grow?</span> <span id="gp-count" class="gp-count"></span></summary>
@@ -768,7 +769,7 @@ ${D.categories.map(k => `<fieldset><legend>${k.name}</legend><div class="gp-opts
 <input type="hidden" name="${esc(CONFIG.newsletterTagField)}" value="frost-alert"><input type="hidden" name="${esc(CONFIG.newsletterTagField)}" value="frost-{slug}">
 <label for="gp-alert-email" class="sr">Email address</label><input id="gp-alert-email" type="email" name="${esc(CONFIG.newsletterField)}" placeholder="you@example.com" required autocomplete="email">
 <button class="btn" type="submit">Email me</button></form></template>` : ""}`,
-  scripts: ["data.js", "plan.js", "render.js", "guide-data.js", "garden.js"]
+  scripts: ["data.js", "plan.js", "render.js", "guide-data.js", "near.js", "garden.js"]
 }), "0.8");
 
 /* Plant quiz */
