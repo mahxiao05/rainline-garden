@@ -484,6 +484,10 @@
     out.scrollIntoView({ behavior: "smooth", block: "start" });
   });
   sel.addEventListener("change", function () { zip.value = ""; msg.textContent = ""; state.place = sel.value; save(); render(); });
+  if (window.RainlineNear) RainlineNear(document.getElementById("near-me"), msg, D.places.map(function (x) { return [x.slug].concat(x.ll); }), function (slug) {
+    zip.value = ""; msg.textContent = ""; state.place = slug; save(); render();
+    out.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
   pick.addEventListener("change", function (e) {
     var b = e.target; if (b.type !== "checkbox") return;
     state.crops = state.crops.filter(function (id) { return id !== b.value; });
