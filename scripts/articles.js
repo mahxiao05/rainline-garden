@@ -27,7 +27,7 @@ module.exports = [
 <p>In general, cherry and small salad tomatoes are the safest bets, and big beefsteaks are the riskiest. Look at the "days to maturity" on the tag: under 70 days is a good sign for west-side gardens, and under 60 is better on the coast, where Astoria's summers rarely get truly hot.</p>
 <h2>Give them every bit of heat you can</h2>
 <ul>
-<li><strong>Plant late, not early.</strong> Wait until the soil has warmed and nights stay mild. Tomatoes set out in cold April soil just sit and sulk. In Portland that usually means mid-May; <a href="${link("when-to-plant/tomatoes/portland-or/")}">see the exact window</a>.</li>
+<li><strong>Plant late, not early.</strong> Wait until the soil has warmed and nights stay mild. Tomatoes set out in cold April soil just sit and sulk. In Portland that usually means mid-May; <a href="${link("when-to-plant/tomatoes/?town=portland-or#your-town")}">see the exact window</a>.</li>
 <li><strong>Use the warmest spot.</strong> A south- or west-facing wall stores heat and gives it back at night.</li>
 <li><strong>Warm the soil.</strong> Black or red plastic mulch laid a week before planting can raise soil temperature several degrees.</li>
 <li><strong>Protect young plants.</strong> Wall-o-water rings or a simple plastic cloche keep nights warmer for the first few weeks.</li>
@@ -60,7 +60,7 @@ module.exports = [
 <li><strong>Early September:</strong> a last sowing of spinach and hardy lettuce like Winter Density.</li>
 <li><strong>October to mid-November:</strong> plant garlic for next summer.</li>
 </ul>
-<p>Your exact dates depend on where you are. For example, see <a href="${link("when-to-plant/kale/portland-or/")}">kale in Portland</a> or <a href="${link("when-to-plant/carrots/seattle-wa/")}">carrots in Seattle</a>, which include a fall window.</p>
+<p>Your exact dates depend on where you are. For example, see <a href="${link("when-to-plant/kale/?town=portland-or#your-town")}">kale in Portland</a> or <a href="${link("when-to-plant/carrots/?town=seattle-wa#your-town")}">carrots in Seattle</a>, which include a fall window.</p>
 <h2>The most dependable winter crops</h2>
 <ul>
 <li><strong>Kale.</strong> The champion. Frost actually sweetens the leaves, and plants often produce from fall into spring.</li>
@@ -89,7 +89,7 @@ module.exports = [
 <p>Gardening in Central Oregon takes a different playbook than the Willamette Valley. At Redmond, the NOAA weather station closest to Bend, the typical last spring frost is ${bend.last} and the first fall frost comes around ${bend.first}. That's a frost-free season of about ${bend.season} days, and in some years frost shows up in July. Klamath Falls is similar, with about ${kf.season} frost-free days.</p>
 <p>It's absolutely possible to grow a productive garden here. You just have to pick the right crops and give warm-season ones some help.</p>
 <h2>Lean on crops that shrug off frost</h2>
-<p>Cool-season crops are the backbone of a high desert garden. Peas, lettuce, spinach, radishes, kale, chard, carrots, beets, onions and potatoes all handle light frost and can go in weeks before the last frost date. See <a href="${link("when-to-plant/peas/bend-or/")}">peas in Bend</a> or <a href="${link("when-to-plant/potatoes/bend-or/")}">potatoes in Bend</a> for exact windows.</p>
+<p>Cool-season crops are the backbone of a high desert garden. Peas, lettuce, spinach, radishes, kale, chard, carrots, beets, onions and potatoes all handle light frost and can go in weeks before the last frost date. See <a href="${link("when-to-plant/peas/?town=bend-or#your-town")}">peas in Bend</a> or <a href="${link("when-to-plant/potatoes/?town=bend-or#your-town")}">potatoes in Bend</a> for exact windows.</p>
 <h2>Give warm crops a head start and a blanket</h2>
 <ul>
 <li><strong>Always use transplants</strong> for tomatoes, peppers and squash. There isn't time to start them from seed outdoors.</li>
@@ -101,6 +101,19 @@ module.exports = [
 <p>Central Oregon is dry, with intense sun and big temperature swings between day and night. Drip irrigation on a timer, a thick layer of mulch, and a windbreak (a fence, a hedge, or even shade cloth on the windward side) make a bigger difference here than almost anywhere else in the Northwest.</p>
 <h2>Raised beds and soil</h2>
 <p>Raised beds warm up faster in spring, which buys you time. Many Central Oregon soils are sandy, rocky or low in organic matter, so filling beds with a good soil and compost mix pays off quickly.</p>
+<h2>A season in order</h2>
+<ul>
+<li><strong>Late winter:</strong> start onions and leeks indoors, then tomatoes and peppers about six to eight weeks before you expect to plant them out.</li>
+<li><strong>As soon as the soil can be worked:</strong> peas, spinach, lettuce, radishes and onion starts. A light frost won't hurt them.</li>
+<li><strong>A few weeks later:</strong> potatoes, carrots, beets, kale and broccoli starts.</li>
+<li><strong>After the typical last frost (${bend.last}):</strong> tomatoes, squash and beans, with covers ready. In many years a cold night still arrives after that date.</li>
+<li><strong>Midsummer:</strong> a second sowing of lettuce, radishes and spinach for fall, timed to mature before the first frost around ${bend.first}.</li>
+<li><strong>September to October:</strong> plant garlic, which overwinters and is one of the most reliable crops in the high desert.</li>
+</ul>
+<h2>Stretch the season at both ends</h2>
+<p>A cold frame, a low tunnel of plastic over hoops, or a small hoop house adds weeks in spring and fall, which is a big share of a short season. Even a sheet of row cover laid over plants on a clear, still evening can hold in enough warmth to get them through a light frost. Clear nights are the coldest ones here; cloudy nights are much milder.</p>
+<h2>If you garden higher up</h2>
+<p>Gardens in Sisters, La Pine and other higher or low-lying spots often run colder than the airport stations. Low spots where cold air drains at night can frost weeks later in spring than a slope a short walk away. Keep a cheap minimum-maximum thermometer in the garden for a season and you'll learn how your own yard compares.</p>
 <p>For every crop's dates, see the <a href="${link("frost-dates/bend-or/")}">Bend and Redmond planting calendar</a>.</p>`;
     }
   },
@@ -127,6 +140,22 @@ module.exports = [
 </ul>
 <h2>Make the garden less welcoming</h2>
 <p>Water in the morning instead of the evening, so the soil surface is drier at night. Keep a strip of bare ground around beds, and hold off on thick mulch until the weather warms. Clear out boards, weeds and debris where slugs hide during the day. And encourage their predators: ground beetles, garter snakes and birds all eat slugs.</p>
+<h2>What doesn't work as well as you'd hope</h2>
+<ul>
+<li><strong>Eggshells and coffee grounds.</strong> Popular, but slugs cross them without much trouble, especially once rain softens them.</li>
+<li><strong>Diatomaceous earth.</strong> It works only while dry, which in a Northwest spring is rarely for long.</li>
+<li><strong>Salt.</strong> It kills slugs, but it also damages your soil and plants. Keep it out of the garden.</li>
+</ul>
+<h2>Is it really slugs?</h2>
+<p>Holes in leaves have other causes too. Slime trails and damage at night point to slugs or snails. Lots of tiny round pits in young leaves of radishes, arugula or eggplant are flea beetles. Ragged holes with small green droppings in kale or broccoli are caterpillars; see <a href="${link("articles/cabbage-worms-and-aphids/")}">cabbage worms and aphids</a>. Earwigs chew irregular holes at night too, and often hide in dahlia and lettuce leaves by day.</p>
+<h2>A simple spring routine</h2>
+<ol>
+<li>Before you plant, lay a few boards or upturned pots near the bed. Check under them each morning for a week and remove what you find.</li>
+<li>Sprinkle iron phosphate bait lightly around the bed the day you sow or transplant.</li>
+<li>Refresh the bait after heavy rain, and check seedlings on damp evenings.</li>
+<li>Once plants have a few sets of true leaves, they can usually outgrow light damage, and you can ease off.</li>
+<li>Do it again in late summer for fall crops, when the rain returns.</li>
+</ol>
 <p>Spring is the critical time. Start checking and baiting as soon as you sow, especially for <a href="${link("when-to-plant/lettuce/")}">lettuce</a> and <a href="${link("when-to-plant/beans/")}">beans</a>.</p>`
   },
   {
@@ -158,6 +187,12 @@ module.exports = [
 <li><strong>Clear plastic or a cold frame</strong> warms soil even faster for early sowings.</li>
 <li><strong>Wait to mulch.</strong> Straw and leaf mulches keep soil cool, which is great in July and a problem in May. Add them after the soil warms.</li>
 </ul>
+<h2>What happens if you plant too early</h2>
+<p>Cold soil doesn't just slow warm-season crops down. Bean, corn and squash seeds absorb water but can't grow, so they rot. Tomato and pepper transplants stop growing, and their leaves can turn purplish underneath because cold roots struggle to take up phosphorus. Plants set back this way often catch up only weeks after ones planted later into warm soil, so planting early rarely gains anything.</p>
+<h2>Too warm matters too</h2>
+<p>Soil temperature cuts both ways. Lettuce and spinach seed germinate poorly once soil goes much above about 80°F, which is why late-summer sowings for fall can come up patchy. Sow them in the cool of the evening, water the row well, and shade it with a board or a bit of shade cloth until the seedlings appear.</p>
+<h2>East of the Cascades</h2>
+<p>In the drier inland valleys, soil warms faster in spring than on the west side, so the gap between frost dates and planting dates is shorter. But frost comes later and nights stay cold, so a warm afternoon reading can mislead. Check in the morning there, too, and keep frost cover handy after planting.</p>
 <p>Rainline Garden's planting dates already build in this soil-temperature delay for each region. <a href="${link("")}">Enter your ZIP</a> to see yours.</p>`;
     }
   }

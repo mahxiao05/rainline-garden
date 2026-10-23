@@ -143,7 +143,7 @@ module.exports = [
 <h2>When to plant</h2>
 <p>Pea seeds sprout in cool soil, from about 40°F, though they come up faster once the soil reaches the 50s. Rainline Garden's planting windows for peas:</p>
 <ul>
-<li><strong>Portland and the west side:</strong> ${pdx.range}. <a href="${link("when-to-plant/peas/portland-or/")}">See Portland's pea page</a>.</li>
+<li><strong>Portland and the west side:</strong> ${pdx.range}. <a href="${link("when-to-plant/peas/?town=portland-or#your-town")}">See Portland's pea page</a>.</li>
 <li><strong>Spokane and the inland Northwest:</strong> ${spo.range}.</li>
 <li><strong>Bend and the high desert:</strong> ${bend.range}.</li>
 </ul>
@@ -268,7 +268,7 @@ module.exports = [
 <h2>When to plant</h2>
 <p>Dahlias grow from tubers, which rot easily in cold, wet soil. Wait until the soil has warmed, about the same time you'd plant tomatoes. Rainline Garden's planting windows:</p>
 <ul>
-<li><strong>Portland and the west side:</strong> ${pdx.range}. <a href="${link("when-to-plant/dahlias/portland-or/")}">See Portland's dahlia page</a>.</li>
+<li><strong>Portland and the west side:</strong> ${pdx.range}. <a href="${link("when-to-plant/dahlias/?town=portland-or#your-town")}">See Portland's dahlia page</a>.</li>
 <li><strong>Spokane and the inland Northwest:</strong> ${spo.range}.</li>
 <li><strong>Bend and the high desert:</strong> ${bend.range}.</li>
 </ul>

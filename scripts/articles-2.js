@@ -22,7 +22,7 @@ module.exports = [
 <h2>When to plant</h2>
 <p>Plant garlic in fall, after the soil has cooled but a few weeks before it freezes hard, so the cloves can root in. That timing varies a lot across the region:</p>
 <ul>
-<li><strong>Portland and the west side:</strong> ${pdx.range}. <a href="${link("when-to-plant/garlic/portland-or/")}">See Portland's garlic page</a>.</li>
+<li><strong>Portland and the west side:</strong> ${pdx.range}. <a href="${link("when-to-plant/garlic/?town=portland-or#your-town")}">See Portland's garlic page</a>.</li>
 <li><strong>Spokane and the inland Northwest:</strong> ${spo.range}.</li>
 <li><strong>Bend and the high desert:</strong> ${bend.range}.</li>
 </ul>
@@ -310,7 +310,7 @@ module.exports = [
 <h2>When to plant</h2>
 <p>Potatoes go in during spring, a few weeks before the last frost, once the soil can be worked and isn't soggy. The shoots can be nipped by a late frost, but the plants usually regrow from below ground.</p>
 <ul>
-<li><strong>Portland:</strong> ${pdx.range}. <a href="${link("when-to-plant/potatoes/portland-or/")}">Details</a>.</li>
+<li><strong>Portland:</strong> ${pdx.range}. <a href="${link("when-to-plant/potatoes/?town=portland-or#your-town")}">Details</a>.</li>
 <li><strong>Spokane:</strong> ${spo.range}.</li>
 <li><strong>Bend:</strong> ${bend.range}.</li>
 </ul>

@@ -10,7 +10,7 @@
     size = size || 28;
     return '<img class="ico" src="' + (base || "") + 'assets/img/crops/' + id + '.webp" width="' + size + '" height="' + size + '" alt="" loading="lazy">';
   }
-  function cropUrl(id, slug, base) { return (base || "") + 'when-to-plant/' + id + '/' + slug + '/'; }
+  function cropUrl(id, slug, base) { return (base || "") + 'when-to-plant/' + id + '/?town=' + slug + '#your-town'; }
 
   function frostFacts(p) {
     var f = p.frost;
@@ -24,10 +24,11 @@
       '</div>';
   }
 
-  function regionNote(p) {
+  // brief leaves out the general microclimate advice (the frost-dates index says it once for every town).
+  function regionNote(p, brief) {
     return '<p class="region"><strong>' + p.zone.name + '.</strong> ' + p.zone.blurb + '</p>' +
       '<p class="station">Frost dates are 1991–2020 NOAA climate normals for ' + p.station.name +
-      ' (' + p.station.elev + ' m elevation). Gardens in cold hollows or at higher elevation can frost later in spring and earlier in fall; city gardens and warm, south-facing spots often run a week or so ahead.' +
+      ' (' + p.station.elev + ' m elevation).' + (brief ? '' : ' Gardens in cold hollows or at higher elevation can frost later in spring and earlier in fall; city gardens and warm, south-facing spots often run a week or so ahead.') +
       (p.place.note ? ' ' + p.place.note : '') + '</p>';
   }
 
