@@ -37,6 +37,9 @@ const CONFIG = {
 CONFIG.siteUrl = CONFIG.customDomain ? `https://${CONFIG.customDomain}/` : "https://mahxiao05.github.io/rainline-garden/";
 CONFIG.basePath = new URL(CONFIG.siteUrl).pathname; // "/" on a custom domain, "/rainline-garden/" on GitHub Pages
 const YEAR = CONFIG.updated.slice(0, 4);
+// Visible dates show month and year only ("October 2026"); full dates stay in datetime attributes, JSON-LD and the sitemap.
+const monthYear = iso => new Date(iso + "T12:00:00").toLocaleDateString("en-US", { month: "long", year: "numeric" });
+const stamp = iso => `<time datetime="${iso}">${monthYear(iso)}</time>`;
 
 const SOURCES = {
   noaa: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals"
@@ -224,7 +227,7 @@ ${search}
 ${body}
 </main>
 <footer class="site-foot"><div class="wrap">
-<p><strong class="foot-brand">Rainline Garden</strong><br>Free planting calendars for Oregon and Washington gardens.<br>Frost data from NOAA climate normals. Updated ${CONFIG.updated}.${CONFIG.amazonTag ? "<br>As an Amazon Associate, Rainline Garden earns from qualifying purchases." : ""}</p>
+<p><strong class="foot-brand">Rainline Garden</strong><br>Free planting calendars for Oregon and Washington gardens.<br>Frost data from NOAA climate normals. Updated ${stamp(CONFIG.updated)}.${CONFIG.amazonTag ? "<br>As an Amazon Associate, Rainline Garden earns from qualifying purchases." : ""}</p>
 <nav aria-label="Footer"><a href="${base}glossary/">Glossary</a><a href="${base}how-it-works/">How it works</a><a href="${base}about/">About</a><a href="${base}contact/">Contact</a><a href="${base}privacy/">Privacy</a><a href="${base}terms/">Terms</a></nav>
 <p class="owner">&copy; ${YEAR} ${CONFIG.owner}. Rainline Garden is owned and operated by ${CONFIG.owner}.</p>
 </div></footer>
@@ -236,16 +239,21 @@ ${(scripts || []).map(s => `<script src="${base}assets/${s}"></script>`).join("\
 `;
 }
 
-// Dates are masked when comparing, so a page whose content hasn't changed keeps its old file and "Updated" date
+// Dates are masked when comparing, so a page whose content hasn't changed keeps its old "Updated" date
 // instead of every rebuild restamping the whole site.
-const DATE_RE = /\d{4}-\d\d-\d\d|(?:January|February|March|April|May|June|July|August|September|October|November|December) \d{1,2}, \d{4}/g;
+const DATE_RE = /\d{4}-\d\d-\d\d|(?:January|February|March|April|May|June|July|August|September|October|November|December)(?: \d{1,2},)? \d{4}/g;
 const sameBut = (a, b) => a.replace(DATE_RE, "D") === b.replace(DATE_RE, "D");
+// Pages built before dates went month-and-year printed full dates; read them as the new format so they keep their date.
+const toMonthYear = s => s.replace(/(Updated|Last updated) (\d{4}-\d\d-\d\d)\./g, (m, w, d) => `${w} ${w === "Updated" ? stamp(d) : monthYear(d)}.`)
+  .replace(/(<time datetime="(\d{4}-\d\d-\d\d)">)[A-Z][a-z]+ \d{1,2}, \d{4}</g, (m, t, d) => t + monthYear(d) + "<");
 function write(rel, file, html, priority) {
   const out = path.join(ROOT, file);
   fs.mkdirSync(path.dirname(out), { recursive: true });
   const old = fs.existsSync(out) ? fs.readFileSync(out, "utf8") : null;
-  const kept = old !== null && sameBut(old, html) && (old.match(/Updated (\d{4}-\d\d-\d\d)\./) || [])[1];
-  if (!kept) fs.writeFileSync(out, html);
+  const kept = old !== null && sameBut(toMonthYear(old), html) && (old.match(/Updated (?:<time datetime=")?(\d{4}-\d\d-\d\d)/) || [])[1];
+  const U = CONFIG.updated, final = !kept ? html : html.split(`datetime="${U}">${monthYear(U)}`).join(`datetime="${kept}">${monthYear(kept)}`)
+    .split(`"dateModified":"${U}"`).join(`"dateModified":"${kept}"`).split(`Last updated ${monthYear(U)}.`).join(`Last updated ${monthYear(kept)}.`);
+  if (final !== old) fs.writeFileSync(out, final);
   const loc = file.replace(/index\.html$/, "");
   if (priority !== null) pages.push({ loc, priority: priority || "0.6", lastmod: kept || CONFIG.updated });
 }
@@ -349,6 +357,7 @@ const ARTICLE_TOPICS = [
 ];
 ARTICLES.forEach(a => {
   if (!ARTICLE_TOPICS.some(t => t[0] === a.topic)) throw new Error(`Article ${a.slug} needs a topic`);
+  if (a.gardenPhoto && !GARDEN_PHOTOS.some(r => r.img === a.gardenPhoto)) throw new Error(`Article ${a.slug} has an unknown garden photo`);
   if (a.icon && !fs.existsSync(path.join(ROOT, "assets/img/topics", a.icon + ".svg"))) throw new Error(`Missing topic icon ${a.icon}`);
 });
 const articleIcon = (a, rel, size) => a.icon
@@ -470,6 +479,7 @@ ${photo("hero", "", { big: "hero", small: "heroSm", cls: "hero-art", sizes: "(mi
   <div class="field field-select"><label for="place">City</label><select id="place" name="place"><option value="">Choose a city</option></select></div>
   <button class="btn" type="submit">Show my calendar</button>
 </form>
+<button type="button" id="near-me" class="btn btn-ghost near-btn" hidden>Use my location</button>
 <p id="msg" class="msg" role="status" aria-live="polite"></p>
 </section>
 <section id="result" aria-live="polite"></section>
@@ -493,7 +503,7 @@ ${newsletter()}
 <h2>Why Northwest planting dates are different</h2>
 <p>National charts key everything off the last frost date. Here that's only half the story: the Portland airport's typical last frost is in mid-March, yet tomatoes planted then sit in cold, wet soil for two months, while the high desert can frost into June. Rainline Garden combines NOAA frost records for each area with regional timing for when the soil is actually ready. <a href="how-it-works/">See how the dates are worked out</a>.</p>
 </section>`,
-  scripts: SCRIPTS
+  scripts: ["data.js", "plan.js", "render.js", "near.js", "app.js"]
 }), "1.0");
 
 /* Town comparisons for frost-date pages: worked out from the frost data, so each town's page says
@@ -846,8 +856,9 @@ ARTICLES.forEach(a => {
 <article class="article">
 ${banner("article:" + a.slug, rel)}
 <header class="hero hero-crop">${articleIcon(a, rel, 120)}<div><h1>${esc(a.title)}</h1><p class="lede">${esc(a.description)}</p>
-<p class="byline">${byAvatar(rel, a.author || DEFAULT_AUTHOR)}<span>By ${byName(rel, a.author || DEFAULT_AUTHOR)}<br><span class="byline-d">Updated <time datetime="${CONFIG.updated}">${new Date(CONFIG.updated + "T12:00:00").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</time></span></span></p></div></header>
+<p class="byline">${byAvatar(rel, a.author || DEFAULT_AUTHOR)}<span>By ${byName(rel, a.author || DEFAULT_AUTHOR)}<br><span class="byline-d">Updated ${stamp(CONFIG.updated)}</span></span></p></div></header>
 <div class="prose">${a.body({ D, P, frost: frostFor, link: p => rel + p })}</div>
+${a.gardenPhoto ? gardenGrid(rel, GARDEN_PHOTOS.filter(r => r.img === a.gardenPhoto)) : ""}
 ${byBox(rel, a.author || DEFAULT_AUTHOR)}
 </article>
 ${ad("article-bottom")}
@@ -902,7 +913,7 @@ write("../", "frost-dates/index.html", layout({
 <section class="hero"><h1>Frost dates by city</h1>
 <p class="lede">Typical last spring and first fall frost dates for Oregon and Washington, from NOAA's 1991–2020 climate normals. Pick a city for its full planting calendar.</p></section>
 <div class="town-find"><div class="field town-filter"><label for="town-q">Find a town</label><input id="town-q" type="search" autocomplete="off" placeholder="Start typing, like Hood River"></div>
-<button type="button" id="near-me" class="btn btn-ghost" hidden>Use my location</button></div>
+<button type="button" id="near-me" class="btn btn-ghost near-btn" hidden>Use my location</button></div>
 <p id="near-out" class="near-out" aria-live="polite" hidden></p>
 <p id="town-none" class="empty" hidden>No town by that name yet. Try the nearest bigger town, or <a href="../">use your ZIP code</a>.</p>
 <div id="town-lists">
@@ -914,20 +925,14 @@ if(matchMedia("(max-width: 40rem)").matches)secs.forEach(function(d){d.open=fals
 q.addEventListener("input",function(){var v=q.value.trim().toLowerCase(),any=false;if(v&&!saved)saved=[].map.call(secs,function(d){return d.open});
 secs.forEach(function(sec,i){var n=0;sec.querySelectorAll("li").forEach(function(li){var m=!v||li.dataset.q.indexOf(v)>=0;li.hidden=!m;if(m)n++});sec.hidden=!n;if(n)any=true;if(v)sec.open=true;else if(saved)sec.open=saved[i]});if(!v)saved=null;
 document.querySelectorAll("#town-lists [data-state]").forEach(function(h){var e=h.nextElementSibling,vis=false;while(e&&!e.hasAttribute("data-state")){if(!e.hidden)vis=true;e=e.nextElementSibling}h.hidden=!vis});none.hidden=any})})();
-(function(){var b=document.getElementById("near-me"),out=document.getElementById("near-out");if(!b||!navigator.geolocation)return;var T=${NEAR_PTS};b.hidden=false;
-function km(a,o,c,p){var r=Math.PI/180,x=(p-o)*r*Math.cos((a+c)/2*r),y=(c-a)*r;return 6371*Math.sqrt(x*x+y*y)}
-b.addEventListener("click",function(){b.disabled=true;b.textContent="Finding you\u2026";out.hidden=true;
-function done(){b.disabled=false;b.textContent="Use my location"}
-navigator.geolocation.getCurrentPosition(function(pos){var la=pos.coords.latitude,lo=pos.coords.longitude,best=null,bd=1/0;
-T.forEach(function(t){for(var i=1;i<t.length;i+=2){var d=km(la,lo,t[i],t[i+1]);if(d<bd){bd=d;best=t[0]}}});
-if(bd>150){done();out.innerHTML="That looks like it's outside Oregon and Washington, so we don't have a town near you yet.";out.hidden=false;return}
-location.href=best+"/"},done,{timeout:15000,maximumAge:600000})})})();</script>
+addEventListener("DOMContentLoaded",function(){RainlineNear(document.getElementById("near-me"),document.getElementById("near-out"),${NEAR_PTS},function(slug){location.href=slug+"/"})});</script>
 <h2>How to use these dates</h2>
 <div class="prose">
 <p>"Typical" means the median: in half of years the last spring frost comes later. Each city page also shows the date when frost is over in 9 years out of 10, which is the safer date for tender plants like tomatoes and basil.</p>
 <p>Each town's dates come from one weather station, usually an airport. Gardens in cold hollows or at higher elevation can frost later in spring and earlier in fall; city gardens and warm, south-facing spots often run a week or so ahead. If your garden is in a frost pocket, add a week to spring dates and take a week off fall ones.</p>
 <p>Dates are a guide, not a guarantee. Check the soil before planting: cool-season crops need it workable and not soggy, and warm-season crops need it warm. A $10 soil thermometer pays for itself.</p>
-</div>`
+</div>`,
+  scripts: ["near.js"]
 }), "0.9");
 
 /* Monthly calendar */
@@ -1048,7 +1053,7 @@ write("../", "privacy/index.html", layout({
   rel: "../", canonical: "privacy/", current: "privacy/",
   title: "Privacy Policy | Rainline Garden",
   description: "How Rainline Garden handles your information.",
-  body: `<section class="hero prose"><h1>Privacy policy</h1><p class="lede">Last updated ${CONFIG.updated}.</p></section>
+  body: `<section class="hero prose"><h1>Privacy policy</h1><p class="lede">Last updated ${monthYear(CONFIG.updated)}.</p></section>
 <div class="prose">
 <p>Rainline Garden is owned and operated by ${CONFIG.owner} ("we", "us"). This policy explains what happens to your information when you use the site.</p>
 <h2>What we collect</h2>
@@ -1082,7 +1087,7 @@ write("../", "terms/index.html", layout({
   rel: "../", canonical: "terms/", current: "terms/",
   title: "Terms of Use | Rainline Garden",
   description: "Terms of use and gardening disclaimer for Rainline Garden.",
-  body: `<section class="hero prose"><h1>Terms of use</h1><p class="lede">Last updated ${CONFIG.updated}.</p></section>
+  body: `<section class="hero prose"><h1>Terms of use</h1><p class="lede">Last updated ${monthYear(CONFIG.updated)}.</p></section>
 <div class="prose">
 <p>Rainline Garden is owned and operated by ${CONFIG.owner}. By using the site you agree to these terms.</p>
 <h2>Gardening information</h2>
