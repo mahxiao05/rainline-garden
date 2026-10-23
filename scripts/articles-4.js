@@ -3,6 +3,135 @@
  */
 module.exports = [
   {
+    slug: "leaf-mold-from-fall-leaves",
+    topic: "soil", icon: "leaves",
+    author: "site",
+    title: "Turning Fall Leaves into Leaf Mold and Mulch",
+    description: "The leaves piling up in your yard every October are the best free soil builder there is. How to make leaf mold, which leaves to use, and where to put it.",
+    crops: ["blueberries", "garlic", "rhubarb", "lettuce"],
+    published: "2026-10-23",
+    body: ({ link }) => `
+<p>Every fall, Northwest yards and streets fill with maples, oaks and alders dropping their leaves, and plenty of them end up in yard-waste bins. That's a lot of free organic matter leaving the garden. With a little patience, those same leaves turn into leaf mold: a dark, crumbly, earthy-smelling material that holds water like a sponge and makes heavy soil easier to work.</p>
+<p>Leaf mold isn't the same as compost. Compost is made mostly by bacteria, needs a mix of greens and browns, and works best when it heats up. Leaf mold is made slowly by fungi, needs nothing but leaves and water, and never has to be turned. Our wet, mild winters west of the Cascades are close to ideal for it.</p>
+<h2>Which leaves to use</h2>
+<ul>
+<li><strong>Good:</strong> maple, alder, birch, ash, cherry, linden and fruit tree leaves break down fastest. Oak and beech leaves work too, but take a year or two longer.</li>
+<li><strong>Use sparingly:</strong> bigleaf maple leaves are huge and mat into a waterproof layer unless shredded first.</li>
+<li><strong>Leave out:</strong> black walnut leaves, which carry a compound that stunts tomatoes and other plants; laurel and holly, which are thick and waxy and take years; and any leaves that were sprayed or came from beside a busy road. Conifer needles break down very slowly, so keep them to a small share of the pile.</li>
+<li><strong>Diseased leaves:</strong> apple and pear leaves spotted with scab, and fallen fruit, are better bagged for the yard-waste bin, where commercial composting runs hot enough to kill disease.</li>
+</ul>
+<h2>Making leaf mold</h2>
+<ol>
+<li><strong>Shred if you can.</strong> Running a mower over a pile of leaves, with the bag on, cuts the time roughly in half and stops matting. Whole leaves work too; they just take longer.</li>
+<li><strong>Pile them up.</strong> A ring of wire fencing or chicken wire about 3 to 4 feet across makes a tidy bin. In a small yard, fill a few black garbage bags, poke a dozen holes in each with a garden fork, and tuck them behind a shed.</li>
+<li><strong>Get them wet.</strong> Leaves need to stay damp to rot. West of the Cascades, winter rain handles this for you. In drier eastern and high desert gardens, soak the pile as you build it and check it again in spring, when it should feel like a wrung-out sponge.</li>
+<li><strong>Wait.</strong> Shredded leaves give a rough, usable leaf mold in about 6 to 12 months. Whole leaves take one to two years to become fine, dark and crumbly. You don't need to turn the pile, though mixing it once in spring speeds things up a little.</li>
+</ol>
+<p>A heap of leaves left in a cold, dry corner can sit unchanged for years. If yours isn't breaking down, it's almost always too dry.</p>
+<h2>Where to use it</h2>
+<ul>
+<li><strong>As mulch.</strong> Half-rotted leaf mold makes a good mulch around perennials, shrubs and <a href="${link("when-to-plant/blueberries/")}">blueberries</a>, which like the slightly acidic, woodland-style layer it makes. Keep it a few inches back from stems.</li>
+<li><strong>Worked into beds.</strong> Spread an inch or two over vegetable beds in spring and fork it lightly into the top few inches. It improves how sandy soil holds water and how clay soil drains, though it adds few nutrients, so keep feeding your crops as usual.</li>
+<li><strong>In seed and potting mixes.</strong> Fine, two-year leaf mold sifted through a screen is a classic replacement for peat in homemade seed-starting mix. Mix it about half and half with compost or bagged potting soil.</li>
+<li><strong>On top of fall plantings.</strong> A loose layer over a freshly planted <a href="${link("when-to-plant/garlic/")}">garlic</a> bed or a dormant <a href="${link("when-to-plant/rhubarb/")}">rhubarb</a> crown keeps winter rain from crusting the soil.</li>
+</ul>
+<h2>Fresh leaves as a winter blanket</h2>
+<p>You don't have to wait a year to get some use out of your leaves. Shredded fresh leaves spread a few inches deep over empty vegetable beds protect the soil all winter, and by spring much of the layer will have been pulled in by worms. Rake back whatever is left a few weeks before sowing so the soil can dry and warm, especially where you'll sow <a href="${link("when-to-plant/lettuce/")}">lettuce</a> or other early crops that slugs love.</p>
+<p>Our guide to <a href="${link("articles/putting-the-garden-to-bed/")}">putting the garden to bed</a> covers the rest of the fall cleanup, and <a href="${link("articles/winter-cover-crops/")}">winter cover crops</a> are the other good way to keep beds covered until spring.</p>`
+  },
+  {
+    slug: "winter-pruning-apple-and-pear-trees",
+    topic: "crops",
+    author: "site",
+    title: "Winter Pruning for Apple and Pear Trees",
+    description: "Late winter is the time to prune apples and pears. Which cuts to make, how much to take off, and why cherries, plums and peaches wait for a different season.",
+    crops: ["apples", "pears", "cherries", "plums", "peaches"],
+    published: "2026-10-23",
+    body: ({ link }) => `
+<p>Apples and pears are pruned while they're dormant, after the leaves fall and before the buds start to swell. A bare tree is easy to read: you can see every branch, where it's crowded and where it's heading. A little pruning each winter keeps a tree a size you can pick from, lets light and air into the middle, and helps the fruit ripen and stay healthy through our damp springs.</p>
+<h2>When to prune</h2>
+<p>Late winter is best, roughly February to early March. Pruning in fall or early winter isn't harmful in mild west-side gardens, but cuts made just before a hard freeze can be damaged by the cold, so most growers wait until the worst of winter has passed. East of the Cascades and in the high desert, wait until the severe cold is over, then finish before the buds open.</p>
+<p>Pick a dry day if you can. Wet weather spreads some diseases from cut to cut, and you'll be climbing around on slippery bark.</p>
+<h2>Tools</h2>
+<ul>
+<li><strong>Bypass hand pruners</strong> (scissor-style, not anvil) for twigs up to about a half inch.</li>
+<li><strong>Loppers</strong> for branches up to about an inch and a half.</li>
+<li><strong>A folding pruning saw</strong> for anything bigger.</li>
+</ul>
+<p>Sharp blades make clean cuts that seal faster. Wipe them with rubbing alcohol between trees, and between cuts if you're removing diseased wood.</p>
+<h2>What to remove, in order</h2>
+<ol>
+<li><strong>Dead, broken and diseased wood.</strong> Cut back to healthy wood. On west-side apples, look for sunken, cracked cankers on young branches; on pears east of the mountains, look for blackened, "scorched" shoot tips from fire blight, and cut at least 8 to 12 inches below any visible damage.</li>
+<li><strong>Suckers and water sprouts.</strong> Suckers come up from the roots or the base of the trunk. Water sprouts are the straight, whippy shoots that shoot up vertically from branches. Both shade the tree and rarely fruit well.</li>
+<li><strong>Crossing and rubbing branches.</strong> Where two branches rub, keep the better-placed one.</li>
+<li><strong>Branches growing into the center or straight down.</strong> The goal is an open tree where light reaches the inner fruit.</li>
+<li><strong>Height control, last.</strong> If the tree is getting too tall, cut a tall upright limb back to a side branch that's heading outward.</li>
+</ol>
+<h2>Two kinds of cuts</h2>
+<p><strong>Thinning cuts</strong> remove a whole branch back to where it joins a larger one. They open up the tree without causing a flush of new growth, and they should make up most of your pruning. Cut just outside the slightly swollen ring at the base of the branch, called the branch collar. Don't cut flush with the trunk, and don't leave a long stub. Wound paint isn't needed; the tree seals the cut itself.</p>
+<p><strong>Heading cuts</strong> shorten a branch partway along, just above a bud. They make the tree push several new shoots below the cut, which is useful on a young tree you're shaping but turns into a thicket on a mature one. Use them sparingly.</p>
+<p>For any branch thicker than your wrist, use three cuts so the bark doesn't tear: an undercut a foot out from the trunk, a top cut just beyond it to drop the weight, then the final cut at the collar.</p>
+<h2>How much to take off</h2>
+<p>Take no more than about a quarter of the live wood in one winter. Heavy pruning doesn't shrink a tree; it triggers a forest of water sprouts the next summer and fewer flowers. An overgrown, neglected tree is best brought back over three winters, a third of the work each year.</p>
+<p>Look for fruiting spurs before you cut. On apples and pears, most fruit grows on short, stubby, knobbly twigs an inch or two long, often on wood that's two years or older. Leave them. Plump, fuzzy buds at the tips of the spurs are flower buds; slim, pointed buds will make leaves.</p>
+<h2>Young trees</h2>
+<p>For the first three or four years, pruning is mostly about shape. Most apples and pears are trained to a central leader: one main upright trunk with three or four well-spaced scaffold branches coming off it in a loose spiral, the lowest at about knee to waist height. Choose branches that leave the trunk at a wide angle, since narrow, V-shaped crotches split under fruit later. Our guide to <a href="${link("articles/planting-bare-root-fruit-trees/")}">planting bare-root fruit trees</a> covers the first cut at planting.</p>
+<h2>Why cherries, plums and peaches wait</h2>
+<p>Don't take the saw to stone fruit in winter. In the Northwest, cherries and plums are prone to bacterial canker and silver leaf, diseases that get into fresh cuts during cool, wet weather. Prune <a href="${link("when-to-plant/cherries/")}">cherries</a> and <a href="${link("when-to-plant/plums/")}">plums</a> in summer, during a dry spell, usually right after harvest. <a href="${link("when-to-plant/peaches/")}">Peaches</a> are usually pruned in early spring, around bloom, once the risk of a hard freeze is low.</p>
+<p>See the <a href="${link("when-to-plant/apples/")}">apple</a> and <a href="${link("when-to-plant/pears/")}">pear</a> guides for varieties that hold up to Northwest diseases.</p>`
+  },
+  {
+    slug: "crop-rotation-for-small-gardens",
+    topic: "timing", icon: "rotation",
+    author: "site",
+    title: "Crop Rotation for a Small Northwest Vegetable Garden",
+    description: "Winter is the time to plan next year's beds. A simple way to rotate vegetable families in a few raised beds, and the soil diseases it helps you avoid.",
+    crops: ["tomatoes", "potatoes", "broccoli", "cabbage", "peas", "beans", "garlic", "onions"],
+    published: "2026-10-23",
+    gardenPhoto: "janelle-raised-beds",
+    body: ({ link }) => `
+<p>A rainy winter evening is a good time to sketch next year's garden. Before you decide what goes where, think about what grew in each bed this year. Planting the same family of vegetables in the same spot year after year lets their soil pests and diseases build up. Moving them around, called crop rotation, is one of the simplest ways to keep a garden healthy without sprays.</p>
+<h2>Rotate by family, not by crop</h2>
+<p>Pests and diseases usually attack a whole plant family, so moving tomatoes to where the potatoes were doesn't help: they're relatives. The families that matter most in a vegetable garden are:</p>
+<ul>
+<li><strong>Cabbage family:</strong> broccoli, cabbage, kale, cauliflower, Brussels sprouts, collards, kohlrabi, bok choy, radishes, turnips and arugula.</li>
+<li><strong>Tomato family:</strong> tomatoes, potatoes, peppers, eggplant, tomatillos and ground cherries.</li>
+<li><strong>Peas and beans:</strong> peas, bush and pole beans, and fava beans.</li>
+<li><strong>Onion family:</strong> onions, garlic, leeks, shallots and chives.</li>
+<li><strong>Squash family:</strong> zucchini, winter squash, pumpkins, cucumbers and melons.</li>
+<li><strong>Carrot family:</strong> carrots, parsnips, celery, parsley, dill and cilantro.</li>
+<li><strong>Beet family:</strong> beets, chard and spinach.</li>
+</ul>
+<p>Lettuce, corn and most herbs can fill gaps wherever there's room.</p>
+<h2>What it actually prevents</h2>
+<p>Rotation works on problems that live in the soil. Several are common in wet, acidic Northwest gardens:</p>
+<ul>
+<li><strong>Clubroot</strong> swells and distorts the roots of cabbage-family plants, which wilt on warm afternoons and stay stunted. Its spores can survive in soil for many years, so once you have it, keep cabbage relatives out of that bed as long as you can. Acidic soil makes it worse; our <a href="${link("articles/soil-ph-and-lime/")}">soil pH guide</a> covers liming.</li>
+<li><strong>Cabbage root maggots</strong> spend the winter in the soil as pupae under last year's broccoli and cabbage, then emerge right where this spring's transplants go in.</li>
+<li><strong>Onion white rot</strong>, a fluffy white fungus on garlic and onion bulbs, can last in the soil for decades. If you see it, stop growing the onion family in that bed.</li>
+<li><strong>Potato scab and Verticillium wilt</strong> build up where potatoes and their relatives grow year after year.</li>
+</ul>
+<p>Rotation does little against problems that blow in on the wind. <a href="${link("articles/tomato-late-blight/")}">Late blight</a> spores travel for miles, and powdery mildew on squash arrives every late summer no matter where you plant. Those need resistant varieties and good spacing instead. Do dig every last potato, though: leftover tubers sprout next year and can carry blight back in.</p>
+<h2>A simple four-bed plan</h2>
+<p>If you have four beds, or one bed split into four sections, group the families so each bed holds a set that grows well together, then move each set one bed along every year:</p>
+<ol>
+<li><strong>Tomato family</strong>, with squash family alongside if there's room.</li>
+<li><strong>Peas and beans</strong>, followed in late summer by fall greens.</li>
+<li><strong>Cabbage family.</strong></li>
+<li><strong>Roots and onions:</strong> carrots, beets, onions and the fall-planted <a href="${link("when-to-plant/garlic/")}">garlic</a>.</li>
+</ol>
+<p>Next year the tomatoes move to bed 2, peas to bed 3, and so on. Each family comes back to the same soil every fourth year. The order has a logic: the heavy-feeding cabbage family follows peas and beans, and roots follow cabbage on the leftover fertility. Don't worry about getting it perfect; any gap of two or three years is far better than none.</p>
+<h2>When you only have one or two beds</h2>
+<ul>
+<li><strong>Rotate within the bed.</strong> Split it into halves or quarters and shift the families around them each year. Even a few feet helps.</li>
+<li><strong>Use containers.</strong> Grow tomatoes or potatoes in large pots of fresh mix on alternate years, which gives the bed a break. Our <a href="${link("articles/container-vegetable-gardening/")}">container guide</a> has sizes.</li>
+<li><strong>Use the off-season.</strong> A <a href="${link("articles/winter-cover-crops/")}">winter cover crop</a> or a layer of compost between crops keeps the soil healthy, and its life works against soil-borne diseases.</li>
+<li><strong>Know your trouble spots.</strong> If one family has struggled in a bed, that's the one to move first.</li>
+</ul>
+<h2>Write it down</h2>
+<p>The hardest part of rotation is remembering what grew where. A quick sketch of your beds with this year's crops, kept with your seed packets, solves it. When you're ready, the <a href="${link("my-garden/")}">garden planner</a> builds next year's planting dates for your town.</p>`
+  },
+  {
     slug: "putting-the-garden-to-bed",
     topic: "soil", icon: "winter",
     author: "site",
