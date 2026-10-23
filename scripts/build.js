@@ -846,7 +846,10 @@ const placeItem = x => {
   const st = D.stations[x.station];
   return `<li data-q="${esc((x.city + " " + x.state).toLowerCase())}"><a href="${x.slug}/">${esc(x.city)}</a> <span>last frost ${P.fmt(P.doy(st.spring50))}, first frost ${P.fmt(P.doy(st.fall50))}</span></li>`;
 };
-const areaLists = s => P.byArea(D).filter(g => g.area.state === s).map(g => `<section class="area-list"><h3>${esc(g.area.name)}</h3><ul class="places">${g.places.map(placeItem).join("")}</ul></section>`).join("");
+// Areas are open in the HTML and folded on phones by the script below, so the page is a short list of areas there.
+const areaLists = s => P.byArea(D).filter(g => g.area.state === s).map(g => `<details class="area-list" open><summary><h3>${esc(g.area.name)}</h3><span>${g.places.length} ${g.places.length === 1 ? "town" : "towns"}</span></summary><ul class="places">${g.places.map(placeItem).join("")}</ul></details>`).join("");
+// "Use my location": town points for picking the nearest town in the browser. The location never leaves the page.
+const NEAR_PTS = JSON.stringify(D.places.map(x => [x.slug, ...x.ll]));
 write("../", "frost-dates/index.html", layout({
   rel: "../", canonical: "frost-dates/", current: "frost-dates/",
   title: "Oregon and Washington Frost Dates by City | Rainline Garden",
@@ -854,13 +857,27 @@ write("../", "frost-dates/index.html", layout({
   body: `
 <section class="hero"><h1>Frost dates by city</h1>
 <p class="lede">Typical last spring and first fall frost dates for Oregon and Washington, from NOAA's 1991–2020 climate normals. Pick a city for its full planting calendar.</p></section>
-<div class="field town-filter"><label for="town-q">Find a town</label><input id="town-q" type="search" autocomplete="off" placeholder="Start typing, like Hood River"></div>
+<div class="town-find"><div class="field town-filter"><label for="town-q">Find a town</label><input id="town-q" type="search" autocomplete="off" placeholder="Start typing, like Hood River"></div>
+<button type="button" id="near-me" class="btn btn-ghost" hidden>Use my location</button></div>
+<p id="near-out" class="near-out" aria-live="polite" hidden></p>
 <p id="town-none" class="empty" hidden>No town by that name yet. Try the nearest bigger town, or <a href="../">use your ZIP code</a>.</p>
 <div id="town-lists">
 <h2 data-state>Oregon</h2>${areaLists("OR")}
 <h2 data-state>Washington</h2>${areaLists("WA")}
 </div>
-<script>(function(){var q=document.getElementById("town-q"),none=document.getElementById("town-none");if(!q)return;q.addEventListener("input",function(){var v=q.value.trim().toLowerCase(),any=false;document.querySelectorAll("#town-lists .area-list").forEach(function(sec){var n=0;sec.querySelectorAll("li").forEach(function(li){var m=!v||li.dataset.q.indexOf(v)>=0;li.hidden=!m;if(m)n++});sec.hidden=!n;if(n)any=true});document.querySelectorAll("#town-lists [data-state]").forEach(function(h){var e=h.nextElementSibling,vis=false;while(e&&!e.hasAttribute("data-state")){if(!e.hidden)vis=true;e=e.nextElementSibling}h.hidden=!vis});none.hidden=any})})();</script>
+<script>(function(){var q=document.getElementById("town-q"),none=document.getElementById("town-none");if(!q)return;var secs=document.querySelectorAll("#town-lists .area-list"),saved=null;
+if(matchMedia("(max-width: 40rem)").matches)secs.forEach(function(d){d.open=false});
+q.addEventListener("input",function(){var v=q.value.trim().toLowerCase(),any=false;if(v&&!saved)saved=[].map.call(secs,function(d){return d.open});
+secs.forEach(function(sec,i){var n=0;sec.querySelectorAll("li").forEach(function(li){var m=!v||li.dataset.q.indexOf(v)>=0;li.hidden=!m;if(m)n++});sec.hidden=!n;if(n)any=true;if(v)sec.open=true;else if(saved)sec.open=saved[i]});if(!v)saved=null;
+document.querySelectorAll("#town-lists [data-state]").forEach(function(h){var e=h.nextElementSibling,vis=false;while(e&&!e.hasAttribute("data-state")){if(!e.hidden)vis=true;e=e.nextElementSibling}h.hidden=!vis});none.hidden=any})})();
+(function(){var b=document.getElementById("near-me"),out=document.getElementById("near-out");if(!b||!navigator.geolocation)return;var T=${NEAR_PTS};b.hidden=false;
+function km(a,o,c,p){var r=Math.PI/180,x=(p-o)*r*Math.cos((a+c)/2*r),y=(c-a)*r;return 6371*Math.sqrt(x*x+y*y)}
+b.addEventListener("click",function(){b.disabled=true;b.textContent="Finding you\u2026";out.hidden=true;
+function done(){b.disabled=false;b.textContent="Use my location"}
+navigator.geolocation.getCurrentPosition(function(pos){var la=pos.coords.latitude,lo=pos.coords.longitude,best=null,bd=1/0;
+T.forEach(function(t){for(var i=1;i<t.length;i+=2){var d=km(la,lo,t[i],t[i+1]);if(d<bd){bd=d;best=t[0]}}});
+if(bd>150){done();out.innerHTML="That looks like it's outside Oregon and Washington, so we don't have a town near you yet.";out.hidden=false;return}
+location.href=best+"/"},done,{timeout:15000,maximumAge:600000})})})();</script>
 <h2>How to use these dates</h2>
 <div class="prose">
 <p>"Typical" means the median: in half of years the last spring frost comes later. Each city page also shows the date when frost is over in 9 years out of 10, which is the safer date for tender plants like tomatoes and basil.</p>
