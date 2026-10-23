@@ -451,7 +451,7 @@
     download("garden-plan-" + place.slug + ".ics", list.filter(function (t) { return (t.end || t.date) >= now && !state.done[t.key]; }).map(function (t) {
       return { uid: t.key + "-" + place.slug, date: t.date, summary: t.text,
         desc: (t.end && t.end - t.date > DAY ? "Window: " + short(t.date) + " to " + short(t.end) + ". " : "") +
-          (t.crop ? "Guide: https://rainlinegarden.org/when-to-plant/" + t.crop.id + "/" + place.slug + "/" : "Rainline Garden plan for " + place.city) };
+          (t.crop ? "Guide: https://rainlinegarden.org/when-to-plant/" + t.crop.id + "/?town=" + place.slug : "Rainline Garden plan for " + place.city) };
     }), "Garden plan (" + place.city + ")");
   }
   function frostIcs(place) {

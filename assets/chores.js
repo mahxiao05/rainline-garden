@@ -94,7 +94,7 @@
       if (r.windows.some(overlaps)) out.push(r.crop);
       if (r.indoor && overlaps(r.indoor)) indoor.push(r.crop);
     });
-    function chips(cs) { return cs.map(function (c) { return '<a class="mp-crop" href="' + base + 'when-to-plant/' + c.id + '/' + place.slug + '/"><img class="ico" src="' + base + 'assets/img/crops/' + c.id + '.webp" width="22" height="22" alt="">' + c.name + '</a>'; }).join(""); }
+    function chips(cs) { return cs.map(function (c) { return '<a class="mp-crop" href="' + base + 'when-to-plant/' + c.id + '/?town=' + place.slug + '#your-town"><img class="ico" src="' + base + 'assets/img/crops/' + c.id + '.webp" width="22" height="22" alt="">' + c.name + '</a>'; }).join(""); }
     var el = document.getElementById("cm-mine");
     el.innerHTML = '<div class="cm-mine-head"><h2>' + P.MONTHS_LONG[month - 1] + ' in ' + place.city + '</h2><a href="' + base + 'frost-dates/' + place.slug + '/">Full ' + place.city + ' calendar</a></div>' +
       (out.length ? '<p><span class="cm-k">Plant outside</span>' + chips(out) + '</p>' : '<p class="cm-none">Nothing goes in the ground this month in ' + place.city + '.</p>') +

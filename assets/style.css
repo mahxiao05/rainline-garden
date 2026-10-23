@@ -131,6 +131,7 @@ p { margin: 0 0 1rem; }
 .byline-d { color: var(--muted); font-size: .92rem; }
 .avatar { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--moss); color: var(--paper); font-weight: 700; font-size: .95rem; letter-spacing: .03em; }
 img.avatar { object-fit: cover; padding: 0; }
+img.avatar.avatar-site { background: var(--paper); border: 1px solid var(--line); object-fit: contain; padding: 6px; }
 .avatar-lg { width: 64px; height: 64px; font-size: 1.35rem; }
 .author-box { display: flex; gap: 18px; align-items: flex-start; background: var(--sky); border-radius: 14px; padding: 18px 22px; margin: 2.5rem 0 1rem; max-width: 46rem; }
 .author-box h2 { font-size: 1.25rem; margin: 0 0 .35rem; }
@@ -243,7 +244,7 @@ table.plan { width: 100%; border-collapse: collapse; font-size: 1rem; background
 .town-filter { margin: 0 0 1rem; max-width: 22rem; }
 .town-filter input { width: 100%; letter-spacing: 0; }
 .area-h { margin: 1.5rem 0 .5rem; }
-.town-pick { max-width: 52rem; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-bottom: 8px; }
+.town-pick { scroll-margin-top: 80px; max-width: 52rem; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-bottom: 8px; }
 .town-pick label { display: block; font-weight: 700; margin-bottom: 6px; }
 .town-pick select { width: 100%; max-width: 26rem; font: inherit; padding: 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: inherit; }
 .town-pick-out { margin-top: 12px; }
