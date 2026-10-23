@@ -13,6 +13,7 @@ const PHOTOS = require("./photos.js");
 const SCIENCE = require("./crop-science.js");
 const NOTES = require("./crop-notes.js");
 const CARE_TIPS = require("./care-tips.js");
+const CATEGORY_GUIDES = require("./category-guides.js");
 const VARIETIES = require("./varieties.js");
 const VIDEOS = require("./videos.js");
 const { SIZES, fileBase, sizesFor } = require("./photo-sizes.js");
@@ -121,7 +122,8 @@ ${ICON.search}<label for="search-q" class="sr">Search plants, towns and guides</
 <button type="button" class="search-close" aria-label="Close search">Esc</button></div>
 <ul id="search-list" class="search-list" role="listbox" aria-label="Results"></ul></div></div>`;
   const ld = (jsonld || []).map(o => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, "\\u003c")}</script>`).join("\n");
-  const ads = CONFIG.adsenseClient
+  // No ads on noindexed pages: they're near-copies kept for visitors, and ads there read as low-value content to AdSense.
+  const ads = CONFIG.adsenseClient && !noindex
     ? `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${CONFIG.adsenseClient}" crossorigin="anonymous"></script>` : "";
   return `<!doctype html>
 <html lang="en" data-base="${base}">
@@ -179,12 +181,18 @@ ${(scripts || []).map(s => `<script src="${base}assets/${s}"></script>`).join("\
 `;
 }
 
+// Dates are masked when comparing, so a page whose content hasn't changed keeps its old file and "Updated" date
+// instead of every rebuild restamping the whole site.
+const DATE_RE = /\d{4}-\d\d-\d\d|(?:January|February|March|April|May|June|July|August|September|October|November|December) \d{1,2}, \d{4}/g;
+const sameBut = (a, b) => a.replace(DATE_RE, "D") === b.replace(DATE_RE, "D");
 function write(rel, file, html, priority) {
   const out = path.join(ROOT, file);
   fs.mkdirSync(path.dirname(out), { recursive: true });
-  fs.writeFileSync(out, html);
+  const old = fs.existsSync(out) ? fs.readFileSync(out, "utf8") : null;
+  const kept = old !== null && sameBut(old, html) && (old.match(/Updated (\d{4}-\d\d-\d\d)\./) || [])[1];
+  if (!kept) fs.writeFileSync(out, html);
   const loc = file.replace(/index\.html$/, "");
-  if (priority !== null) pages.push({ loc, priority: priority || "0.6" });
+  if (priority !== null) pages.push({ loc, priority: priority || "0.6", lastmod: kept || CONFIG.updated });
 }
 
 // One responsive display unit per slot. Unfilled units (e.g. while AdSense reviews the site) are hidden by CSS.
@@ -432,6 +440,45 @@ ${newsletter()}
   scripts: SCRIPTS
 }), "1.0");
 
+/* Town comparisons for frost-date pages: worked out from the frost data, so each town's page says
+   something its neighbors' pages don't. */
+const ALL_PLANS = D.places.map(pl => P.plan(D, pl));
+const ordinal = n => n + ((n % 100 >= 11 && n % 100 <= 13) ? "th" : ["th", "st", "nd", "rd"][n % 10] || "th");
+const nDays = n => `${n} day${n === 1 ? "" : "s"}`;
+const listOf = xs => xs.length < 2 ? xs.join("") : `${xs.slice(0, -1).join(", ")} and ${xs[xs.length - 1]}`;
+const SPREADS = ALL_PLANS.map(x => x.frost.spring10 - x.frost.spring50).sort((a, b) => a - b);
+const MID_SPREAD = SPREADS[Math.floor(SPREADS.length / 2)];
+const inArea = n => /^(Portland area|Willamette|Oregon Coast|Olympic|Columbia Gorge|North Sound|Yakima Valley)/.test(n) ? `the ${n}` : n;
+function townCompare(p) {
+  const city = esc(p.place.city), f = p.frost, area = D.areas.find(a => a.id === p.place.area);
+  const bySeason = ALL_PLANS.slice().sort((a, b) => b.frost.season - a.frost.season);
+  const rank = bySeason.findIndex(x => x.frost.season <= f.season) + 1;
+  const top = bySeason[0], low = bySeason[bySeason.length - 1];
+  const has = /,| and /.test(p.place.city) ? "have" : "has", out = [];
+  out.push(`With ${f.season} frost-free days, ${city} ${has} the ${rank === 1 ? "longest" : rank === bySeason.length ? "shortest" : `${ordinal(rank)}-longest`} season of the ${bySeason.length} Oregon and Washington towns we cover. ` +
+    (rank === 1 ? `The shortest is ${esc(low.place.city)} at ${low.frost.season} days.` : rank === bySeason.length ? `The longest is ${esc(top.place.city)} at ${top.frost.season} days.` : `They run from ${low.frost.season} days in ${esc(low.place.city)} to ${top.frost.season} days in ${esc(top.place.city)}.`));
+  const peers = ALL_PLANS.filter(x => x.place.area === p.place.area && x.place.slug !== p.place.slug);
+  if (peers.length) {
+    const rel = x => { const d = f.spring50 - x.frost.spring50; return d === 0 ? `the same day as ${esc(x.place.city)}` : `${nDays(Math.abs(d))} ${d < 0 ? "earlier" : "later"} than ${esc(x.place.city)}`; };
+    const early = peers.reduce((a, b) => b.frost.spring50 < a.frost.spring50 ? b : a), late = peers.reduce((a, b) => b.frost.spring50 > a.frost.spring50 ? b : a);
+    const where = f.spring50 < early.frost.spring50 ? `the earliest of the towns we cover in ${inArea(area.name)}` : f.spring50 > late.frost.spring50 ? `the latest of the towns we cover in ${inArea(area.name)}` : `in the middle of the towns we cover in ${inArea(area.name)}`;
+    const comp = early === late ? rel(early) : [rel(early), rel(late)].filter((v, i, a) => a.indexOf(v) === i).join(" and ");
+    out.push(`The typical last frost here, ${P.fmtLong(f.spring50)}, is ${where}: ${comp}.`);
+  }
+  const spread = f.spring10 - f.spring50;
+  out.push(spread >= MID_SPREAD + 7 ? `Late frosts are harder to predict here than in most towns. There are ${spread} days between the typical last frost and the date it's over in 9 years out of 10, against ${MID_SPREAD} for a typical town on this site, so keep frost cover handy until ${P.fmtLong(f.spring10)}.`
+    : spread <= MID_SPREAD - 5 ? `Spring here is steadier than in most towns: the last frost is over in 9 years out of 10 just ${spread} days after the typical date, against ${MID_SPREAD} for a typical town on this site.`
+    : `The gap between the typical last frost and the date it's over in 9 years out of 10 is ${spread} days, about average for the towns on this site. Frost after the typical date still happens about half the time, so plan on covering warm crops until ${P.fmtLong(f.spring10)}.`);
+  const short = p.crops.filter(r => r.season === "short").map(r => lc(r.crop.name)), tight = p.crops.filter(r => r.season === "tight").map(r => lc(r.crop.name));
+  out.push(short.length ? `The season is too short for ${listOf(short)} to finish from a normal planting date. Grow short-season varieties, start them indoors early, or use a cold frame or row cover to buy time.${tight.length ? ` ${listOf(tight).replace(/^./, c => c.toUpperCase())} also need most of the season.` : ""}`
+    : tight.length ? `Even here, ${listOf(tight)} need nearly the whole season, so plant them on time and pick shorter-season varieties when you can.`
+    : `The season is long enough for every warm crop on our list, even pumpkins and sweet potatoes, to finish from a normal planting date.`);
+  const fallEnd = id => { const w = rowFor(p, id).windows.find(x => x.kind === "fall" && !x.over); return w && P.fmtLong(w.end); };
+  const carrots = fallEnd("carrots"), kale = fallEnd("kale");
+  if (carrots && kale) out.push(`For a fall and winter garden, sow carrots by ${carrots} and set out kale plants by ${kale}. Fall crops here are timed to the first frost (${P.fmtLong(f.fall50)} on average) and to shortening days.`);
+  return `<h2>How the season in ${city} compares</h2>\n<div class="prose">${out.map(t => `<p>${t}</p>`).join("\n")}</div>`;
+}
+
 /* City pages */
 D.places.forEach(place => {
   const p = P.plan(D, place);
@@ -452,6 +499,7 @@ D.places.forEach(place => {
 </section>
 ${R.frostFacts(p)}
 ${R.regionNote(p)}
+${townCompare(p)}
 <h2>What to plant now</h2>
 <div id="now"><p class="empty">Turn on JavaScript to see what's in season today. The full calendar is below.</p></div>
 ${beginnerBox("../../", place.slug, place.city)}
@@ -628,7 +676,6 @@ ${jump(sci)}
 <h2 id="grow">How to grow ${lc(c.name)} in ${esc(city)}</h2>
 <div class="grow-grid"><div>${steps(c, r, g)}</div>
 ${sideCard(g, c.note)}</div>
-${ad("cropcity-mid")}
 ${scienceParts(sci, c)}
 ${gearBox(g.gear)}
 <h2 id="faq">Common questions</h2>
@@ -639,7 +686,6 @@ ${relatedArticles(rel, c.id, 4)}` : `<h2>Why these dates</h2>
 ${quickFacts(c, g)}
 <h2>Step by step</h2>
 ${steps(c, r, g)}
-${ad("cropcity-mid")}
 <div class="two">
 <section><h2>Varieties that do well here</h2><ul class="vars">${g.varieties.map(v => `<li>${esc(v)}</li>`).join("")}</ul>
 <h2>Watch out for</h2><p>${esc(g.problem)}</p><p class="note">${esc(c.note)}</p></section>
@@ -693,6 +739,8 @@ ${banner("cat:" + k.id, rel)}
 <h2>Planting windows at a glance</h2>
 <p class="note">Main planting window in four reference cities. Each plant's page has every city.</p>
 <div class="table-wrap"><table class="plan"><thead><tr><th scope="col">Plant</th>${refs.map(r => `<th scope="col">${esc(r.place.city)}</th>`).join("")}</tr></thead><tbody>${list.map(c => `<tr><th scope="row"><a href="../${c.id}/">${c.name}</a></th>${refs.map(r => `<td data-label="${esc(r.place.city)}">${first(r, c.id)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
+<h2>Growing ${k.name.toLowerCase()} in the Northwest</h2>
+<div class="prose">${CATEGORY_GUIDES[k.id].map(t => `<p>${esc(t)}</p>`).join("\n")}</div>
 ${ad("category-bottom")}
 <h2>Other plant types</h2>
 <ul class="chips">${D.categories.filter(x => x.id !== k.id).map(x => `<li><a href="../${x.id}/">${R.icon(x.crops[0], rel, 24)}${x.name}</a></li>`).join("")}</ul>`
@@ -1026,11 +1074,11 @@ write("../", "terms/index.html", layout({
 
 /* 404 (absolute links because it can be served at any path) */
 const B = CONFIG.basePath;
-fs.writeFileSync(path.join(ROOT, "404.html"), layout({
+write(B, "404.html", layout({
   rel: B, canonical: "", current: null,
   title: "Page not found | Rainline Garden", description: "That page doesn't exist.",
   body: `<section class="hero prose"><h1>That page doesn't exist.</h1><p class="lede">Try the <a href="${B}">planner</a>, the <a href="${B}what-to-grow/">plant quiz</a>, the <a href="${B}when-to-plant/">crop guides</a> or the <a href="${B}frost-dates/">list of cities</a>.</p></section>`
-}));
+}), null);
 
 /* Custom domain: GitHub Pages reads the CNAME file. */
 const cname = path.join(ROOT, "CNAME");
@@ -1063,7 +1111,7 @@ fs.writeFileSync(path.join(ROOT, "assets/search-index.js"),
 /* sitemap, robots */
 fs.writeFileSync(path.join(ROOT, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${pages.map(p => `  <url><loc>${CONFIG.siteUrl}${p.loc}</loc><lastmod>${CONFIG.updated}</lastmod><priority>${p.priority}</priority></url>`).join("\n")}
+${pages.map(p => `  <url><loc>${CONFIG.siteUrl}${p.loc}</loc><lastmod>${p.lastmod}</lastmod><priority>${p.priority}</priority></url>`).join("\n")}
 </urlset>
 `);
 /* Web app manifest: the icon phones use when someone adds the site to their home screen. */
