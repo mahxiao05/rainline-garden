@@ -801,7 +801,7 @@ ${chipList(["garlic", "kale", "chard", "summer-squash", "chives", "rhubarb"])}
 <p>Strong-smelling herbs and the onion family are usually left alone, though no plant is fully deer-proof.</p>
 ${chipList(["garlic", "onions", "chives", "rosemary", "lavender", "oregano", "daffodils", "rhubarb"])}
 </div>`,
-  scripts: ["data.js", "plan.js", "render.js", "guide-data.js", "quiz.js"]
+  scripts: ["data.js", "plan.js", "render.js", "guide-data.js", "near.js", "quiz.js"]
 }), "0.7");
 
 /* Beginner's guide */
