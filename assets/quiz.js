@@ -133,8 +133,8 @@
       h += '<form class="finder quiz-town" id="quiz-town" novalidate>' +
         '<div class="field"><label for="quiz-zip">ZIP code</label><input id="quiz-zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" placeholder="97214"></div>' +
         '<span class="or">or</span><div class="field field-select"><label for="quiz-place">Town</label><select id="quiz-place"><option value="">Choose a town</option></select></div>' +
-        '<button class="btn" type="submit">Next</button></form>' +
-        '<button type="button" id="near-me" class="btn btn-ghost near-btn" hidden>Use my location</button><p id="quiz-msg" class="msg" role="status" aria-live="polite"></p>';
+        '<button class="btn" type="submit">Next</button>' +
+        '<button type="button" id="near-me" class="btn btn-ghost near-btn" hidden>Use my location</button></form><p id="quiz-msg" class="msg" role="status" aria-live="polite"></p>';
     } else {
       var cur = answers[q.id] || (q.multi ? [] : "");
       h += '<div class="quiz-opts' + (q.multi ? ' is-multi' : '') + '" role="group" aria-label="' + esc(q.q) + '">' + q.opts.map(function (o) {
