@@ -298,6 +298,8 @@ ${TOWN_PICK_JS}`;
 }
 
 /* Shared pieces */
+// "Tomatoes" -> "tomato", "Apple trees" -> "apple", for headings like "Popular tomato varieties".
+const singular = n => { const s = lc(n).replace(/ trees$/, ""); return /^(asparagus|camas)$/.test(s) ? s : s.replace(/ies$/, "y").replace(/(sh|ch|o)es$/, "$1").replace(/([^s])s$/, "$1"); };
 const lc = n => n === "Swiss chard" ? n : n.toLowerCase().replace(/^brussels/, "Brussels").replace(/^oregon/, "Oregon");
 const DIFF = { 1: ["Easy", "easy"], 2: ["Moderate", "moderate"], 3: ["Tricky here", "tricky"] };
 const badge = d => `<span class="badge badge-${DIFF[d][1]}">${DIFF[d][0]}</span>`;
@@ -391,15 +393,11 @@ function faqLd(qas) {
 }
 
 // Cleaner layout for crops with notes in scripts/crop-science.js (in depth) or scripts/crop-notes.js (shorter).
-const FEATURED_CITIES = ["portland-or", "seattle-wa", "eugene-or", "spokane-wa", "bend-or", "tri-cities-wa"];
 function scienceBody(c, g, sci, { head, dates, plans, port }) {
-  const featured = FEATURED_CITIES.map(slug => plans.find(p => p.place.slug === slug));
   return `${quickFacts(c, g)}
 ${jump(sci, VARIETIES[c.id])}
 <p class="callout">${esc(c.note)}</p>
-<h2 id="dates">${c.name} planting dates</h2>
-<div class="table-wrap"><table class="plan"><thead>${head}</thead><tbody>${groupedRows(featured, dates)}</tbody></table></div>
-<h3 class="area-h">Find your town</h3>
+<h2 id="dates">${singular(c.name).replace(/^./, x => x.toUpperCase())} planting dates</h2>
 ${areaTables(head, dates, plans)}
 ${ad("crop-mid")}
 <h2 id="grow">How to grow ${lc(c.name)}</h2>
@@ -425,7 +423,7 @@ const sideCard = (g, note) => `<aside class="side-card"><h3>Varieties that do we
 function varietyCards(c) {
   const vs = VARIETIES[c.id];
   if (!vs) return "";
-  return phoneFold("varieties", `Popular ${lc(c.name)} varieties`, `<p class="lede-sm">Widely sold picks that do well somewhere in Oregon or Washington. The tag says which side of the mountains suits each one best.</p>
+  return phoneFold("varieties", `Popular ${singular(c.name)} varieties`, `<p class="lede-sm">Widely sold picks that do well somewhere in Oregon or Washington. The tag says which side of the mountains suits each one best.</p>
 <div class="var-cards">${vs.map(v => `<section class="var-card"><h3>${esc(v.name)}</h3><p class="var-meta">${esc(v.type)}${v.days ? ` <span>&middot; ${esc(v.days)}</span>` : ""}</p><p>${esc(v.note)}</p><p class="var-where">${esc(v.where)}</p></section>`).join("")}</div>`);
 }
 // Click-to-load how-to video from scripts/videos.js: shows the plant's own photo until clicked, then YouTube's official player.
@@ -478,8 +476,8 @@ ${photo("hero", "", { big: "hero", small: "heroSm", cls: "hero-art", sizes: "(mi
   <span class="or">or</span>
   <div class="field field-select"><label for="place">City</label><select id="place" name="place"><option value="">Choose a city</option></select></div>
   <button class="btn" type="submit">Show my calendar</button>
+  <button type="button" id="near-me" class="btn btn-ghost near-btn" hidden>Use my location</button>
 </form>
-<button type="button" id="near-me" class="btn btn-ghost near-btn" hidden>Use my location</button>
 <p id="msg" class="msg" role="status" aria-live="polite"></p>
 </section>
 <section id="result" aria-live="polite"></section>
@@ -542,7 +540,7 @@ function townCompare(p) {
   const fallEnd = id => { const w = rowFor(p, id).windows.find(x => x.kind === "fall" && !x.over); return w && P.fmtLong(w.end); };
   const carrots = fallEnd("carrots"), kale = fallEnd("kale");
   if (carrots && kale) out.push(`For a fall and winter garden, sow carrots by ${carrots} and set out kale plants by ${kale}. Fall crops here are timed to the first frost (${P.fmtLong(f.fall50)} on average) and to shortening days.`);
-  return `<h2>How the season in ${city} compares</h2>\n<div class="prose">${out.map(t => `<p>${t}</p>`).join("\n")}</div>`;
+  return phoneFold("compare", `How the season in ${city} compares`, `<div class="prose">${out.map(t => `<p>${t}</p>`).join("\n")}</div>`);
 }
 
 /* City pages */
@@ -569,8 +567,7 @@ ${townCompare(p)}
 <h2>What to plant now</h2>
 <div id="now"><p class="empty">Turn on JavaScript to see what's in season today. The full calendar is below.</p></div>
 <p class="plan-link"><a class="btn btn-ghost" href="../../my-garden/?place=${place.slug}">Make a garden plan for ${esc(place.city)}</a> Pick your plants and get a dated, printable to-do list.</p>
-<h2>Planting calendar</h2>
-<div id="chart">${R.chart(p)}</div>
+${phoneFold("calendar", "Planting calendar", `<div id="chart">${R.chart(p)}</div>`)}
 ${ad("city-mid")}
 <h2>Planting dates for ${esc(place.city)}</h2>
 ${R.table(p, "../../")}
@@ -578,7 +575,8 @@ ${R.table(p, "../../")}
 ${newsletter(place.city)}
 <h2>Nearby areas with similar weather</h2>
 <ul class="places">${nearby.map(x => `<li><a href="../${x.slug}/">${esc(placeLabel(x))}</a></li>`).join("")}</ul>
-<p><a href="../">All Oregon and Washington cities</a> or <a href="../../">use the planner with your ZIP</a>.</p>`,
+<p><a href="../">All Oregon and Washington cities</a> or <a href="../../">use the planner with your ZIP</a>.</p>
+${PHONE_FOLD_JS}`,
     scripts: SCRIPTS
   }), "0.8");
 });
@@ -658,14 +656,12 @@ D.crops.forEach(c => {
     jsonld: sci ? [hb.ld, faqLd(sci.faq)] : [hb.ld],
     body: `${hb.html}
 ${banner("crop:" + c.id, "../../")}
-<section class="hero hero-crop">${R.icon(c.id, "../../", 120)}<div>
+<section class="hero hero-crop">${PHOTOS["crop:" + c.id] ? "" : R.icon(c.id, "../../", 120)}<div>
 <h1>When to plant ${lc(c.name)} in Oregon and Washington</h1>
 <p class="lede">${g.fall ? g.fall.lede : `In Portland: ${answer(c, rowFor(port, c.id), null).replace(/<\/?strong>/g, "")} In Bend: ${P.fmtRange(win(rowFor(bend, c.id), "spring").start, win(rowFor(bend, c.id), "spring").end)}.`} Find your city below.</p></div></section>
 ${sci ? scienceBody(c, g, sci, { head, dates, plans: sorted, port }) : `${quickFacts(c, g)}
 <p class="callout">${esc(c.note)}</p>
-<h2>${c.name} planting dates by city</h2>
-<div class="table-wrap"><table class="plan"><thead>${head}</thead><tbody>${groupedRows(FEATURED_CITIES.map(slug => plans.find(p => p.place.slug === slug)), dates)}</tbody></table></div>
-<h3 class="area-h">Find your town</h3>
+<h2>${singular(c.name).replace(/^./, x => x.toUpperCase())} planting dates</h2>
 ${areaTables(head, dates, plans)}
 ${ad("crop-mid")}
 <h2>How to grow ${lc(c.name)}</h2>
@@ -742,8 +738,8 @@ write("../", "my-garden/index.html", layout({
   <span class="or">or</span>
   <div class="field field-select"><label for="gp-place">Town</label><select id="gp-place"><option value="">Choose a town</option></select></div>
   <button class="btn" type="submit">Use this town</button>
+  <button type="button" id="near-me" class="btn btn-ghost near-btn" hidden>Use my location</button>
 </form>
-<button type="button" id="near-me" class="btn btn-ghost near-btn" hidden>Use my location</button>
 <p id="gp-msg" class="msg" role="status" aria-live="polite"></p>
 <section id="gp-share" class="gp-share" hidden aria-live="polite"></section>
 <details id="gp-pick" class="gp-pick" open><summary><span>What do you want to grow?</span> <span id="gp-count" class="gp-count"></span></summary>

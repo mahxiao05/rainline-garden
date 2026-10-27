@@ -146,7 +146,7 @@ img.avatar.avatar-site { background: var(--paper); border: 1px solid var(--line)
 /* Hero / finder */
 .hero { padding: 2.75rem 0 1.5rem; }
 .hero .lede { font-size: 1.25rem; color: var(--muted); max-width: 36rem; }
-.finder { display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: end; margin-top: 1.5rem; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; box-shadow: 0 8px 24px color-mix(in srgb, var(--fir) 8%, transparent); max-width: 52rem; }
+.finder { display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: end; margin-top: 1.5rem; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; box-shadow: 0 8px 24px color-mix(in srgb, var(--fir) 8%, transparent); max-width: 60rem; }
 .field { display: flex; flex-direction: column; gap: 4px; }
 .field label { font-size: .95rem; color: var(--muted); }
 .field input, .field select { font: inherit; font-size: 1.1rem; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--ink); min-height: 48px; }
@@ -841,7 +841,16 @@ details.cm-byregion > summary { cursor: pointer; padding: 10px 14px; font-weight
   .gp-mini input, .gp-notes { border: 0; border-bottom: 1px solid #999; border-radius: 0; background: none; }
   .gp-notes { min-height: 12em; border: 1px solid #999; }
 }
-.hero .near-btn, #gp-form + .near-btn, #quiz-town + .near-btn { margin-top: .75rem; }
+/* "Use my location" sits inside the town form, next to the main button, so the form is one compact box. */
+.finder .near-btn[hidden] { display: none; }
+@media (max-width: 720px) {
+  .finder { gap: 10px 12px; }
+  .finder .field input { width: 6.5rem; }
+  .finder .field-select { flex: 1 1 9rem; }
+  .finder .btn { flex: 1 1 auto; }
+  .finder .near-btn { flex: 0 1 auto; padding-left: 14px; padding-right: 14px; }
+  .hero-art + .hero .finder .btn { flex: 1 1 auto; }
+}
 .near-btn::before { content: ""; display: inline-block; width: 1em; height: 1em; margin-right: .45em; vertical-align: -.15em; background: currentColor;
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z'/%3E%3C/svg%3E") center / contain no-repeat;
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z'/%3E%3C/svg%3E") center / contain no-repeat; }
