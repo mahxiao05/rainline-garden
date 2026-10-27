@@ -2,8 +2,10 @@
 const SIZES = {
   hero: { w: 1600, h: 600 }, heroSm: { w: 800, h: 300 },
   banner: { w: 1200, h: 500 }, bannerSm: { w: 720, h: 300 },
-  thumb: { w: 480, h: 240 }
+  thumb: { w: 480, h: 240 },
+  inline: { w: 1200, h: 750 }, inlineSm: { w: 720, h: 450 }
 };
 const fileBase = key => key.replace(":", "-");
-const sizesFor = key => key === "hero" ? ["hero", "heroSm"] : key.startsWith("cat:") ? ["banner", "bannerSm", "thumb"] : ["banner", "bannerSm"];
+const sizesFor = key => key === "hero" ? ["hero", "heroSm"] : key.startsWith("cat:") ? ["banner", "bannerSm", "thumb"]
+  : key.startsWith("inline:") ? ["inline", "inlineSm"] : ["banner", "bannerSm"];
 module.exports = { SIZES, fileBase, sizesFor };
