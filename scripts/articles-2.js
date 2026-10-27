@@ -15,7 +15,7 @@ module.exports = [
     description: "Garlic goes in during fall and comes out the next summer. Here's when to plant it where you live, which kind to buy, and how to harvest and cure it.",
     crops: ["garlic", "shallots"],
     published: "2026-10-14",
-    body: ({ D, P, link }) => {
+    body: ({ D, P, link, fig }) => {
       const pdx = win(D, P, "portland-or", "garlic", "fall"), spo = win(D, P, "spokane-wa", "garlic", "fall"), bend = win(D, P, "bend-or", "garlic", "fall");
       return `
 <p>Garlic is one of the easiest and most rewarding crops in a Northwest garden, and it runs on a different schedule from almost everything else. You plant it in fall, it grows roots and a few leaves before winter, sits through the cold, and then bulks up in spring. By early summer you're digging heads of garlic out of a bed you haven't thought about since October.</p>
@@ -30,6 +30,7 @@ module.exports = [
 <h2>Hardneck or softneck?</h2>
 <p>Hardneck garlic grows a stiff center stalk and sends up a curly flower stem called a scape in early summer. The cloves are bigger and easier to peel, and it handles cold winters well. Softneck garlic has no stiff stalk, stores longer and is the kind you can braid. Both grow well west of the Cascades; hardnecks are the safer choice where winters are cold.</p>
 <p>Buy seed garlic from a garden center or seed company rather than planting grocery-store bulbs. Store garlic is often a variety grown for a mild climate, and it may have been treated to slow sprouting.</p>
+${fig(1)}
 <h2>How to plant</h2>
 <ol>
 <li>Pick a sunny spot with soil that drains. Garlic rots in soggy ground, so a raised bed is ideal in rainy areas.</li>
@@ -54,7 +55,7 @@ module.exports = [
     description: "When to start tomatoes, peppers and other seeds indoors in Oregon and Washington, plus the simple setup that grows strong seedlings.",
     crops: ["tomatoes", "peppers", "eggplant", "broccoli", "cabbage", "lettuce", "kale"],
     published: "2026-10-14",
-    body: ({ D, P, link }) => {
+    body: ({ D, P, link, fig }) => {
       const t = win(D, P, "portland-or", "tomatoes"), pe = win(D, P, "portland-or", "peppers"), b = win(D, P, "portland-or", "broccoli");
       const tb = win(D, P, "bend-or", "tomatoes"), ts = win(D, P, "seattle-wa", "tomatoes");
       return `
@@ -75,6 +76,7 @@ module.exports = [
 <li><strong>Light.</strong> A sunny Northwest window in March isn't enough, and seedlings stretch toward it. Simple LED shop lights hung a few inches above the seedlings, on for about 14 to 16 hours a day, grow far sturdier plants. Raise the lights as the plants grow.</li>
 <li><strong>Warmth for sprouting.</strong> Tomatoes and especially peppers sprout faster in warm soil. A seedling heat mat helps a lot in a cool house. Take trays off the mat once most seeds are up.</li>
 </ul>
+${fig(1)}
 <h2>Sowing and growing on</h2>
 <ol>
 <li>Moisten the mix before filling containers. It should feel like a wrung-out sponge.</li>
@@ -266,6 +268,7 @@ module.exports = [
     description: "Why raised beds suit the Northwest so well, how big and deep to build them, what to fill them with, and the mistakes to avoid.",
     crops: ["tomatoes", "carrots", "lettuce", "garlic", "strawberries"],
     published: "2026-10-14",
+    gardenPhoto: "janelle-raised-beds",
     body: ({ link }) => `
 <p>Ask Northwest gardeners for one piece of advice and many will say: build raised beds. Our long, wet winters and springs leave ordinary garden soil soggy and cold for weeks. A raised bed drains faster and warms sooner, which can mean planting earlier and losing fewer seeds to rot.</p>
 <h2>Why they work here</h2>

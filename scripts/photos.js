@@ -3,7 +3,7 @@
  * Never use a photo of a person to stand in for one of the authors.
  *
  * Fields: src ("pexels:<id>" or "unsplash:<id>"), alt, focus (crop gravity: Center, North, South, East, West...).
- * Keys: "hero", "cat:<category id>", "article:<article slug>".
+ * Keys: "hero", "cat:<category id>", "article:<article slug>", "inline:<article slug>-<n>" (placed in the article text with ${fig(n)}).
  * After adding or changing one, run `node scripts/fetch-photos.js` (downloads and resizes into assets/img/photos/)
  * and then `node scripts/build.js`. */
 module.exports = {
@@ -44,6 +44,26 @@ module.exports = {
   "article:short-season-gardening-central-oregon": { src: "pexels:12276256", alt: "Young plants coming up in long rows of soil" },
   "article:slugs": { src: "pexels:12916722", alt: "An orange slug crawling across a leaf" },
   "article:soil-temperature": { src: "pexels:5277393", alt: "Two sprouts pushing up through dark soil" },
+  "article:leaf-mold-from-fall-leaves": { src: "pexels:3302460", alt: "Fallen maple and other autumn leaves heaped on the ground" },
+  "article:winter-pruning-apple-and-pear-trees": { src: "pexels:7509492", alt: "A man cutting back fruit tree branches with long-handled loppers in an orchard", focus: "West" },
+  "article:crop-rotation-for-small-gardens": { src: "pexels:37487180", alt: "Wooden raised beds with gravel paths between them in a community garden" },
+  "article:putting-the-garden-to-bed": { src: "pexels:38319851", alt: "A woven wicker compost bin beside raised vegetable beds" },
+  "article:planting-bare-root-fruit-trees": { src: "pexels:7656746", alt: "Watering a newly planted young tree tied between two stakes" },
+  "article:growing-raspberries-in-the-northwest": { src: "pexels:6889551", alt: "Ripe raspberries hanging among the leaves of a raspberry cane" },
+  "article:cabbage-worms-and-aphids": { src: "pexels:33009446", alt: "A cabbage white butterfly resting on curly kale leaves" },
+
+  // In-article photos, placed in the text with ${fig(n)}. Only where a photo shows what the section is about.
+  "inline:slugs-1": { src: "pexels:2974409", alt: "Leaves riddled with holes chewed by garden pests" },
+  "inline:short-season-gardening-central-oregon-1": { src: "pexels:14007005", alt: "Low tunnels of white row cover stretched over hoops in a vegetable garden" },
+  "inline:cabbage-worms-and-aphids-1": { src: "pexels:32961909", alt: "A ladybug climbing a plant stem dotted with small aphids" },
+  "inline:growing-raspberries-in-the-northwest-1": { src: "pexels:14083577", alt: "A handful of freshly picked raspberries held in front of the canes" },
+  "inline:leaf-mold-from-fall-leaves-1": { src: "pexels:9741478", alt: "Damp fallen leaves turning dark brown as they break down" },
+  "inline:planting-bare-root-fruit-trees-1": { src: "pexels:11573798", alt: "Hands spreading a ring of mulch around the base of a newly planted tree" },
+  "inline:winter-pruning-apple-and-pear-trees-1": { src: "pexels:13779225", alt: "A hand using bypass pruners to cut a thin branch" },
+  "inline:planting-garlic-in-the-northwest-1": { src: "pexels:4022182", alt: "A garlic head broken open into separate cloves" },
+  "inline:starting-seeds-indoors-1": { src: "pexels:14057978", alt: "Four tomato seedlings in small black pots on a sunny windowsill" },
+  "inline:best-tomatoes-for-the-northwest-1": { src: "pexels:28276513", alt: "Heirloom tomatoes ripening from green to orange-red on the vine" },
+  "inline:growing-dahlias-in-the-northwest-1": { src: "pexels:13610690", alt: "Pink and red dahlias blooming among marigolds in a garden bed" },
 
   // Crop guide pages (/when-to-plant/{crop}/). Crops without a fitting free photo keep just their icon.
   "crop:lettuce": { src: "pexels:116728", alt: "Red and green lettuce plants with water droplets" },

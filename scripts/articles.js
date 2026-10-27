@@ -1,6 +1,6 @@
 /* Hand-written articles. Each body is a function so it can quote live numbers from the data.
  * Fields: slug, author (id in AUTHORS in build.js), title (page title and H1), description (meta), crops (related crop ids),
- * published (YYYY-MM-DD), body(ctx) returning HTML. ctx = { D, P, frost(slug), link(path) }.
+ * published (YYYY-MM-DD), body(ctx) returning HTML. ctx = { D, P, frost(slug), link(path), fig(n) }; fig(n) places the "inline:<slug>-<n>" photo from scripts/photos.js.
  */
 module.exports = [
   {
@@ -11,7 +11,7 @@ module.exports = [
     description: "Which tomato varieties actually ripen in Portland, Seattle and the coast, and how to give them the heat they need.",
     crops: ["tomatoes"],
     published: "2026-10-13",
-    body: ({ frost, link }) => {
+    body: ({ frost, link, fig }) => {
       const pdx = frost("portland-or"), sea = frost("seattle-wa"), ast = frost("astoria-or");
       return `
 <p>Every spring, Northwest garden centers fill up with tomato starts bred for places like California and the Midwest. Many of them will grow beautifully here and then hang green on the vine in September. The problem isn't frost. Portland's typical last spring frost is ${pdx.last} and Seattle's is ${sea.last}, giving both cities a long frost-free season. The problem is heat. Tomatoes need warm days and, just as important, warm nights to set and ripen fruit, and west of the Cascades summer nights often dip into the low 50s.</p>
@@ -25,6 +25,7 @@ module.exports = [
 <li><strong>Legend.</strong> Another Oregon-bred variety, with large fruit and some resistance to late blight.</li>
 </ul>
 <p>In general, cherry and small salad tomatoes are the safest bets, and big beefsteaks are the riskiest. Look at the "days to maturity" on the tag: under 70 days is a good sign for west-side gardens, and under 60 is better on the coast, where Astoria's summers rarely get truly hot.</p>
+${fig(1)}
 <h2>Give them every bit of heat you can</h2>
 <ul>
 <li><strong>Plant late, not early.</strong> Wait until the soil has warmed and nights stay mild. Tomatoes set out in cold April soil just sit and sulk. In Portland that usually means mid-May; <a href="${link("when-to-plant/tomatoes/?town=portland-or#your-town")}">see the exact window</a>.</li>
@@ -83,7 +84,7 @@ module.exports = [
     description: "How to grow vegetables where frost can come almost any month: what to plant, when, and how to protect it.",
     crops: ["tomatoes", "peas", "lettuce", "potatoes", "kale", "summer-squash"],
     published: "2026-10-13",
-    body: ({ frost, link }) => {
+    body: ({ frost, link, fig }) => {
       const bend = frost("bend-or"), kf = frost("klamath-falls-or");
       return `
 <p>Gardening in Central Oregon takes a different playbook than the Willamette Valley. At Redmond, the NOAA weather station closest to Bend, the typical last spring frost is ${bend.last} and the first fall frost comes around ${bend.first}. That's a frost-free season of about ${bend.season} days, and in some years frost shows up in July. Klamath Falls is similar, with about ${kf.season} frost-free days.</p>
@@ -110,6 +111,7 @@ module.exports = [
 <li><strong>Midsummer:</strong> a second sowing of lettuce, radishes and spinach for fall, timed to mature before the first frost around ${bend.first}.</li>
 <li><strong>September to October:</strong> plant garlic, which overwinters and is one of the most reliable crops in the high desert.</li>
 </ul>
+${fig(1)}
 <h2>Stretch the season at both ends</h2>
 <p>A cold frame, a low tunnel of plastic over hoops, or a small hoop house adds weeks in spring and fall, which is a big share of a short season. Even a sheet of row cover laid over plants on a clear, still evening can hold in enough warmth to get them through a light frost. Clear nights are the coldest ones here; cloudy nights are much milder.</p>
 <h2>If you garden higher up</h2>
@@ -125,7 +127,7 @@ module.exports = [
     description: "Practical, pet-safe ways to protect seedlings, lettuce and strawberries from the Pacific Northwest's most famous garden pest.",
     crops: ["lettuce", "strawberries", "beans", "dahlias"],
     published: "2026-10-13",
-    body: ({ link }) => `
+    body: ({ link, fig }) => `
 <p>If you garden west of the Cascades, you will meet slugs. The mild, damp climate that makes the Northwest so green is perfect for them, and they are most active exactly when your seedlings are smallest: on cool, wet spring nights.</p>
 <p>You won't get rid of them entirely, but you can easily keep the damage down.</p>
 <h2>Know when they strike</h2>
@@ -146,6 +148,7 @@ module.exports = [
 <li><strong>Diatomaceous earth.</strong> It works only while dry, which in a Northwest spring is rarely for long.</li>
 <li><strong>Salt.</strong> It kills slugs, but it also damages your soil and plants. Keep it out of the garden.</li>
 </ul>
+${fig(1)}
 <h2>Is it really slugs?</h2>
 <p>Holes in leaves have other causes too. Slime trails and damage at night point to slugs or snails. Lots of tiny round pits in young leaves of radishes, arugula or eggplant are flea beetles. Ragged holes with small green droppings in kale or broccoli are caterpillars; see <a href="${link("articles/cabbage-worms-and-aphids/")}">cabbage worms and aphids</a>. Earwigs chew irregular holes at night too, and often hide in dahlia and lettuce leaves by day.</p>
 <h2>A simple spring routine</h2>

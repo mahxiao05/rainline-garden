@@ -261,7 +261,7 @@ module.exports = [
     description: "Dahlias thrive in Northwest summers if you get the timing and drainage right. Here's when to plant tubers, how to care for them, and what to do in winter.",
     crops: ["dahlias", "sunflowers", "sweet-peas"],
     published: "2026-10-14",
-    body: ({ D, P, link }) => {
+    body: ({ D, P, link, fig }) => {
       const pdx = win(D, P, "portland-or", "dahlias"), spo = win(D, P, "spokane-wa", "dahlias"), bend = win(D, P, "bend-or", "dahlias");
       return `
 <p>Dahlias are some of the most popular flowers in Northwest gardens, and for good reason. Our mild summers suit them, and they bloom from midsummer until the first frost. They come in nearly every color and in sizes from small pompons to blooms as wide as a dinner plate.</p>
@@ -280,6 +280,7 @@ module.exports = [
 <li><strong>Plant the tuber 4 to 6 inches deep,</strong> lying on its side with the old stem or any sprouting eyes facing up. Space plants about 18 inches to 2 feet apart, more for the biggest varieties.</li>
 <li><strong>Hold off on water.</strong> Unless the soil is very dry, don't water until shoots appear. A wet tuber with no leaves to use the water is the one most likely to rot.</li>
 </ol>
+${fig(1)}
 <h2>Summer care</h2>
 <ul>
 <li><strong>Protect the shoots from slugs.</strong> Young dahlia shoots are a favorite. See <a href="${link("articles/slugs/")}">dealing with slugs</a>.</li>

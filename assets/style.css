@@ -293,6 +293,9 @@ table.plan { width: 100%; border-collapse: collapse; font-size: 1rem; background
 .hero-art picture, .photo-banner picture { display: block; height: 100%; }
 .hero-art img, .photo-banner img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .photo-banner + .hero { padding-top: 1.5rem; }
+.photo-inline { margin: 1.75rem 0; }
+.photo-inline img { display: block; width: 100%; height: auto; aspect-ratio: 8 / 5; object-fit: cover; border-radius: 12px; background: var(--sky); }
+:root[data-theme="dark"] .photo-inline img { filter: brightness(.85); }
 :root[data-theme="dark"] .photo-banner img { filter: brightness(.85); }
 .hero-art + .hero { padding-top: 1.75rem; }
 .hero-crop { display: flex; gap: 24px; align-items: center; }
@@ -411,6 +414,12 @@ table.plan { width: 100%; border-collapse: collapse; font-size: 1rem; background
 .reads li a { font-weight: 700; }
 .reads li span { color: var(--muted); font-size: .95rem; }
 .reads-grid { list-style: none; padding: 0; margin: 1rem 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr)); gap: 14px; }
+.card-photo { display: block; width: calc(100% + 28px); max-width: none; height: auto; aspect-ratio: 12 / 5; object-fit: cover; margin: -14px -14px 6px; border-radius: 11px 11px 0 0; background: var(--sky); }
+:root[data-theme="dark"] .card-photo { filter: brightness(.85); }
+@media (max-width: 560px) {
+  .card.has-photo { display: grid; grid-template-columns: 84px 1fr; grid-template-rows: auto 1fr; column-gap: 12px; row-gap: 4px; align-content: start; }
+  .card.has-photo .card-photo { grid-row: 1 / span 2; width: 84px; height: 84px; margin: 0; aspect-ratio: auto; border-radius: 8px; }
+}
 .article .prose { font-size: 1.15rem; }
 .article .prose h2 { font-size: 1.6rem; }
 .article .prose li { margin-bottom: .5rem; }
@@ -821,6 +830,8 @@ details.cm-byregion > summary { cursor: pointer; padding: 10px 14px; font-weight
   .home-sec .reads-grid { gap: 8px; margin: 0; }
   .home-sec .reads-grid .card { flex-direction: row; align-items: center; gap: 12px; padding: 12px; }
   .home-sec .reads-grid .ico { width: 36px; height: 36px; flex: none; }
+  .home-sec .reads-grid .card.has-photo { grid-template-columns: 56px 1fr; grid-template-rows: auto; align-items: center; }
+  .home-sec .reads-grid .card-photo { width: 56px; height: 56px; flex: none; grid-row: auto; margin: 0; aspect-ratio: auto; border-radius: 8px; }
   .home-sec .reads-grid .card-t { font-size: 1rem; }
   .home-sec .reads-grid .card-s { display: none; }
 }

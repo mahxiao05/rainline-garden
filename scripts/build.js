@@ -382,10 +382,15 @@ function photo(key, rel, { big, small, cls, sizes, eager }) {
   return `<figure class="${cls}"><picture><source type="image/webp" srcset="${set("webp")}" sizes="${sizes}">
 <img src="${rel}${photoFile(key, big)}" srcset="${set("jpg")}" sizes="${sizes}" width="${SIZES[big].w}" height="${SIZES[big].h}" alt="${esc(p.alt)}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async"></picture></figure>`;
 }
+// In-article photos: "inline:<slug>-<n>" in scripts/photos.js, placed in the article text with ${fig(n)}.
+const inlinePhoto = (a, n, rel) => { const key = `inline:${a.slug}-${n}`;
+  if (!PHOTOS[key]) throw new Error(`Article ${a.slug} uses fig(${n}) but scripts/photos.js has no "${key}"`);
+  return photo(key, rel, { big: "inline", small: "inlineSm", cls: "photo-inline", sizes: "(min-width: 44rem) 40rem, calc(100vw - 32px)" }); };
 const banner = (key, rel) => photo(key, rel, { big: "banner", small: "bannerSm", cls: "photo-banner", sizes: "(min-width: 70rem) 66rem, calc(100vw - 32px)", eager: true });
 
 function articleCards(rel, list) {
-  return `<ul class="reads-grid">${list.map(a => `<li><a class="card" href="${rel}articles/${a.slug}/">${articleIcon(a, rel, 48)}<span class="card-t">${esc(a.title)}</span><span class="card-s">${esc(a.description)}</span></a></li>`).join("")}</ul>`;
+  const pic = a => PHOTOS["article:" + a.slug] ? `<img class="card-photo" src="${rel}${photoFile("article:" + a.slug, "bannerSm", "webp")}" width="720" height="300" alt="" loading="lazy" decoding="async">` : articleIcon(a, rel, 48);
+  return `<ul class="reads-grid">${list.map(a => `<li><a class="card${PHOTOS["article:" + a.slug] ? " has-photo" : ""}" href="${rel}articles/${a.slug}/">${pic(a)}<span class="card-t">${esc(a.title)}</span><span class="card-s">${esc(a.description)}</span></a></li>`).join("")}</ul>`;
 }
 
 function faqLd(qas) {
@@ -854,7 +859,7 @@ ARTICLES.forEach(a => {
 ${banner("article:" + a.slug, rel)}
 <header class="hero hero-crop">${articleIcon(a, rel, 120)}<div><h1>${esc(a.title)}</h1><p class="lede">${esc(a.description)}</p>
 <p class="byline">${byAvatar(rel, a.author || DEFAULT_AUTHOR)}<span>By ${byName(rel, a.author || DEFAULT_AUTHOR)}<br><span class="byline-d">Updated ${stamp(CONFIG.updated)}</span></span></p></div></header>
-<div class="prose">${a.body({ D, P, frost: frostFor, link: p => rel + p })}</div>
+<div class="prose">${a.body({ D, P, frost: frostFor, link: p => rel + p, fig: n => inlinePhoto(a, n, rel) })}</div>
 ${a.gardenPhoto ? gardenGrid(rel, GARDEN_PHOTOS.filter(r => r.img === a.gardenPhoto)) : ""}
 ${byBox(rel, a.author || DEFAULT_AUTHOR)}
 </article>
