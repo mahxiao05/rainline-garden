@@ -150,8 +150,18 @@ GARDEN_PHOTOS.forEach(r => [480, 800].forEach(w => ["jpg", "webp"].forEach(ext =
 const initials = n => n.split(/\s+/).map(w => w[0]).join("").slice(0, 2).toUpperCase();
 
 // Search engines cut titles past about 70 characters, so long ones drop the site name.
-const TITLE_MAX = 70;
+// Google shows about 60 characters of a title, so the brand suffix is dropped when it would push past that.
+const TITLE_MAX = 60;
 const shortTitle = t => t.length > TITLE_MAX ? t.replace(/ \| Rainline Garden$/, "") : t;
+// The first of several wordings that fits in a search result title.
+const fitTitle = (...ts) => ts.find(t => t.length <= TITLE_MAX) || ts[ts.length - 1];
+// Descriptions over about 160 characters get cut off in search results.
+const fitDesc = (...ds) => ds.find(d => d.length <= 160) || ds[ds.length - 1];
+// "In Portland: May 15 – Jun 12. " for a crop's description, the window most people search for.
+const portDates = (c, port) => { const r = rowFor(port, c.id), w = G.crops[c.id].fall ? win(r, "fall") : win(r, "spring") || win(r, "fall");
+  return w ? `In Portland: ${P.fmtRange(w.start, w.end)}. ` : ""; };
+// "Red-flowering currant" -> "Red-Flowering Currant" for titles.
+const titleCase = t => t.replace(/[A-Za-z][^\s-]*/g, (w, i) => i && /^(and|or|of|in|the|for)$/.test(w) ? w : w[0].toUpperCase() + w.slice(1));
 
 function layout({ rel, title, description, canonical, current, body, scripts, jsonld, noindex, image }) {
   const base = rel; // relative prefix back to the site root, e.g. "../../"
@@ -242,7 +252,9 @@ ${(scripts || []).map(s => `<script src="${base}assets/${s}"></script>`).join("\
 // Dates are masked when comparing, so a page whose content hasn't changed keeps its old "Updated" date
 // instead of every rebuild restamping the whole site.
 const DATE_RE = /\d{4}-\d\d-\d\d|(?:January|February|March|April|May|June|July|August|September|October|November|December)(?: \d{1,2},)? \d{4}/g;
-const sameBut = (a, b) => a.replace(DATE_RE, "D") === b.replace(DATE_RE, "D");
+// Only the page body counts: a new title or description isn't new content, so it keeps the old date too.
+const bodyOf = h => h.slice(h.indexOf("<body"));
+const sameBut = (a, b) => bodyOf(a).replace(DATE_RE, "D") === bodyOf(b).replace(DATE_RE, "D");
 // Pages built before dates went month-and-year printed full dates; read them as the new format so they keep their date.
 const toMonthYear = s => s.replace(/(Updated|Last updated) (\d{4}-\d\d-\d\d)\./g, (m, w, d) => `${w} ${w === "Updated" ? stamp(d) : monthYear(d)}.`)
   .replace(/(<time datetime="(\d{4}-\d\d-\d\d)">)[A-Z][a-z]+ \d{1,2}, \d{4}</g, (m, t, d) => t + monthYear(d) + "<");
@@ -341,7 +353,9 @@ function crumbs(rel, items) {
 }
 
 function relatedArticles(rel, cropId, max) {
-  const list = ARTICLES.filter(a => a.crops.includes(cropId)).slice(0, max || Infinity);
+  // Articles about this crop come first: ones that list it first, and of those, ones about the fewest crops.
+  const list = ARTICLES.filter(a => a.crops.includes(cropId))
+    .sort((a, b) => a.crops.indexOf(cropId) - b.crops.indexOf(cropId) || a.crops.length - b.crops.length).slice(0, max || Infinity);
   if (!list.length) return "";
   return `<aside class="reads"><h2>Read more</h2><ul>${list.map(a => `<li><a href="${rel}articles/${a.slug}/">${esc(a.title)}</a><span>${esc(a.description)}</span></li>`).join("")}</ul></aside>`;
 }
@@ -465,8 +479,8 @@ function categoryTiles(rel) {
 /* Home */
 write("", "index.html", layout({
   rel: "", canonical: "", current: "",
-  title: "Rainline Garden: Oregon & Washington Planting Calendar and Frost Dates",
-  description: "When to plant vegetables where you live in Oregon and Washington. Enter your ZIP for local frost dates and a planting calendar built from NOAA frost data and regional growing guidance.",
+  title: "Oregon & Washington Planting Calendar | Rainline Garden",
+  description: "When to plant vegetables where you live in Oregon and Washington. Enter your ZIP for local frost dates and a planting calendar built from NOAA frost data.",
   jsonld: [{ "@context": "https://schema.org", "@type": "WebSite", name: "Rainline Garden", url: CONFIG.siteUrl, publisher: OWNER_LD }],
   body: `
 ${photo("hero", "", { big: "hero", small: "heroSm", cls: "hero-art", sizes: "(min-width: 70rem) 66rem, calc(100vw - 32px)", eager: true })}
@@ -555,8 +569,10 @@ D.places.forEach(place => {
   const bc = crumbs("../../", [["Frost dates", "frost-dates/"], [placeLabel(place), null]]);
   write("../../", `frost-dates/${place.slug}/index.html`, layout({
     rel: "../../", canonical: `frost-dates/${place.slug}/`, current: "frost-dates/",
-    title: (t => t.length > TITLE_MAX ? `${placeLabel(place)} Frost Dates` : t)(`${placeLabel(place)} Frost Dates and Planting Calendar`),
-    description: `The typical last spring frost in ${placeLabel(place)} is ${P.fmtLong(f.spring50)} and the first fall frost is ${P.fmtLong(f.fall50)}. See when to plant tomatoes, peas, garlic and ${D.crops.length - 3} more crops.`,
+    title: fitTitle(`${placeLabel(place)} Last Frost Date and Planting Calendar`, `${placeLabel(place)} Last Frost Date & Planting Calendar`,
+      `${placeLabel(place)} Last and First Frost Dates`, `${placeLabel(place)} Last Frost Date`),
+    description: fitDesc(`Last frost date in ${placeLabel(place)}: ${P.fmtLong(f.spring50)} on average. First fall frost: ${P.fmtLong(f.fall50)}. When to plant tomatoes, peas, garlic and ${D.crops.length - 3} more crops.`,
+      `Last frost date in ${placeLabel(place)}: ${P.fmtLong(f.spring50)} on average. First fall frost: ${P.fmtLong(f.fall50)}. When to plant ${D.crops.length} crops there.`),
     jsonld: [bc.ld],
     body: `${bc.html}
 <section class="hero" id="live" data-place="${place.slug}">
@@ -652,8 +668,10 @@ D.crops.forEach(c => {
   const sci = SCIENCE[c.id] || NOTES[c.id];
   write("../../", `when-to-plant/${c.id}/index.html`, layout({
     rel: "../../", canonical: `when-to-plant/${c.id}/`, current: WHEN_INDEX,
-    title: (t => t.length > TITLE_MAX ? t.replace(", by City", "") : t)(`When to Plant ${c.name} in Oregon and Washington, by City`),
-    description: `${c.name} planting dates for ${D.places.length} Oregon and Washington towns, from Portland and Seattle to Bend and Spokane, plus a beginner-friendly growing guide.`,
+    title: fitTitle(`When to Plant ${titleCase(c.name)} in Oregon and Washington`, `When to Plant ${titleCase(c.name)} in Oregon & Washington`, `When to Plant ${titleCase(c.name)} in the Northwest`),
+    description: fitDesc(`When to plant ${lc(c.name)} in Oregon and Washington. ${portDates(c, port)}Dates for ${D.places.length} towns from Seattle to Bend, plus a growing guide.`,
+      `When to plant ${lc(c.name)} in Oregon and Washington. ${portDates(c, port)}Dates for ${D.places.length} towns, plus a growing guide.`,
+      `When to plant ${lc(c.name)} in Oregon and Washington: dates for ${D.places.length} towns from Portland and Seattle to Bend, plus a growing guide.`),
     image: PHOTOS["crop:" + c.id] && photoFile("crop:" + c.id, "banner"),
     jsonld: sci ? [hb.ld, faqLd(sci.faq)] : [hb.ld],
     body: `${hb.html}
@@ -707,8 +725,10 @@ D.categories.forEach(k => {
   const list = k.crops.map(cropById);
   write(rel, `${WHEN_INDEX}${k.id}/index.html`, layout({
     rel, canonical: `${WHEN_INDEX}${k.id}/`, current: WHEN_INDEX,
-    title: `When to Plant ${k.name} in Oregon and Washington | Rainline Garden`,
-    description: `Planting dates and growing guides for ${list.map(c => lc(c.name)).join(", ")} in Oregon and Washington.`.slice(0, 300),
+    title: fitTitle(`When to Plant ${titleCase(k.name)} in Oregon and Washington`, `When to Plant ${titleCase(k.name)} in Oregon & Washington`, `When to Plant ${titleCase(k.name)} in the Northwest`),
+    description: fitDesc(`When to plant ${listOf(list.map(c => lc(c.name)))} in Oregon and Washington, with dates for every town and growing guides.`,
+      `When to plant ${listOf(list.slice(0, 5).map(c => lc(c.name)))} and more in Oregon and Washington, with dates for every town.`,
+      `When to plant ${listOf(list.slice(0, 3).map(c => lc(c.name)))} and more in Oregon and Washington, with dates for every town.`),
     jsonld: [kb.ld],
     image: PHOTOS["cat:" + k.id] && photoFile("cat:" + k.id, "banner"),
     body: `${kb.html}
