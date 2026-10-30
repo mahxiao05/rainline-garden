@@ -16,6 +16,10 @@
       var p = P.plan(D, place);
       var nowEl = document.getElementById("now");
       if (nowEl) nowEl.innerHTML = R.nowBlock(p, today, base);
+      var ledeEl = live.querySelector(".lede");
+      if (ledeEl) ledeEl.innerHTML = R.seasonLede(p, today);
+      var riskEl = document.getElementById("risk");
+      if (riskEl) riskEl.innerHTML = R.frostRisk(p, today);
       var chartEl = document.getElementById("chart");
       if (chartEl) chartEl.innerHTML = R.chart(p, today);
     }

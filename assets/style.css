@@ -909,3 +909,39 @@ details.cm-byregion > summary { cursor: pointer; padding: 10px 14px; font-weight
   .year thead th:first-child, .year tbody th { width: 5.4rem; font-size: .85rem; line-height: 1.2; }
   .year th { font-size: .8rem; }
 }
+
+/* Town pages: season tag, frost-chance strip, ZIP note */
+:root { --risk4: #24527F; --risk3: #6E9BCB; --risk2: #E2B13C; --risk1: #7DBB6C; }
+:root[data-theme="dark"] { --risk4: #5B93D3; --risk3: #A3C7EE; --risk2: #D9A93A; --risk1: #5FA352; }
+.season-tag { display: inline-block; font: 700 .78rem/1 var(--sans); letter-spacing: .05em; text-transform: uppercase; background: var(--moss-soft); color: var(--fir); padding: 6px 10px; border-radius: 999px; vertical-align: 3px; margin-right: 4px; }
+.frost-risk { margin: 28px 0 8px; padding: 20px 22px; border: 1px solid var(--line); border-radius: 16px; background: var(--paper); }
+.risk-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 16px; }
+.risk-head h2 { margin: 0; font-size: 1.35rem; }
+.risk-safe { margin: 0; color: var(--muted); font-size: 1rem; }
+.risk-safe strong { color: var(--fir); }
+.risk-bar { position: relative; display: grid; grid-template-columns: repeat(52, 1fr); gap: 2px; height: 30px; margin: 40px 0 6px; }
+.risk-bar i, .risk-key i { border-radius: 3px; }
+.risk-bar .k4, .risk-key .k4 { background: var(--risk4); }
+.risk-bar .k3, .risk-key .k3 { background: var(--risk3); }
+.risk-bar .k2, .risk-key .k2 { background: var(--risk2); }
+.risk-bar .k1, .risk-key .k1 { background: var(--risk1); }
+.risk-today { position: absolute; top: -20px; bottom: -4px; width: 2px; background: var(--ochre); transform: translateX(-1px); }
+.risk-today em { position: absolute; top: -2px; left: 50%; transform: translate(-50%, -100%); font: 700 .8rem var(--sans); font-style: normal; color: var(--ochre); white-space: nowrap; }
+.risk-months { position: relative; height: 1.3em; font-size: .8rem; color: var(--muted); }
+.risk-months span { position: absolute; top: 0; }
+.risk-key { list-style: none; padding: 0; margin: 12px 0 0; display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: .92rem; color: var(--muted); }
+.risk-key i { display: inline-block; width: 13px; height: 13px; margin-right: 6px; vertical-align: -1px; }
+.risk-note { margin: 10px 0 0; font-size: .92rem; color: var(--muted); }
+.now-none { margin: .5rem 0 0; }
+.zips { margin: 28px 0 0; padding: 14px 18px; border-radius: 12px; background: var(--sand); font-size: 1rem; max-width: 46rem; }
+@media (max-width: 40rem) {
+  #live + .facts { grid-template-columns: repeat(3, 1fr); }
+  #live + .facts .fact { padding: 10px 6px 12px 0; }
+  #live + .facts .fact + .fact { padding-left: 10px; border-top: 0; border-left: 1px solid var(--line); }
+  #live + .facts .fact-s { display: none; }
+  #live + .facts .fact-v { font-size: 1.15rem; }
+  #live + .facts .fact-k { font-size: .8rem; }
+  .frost-risk { padding: 16px 14px; }
+  .risk-bar { gap: 1px; }
+  .risk-months span:nth-child(even) { display: none; }
+}

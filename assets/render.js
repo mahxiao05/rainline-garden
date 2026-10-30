@@ -106,6 +106,12 @@
 
   function nowBlock(p, today, base) {
     var n = P.nowList(p, today);
+    // Three empty columns read like a broken page, so say it once and point to the next job.
+    if (!n.sow.length && !n.indoor.length && !n.soon.length) {
+      var next = nextJob(p, today);
+      return '<p class="empty now-none">Nothing to plant or start indoors in ' + p.place.city + ' for the next three weeks.' +
+        (next ? ' Next up: ' + next + '.' : '') + ' It\'s a good time to plan, order seeds and tend your beds.</p>';
+    }
     var item = function (x, verb) {
       return '<li>' + icon(x.r.crop.id, base) + '<div><a href="' + cropUrl(x.r.crop.id, p.place.slug, base) + '"><strong>' + x.r.crop.name + '</strong></a> <span>' + verb + ' through ' + P.fmt(x.w.end) + '</span></div></li>';
     };
@@ -124,6 +130,85 @@
     return h;
   }
 
-  var API = { icon: icon, cropUrl: cropUrl, frostFacts: frostFacts, regionNote: regionNote, chart: chart, table: table, nowBlock: nowBlock };
+  // Chance of a frost on day x, from the NOAA 10/50/90% dates. Each side is a straight line between those points,
+  // running out to certain frost and to none at the same slope as the nearest step. Winter is covered by both ends.
+  function frostChance(f, x) {
+    var s90 = f.spring90 != null ? f.spring90 : 2 * f.spring50 - f.spring10;
+    var f90 = f.fall90 != null ? f.fall90 : 2 * f.fall50 - f.fall10;
+    var line = function (pts, x) {
+      if (x <= pts[0][0]) return pts[0][1];
+      for (var i = 1; i < pts.length; i++) if (x <= pts[i][0]) {
+        var a = pts[i - 1], b = pts[i];
+        return b[0] === a[0] ? b[1] : a[1] + (b[1] - a[1]) * (x - a[0]) / (b[0] - a[0]);
+      }
+      return pts[pts.length - 1][1];
+    };
+    var spring = [[s90 - (f.spring50 - s90) / 4, 1], [s90, .9], [f.spring50, .5], [f.spring10, .1], [f.spring10 + (f.spring10 - f.spring50) / 4, 0]];
+    var fall = [[f.fall10 - (f.fall50 - f.fall10) / 4, 0], [f.fall10, .1], [f.fall50, .5], [f90, .9], [f90 + (f90 - f.fall50) / 4, 1]];
+    return Math.max(line(spring, x), line(fall, x));
+  }
+  var RISK = [["k1", "Unlikely"], ["k2", "Possible"], ["k3", "Likely"], ["k4", "Very likely"]];
+
+  // One cell per week, coloured by the chance of frost that week, with today's marker in the browser.
+  function frostRisk(p, today) {
+    var f = p.frost, h = "";
+    for (var w = 0; w < 52; w++) {
+      var c = frostChance(f, w * 7 + 4);
+      h += '<i class="' + RISK[c >= .9 ? 3 : c >= .5 ? 2 : c >= .1 ? 1 : 0][0] + '"></i>';
+    }
+    if (today) h += '<b class="risk-today" style="left:' + ((today - .5) / 365 * 100).toFixed(2) + '%"><em>Today</em></b>';
+    var months = "";
+    for (var m = 0; m < 12; m++) months += '<span style="left:' + (P.CUM[m] / 365 * 100).toFixed(2) + '%">' + P.MONTHS[m] + '</span>';
+    return '<div class="risk-head"><h2>Chance of frost through the year</h2>' +
+      '<p class="risk-safe">Safe for tomatoes and basil: <strong>after ' + P.fmt(f.spring10) + '</strong></p></div>' +
+      '<div class="risk-bar" role="img" aria-label="Chance of frost by week in ' + p.place.city + ': likely until about ' + P.fmt(f.spring50) +
+      ', possible until ' + P.fmt(f.spring10) + ', and possible again from ' + P.fmt(f.fall10) + '.">' + h + '</div>' +
+      '<div class="risk-months" aria-hidden="true">' + months + '</div>' +
+      '<ul class="risk-key">' + RISK.slice().reverse().map(function (k) { return '<li><i class="' + k[0] + '"></i>' + k[1] + '</li>'; }).join("") + '</ul>' +
+      '<p class="risk-note">In 9 years out of 10, the last spring frost has passed by ' + P.fmt(f.spring10) +
+      ' and the first fall frost holds off until ' + P.fmt(f.fall10) + '.</p>';
+  }
+
+  var lc = function (n) { return n === "Swiss chard" ? n : n.toLowerCase().replace(/^brussels/, "Brussels").replace(/^(oregon|douglas|pacific|asian)/, function (w) { return w[0].toUpperCase() + w.slice(1); }); };
+  var listOf = function (xs) { return xs.length < 2 ? xs.join("") : xs.slice(0, -1).join(", ") + " and " + xs[xs.length - 1]; };
+  var some = function (xs) {
+    var names = xs.map(function (x) { return lc(x.r.crop.name); }).filter(function (v, i, a) { return a.indexOf(v) === i; });
+    return names.length > 3 ? names.slice(0, 3).join(", ") + " and " + (names.length - 3) + " more" : listOf(names);
+  };
+
+  // The soonest job that hasn't opened yet, for when nothing is in season.
+  function nextJob(p, today) {
+    var best = null;
+    p.crops.forEach(function (r) {
+      var s = P.season(r, today);
+      if (s.next && (!best || s.next.d < best.d)) best = { r: r, w: s.next.w, kind: s.next.kind, d: s.next.d };
+    });
+    if (!best) return "";
+    return best.kind === "indoor" ? 'start ' + lc(best.r.crop.name) + ' indoors from ' + P.fmt(best.w.start)
+      : 'plant ' + lc(best.r.crop.name) + ' from ' + P.fmt(best.w.start);
+  }
+
+  // The opening paragraph on a town page, written for today's date: where the town is in its frost year and what to do now.
+  function seasonLede(p, today) {
+    var f = p.frost, city = p.place.city, x = P.fromDoy(today);
+    var tag = (x.d <= 10 ? "Early " : x.d <= 20 ? "Mid " : "Late ") + P.MONTHS_LONG[x.m];
+    var t = today;
+    var s;
+    if (t < f.spring50 - 21) s = 'Frost is still likely in ' + city + '. The last spring frost usually comes around ' + P.fmtLong(f.spring50) + '.';
+    else if (t < f.spring50) s = 'The last spring frost is getting close in ' + city + ': usually around ' + P.fmtLong(f.spring50) + ', and over by ' + P.fmtLong(f.spring10) + ' in 9 years out of 10.';
+    else if (t < f.spring10) s = 'The typical last frost in ' + city + ' (' + P.fmtLong(f.spring50) + ') has passed, but some years still bring one until about ' + P.fmtLong(f.spring10) + '. Keep cover handy for tender plants.';
+    else if (t < f.fall10 - 30) s = 'It\'s the frost-free season in ' + city + '. The first fall frost usually comes around ' + P.fmtLong(f.fall50) + '.';
+    else if (t < f.fall10) s = 'Frost is still unlikely in ' + city + ', but the first fall frost is on its way: usually around ' + P.fmtLong(f.fall50) + '.';
+    else if (t < f.fall50) s = 'The first fall frost could come any week now in ' + city + '. It usually arrives around ' + P.fmtLong(f.fall50) + '.';
+    else s = 'Frost season has started in ' + city + ': the first fall frost usually comes around ' + P.fmtLong(f.fall50) + '. Next spring\'s last frost is around ' + P.fmtLong(f.spring50) + '.';
+    var n = P.nowList(p, today), next;
+    if (n.sow.length) s += ' Good to plant now: ' + some(n.sow) + '.';
+    else if (n.indoor.length) s += ' Start seeds indoors now: ' + some(n.indoor) + '.';
+    else if ((next = nextJob(p, today))) s += ' Next up: ' + next + '.';
+    return '<span class="season-tag">' + tag + '</span> ' + s;
+  }
+
+  var API = { icon: icon, cropUrl: cropUrl, frostFacts: frostFacts, regionNote: regionNote, chart: chart, table: table, nowBlock: nowBlock,
+    frostRisk: frostRisk, seasonLede: seasonLede, nextJob: nextJob };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else root.RainlineRender = API;
 })(this);
