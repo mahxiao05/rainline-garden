@@ -677,7 +677,7 @@ D.places.forEach(place => {
 <p class="lede">The typical last spring frost in ${esc(place.city)} is ${P.fmtLong(f.spring50)}, and the first fall frost is around ${P.fmtLong(f.fall50)}. Plant peas from ${P.fmt(peas.start)}; plant tomatoes from ${P.fmt(tomato.start)}.</p>
 </section>
 ${R.frostFacts(p)}
-<section class="frost-risk" id="risk">${R.frostRisk(p)}</section>
+<section class="risk-card" id="risk">${R.frostRisk(p)}</section>
 <h2>What to plant now</h2>
 <div id="now"><p class="empty">Turn on JavaScript to see what's in season today. The full calendar is below.</p></div>
 <p class="plan-link"><a class="btn btn-ghost" href="../../my-garden/?place=${place.slug}">Make a garden plan for ${esc(place.city)}</a> Pick your plants and get a dated, printable to-do list.</p>
