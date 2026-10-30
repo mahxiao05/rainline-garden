@@ -870,3 +870,15 @@ details.cm-byregion > summary { cursor: pointer; padding: 10px 14px; font-weight
 .cm-card li.cm-plain { padding: 7px 0; font-size: .98rem; line-height: 1.45; }
 .cm-month-links { display: grid; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); gap: 4px 16px; padding-left: 1.2rem; }
 .cm-pager { display: flex; justify-content: space-between; gap: 12px; margin: 2rem 0 1rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+/* Plant-type pages and "plants for" pages */
+.cat-now { background: var(--paper); border: 1px solid var(--line); border-left: 4px solid var(--moss); border-radius: 10px; padding: 10px 14px; margin: 0 0 1.2rem; }
+.order { margin: 0 0 1rem; }
+.order > div { display: grid; grid-template-columns: 8.5rem 1fr; gap: 10px; padding: 8px 0; border-top: 1px solid var(--line); }
+.order dt { font-weight: 700; }
+.order dd { margin: 0; }
+.pick-list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: 10px; }
+.pick-list a { display: flex; gap: 12px; align-items: flex-start; padding: 10px 12px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; text-decoration: none; height: 100%; box-sizing: border-box; }
+.pick-list a:hover { border-color: var(--moss); }
+.pick-list a > span { display: flex; flex-direction: column; gap: 2px; }
+.pick-list .ico { flex: none; }
+@media (max-width: 30rem) { .order > div { grid-template-columns: 1fr; gap: 2px; } }

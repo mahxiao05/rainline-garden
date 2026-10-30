@@ -7,6 +7,8 @@ const path = require("path");
 const ROOT = path.join(__dirname, "..");
 const D = require("../assets/data.js");
 const P = require("../assets/plan.js");
+const CATEGORY_EXTRAS = require("./category-extras.js");
+const COLLECTIONS = require("./collections.js");
 const R = require("../assets/render.js");
 const G = require("./guide.js");
 const PHOTOS = require("./photos.js");
@@ -713,20 +715,36 @@ write("../", "when-to-plant/index.html", layout({
 <section class="hero"><h1>When to plant vegetables, herbs and berries in the Northwest</h1>
 <p class="lede">${D.crops.length} plants in ${D.categories.length} groups. Pick one for its planting dates in every Oregon and Washington city we cover, plus how to grow it. New to this? Start with the ones marked Easy.</p></section>
 ${categoryTiles("../")}
+<h2>Plants for your conditions</h2>
+${collectionChips("../")}
 ${cropGrid("../", c => `${c.id}/`)}
 ${ad("index-bottom")}`
 }), "0.9");
 
 /* Category pages */
+// Links to the "Plants for..." pages, shown on the plant index and each plant-type page.
+function collectionChips(rel) { return `<ul class="chips">${COLLECTIONS.map(x => `<li><a href="${rel}${x.slug}/">${esc(x.label)}</a></li>`).join("")}</ul>`; }
+const SEASONS = [["Late winter", 1, 59], ["Early spring", 60, 105], ["Late spring", 106, 151], ["Summer", 152, 243], ["Fall", 244, 334], ["Early winter", 335, 365]];
+// When each plant in a group first goes in at Portland, grouped by season, so the page reads as a planting order.
+function plantingOrder(list, port, rel) {
+  const first = c => { const r = rowFor(port, c.id), g = G.crops[c.id]; const w = g.fall ? win(r, "fall") : r.indoor || win(r, "spring") || win(r, "fall"); return w && w.start; };
+  const rows = SEASONS.map(([label, a, b]) => [label, list.filter(c => { const d = first(c); return d >= a && d <= b; })]).filter(([, cs]) => cs.length);
+  return `<dl class="order">${rows.map(([label, cs]) => `<div><dt>${label}</dt><dd>${cs.map(c => `<a href="${rel}${WHEN_INDEX}${c.id}/">${esc(c.name)}</a>`).join(", ")}</dd></div>`).join("")}</dl>`;
+}
 D.categories.forEach(k => {
   const rel = "../../";
+  const x = CATEGORY_EXTRAS[k.id] || {};
   const kb = crumbs(rel, [["When to plant", WHEN_INDEX], [k.name, null]]);
   const refs = ["portland-or", "seattle-wa", "bend-or", "spokane-wa"].map(slug => P.plan(D, P.findPlace(D, slug)));
   const first = (pl, id) => { const r = rowFor(pl, id); const w = win(r, "spring") || win(r, "fall"); return P.fmtRange(w.start, w.end); };
   const list = k.crops.map(cropById);
+  const cards = x.groups
+    ? x.groups.map(([h, d, ids]) => `<h2>${esc(h)}</h2>\n<p class="grid-d">${esc(d)}</p>\n<ul class="cards cards-sm">${ids.map(id => cropCard(rel, cropById(id), `../${id}/`)).join("")}</ul>`).join("\n")
+    : `<ul class="cards cards-sm">${list.map(c => cropCard(rel, c, `../${c.id}/`)).join("")}</ul>`;
+  if (x.groups) { const ids = x.groups.flatMap(gr => gr[2]); if (ids.length !== k.crops.length || k.crops.some(id => !ids.includes(id))) throw new Error(`Groups on ${k.id} must list each plant once`); }
   write(rel, `${WHEN_INDEX}${k.id}/index.html`, layout({
     rel, canonical: `${WHEN_INDEX}${k.id}/`, current: WHEN_INDEX,
-    title: fitTitle(`When to Plant ${titleCase(k.name)} in Oregon and Washington`, `When to Plant ${titleCase(k.name)} in Oregon & Washington`, `When to Plant ${titleCase(k.name)} in the Northwest`),
+    title: x.title || fitTitle(`When to Plant ${titleCase(k.name)} in Oregon and Washington`, `When to Plant ${titleCase(k.name)} in Oregon & Washington`, `When to Plant ${titleCase(k.name)} in the Northwest`),
     description: fitDesc(`When to plant ${listOf(list.map(c => lc(c.name)))} in Oregon and Washington, with dates for every town and growing guides.`,
       `When to plant ${listOf(list.slice(0, 5).map(c => lc(c.name)))} and more in Oregon and Washington, with dates for every town.`,
       `When to plant ${listOf(list.slice(0, 3).map(c => lc(c.name)))} and more in Oregon and Washington, with dates for every town.`),
@@ -734,17 +752,52 @@ D.categories.forEach(k => {
     image: PHOTOS["cat:" + k.id] && photoFile("cat:" + k.id, "banner"),
     body: `${kb.html}
 ${banner("cat:" + k.id, rel)}
-<section class="hero"><h1>When to plant ${k.name.toLowerCase()} in the Northwest</h1>
+<section class="hero"><h1>${esc(x.h1 || `When to plant ${k.name.toLowerCase()} in the Northwest`)}</h1>
 <p class="lede">${k.blurb} Pick a plant for its dates in every city we cover and a step-by-step growing guide.</p></section>
-<ul class="cards cards-sm">${list.map(c => cropCard(rel, c, `../${c.id}/`)).join("")}</ul>
+<p class="cat-now" data-crops="${k.crops.join(" ")}" hidden></p>
+${cards}
+<h2>Planting order</h2>
+<p class="note">When each one first goes in around Portland, starting indoors where that comes first. Colder towns run later.</p>
+${plantingOrder(list, refs[0], rel)}
 <h2>Planting windows at a glance</h2>
 <p class="note">Main planting window in four reference cities. Each plant's page has every city.</p>
 <div class="table-wrap"><table class="plan"><thead><tr><th scope="col">Plant</th>${refs.map(r => `<th scope="col">${esc(r.place.city)}</th>`).join("")}</tr></thead><tbody>${list.map(c => `<tr><th scope="row"><a href="../${c.id}/">${c.name}</a></th>${refs.map(r => `<td data-label="${esc(r.place.city)}">${first(r, c.id)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
 <h2>Growing ${k.name.toLowerCase()} in the Northwest</h2>
 <div class="prose">${CATEGORY_GUIDES[k.id].map(t => `<p>${esc(t)}</p>`).join("\n")}</div>
+${x.faq ? `<h2>Common questions</h2>\n${faqHtml(x.faq)}` : ""}
 ${ad("category-bottom")}
 <h2>Other plant types</h2>
-<ul class="chips">${D.categories.filter(x => x.id !== k.id).map(x => `<li><a href="../${x.id}/">${R.icon(x.crops[0], rel, 24)}${x.name}</a></li>`).join("")}</ul>`
+<ul class="chips">${D.categories.filter(o => o.id !== k.id).map(o => `<li><a href="../${o.id}/">${R.icon(o.crops[0], rel, 24)}${o.name}</a></li>`).join("")}</ul>
+<h2>Plants for your conditions</h2>
+${collectionChips(rel)}`,
+    scripts: ["data.js", "plan.js", "catnow.js"]
+  }), "0.8");
+});
+
+/* "Plants for..." pages (scripts/collections.js) */
+COLLECTIONS.forEach(x => {
+  const rel = "../";
+  const port = P.plan(D, P.findPlace(D, "portland-or"));
+  const ids = x.ids || D.crops.filter(c => x.pick(c, G.crops[c.id], rowFor(port, c.id))).map(c => c.id);
+  ids.forEach(id => { if (!cropById(id)) throw new Error(`${x.slug} lists unknown plant ${id}`); });
+  const note = c => { if (!x.fallNote) return x.note(c, G.crops[c.id]);
+    const r = rowFor(port, c.id), w = win(r, "fall"); return `${G.crops[c.id].fall ? "Plant" : c.overwinter ? "Sow to overwinter" : "Sow or plant for fall"} ${P.fmtRange(w.start, w.end)} in Portland.`; };
+  const groups = D.categories.map(k => [k, k.crops.filter(id => ids.includes(id)).map(cropById)]).filter(([, cs]) => cs.length);
+  const cb = crumbs(rel, [["When to plant", WHEN_INDEX], [x.label, null]]);
+  write(rel, `${x.slug}/index.html`, layout({
+    rel, canonical: `${x.slug}/`, current: WHEN_INDEX,
+    title: x.title, description: x.description, jsonld: [cb.ld],
+    body: `${cb.html}
+<section class="hero"><h1>${esc(x.h1)}</h1>
+<p class="lede">${esc(x.intro[0])}</p></section>
+<div class="prose">${x.intro.slice(1).map(t => `<p>${esc(t)}</p>`).join("\n")}</div>
+${groups.map(([k, cs]) => `<h2>${esc(k.name)}</h2>\n<ul class="pick-list">${cs.map(c => `<li><a href="${rel}${WHEN_INDEX}${c.id}/">${R.icon(c.id, rel, 44)}<span><span class="card-t">${esc(c.name)}</span><span class="card-s">${esc(note(c))}</span></span></a></li>`).join("")}</ul>`).join("\n")}
+${ad("collection-mid")}
+<h2>Common questions</h2>
+${faqHtml(x.faq)}
+<h2>More ways to choose</h2>
+${collectionChips(rel)}
+<p><a href="${rel}${WHEN_INDEX}">See all ${D.crops.length} plants</a></p>`
   }), "0.8");
 });
 

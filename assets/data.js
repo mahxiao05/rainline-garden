@@ -312,15 +312,17 @@
 
   // Plant categories for browsing. Each crop belongs to exactly one.
   var categories = [
-    { id: "salad-greens", name: "Salad greens", blurb: "Leafy crops for spring and fall, plus crunchy celery.", crops: ["lettuce", "spinach", "arugula", "chard", "celery", "mache", "radicchio", "sorrel"] },
+    { id: "salad-greens", name: "Salad greens", blurb: "Leafy crops for spring and fall, plus crunchy celery.", crops: ["lettuce", "spinach", "arugula", "chard", "celery", "mache", "radicchio"] },
     { id: "cabbage-family", name: "Cabbage family", blurb: "Kale, broccoli and their cousins. Many get sweeter after frost.", crops: ["kale", "broccoli", "cabbage", "cauliflower", "brussels-sprouts", "bok-choy", "kohlrabi", "collards", "mustard-greens"] },
-    { id: "root-vegetables", name: "Root vegetables", blurb: "Carrots, beets, potatoes and other crops you dig.", crops: ["radishes", "carrots", "beets", "turnips", "potatoes", "parsnips", "sweet-potatoes", "horseradish"] },
+    { id: "root-vegetables", name: "Root vegetables", blurb: "Carrots, beets, potatoes and other crops you dig.", crops: ["radishes", "carrots", "beets", "turnips", "potatoes", "parsnips", "sweet-potatoes"] },
     { id: "onion-family", name: "Onion family", blurb: "Onions, garlic, leeks and shallots.", crops: ["onions", "garlic", "leeks", "shallots"] },
     { id: "peas-and-beans", name: "Peas and beans", blurb: "Easy, big-seeded crops that feed the soil too.", crops: ["peas", "fava-beans", "beans", "pole-beans"] },
     { id: "summer-vegetables", name: "Tomatoes and summer crops", blurb: "Heat lovers that wait for warm soil.", crops: ["tomatoes", "peppers", "eggplant", "corn", "tomatillos", "ground-cherries"] },
     { id: "squash-and-melons", name: "Squash, cucumbers and melons", blurb: "Sprawling vines for the warmest part of summer.", crops: ["cucumbers", "summer-squash", "winter-squash", "pumpkins", "melons"] },
     { id: "herbs", name: "Herbs", blurb: "Annual and perennial herbs for the kitchen.", crops: ["basil", "cilantro", "parsley", "dill", "chives", "mint", "rosemary", "thyme", "oregano", "lavender", "sage", "tarragon", "lemon-balm"] },
-    { id: "berries-and-perennials", name: "Berries and perennial crops", blurb: "Plant once and harvest for years.", crops: ["strawberries", "blueberries", "raspberries", "blackberries", "grapes", "hardy-kiwi", "honeyberries", "currants", "gooseberries", "elderberries", "asparagus", "rhubarb", "artichokes"] },
+    // "berries-and-perennials" keeps its old id (and page address) after asparagus and friends moved to perennial-vegetables.
+    { id: "berries-and-perennials", name: "Berries", blurb: "Strawberries, blueberries, cane berries and other fruit you plant once and pick for years.", crops: ["strawberries", "blueberries", "raspberries", "blackberries", "grapes", "hardy-kiwi", "honeyberries", "currants", "gooseberries", "elderberries"] },
+    { id: "perennial-vegetables", name: "Perennial vegetables", blurb: "Asparagus, rhubarb and other crops that come back every spring.", crops: ["asparagus", "rhubarb", "artichokes", "horseradish", "sorrel"] },
     { id: "fruit-trees", name: "Fruit and nut trees", blurb: "Apples, pears, plums, persimmons and hazelnuts. Plant bare-root trees in late winter and early spring.", crops: ["apples", "pears", "plums", "cherries", "peaches", "figs", "hazelnuts", "asian-pears", "persimmons", "quince", "mulberries"] },
     { id: "native-plants", name: "Native plants", blurb: "Tough Northwest natives that feed birds and bees, and sometimes you.", crops: ["huckleberries", "oregon-grape", "red-flowering-currant", "serviceberry", "camas", "thimbleberry", "salmonberry", "salal", "kinnikinnick", "western-columbine", "douglas-aster", "oregon-sunshine", "pacific-ninebark", "sword-fern", "oregon-iris"] },
     { id: "flowers", name: "Flowers", blurb: "Cut flowers, easy annuals and spring bulbs that thrive here.", crops: ["dahlias", "sunflowers", "zinnias", "sweet-peas", "tulips", "daffodils", "peonies", "cosmos", "nasturtiums", "marigolds", "calendula", "snapdragons", "ranunculus"] }

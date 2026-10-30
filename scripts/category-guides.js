@@ -45,9 +45,14 @@ module.exports = {
     "Mint spreads aggressively by underground runners, so keep it in a pot. Chives are the easiest place to start: a perennial that comes back every spring, takes partial shade and needs almost no care."
   ],
   "berries-and-perennials": [
-    "Berries and perennial crops are planted once and picked for years, so the site and soil you choose at the start matter more than anything you do later. Most want full sun and well-drained soil, and the region's wet winters are hard on roots sitting in soggy ground; raised beds or mounded rows help in heavy clay.",
+    "Berries are planted once and picked for years, so the site and soil you choose at the start matter more than anything you do later. Most want full sun and well-drained soil, and the region's wet winters are hard on roots sitting in soggy ground; raised beds or mounded rows help in heavy clay.",
     "Blueberries need acidic soil, and most western garden soils are a little less acidic than they'd like, so test first and add sulfur if needed. Raspberries and blackberries need a support and yearly pruning of the canes that have already fruited. Strawberries are the quickest to reward you but are best replanted every three or four years. Grapes and hardy kiwi need a strong trellis and the warmest spot you have.",
-    "Most perennial fruit is planted in late winter or early spring, from bare-root or potted plants, while the weather is cool and moist. Expect a light harvest, or none, for the first year or two while the roots establish. Strawberries and blueberries are the easiest places to start."
+    "Most berries are planted in late winter or early spring, from bare-root or potted plants, while the weather is cool and moist. Expect a light harvest, or none, for the first year or two while the roots establish. Strawberries and blueberries are the easiest places to start."
+  ],
+  "perennial-vegetables": [
+    "Perennial vegetables come back every spring from the same roots, so plant them at the edge of the garden or in their own bed where they won't be dug up with the annual crops. Asparagus and rhubarb can produce for 15 years or more, so prepare the soil well with compost before planting.",
+    "Patience is part of the deal. Don't harvest asparagus the first year and pick only lightly the second, and leave rhubarb alone its first year so the roots build up. Artichokes are the exception: in mild west-side gardens they often send up buds the first summer, though a hard winter can kill them. Sorrel is ready to pick within weeks.",
+    "Horseradish and sorrel spread if you let them, by roots and by seed, so give them a corner or a container. Rhubarb and asparagus are the easiest places to start, and both handle cold winters on either side of the Cascades."
   ],
   "fruit-trees": [
     "Fruit and nut trees are a long-term choice, so variety matters more here than for any other plant. The Northwest's wet springs make disease the main challenge: scab on apples, peach leaf curl on peaches, brown rot on cherries and plums, and eastern filbert blight on hazelnuts. Resistant varieties, listed on each tree's page, save years of spraying.",
