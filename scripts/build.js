@@ -218,7 +218,7 @@ ${noindex ? '<meta name="robots" content="noindex, follow">\n' : ""}<link rel="c
 <link rel="apple-touch-icon" href="${base}apple-touch-icon.png">
 <link rel="manifest" href="${base}site.webmanifest">
 <link rel="stylesheet" href="${base}assets/fonts/fonts.css">
-<link rel="stylesheet" href="${base}assets/style.css">
+<link rel="stylesheet" href="${base}assets/style.css?v=${ver("style.css")}">
 ${ads}
 ${CONFIG.goatcounterCode ? `<script data-goatcounter="https://${CONFIG.goatcounterCode}.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>` : ""}
 ${ld}
@@ -245,8 +245,8 @@ ${body}
 <p class="owner">&copy; ${YEAR} ${CONFIG.owner}. Rainline Garden is owned and operated by ${CONFIG.owner}.</p>
 </div></footer>
 <script>(function(){var r=document.documentElement,b=document.querySelector(".theme-btn");if(!b)return;function cur(){return r.dataset.theme==="dark"?"dark":"light"}function sync(){b.setAttribute("aria-label",cur()==="dark"?"Switch to light mode":"Switch to dark mode")}sync();b.addEventListener("click",function(){var n=cur()==="dark"?"light":"dark";r.dataset.theme=n;try{localStorage.setItem("rainline-theme",n)}catch(e){}sync()})})();</script>
-${(scripts || []).map(s => `<script src="${base}assets/${s}"></script>`).join("\n")}
-<script src="${base}assets/nav.js" defer></script>
+${(scripts || []).map(s => `<script src="${base}assets/${s}?v=${ver(s)}"></script>`).join("\n")}
+<script src="${base}assets/nav.js?v=${ver("nav.js")}" defer></script>
 </body>
 </html>
 `;
@@ -256,7 +256,9 @@ ${(scripts || []).map(s => `<script src="${base}assets/${s}"></script>`).join("\
 // instead of every rebuild restamping the whole site.
 const DATE_RE = /\d{4}-\d\d-\d\d|(?:January|February|March|April|May|June|July|August|September|October|November|December)(?: \d{1,2},)? \d{4}/g;
 // Only the page body counts: a new title or description isn't new content, so it keeps the old date too.
-const bodyOf = h => h.slice(h.indexOf("<body"));
+// Version stamps on assets, so browsers fetch new CSS and scripts as soon as they change instead of after their cache expires.
+const ver = f => require("crypto").createHash("sha1").update(fs.readFileSync(path.join(__dirname, "../assets", f))).digest("hex").slice(0, 8);
+const bodyOf = h => h.slice(h.indexOf("<body")).replace(/\?v=[0-9a-f]{8}/g, "");
 const sameBut = (a, b) => bodyOf(a).replace(DATE_RE, "D") === bodyOf(b).replace(DATE_RE, "D");
 // Pages built before dates went month-and-year printed full dates; read them as the new format so they keep their date.
 const toMonthYear = s => s.replace(/(Updated|Last updated) (\d{4}-\d\d-\d\d)\./g, (m, w, d) => `${w} ${w === "Updated" ? stamp(d) : monthYear(d)}.`)
