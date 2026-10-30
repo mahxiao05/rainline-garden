@@ -9,6 +9,7 @@ const D = require("../assets/data.js");
 const P = require("../assets/plan.js");
 const CATEGORY_EXTRAS = require("./category-extras.js");
 const COLLECTIONS = require("./collections.js");
+const { extras: EXTRAS, familyOf: FAMILY_OF } = require("./plant-extras.js");
 const R = require("../assets/render.js");
 const G = require("./guide.js");
 const PHOTOS = require("./photos.js");
@@ -415,17 +416,23 @@ function faqLd(qas) {
 
 // Cleaner layout for crops with notes in scripts/crop-science.js (in depth) or scripts/crop-notes.js (shorter).
 function scienceBody(c, g, sci, { head, dates, plans, port }) {
+  const ex = EXTRAS[c.id];
   return `${quickFacts(c, g)}
+${plantTags(c, g, port)}
 ${jump(sci, VARIETIES[c.id])}
 <p class="callout">${esc(c.note)}</p>
 <h2 id="dates">${singular(c.name).replace(/^./, x => x.toUpperCase())} planting dates</h2>
 ${areaTables(head, dates, plans)}
+${yearStrip(c, ex, port)}
 ${ad("crop-mid")}
 <h2 id="grow">How to grow ${lc(c.name)}</h2>
 <div class="grow-grid"><div>${stepsForHub(c, g, port)}</div>
 ${sideCard(g)}</div>${videoBox(c)}
 ${cropGarden("../../", c)}${varietyCards(c)}
+${howMany(c, ex)}
 ${scienceParts(sci, c)}
+${neighbors(c, ex)}
+${pestCards(c, ex)}
 ${gearBox(g.gear)}
 <h2 id="faq">Common questions about growing ${lc(c.name)}</h2>
 ${faqHtml(sci.faq)}
@@ -436,7 +443,64 @@ ${PHONE_FOLD_JS}`;
 const phoneFold = (id, title, body) => `<details class="fold" id="${id}" data-phone-fold open><summary><h2>${title}</h2></summary>
 ${body}</details>`;
 const PHONE_FOLD_JS = `<script>(function(){var f=document.querySelectorAll("details[data-phone-fold]");if(matchMedia("(max-width: 40rem)").matches)f.forEach(function(d){if("#"+d.id!==location.hash)d.open=false});function show(){var d=location.hash&&document.getElementById(location.hash.slice(1));if(d&&d.matches("details[data-phone-fold]"))d.open=true}addEventListener("hashchange",show)})()</script>`;
-const jump = (sci, vars) => `<nav class="jump" aria-label="On this page"><a href="#dates">Planting dates</a><a href="#grow">How to grow</a>${vars ? '<a href="#varieties">Varieties</a>' : ""}<a href="#numbers">Key numbers</a><a href="#science">${sci.notes ? "Growing notes" : "How it works"}</a><a href="#faq">Questions</a></nav>`;
+const jump = (sci, vars) => `<nav class="jump" aria-label="On this page"><a href="#dates">Planting dates</a><a href="#grow">How to grow</a>${vars ? '<a href="#varieties">Varieties</a>' : ""}<a href="#how-many">How many</a><a href="#numbers">Key numbers</a><a href="#science">${sci.notes ? "Growing notes" : "How it works"}</a><a href="#neighbors">Neighbors</a><a href="#pests">Pests</a><a href="#faq">Questions</a></nav>`;
+
+/* Plant-page extras from scripts/plant-extras.js and scripts/collections.js */
+// Tags linking to the "Plants for..." pages this plant appears on.
+function plantTags(c, g, port) {
+  const on = COLLECTIONS.filter(x => x.ids ? x.ids.includes(c.id) : x.pick(c, g, rowFor(port, c.id)));
+  return on.length ? `<ul class="chips plant-tags" aria-label="Good for">${on.map(x => `<li><a href="../../${x.slug}/">${esc(x.tag)}</a></li>`).join("")}</ul>` : "";
+}
+// Months a "6-9" or "11-3" or "6-7,10" string covers, as indexes 0-11.
+function monthSet(spec) {
+  const out = new Set();
+  (spec || "").split(",").filter(Boolean).forEach(part => {
+    const [a, b = a] = part.split("-").map(Number);
+    for (let m = a; ; m = m % 12 + 1) { out.add(m - 1); if (m === b) break; }
+  });
+  return out;
+}
+const MONTH_START = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+const monthOf = n => { n = ((n - 1) % 365 + 365) % 365 + 1; let m = 11; while (n <= MONTH_START[m]) m--; return m; };
+function windowMonths(ws) {
+  const out = new Set();
+  ws.forEach(w => { for (let d = w.start; d <= w.end; d += 7) out.add(monthOf(d)); out.add(monthOf(w.end)); });
+  return out;
+}
+// Month-by-month strip: start indoors, plant, harvest and bloom, around Portland.
+function yearStrip(c, ex, port) {
+  const r = rowFor(port, c.id);
+  const flower = c.cat === "flowers";
+  const rows = [
+    ["Start indoors", "in", r.indoor ? windowMonths([r.indoor]) : new Set()],
+    [c.overwinter ? "Plant (spring or fall)" : "Plant", "plant", windowMonths(r.windows)],
+    [flower ? "Cut flowers" : "Harvest", "pick", monthSet(ex.pick || (flower ? ex.bloom : ""))],
+    ["In bloom", "bloom", flower ? new Set() : monthSet(ex.bloom)]
+  ].filter(([, , set]) => set.size);
+  const M = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const perennial = ["berries-and-perennials", "perennial-vegetables", "fruit-trees", "native-plants"].includes(c.cat);
+  return `<h2 id="year">${singular(c.name).replace(/^./, x => x.toUpperCase())} year at a glance</h2>
+<div class="table-wrap"><table class="year"><thead><tr><th scope="col"><span class="sr-only">Task</span></th>${M.map(m => `<th scope="col"><abbr title="${m}">${m[0]}</abbr></th>`).join("")}</tr></thead>
+<tbody>${rows.map(([label, cls, set]) => `<tr><th scope="row">${label}</th>${M.map((m, i) => set.has(i) ? `<td class="on ${cls}"><span class="sr-only">${m}</span></td>` : "<td></td>").join("")}</tr>`).join("")}</tbody></table></div>
+<p class="note">Around Portland. Colder towns, especially east of the Cascades, run a few weeks later; the table above has your town's planting dates.${perennial && ex.pick ? " Harvest months are for an established plant." : ""}</p>`;
+}
+function howMany(c, ex) {
+  const flower = c.cat === "flowers";
+  const parts = [["How many to plant", ex.many], ["What to expect", ex.yield], [flower ? "In the vase" : "Storing the harvest", ex.store]].filter(([, t]) => t);
+  return `<h2 id="how-many">How many to plant</h2>
+<div class="hm-grid">${parts.map(([h, t]) => `<section class="hm-card"><h3>${h}</h3><p>${esc(t)}</p></section>`).join("")}</div>`;
+}
+function neighbors(c, ex) {
+  const fam = FAMILY_OF[c.id];
+  const list = (h, xs, cls) => xs && xs.length ? `<section class="nb-card ${cls}"><h3>${h}</h3><ul>${xs.map(([p, why]) => `<li><strong>${esc(p)}.</strong> ${esc(why)}</li>`).join("")}</ul></section>` : "";
+  return `<h2 id="neighbors">Good neighbors${fam ? " and crop rotation" : ""}</h2>
+<div class="nb-grid">${list(c.cat === "native-plants" ? "Grows well with" : "Good neighbors", ex.good, "nb-good")}${list("Keep apart", ex.avoid, "nb-avoid")}</div>
+${fam ? `<p class="care-tip"><strong>${esc(fam.name)}:</strong> ${esc(fam.text)}</p>` : ""}`;
+}
+function pestCards(c, ex) {
+  return phoneFold("pests", "Pests and problems", `<p class="lede-sm">What most often goes wrong with ${lc(c.name)} in Northwest gardens, how to spot it and what to do.</p>
+<div class="sci-cards">${ex.pests.map(([h, signs, fix]) => `<section class="sci-card pest-card"><h3>${esc(h)}</h3><p><strong>Signs:</strong> ${esc(signs)}</p><p><strong>What to do:</strong> ${esc(fix)}</p></section>`).join("\n")}</div>`);
+}
 const faqHtml = qas => `<div class="faq">${qas.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("")}</div>`;
 const sideCard = (g, note) => `<aside class="side-card"><h3>Varieties that do well here</h3><ul class="vars">${g.varieties.map(v => `<li>${esc(v)}</li>`).join("")}</ul>
 <h3>Watch out for</h3><p>${esc(g.problem)}</p>${note ? `<p class="note">${esc(note)}</p>` : ""}</aside>`;

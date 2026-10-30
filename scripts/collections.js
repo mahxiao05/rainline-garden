@@ -1,5 +1,5 @@
 /* "Plants for..." pages built from the plant data: shade, deer, pots and fall planting.
- * Each page: a short label for links, search title, heading, description, intro paragraphs, which plants (a list of ids, or `pick`, a rule the
+ * Each page: a short label for links, a tag for plant pages, search title, heading, description, intro paragraphs, which plants (a list of ids, or `pick`, a rule the
  * build applies), a short note per plant, and three questions. Plain text only (escaped when rendered).
  * Keep the deer and pot lists in step with DEER_OK and POT in assets/quiz.js. */
 const DEER = {
@@ -33,6 +33,7 @@ module.exports = [
   {
     slug: "shade-plants",
     label: "Shade plants",
+    tag: "Handles shade",
     title: "Shade Plants for Oregon and Washington Gardens",
     h1: "What grows in shade in a Northwest garden",
     description: "Vegetables, herbs, berries and native plants that grow in part or full shade in Oregon and Washington, with planting dates for every town.",
@@ -53,6 +54,7 @@ module.exports = [
   {
     slug: "deer-resistant-plants",
     label: "Deer-resistant plants",
+    tag: "Deer-resistant",
     title: "Deer-Resistant Plants for Oregon and Washington Gardens",
     h1: "Deer-resistant plants for Northwest gardens",
     description: "Vegetables, herbs, flowers and native plants that deer usually leave alone in Oregon and Washington gardens, with planting dates for every town.",
@@ -72,6 +74,7 @@ module.exports = [
   {
     slug: "container-plants",
     label: "Plants for pots",
+    tag: "Grows in pots",
     title: "What to Grow in Pots in Oregon and Washington",
     h1: "What to grow in pots in the Northwest",
     description: "Vegetables, herbs, berries and flowers that grow well in containers on a Northwest balcony or patio, with pot sizes and planting dates for every town.",
@@ -91,6 +94,7 @@ module.exports = [
   {
     slug: "fall-planting",
     label: "Fall planting",
+    tag: "Plant in fall",
     title: "What to Plant in Fall in Oregon and Washington",
     h1: "What to plant in fall in Oregon and Washington",
     description: "Garlic, spring bulbs, fall greens and other crops to plant in late summer and fall in Oregon and Washington, with dates for every town.",
