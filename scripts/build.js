@@ -312,7 +312,7 @@ ${TOWN_PICK_JS}`;
 /* Shared pieces */
 // "Tomatoes" -> "tomato", "Apple trees" -> "apple", for headings like "Popular tomato varieties".
 const singular = n => { const s = lc(n).replace(/ trees$/, ""); return /^(asparagus|camas)$/.test(s) ? s : s.replace(/ies$/, "y").replace(/(sh|ch|o)es$/, "$1").replace(/([^s])s$/, "$1"); };
-const lc = n => n === "Swiss chard" ? n : n.toLowerCase().replace(/^brussels/, "Brussels").replace(/^oregon/, "Oregon");
+const lc = n => n === "Swiss chard" ? n : n.toLowerCase().replace(/^brussels/, "Brussels").replace(/^(oregon|douglas|pacific|asian)/, w => w[0].toUpperCase() + w.slice(1));
 const DIFF = { 1: ["Easy", "easy"], 2: ["Moderate", "moderate"], 3: ["Tricky here", "tricky"] };
 const badge = d => `<span class="badge badge-${DIFF[d][1]}">${DIFF[d][0]}</span>`;
 const cropById = id => D.crops.find(c => c.id === id);
@@ -628,7 +628,7 @@ function steps(c, r, g) {
   if (g.fall) {
     g.fall.steps.forEach(t => out.push(t.replace("{when}", P.fmtRange(fa.start, fa.end)).replace("{depth}", g.depth.charAt(0).toLowerCase() + g.depth.slice(1)).replace("{spacing}", g.spacing)));
   } else if (g.plantText) {
-    out.push(`Pick a sunny spot with soil that drains well, and mix in an inch or two of compost.`);
+    out.push(g.site || `Pick a sunny spot with soil that drains well, and mix in an inch or two of compost.`);
     out.push(`Plant ${g.plantText} ${P.fmtRange(sp.start, sp.end)}, ${g.spacing}. ${g.depth}.`);
     out.push(g.care);
   } else if (r.indoor) {

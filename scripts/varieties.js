@@ -605,4 +605,140 @@ module.exports = {
     {"name":"Duchesse de Nemours","type":"Double white, early","days":"Blooms May","where":"Both sides","note":"Creamy white, very fragrant double flowers that open early. An heirloom favorite for cutting and wedding bouquets, with sturdy plants that come back reliably for decades."},
     {"name":"Bowl of Beauty","type":"Japanese-type, pink","days":"Blooms late May to June","where":"Both sides","note":"Pink outer petals around a center of creamy, frilly petaloids. Bold, showy and long-lasting in the garden, and the single-style flowers hold up better in rain than heavy doubles."}
   ],
+  "mustard-greens": [
+    {"name":"Red Giant","type":"Japanese mustard, purple-red leaves","days":"About 45 days","where":"Both sides","note":"Big, crinkled, purple-red leaves with a strong, hot bite. Very cold-hardy, it's a favorite for fall sowing and stays mildest after frost."},
+    {"name":"Green Wave","type":"Curled mustard","days":"About 45 days","where":"Both sides","note":"Frilly, bright green leaves with a sharp, spicy flavor. Slower to bolt than most mustards, which helps with spring sowings."},
+    {"name":"Mizuna","type":"Japanese mustard, feathery leaves","days":"About 40 days","where":"Both sides","note":"Mild, finely cut leaves for salads, and one of the most heat- and cold-tolerant Asian greens. Cut it young and it regrows several times."},
+    {"name":"Southern Giant Curled","type":"Curled mustard, large","days":"About 50 days","where":"Both sides","note":"Large, ruffled, light green leaves for cooking. An old, widely sold variety that's dependable in fall."}
+  ],
+  "mache": [
+    {"name":"Vit","type":"Small-leaved mâche","days":"About 50 days","where":"Both sides","note":"Glossy, dark green rosettes and good resistance to mildew. A reliable choice for fall and winter harvests."},
+    {"name":"Verte de Cambrai","type":"Small-leaved, traditional French","days":"About 50 days","where":"Both sides","note":"A classic French variety with small, round leaves and a nutty flavor. Very cold-hardy for winter picking."},
+    {"name":"Large Seeded Dutch","type":"Large-leaved mâche","days":"About 45 days","where":"Both sides","note":"Bigger, lighter green leaves that size up faster than small-leaved types. Good for early spring sowings."}
+  ],
+  "radicchio": [
+    {"name":"Palla Rossa","type":"Round-headed (Chioggia type)","days":"About 85 days","where":"Both sides","note":"Tight, round red-and-white heads. Sown in midsummer, it heads up reliably in the cool fall weather west of the Cascades."},
+    {"name":"Rossa di Treviso","type":"Long-headed","days":"About 85 days","where":"Both sides","note":"Elongated heads like a red romaine. The color deepens after cold nights; good for grilling."},
+    {"name":"Indigo","type":"Hybrid round-headed","days":"About 65 days","where":"Both sides","note":"A modern hybrid that forms dense, deep red heads more reliably than older types, and it's slow to bolt."},
+    {"name":"Castelfranco","type":"Speckled, loose head","days":"About 85 days","where":"West side","note":"Creamy leaves speckled with red, milder than most radicchio. Beautiful in salads, and best from late-summer sowings."}
+  ],
+  "sorrel": [
+    {"name":"French sorrel","type":"Rumex scutatus, small leaves","days":"Perennial","where":"Both sides","note":"Small, shield-shaped leaves with a bright lemon flavor, milder than garden sorrel. A low, spreading clump."},
+    {"name":"Garden sorrel","type":"Rumex acetosa, large leaves","days":"Perennial","where":"Both sides","note":"Larger, arrow-shaped leaves with a sharp, sour taste, often sold as Large de Belleville. Very productive for soups and sauces."},
+    {"name":"Red-veined sorrel","type":"Rumex sanguineus, ornamental","days":"Perennial","where":"Both sides","note":"Green leaves with striking red veins. Mostly grown for looks; pick young leaves for salads."}
+  ],
+  "horseradish": [
+    {"name":"Maliner Kren","type":"Bohemian type","days":"Harvest in fall","where":"Both sides","note":"The classic grower's horseradish, with smooth, thick white roots and strong heat."},
+    {"name":"Big Top Western","type":"Standard type","days":"Harvest in fall","where":"Both sides","note":"Large roots and broad leaves. Widely sold as root cuttings and very hardy."},
+    {"name":"Common horseradish","type":"Unnamed root cuttings","days":"Harvest in fall","where":"Both sides","note":"Most root sets sold at garden centers are unnamed but grow just as well. Look for firm, pencil-thick pieces."}
+  ],
+  "sage": [
+    {"name":"Common sage","type":"Culinary sage","days":"Perennial","where":"Both sides","note":"Gray-green, pebbly leaves and blue flowers in early summer. The hardiest culinary sage."},
+    {"name":"Berggarten","type":"Broad-leaved sage","days":"Perennial","where":"Both sides","note":"Large, round, silvery leaves on a compact plant. It rarely flowers, so it stays leafy all season."},
+    {"name":"Purple sage","type":"Purpurascens","days":"Perennial","where":"West side","note":"Dusky purple leaves with the same flavor as common sage. A little less cold-hardy, so give it good drainage."},
+    {"name":"Golden sage","type":"Icterina","days":"Perennial","where":"West side","note":"Green leaves edged in gold. Mild flavor and a bright accent in herb beds and pots."}
+  ],
+  "lemon-balm": [
+    {"name":"Common lemon balm","type":"Melissa officinalis","days":"Perennial","where":"Both sides","note":"Bright green, strongly lemon-scented leaves. The standard plant for tea and the easiest to find."},
+    {"name":"Aurea","type":"Gold-variegated","days":"Perennial","where":"Both sides","note":"Green leaves splashed with gold, brightest in spring. Best in part shade, where the leaves don't scorch."},
+    {"name":"Lime balm","type":"Lime-scented","days":"Perennial","where":"Both sides","note":"A selection with a lime rather than lemon scent. Grows and spreads just like common lemon balm."}
+  ],
+  "tarragon": [
+    {"name":"French tarragon","type":"Artemisia dracunculus 'Sativa'","days":"Perennial","where":"Both sides","note":"The true culinary tarragon with a sweet anise flavor. Sold only as plants, since it rarely sets seed."},
+    {"name":"Russian tarragon","type":"Wild type, from seed","days":"Perennial","where":"Both sides","note":"Taller and tougher than French tarragon but with very little flavor. Usually what you get from seed packets."},
+    {"name":"Mexican tarragon","type":"Tagetes lucida, substitute","days":"Annual here","where":"West side","note":"A marigold relative with an anise flavor close to tarragon. Frost-tender, so grow it as a summer annual or in a pot."}
+  ],
+  "cosmos": [
+    {"name":"Sensation Mix","type":"Tall, single flowers","days":"About 75 days","where":"Both sides","note":"The classic cut-flower cosmos in pink, white and crimson on 4- to 5-foot plants. Stake or net it in windy spots."},
+    {"name":"Double Click","type":"Semi-double to double flowers","days":"About 75 days","where":"Both sides","note":"Ruffled, layered flowers that look like small dahlias. Excellent in bouquets."},
+    {"name":"Sonata","type":"Dwarf","days":"About 70 days","where":"Both sides","note":"Compact plants about 2 feet tall for borders and containers, with full-size flowers."},
+    {"name":"Bright Lights","type":"Orange and yellow (C. sulphureus)","days":"About 70 days","where":"Both sides","note":"Fiery orange, gold and yellow flowers that handle heat and dry soil, good for hot eastern gardens."}
+  ],
+  "nasturtiums": [
+    {"name":"Alaska","type":"Bush, variegated leaves","days":"About 55 days","where":"Both sides","note":"Leaves marbled with cream and flowers in mixed warm colors. Compact and pretty in pots and edges."},
+    {"name":"Empress of India","type":"Bush, dark leaves","days":"About 55 days","where":"Both sides","note":"Deep crimson flowers over blue-green leaves. A compact heirloom variety."},
+    {"name":"Jewel Mix","type":"Bush, mixed colors","days":"About 55 days","where":"Both sides","note":"Semi-double flowers in red, orange and yellow, held above the leaves. Good for edging and kids' gardens."},
+    {"name":"Tall Trailing Mix","type":"Climbing or trailing","days":"About 60 days","where":"Both sides","note":"Long vines that climb a fence or spill from baskets and walls, with mixed bright flowers."}
+  ],
+  "marigolds": [
+    {"name":"Durango","type":"French marigold","days":"About 50 days","where":"Both sides","note":"Large, double flowers on compact plants about 10 inches tall. Early and long-blooming."},
+    {"name":"Crackerjack","type":"African marigold, tall","days":"About 70 days","where":"Both sides","note":"Big pompom flowers in orange and yellow on 2- to 3-foot plants. Good for cutting and the back of beds."},
+    {"name":"Lemon Gem","type":"Signet marigold","days":"About 55 days","where":"Both sides","note":"Mounds of tiny lemon-yellow flowers with lacy, citrus-scented leaves. The petals are edible."},
+    {"name":"Janie","type":"Dwarf French marigold","days":"About 50 days","where":"Both sides","note":"Very compact, about 8 inches tall, for edging and containers. Blooms early and keeps going."}
+  ],
+  "calendula": [
+    {"name":"Resina","type":"Single, orange and yellow","days":"About 55 days","where":"Both sides","note":"A favorite for growing petals to dry, with many flowers on each plant."},
+    {"name":"Zeolights","type":"Soft apricot with dark center","days":"About 55 days","where":"Both sides","note":"Peachy, pink-tinged double flowers with a dark eye. Popular for cutting."},
+    {"name":"Pacific Beauty","type":"Tall, double flowers","days":"About 60 days","where":"Both sides","note":"Long stems with double flowers in orange, yellow and cream. A dependable cut flower."},
+    {"name":"Bon Bon","type":"Dwarf","days":"About 50 days","where":"Both sides","note":"Compact plants about a foot tall that bloom early. Good in pots and edges."}
+  ],
+  "ranunculus": [
+    {"name":"Tecolote mix","type":"Giant-flowered corms","days":"About 90 days","where":"Both sides","note":"The widely sold Californian strain with big, many-petaled flowers in mixed colors."},
+    {"name":"Amandine series","type":"Florist-grade, early","days":"About 90 days","where":"West side","note":"Strong stems and early flowers in clear colors. Popular with flower farmers who grow under cover."},
+    {"name":"La Belle series","type":"Italian florist type","days":"About 90 days","where":"West side","note":"Large, ruffled flowers on long stems. Often planted in fall under a hoop house for spring cutting."}
+  ],
+  "snapdragons": [
+    {"name":"Rocket series","type":"Tall cut flower","days":"75–90 days","where":"Both sides","note":"Spikes 2 to 3 feet tall in many colors. Heat-tolerant for a snapdragon and a reliable cut flower."},
+    {"name":"Madame Butterfly","type":"Double azalea-type flowers","days":"75–90 days","where":"Both sides","note":"Open, ruffled double flowers instead of the classic snap. Tall and lovely in bouquets."},
+    {"name":"Chantilly","type":"Open-faced flowers","days":"75–90 days","where":"Both sides","note":"Butterfly-shaped, open flowers with a light fragrance. Blooms early and comes in soft colors."},
+    {"name":"Snapshot","type":"Dwarf","days":"About 70 days","where":"Both sides","note":"Compact plants about 10 inches tall for edging and pots."}
+  ],
+  "persimmons": [
+    {"name":"Fuyu","type":"Asian, non-astringent","days":"Ripens October to November","where":"Both sides","note":"The most popular crisp persimmon, eaten firm like an apple. Self-fertile; needs a warm spot to ripen west of the Cascades."},
+    {"name":"Jiro","type":"Asian, non-astringent","days":"Ripens October to November","where":"West side","note":"Similar to Fuyu, with squat, flat-bottomed fruit. Sweet and crisp, and self-fertile."},
+    {"name":"Saijo","type":"Asian, astringent","days":"Ripens October","where":"Both sides","note":"Small, very sweet fruit once soft, and one of the most cold-hardy Asian persimmons."},
+    {"name":"Hachiya","type":"Asian, astringent","days":"Ripens November","where":"West side","note":"Large, acorn-shaped fruit that must soften completely before eating. Excellent for baking."},
+    {"name":"Meader","type":"American persimmon","days":"Ripens October","where":"Both sides","note":"A hardy American persimmon that sets fruit without a second tree. Small, rich fruit once soft."}
+  ],
+  "asian-pears": [
+    {"name":"Shinseiki","type":"Yellow skin","days":"Ripens August","where":"Both sides","note":"Crisp, mild and juicy, and partly self-fertile. One of the most reliable Asian pears in home gardens."},
+    {"name":"Chojuro","type":"Russet skin","days":"Ripens September","where":"Both sides","note":"Bronze, russeted fruit with a rich, almost butterscotch flavor. Stores well."},
+    {"name":"Hosui","type":"Russet skin","days":"Ripens August to September","where":"Both sides","note":"Very juicy, sweet, golden-brown fruit. A top-rated flavor, and a good pollinator for others."},
+    {"name":"20th Century","type":"Yellow-green skin","days":"Ripens August to September","where":"Both sides","note":"Also called Nijisseiki: crisp, tart-sweet and partly self-fertile. Needs thinning to size up."}
+  ],
+  "quince": [
+    {"name":"Aromatnaya","type":"Russian, soft","days":"Ripens October","where":"Both sides","note":"Fragrant fruit that's soft enough to eat fresh when fully ripe. One of the most popular quinces for home gardens."},
+    {"name":"Smyrna","type":"Large, Turkish","days":"Ripens October","where":"Both sides","note":"Big, golden, very fragrant fruit that's excellent for paste and jelly."},
+    {"name":"Orange","type":"Apple-shaped","days":"Ripens October","where":"Both sides","note":"Also called Apple quince: rounded fruit with orange-tinted flesh and a strong aroma. An old, widely planted variety."}
+  ],
+  "mulberries": [
+    {"name":"Illinois Everbearing","type":"Hybrid, black fruit","days":"Ripens over a long summer season","where":"Both sides","note":"Sweet, rich berries over many weeks, and very cold-hardy. The top pick for most Northwest gardens."},
+    {"name":"Gerardi Dwarf","type":"Dwarf, black fruit","days":"Ripens June to August","where":"Both sides","note":"Stays about 6 to 8 feet tall, so it fits small yards and large containers."},
+    {"name":"Pakistan","type":"Long, red-black fruit","days":"Ripens June to July","where":"West side","note":"Very long, sweet fruit. Less cold-hardy than Illinois Everbearing, so plant it only in mild west-side gardens."}
+  ],
+  "thimbleberry": [
+    {"name":"Thimbleberry","type":"Native shrub (Rubus parviflorus)","days":"Ripens July to August","where":"Both sides","note":"Sold as the wild species by native plant nurseries. Thornless, with big soft leaves, white flowers and soft red berries."}
+  ],
+  "salmonberry": [
+    {"name":"Salmonberry","type":"Native shrub (Rubus spectabilis)","days":"Ripens May to June","where":"West side","note":"The wild species, sold by native plant nurseries. Magenta flowers in late winter and orange to red berries in late spring."},
+    {"name":"Olympic Double","type":"Double-flowered selection","days":"Blooms February to April","where":"West side","note":"A selection with showy double magenta flowers, grown mainly as an ornamental for early hummingbird food."}
+  ],
+  "salal": [
+    {"name":"Salal","type":"Native evergreen shrub (Gaultheria shallon)","days":"Ripens August to September","where":"Coast and west side","note":"Sold as the wild species by native plant nurseries. Glossy evergreen leaves, pink bell flowers and edible dark berries."}
+  ],
+  "kinnikinnick": [
+    {"name":"Vancouver Jade","type":"Vigorous groundcover selection","days":"Evergreen","where":"Both sides","note":"A fast-spreading selection with glossy leaves and pink flowers, known for good disease resistance."},
+    {"name":"Massachusetts","type":"Hardy groundcover selection","days":"Evergreen","where":"Both sides","note":"A widely sold, flat-growing selection with small dark leaves and good leaf-spot resistance."},
+    {"name":"Wood's Compact","type":"Compact selection","days":"Evergreen","where":"Both sides","note":"Slower and tighter-growing, for small spaces and rock gardens."}
+  ],
+  "western-columbine": [
+    {"name":"Western columbine","type":"Native perennial (Aquilegia formosa)","days":"Blooms May to July","where":"Both sides","note":"Sold as plants and seed by native plant nurseries. Red and yellow nodding flowers that hummingbirds love."}
+  ],
+  "douglas-aster": [
+    {"name":"Douglas aster","type":"Native perennial (Symphyotrichum subspicatum)","days":"Blooms July to September","where":"West side","note":"Sold as the wild species by native plant nurseries. Lavender daisies late in the season for bees and butterflies."}
+  ],
+  "oregon-sunshine": [
+    {"name":"Oregon sunshine","type":"Native perennial (Eriophyllum lanatum)","days":"Blooms May to July","where":"Both sides","note":"Sold as plants and seed by native plant nurseries. Silvery leaves and yellow daisies for dry, sunny spots."}
+  ],
+  "pacific-ninebark": [
+    {"name":"Pacific ninebark","type":"Native shrub (Physocarpus capitatus)","days":"Blooms May to June","where":"West side","note":"The west-side native, sold by native plant nurseries. Big, fast and good in moist soil and rain gardens."},
+    {"name":"Mallow ninebark","type":"Native shrub (Physocarpus malvaceus)","days":"Blooms June","where":"East side","note":"A smaller relative native to dry slopes east of the Cascades, with similar white flower clusters."}
+  ],
+  "sword-fern": [
+    {"name":"Western sword fern","type":"Native evergreen fern (Polystichum munitum)","days":"Evergreen","where":"West side","note":"The big forest fern of western Oregon and Washington. Buy nursery-grown plants rather than digging them from the wild."}
+  ],
+  "oregon-iris": [
+    {"name":"Oregon iris","type":"Native perennial (Iris tenax)","days":"Blooms April to June","where":"West side","note":"Sold as the wild species by native plant nurseries. Usually lavender to purple, with grassy leaves."},
+    {"name":"Pacific Coast hybrid irises","type":"Garden hybrids","days":"Blooms April to June","where":"West side","note":"Hybrids of Oregon iris and its West Coast relatives, in a wide range of colors. They need the same dry summers and good drainage."}
+  ]
 };
