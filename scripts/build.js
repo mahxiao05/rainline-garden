@@ -972,11 +972,12 @@ function monthPlanting(m) {
   });
 }
 const articleBySlug = Object.fromEntries(ARTICLES.map(a => [a.slug, a]));
-const chip = c => `<a class="mp-crop" href="../when-to-plant/${c.id}/">${R.icon(c.id, "../", 22)}${esc(c.name)}</a>`;
+const chip = (c, rel = "../") => `<a class="mp-crop" href="${rel}when-to-plant/${c.id}/">${R.icon(c.id, rel, 22)}${esc(c.name)}</a>`;
+const monthSlug = m => P.MONTHS_LONG[m - 1].toLowerCase();
 const choreMonth = c => {
   const name = P.MONTHS_LONG[c.m - 1], count = Object.values(c.tasks).reduce((n, t) => n + t.length, 0);
   return `<section class="cm" id="${name.toLowerCase()}" data-m="${c.m}" aria-labelledby="cm-h-${c.m}">
-<header class="cm-head">${R.icon(MONTH_ICONS[c.m - 1], "../", 44)}<div><h2 id="cm-h-${c.m}">${name}</h2><p>${esc(c.intro)}</p></div><span class="cm-prog" data-total="${count}"></span></header>
+<header class="cm-head">${R.icon(MONTH_ICONS[c.m - 1], "../", 44)}<div><h2 id="cm-h-${c.m}">${name}</h2><p>${esc(c.intro)} <a href="${monthSlug(c.m)}/">What to plant in ${name}</a></p></div><span class="cm-prog" data-total="${count}"></span></header>
 <div class="cm-grid">${CHORE_KINDS.filter(([k]) => c.tasks[k] && c.tasks[k].length).map(([k, label]) => `<div class="cm-card cm-${k}"><h3>${label}</h3><ul>${c.tasks[k].map(([t, r], i) =>
     `<li${r ? ` data-r="${r}"` : ""}><label><input type="checkbox" data-id="${c.m}-${k}-${i}" disabled><span>${esc(t)}${r ? ` <span class="cm-tag cm-tag-${r}">${REGION_TAGS[r]}</span>` : ""}</span></label></li>`).join("")}</ul></div>`).join("")}</div>
 <details class="cm-byregion"><summary>What can be planted in ${name}, by region</summary><div class="cm-plant-body">${monthPlanting(c.m).map(x => `<div class="cm-region" data-r="${x.r}"><h4>${x.label}</h4>
@@ -999,10 +1000,56 @@ write("../", "garden-calendar/index.html", layout({
 </div>
 <div id="cm-mine" class="cm-mine" hidden></div>
 <div class="cm-list">${CHORES.map(choreMonth).join("")}</div>
+<h2>What to plant each month</h2>
+<ul class="cm-month-links">${CHORES.map(c => `<li><a href="${monthSlug(c.m)}/">What to plant in ${P.MONTHS_LONG[c.m - 1]}</a></li>`).join("")}</ul>
 <p class="station cm-foot">Region tags: <strong>West side</strong> is the Willamette Valley, Puget Sound and southern Oregon valleys; <strong>Coast</strong> is the outer coast; <strong>East side</strong> is the Columbia Basin and low eastern valleys; <strong>High desert and inland</strong> is Central Oregon, the Klamath Basin and Spokane. Jobs without a tag apply everywhere, a few weeks later the colder your garden is.</p>
 ${ad("calendar-bottom")}`,
   scripts: ["data.js", "plan.js", "chores.js"]
 }), "0.8");
+
+/* One page per month: what to plant there, with dates by region, and that month's jobs. */
+CHORES.forEach(c => {
+  const rel = "../../", name = P.MONTHS_LONG[c.m - 1], slug = monthSlug(c.m);
+  const prev = CHORES[(c.m + 10) % 12], next = CHORES[c.m % 12];
+  const a = P.CUM[c.m - 1] + 1, b = c.m < 12 ? P.CUM[c.m] : 365;
+  const overlaps = w => w && w.start <= b && w.end >= a;
+  const regions = monthPlanting(c.m);
+  const plans = REGION_TOWNS.map(([, s]) => P.plan(D, P.findPlace(D, s)));
+  // Every crop that can go in somewhere this month, with its dates in each region's town.
+  const ids = D.crops.map(x => x.id).filter(id => regions.some(r => r.out.concat(r.indoor).some(x => x.id === id)));
+  const cell = (pl, id) => { const r = rowFor(pl, id), out = r.windows.filter(overlaps), parts = [];
+    if (r.indoor && overlaps(r.indoor)) parts.push(`Start indoors ${P.fmtRange(r.indoor.start, r.indoor.end)}`);
+    out.forEach(w => parts.push(`Plant ${P.fmtRange(w.start, w.end)}`));
+    return parts.length ? parts.join("<br>") : '<span class="none">—</span>'; };
+  const table = ids.length ? `<div class="table-wrap"><table class="plan"><thead><tr><th scope="col">Plant</th>${REGION_TOWNS.map(([, , l]) => `<th scope="col">${l}</th>`).join("")}</tr></thead><tbody>
+${ids.map(id => { const cr = cropById(id); return `<tr><th scope="row"><div class="crop-cell">${R.icon(id, rel, 32)}<div><a href="${rel}when-to-plant/${id}/">${esc(cr.name)}</a></div></div></th>${plans.map((pl, i) => `<td data-label="${REGION_TOWNS[i][2]}">${cell(pl, id)}</td>`).join("")}</tr>`; }).join("\n")}
+</tbody></table></div>` : "";
+  const sentence = x => { const town = P.findPlace(D, REGION_TOWNS.find(t => t[2] === x.label)[1]).city;
+    const out = x.out.map(cr => lc(cr.name)), ind = x.indoor.map(cr => lc(cr.name));
+    if (!out.length && !ind.length) return `<p><strong>${x.label}</strong> (${esc(town)}): nothing goes in this month.</p>`;
+    return `<p><strong>${x.label}</strong> (${esc(town)}): ${out.length ? `plant ${listOf(out)} outside` : "nothing goes outside yet"}${ind.length ? `${out.length ? ", and" : ", but you can"} start ${listOf(ind)} indoors` : ""}.</p>`; };
+  const count = regions.reduce((n, x) => Math.max(n, x.out.length), 0);
+  const bc = crumbs(rel, [["Monthly chores", "garden-calendar/"], [name, null]]);
+  write(rel, `garden-calendar/${slug}/index.html`, layout({
+    rel, canonical: `garden-calendar/${slug}/`, current: "garden-calendar/",
+    title: `What to Plant in ${name} in Oregon and Washington`,
+    description: fitDesc(`What to plant in ${name} in Oregon and Washington, with dates for the west side, coast, east side and high desert, plus ${name}'s garden jobs.`,
+      `What to plant in ${name} in Oregon and Washington, with dates by region and ${name}'s garden jobs.`),
+    jsonld: [bc.ld],
+    body: `${bc.html}
+<section class="hero"><h1>What to plant in ${name} in Oregon and Washington</h1>
+<p class="lede">${esc(c.intro)}${count ? ` Up to ${count} of our plants can go in somewhere in the Northwest this month.` : ""}</p></section>
+<h2>What to plant in ${name}, by region</h2>
+<div class="prose">${regions.map(sentence).join("\n")}</div>
+${table ? `<h2>${name} planting dates</h2>\n<p>Dates are for one typical town in each region. Colder gardens run later; <a href="${rel}">use the planner</a> for your own town.</p>\n${table}` : ""}
+<h2>${name} garden jobs</h2>
+<div class="cm-grid">${CHORE_KINDS.filter(([k]) => c.tasks[k] && c.tasks[k].length).map(([k, label]) => `<div class="cm-card cm-${k}"><h3>${label}</h3><ul>${c.tasks[k].map(([t, r]) =>
+    `<li class="cm-plain">${esc(t)}${r ? ` <span class="cm-tag cm-tag-${r}">${REGION_TAGS[r]}</span>` : ""}</li>`).join("")}</ul></div>`).join("")}</div>
+${ad("month-mid")}
+${c.articles.length ? `<h2>Read next</h2>\n${articleCards(rel, c.articles.filter(s => articleBySlug[s]).map(s => articleBySlug[s]))}` : ""}
+<nav class="cm-pager" aria-label="Other months"><a href="../${monthSlug(prev.m)}/">← ${P.MONTHS_LONG[prev.m - 1]}</a><a href="../">All months</a><a href="../${monthSlug(next.m)}/">${P.MONTHS_LONG[next.m - 1]} →</a></nav>`
+  }), "0.7");
+});
 
 /* How it works */
 const z = D.zones;
