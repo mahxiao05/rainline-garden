@@ -1072,6 +1072,538 @@ const notes = {
       ["Are ants bad for peonies?", "No. Ants visit the buds for their sugary nectar and do no harm. You don't need to spray them; just shake cut flowers before taking them inside."],
       ["When should I cut back peonies?", "In fall, after the leaves have yellowed or been hit by frost. Cut stems to the ground and throw them out rather than composting, to reduce botrytis next spring. Itoh peonies are cut back to just above their short woody base."]
     ]
+  },
+  "mustard-greens": {
+    keys: [["Soil to sprout","45–85°F"], ["Days to baby leaves","About 21"], ["Days to full size","40–50"], ["Biggest risk","Flea beetles"]],
+    sections: [
+      ["Two seasons, not one",
+        "Mustard greens are a cool-season brassica, close kin to kale and turnips. They sprout quickly in cool soil, shrug off light frost and grow fast, which makes them one of the easiest greens for early spring and fall in the Northwest.",
+        "Long, warm days push them to flower. Spring sowings give you a few weeks of leaves before they bolt, so sow early and in small batches. The better crop here is the late-summer sowing: plants size up in September and October, and frost turns the leaves milder and sweeter."],
+      ["Soil, spacing and flavor",
+        "Any reasonably fertile bed with compost works. Thin seedlings to 6 inches for baby leaves or about a foot for big plants, and eat the thinnings. Even moisture keeps the leaves tender; plants that dry out get tough and much hotter.",
+        "Heat sharpens the bite and cold mellows it. Red Giant and other big-leaf types are the spiciest, while mizuna is mild enough for salads."],
+      ["Pests to watch",
+        "Flea beetles chew tiny shot holes in spring seedlings, and cabbage worms and aphids show up later, just as on kale. Floating row cover laid on at sowing keeps both the beetles and the cabbage moths off. Slugs are the main fall and winter pest west of the Cascades.",
+        "Rotate mustard with crops outside the cabbage family, since the same pests and soil diseases build up when brassicas follow brassicas."]
+    ],
+    faq: [
+      ["Why did my mustard greens bolt so fast?", "Lengthening days and warm weather trigger flowering. Spring-sown mustard often bolts by June. Sow as early as the soil can be worked, pick often, and plant your main crop in late summer instead."],
+      ["Can I grow mustard greens through winter in the Northwest?", "On the west side and coast, yes in most winters. Plants sown in August keep producing into winter and survive light frosts. A hard freeze in the teens can damage them, so cover with row cover on the coldest nights."],
+      ["Are mustard flowers edible?", "Yes. The yellow flowers and tender flower buds are edible and mildly spicy. Once plants flower, though, the leaves turn tough and bitter."]
+    ]
+  },
+  mache: {
+    keys: [["Soil to sprout","50–70°F (cool)"], ["Days to harvest","50–60"], ["Main sowing","Late summer"], ["Cold hardiness","Very hardy"]],
+    sections: [
+      ["A green for the dark months",
+        "Mâche, also called corn salad or lamb's lettuce, makes small rosettes of mild, nutty leaves. It's one of the most cold-hardy salad greens there is, which is why Northwest gardeners treat it as a winter crop rather than a spring one.",
+        "The main sowing goes in from mid-August into September. Plants grow slowly through fall and can be picked through most west-side winters. Spring sowings work too, but they bolt as soon as days lengthen."],
+      ["Getting it to sprout",
+        "The seed germinates best in cool soil and poorly in summer heat, so late-summer sowings can be slow and patchy. Keep the seedbed moist and lightly shaded until seedlings appear, which can take one to two weeks.",
+        "It isn't fussy about soil. Plants are small, so sow in a band and thin to 3 or 4 inches apart. An empty bed after summer crops, a cold frame or a spot between garlic rows all work."],
+      ["Harvest and care",
+        "Cut whole rosettes at the soil line, or pick the biggest plants and let the others keep growing. Rinse carefully, since soil splashes into the rosettes in winter rain.",
+        "Slugs are the main pest. A cold frame or row cover speeds growth in winter and keeps leaves cleaner. In spring, let a few plants flower and drop seed, and mâche often comes back on its own in fall."]
+    ],
+    faq: [
+      ["When should I plant mâche in Oregon and Washington?", "Sow in late summer, from mid-August into September, for picking from late fall through winter. You can also sow in early spring, but it bolts quickly as days lengthen."],
+      ["Why isn't my mâche sprouting?", "The soil is probably too warm. Mâche germinates best in cool soil. Sow a little later, keep the bed moist and shaded, and be patient for up to two weeks."],
+      ["What does mâche taste like?", "Mild, tender and slightly nutty, with no bitterness. It's good on its own with a light dressing or mixed with sharper greens like arugula."]
+    ]
+  },
+  radicchio: {
+    keys: [["Best sowing","Midsummer"], ["Days to heads","80–90"], ["Soil pH","6.0–7.0"], ["Biggest risk","Bolting"]],
+    sections: [
+      ["Why timing matters",
+        "Radicchio is a chicory, grown for its bitter, red-and-white heads. Like other chicories it responds to day length and temperature: plants sown in spring often send up a flower stalk in summer instead of forming a head.",
+        "That's why most Northwest growers sow in June or July, alone or in trays to transplant. Plants grow leaves through summer and form tight heads as nights cool in fall. The cold also turns the leaves a deeper red and takes the edge off the bitterness."],
+      ["Planting and growing",
+        "Sow seeds ¼ inch deep, or start them in trays and transplant at about four weeks old, 8 to 12 inches apart. Keep the soil evenly moist through summer heat so plants don't stall.",
+        "Don't worry if summer leaves look green and loose. The outer leaves protect the head, which forms in the center later. Modern hybrids like Indigo head up more reliably than older open-pollinated types."],
+      ["Harvest and storage",
+        "Cut heads at the base when they feel firm, from September through late fall. West of the Cascades, radicchio handles light frost and some varieties hold in the garden into early winter.",
+        "Peel off and compost the tattered outer leaves; the head inside is clean. Heads keep for weeks in the fridge. If a plant never forms a head, cut it back to an inch or two in early fall and it may regrow a small one."]
+    ],
+    faq: [
+      ["Why didn't my radicchio form a head?", "Usually it was sown at the wrong time. Spring sowings often bolt, and some older varieties are unreliable. Sow a modern hybrid in midsummer and give it steady water."],
+      ["Why is my radicchio green instead of red?", "The red color develops in cool weather. Leaves stay green through summer, and heads color up as nights cool in fall."],
+      ["How do I make radicchio less bitter?", "Harvest after a few cool nights, soak cut leaves in cold water for half an hour, or grill or roast them. Cooking mellows the bitterness."]
+    ]
+  },
+  sorrel: {
+    keys: [["Lifespan","Perennial, 3–5+ years"], ["Soil pH","5.5–7.0"], ["First picking","Early spring"], ["Biggest risk","Bolting"]],
+    sections: [
+      ["A lemony perennial green",
+        "Garden sorrel and French sorrel are hardy perennials grown for their sharp, lemony leaves. They're among the first greens to grow each spring, often weeks before anything you sowed is ready, and they come back for years.",
+        "The sour taste comes from oxalic acid, the same compound in spinach and rhubarb. It's fine in normal kitchen amounts, but people prone to kidney stones may want to go easy."],
+      ["Planting and care",
+        "Sow seeds in early spring ½ inch deep, or plant young plants, about a foot apart. Sorrel takes sun or part shade and isn't fussy about soil. A small clump of three or four plants is plenty for most kitchens.",
+        "Cut off flower stalks as soon as they appear in late spring; once plants flower, leaves turn tough and more sour. Divide crowded clumps every few years in spring or fall."],
+      ["Harvest through the season",
+        "Pick young leaves, 3 to 6 inches long, which are the most tender. In midsummer heat the leaves get tough; cut the whole plant back to a couple of inches, water it, and a fresh flush grows for fall.",
+        "French sorrel has smaller, shield-shaped leaves and a milder, more lemony taste. Red-veined sorrel is mostly ornamental, with young leaves that are good in salads."]
+    ],
+    faq: [
+      ["Does sorrel come back every year?", "Yes. Garden and French sorrel are hardy perennials that die back in hard winters and regrow in early spring."],
+      ["Why are my sorrel leaves bitter or tough?", "The plant is flowering, the leaves are old, or it's midsummer. Cut off flower stalks, pick young leaves, and cut the plant back in summer for fresh growth."],
+      ["How do you use sorrel?", "Raw in salads for a lemony bite, or cooked into soups and sauces, especially with fish and eggs. It turns olive green when cooked, which is normal."]
+    ]
+  },
+  horseradish: {
+    keys: [["Plant","Root cuttings"], ["Harvest","Fall to early spring"], ["Spacing","18–24 in"], ["Biggest risk","Spreading"]],
+    sections: [
+      ["Planting a root cutting",
+        "Horseradish is grown from pieces of root, often sold as sets, about pencil-thick and 8 to 12 inches long. The top end is usually cut flat and the bottom at a slant. Plant them in early spring, laid at a 45-degree angle with the top end 2 to 3 inches below the surface.",
+        "It likes deep, loose soil in full sun. Rocky or heavy clay soil gives you forked, twisted roots. A large tub or a raised bed is often the best place, because it keeps the plant contained."],
+      ["Keeping it in bounds",
+        "Every bit of root can grow into a new plant, so horseradish is hard to get rid of once it's in. Dig the whole root system at harvest, and replant only the pieces you want for next year.",
+        "Many growers treat it as an annual: plant cuttings in spring, dig everything in late fall, keep the big roots for the kitchen and save a few side roots to replant."],
+      ["Harvest and heat",
+        "The roots grow most in late summer and fall. Dig after the first frosts, when flavor is sharpest, or leave them in the ground and dig as needed through winter on the west side.",
+        "The heat comes from compounds released when the root is grated or cut, and it fades within minutes. Grate it in a well-ventilated spot and mix with vinegar right away to hold the heat."]
+    ],
+    faq: [
+      ["When do you plant horseradish?", "In early spring, as soon as the soil can be worked. In mild west-side gardens you can also plant in fall."],
+      ["How do I stop horseradish from spreading?", "Grow it in a big tub or a bottomless barrel sunk into the ground, and dig every piece of root at harvest."],
+      ["Can I eat the leaves?", "Young leaves are edible and peppery, used in small amounts like a green. The root is the main harvest."]
+    ]
+  },
+  sage: {
+    keys: [["Lifespan","Perennial, 4–5 years"], ["Cold hardiness","Very hardy, if drained"], ["Water","Low once established"], ["Biggest risk","Wet winter roots"]],
+    sections: [
+      ["Sun and drainage first",
+        "Culinary sage is a Mediterranean shrub that wants full sun and soil that drains fast. It handles cold well, but it doesn't like wet roots in winter, which is the usual cause of dead sage west of the Cascades.",
+        "Plant it on a mound, slope, raised bed or large pot with gritty soil. Skip rich compost and fertilizer: lean soil keeps plants compact and flavorful."],
+      ["Pruning and renewal",
+        "Each spring, once new leaves appear, cut plants back by about a third to keep them bushy. Don't cut into old, leafless wood; it often won't sprout.",
+        "Sage gets woody and sparse after four or five years. Replace old plants, or layer a low branch: pin it to the soil and it roots by fall."],
+      ["Harvest and varieties",
+        "Pick leaves any time. Flavor peaks just before flowering in early summer. Leave plenty of growth going into winter, especially on young plants.",
+        "Berggarten has big, round leaves and rarely flowers, so it stays leafy. Purple, golden and tricolor sages look great but are a bit less hardy than common sage."]
+    ],
+    faq: [
+      ["Why did my sage die over winter?", "Usually wet soil, not cold. Sage rots in soggy winter ground. Replant on a mound, in a raised bed or in a pot with gritty soil."],
+      ["Should I let sage flower?", "Yes if you like the bees; the blue flowers are pollinator favorites. Cut flowering stems back afterward to keep plants bushy."],
+      ["Can I grow sage in a pot?", "Yes. Use a pot at least 12 inches wide with drainage holes and gritty potting mix, and raise it off the ground in winter so it drains."]
+    ]
+  },
+  "lemon-balm": {
+    keys: [["Lifespan","Perennial"], ["Sun","Full sun to part shade"], ["Spread","By seed"], ["Biggest risk","Self-seeding"]],
+    sections: [
+      ["An easy herb for tea",
+        "Lemon balm is a hardy perennial in the mint family, grown for its lemon-scented leaves. It grows in almost any soil and takes part shade better than most herbs, which makes it useful in shady Northwest yards.",
+        "It dies back in winter and regrows from the crown each spring. Unlike mint, it doesn't spread by long runners, but it seeds itself freely."],
+      ["Keeping it tidy",
+        "Cut plants back by about half before the small white flowers set seed. That stops seedlings and brings a fresh crop of tender leaves. A second cut in late summer keeps plants neat.",
+        "In full sun it needs some summer water; in part shade it gets by with less. Divide crowded clumps every few years in spring."],
+      ["Harvest and use",
+        "Pick stems before flowering, when the scent is strongest. Use the leaves fresh in tea, salads and desserts.",
+        "Dried lemon balm loses scent fast. Dry it quickly in a warm, dark, airy place and store it airtight, or freeze leaves in ice cubes. Bees love the flowers if you let a few bloom."]
+    ],
+    faq: [
+      ["Is lemon balm invasive?", "It doesn't run like mint, but it seeds itself widely. Cutting it back before it flowers keeps it under control."],
+      ["Does lemon balm grow in shade?", "Yes. It grows well in part shade, and the leaves are often more tender there. In deep shade it gets leggy."],
+      ["Why doesn't my dried lemon balm smell like lemon?", "The scent fades during slow drying and storage. Dry it quickly, or use it fresh or frozen."]
+    ]
+  },
+  tarragon: {
+    keys: [["Buy as","Plants, not seed"], ["Cold hardiness","Very hardy, if drained"], ["Divide","Every 3 years"], ["Biggest risk","Wet winter roots"]],
+    sections: [
+      ["French versus Russian",
+        "The tarragon cooks want is French tarragon, with its sweet anise flavor. It rarely produces viable seed, so it's sold only as plants grown from cuttings or divisions. Seed packets labeled tarragon are almost always Russian tarragon, which is vigorous but nearly flavorless.",
+        "Before buying, crush a leaf. French tarragon smells clearly of licorice and leaves a faint numbing tingle on the tongue."],
+      ["Planting and winter care",
+        "Plant in full sun or light afternoon shade in soil that drains well. Like sage and thyme, it suffers more from wet winter roots than from cold, so use a raised bed or pot on the west side.",
+        "It dies back to the ground in winter and regrows in spring. Cut old stems down in late fall. Clumps lose vigor after a few years; divide them in spring every third year to keep them productive."],
+      ["Harvest and use",
+        "Snip sprigs from late spring through summer. Regular cutting keeps plants bushy.",
+        "The flavor is best fresh. To keep it, freeze chopped leaves or steep sprigs in vinegar. Dried tarragon loses much of its flavor."]
+    ],
+    faq: [
+      ["Can I grow French tarragon from seed?", "No. French tarragon rarely sets viable seed. Seed sold as tarragon is usually Russian tarragon. Buy a plant instead."],
+      ["Why did my tarragon disappear in winter?", "It dies back to the ground every winter and regrows in spring. If nothing comes back by May, the roots likely rotted in wet soil."],
+      ["Does tarragon need full sun?", "It does best in full sun but tolerates some afternoon shade, which can help in hot eastern summers."]
+    ]
+  },
+  cosmos: {
+    keys: [["Soil to sprout","65–85°F"], ["Days to bloom","60–80"], ["Height","1–6 ft by variety"], ["Biggest risk","Flopping"]],
+    sections: [
+      ["Easy from seed",
+        "Cosmos are summer annuals from Mexico, with feathery leaves and daisy-like flowers in pink, white, magenta and orange. They sprout fast in warm soil and bloom from midsummer until frost.",
+        "Sow seeds directly once the soil warms, or start them indoors four to six weeks earlier in short-season areas like Central Oregon and transplant after your last frost."],
+      ["Lean soil, more flowers",
+        "Cosmos flower best in average or poor soil. Rich soil and fertilizer make tall, leafy plants with fewer blooms. Water seedlings until they're established; after that, they handle dry spells well.",
+        "Pinch the growing tip when plants are about a foot tall to make them branch. Tall types like Sensation reach 4 to 6 feet and need staking or netting in windy or rainy spots."],
+      ["Cutting and deadheading",
+        "For bouquets, cut stems when the flowers are just opening, early in the morning. They last about a week in water.",
+        "Deadhead regularly to keep new flowers coming. Late in the season, let some flowers go to seed: finches eat the seeds, and plants often reseed for next year."]
+    ],
+    faq: [
+      ["Why are my cosmos all leaves and no flowers?", "Too much fertilizer or rich soil. Cosmos bloom best in lean soil. Stop feeding, and plant next year's in a less fertile spot."],
+      ["Do cosmos come back every year?", "They're annuals, killed by frost, but they often reseed if you let some flowers drop seed."],
+      ["When should I plant cosmos in the Northwest?", "Sow outdoors after the soil warms, usually late May on the west side. Where summers are short, start seeds indoors in April and transplant after the last frost."]
+    ]
+  },
+  nasturtiums: {
+    keys: [["Soil to sprout","60°F or warmer"], ["Days to bloom","50–60"], ["Seed depth","½–1 in"], ["Biggest risk","Black aphids"]],
+    sections: [
+      ["Big seeds, easy plants",
+        "Nasturtiums grow from big seeds that are easy to handle, which makes them a favorite for kids. Soaking the seeds overnight speeds sprouting. Sow after your last frost, since frost kills the plants.",
+        "Bush types stay compact for edges and pots, while trailing and climbing types spill out of baskets or scramble up a fence."],
+      ["Poor soil, more flowers",
+        "Nasturtiums bloom best in lean soil. Rich soil and fertilizer give you a mound of leaves with few flowers. They take part shade, which helps in hot eastern gardens.",
+        "Water seedlings until they're established. In the cool west-side summer they bloom steadily until frost."],
+      ["Eating them and pests",
+        "Flowers, leaves and young seed pods are all edible, with a peppery taste like watercress. Use flowers and leaves in salads, and pickle the green pods like capers.",
+        "Black aphids love nasturtiums, which is why some gardeners plant them as a trap crop. Check under the leaves in summer and pull or hose off heavily infested stems."]
+    ],
+    faq: [
+      ["Are nasturtiums edible?", "Yes. The flowers, leaves and green seed pods are edible and peppery. Don't eat flowers that have been sprayed."],
+      ["Why are my nasturtiums all leaves?", "The soil is too rich, or they were fertilized. Nasturtiums flower best in poor soil."],
+      ["Do nasturtiums come back?", "They're annuals here and die at the first frost, but dropped seeds sometimes sprout the next spring."]
+    ]
+  },
+  marigolds: {
+    keys: [["Soil to sprout","70–80°F"], ["Days to bloom","50–60"], ["Start indoors","4–6 weeks before frost"], ["Biggest risk","Slugs on seedlings"]],
+    sections: [
+      ["Which marigold",
+        "French marigolds are compact, 8 to 12 inches tall, with small single or double flowers, ideal for edges and pots. African marigolds grow 2 to 3 feet with big pompom flowers. Signet marigolds have small, lemony, edible flowers and lacy leaves.",
+        "All are summer annuals killed by frost. Their scented leaves make them less appealing to deer than many flowers, though no plant is deer-proof."],
+      ["Planting",
+        "Start seeds indoors four to six weeks before your last frost, or buy young plants. They sprout fast in warm soil. Plant out once the soil warms, a little later than tomatoes are fine.",
+        "Give them full sun and average soil. Too much fertilizer means fewer flowers."],
+      ["Keeping them blooming",
+        "Deadhead spent flowers every week or so to keep plants flowering until frost. African types may need a stake in wind or rain.",
+        "Slugs are the biggest problem in damp spring weather and can eat young plants overnight. In late-summer rain, big double flowers can rot from gray mold; remove them and give plants room."]
+    ],
+    faq: [
+      ["Do marigolds keep pests away?", "The evidence is mixed. French marigolds grown as a dense cover crop can reduce some root-knot nematodes, but a few plants scattered in a bed won't repel most garden pests."],
+      ["When should I plant marigolds?", "After your last frost, once the soil is warm. Start seeds indoors four to six weeks earlier for earlier flowers."],
+      ["Are marigolds edible?", "Signet marigolds and calendula (pot marigold) have edible petals. Use common French and African marigolds for show, not food."]
+    ]
+  },
+  calendula: {
+    keys: [["Soil to sprout","60–70°F"], ["Days to bloom","45–60"], ["Frost","Handles light frost"], ["Biggest risk","Powdery mildew"]],
+    sections: [
+      ["A cool-season flower",
+        "Calendula, also called pot marigold, is a fast, cheerful annual in orange, yellow, apricot and cream. Unlike true marigolds, it prefers cool weather and handles light frost, so it can be sown in early spring.",
+        "In the mild west-side climate, a late-summer sowing blooms in fall and often keeps going into winter. In hot eastern summers, plants slow down in July and pick up again as nights cool."],
+      ["Easy from seed",
+        "Sow the curved seeds directly ¼ to ½ inch deep. They sprout in a week or two. Thin to 10 to 12 inches apart.",
+        "Average soil is fine. Pick flowers often to keep plants blooming. Plants left alone set seed and often come back the next year."],
+      ["Using the flowers",
+        "The petals are edible, with a mild, slightly peppery taste. Sprinkle them in salads or use them to color butter and rice.",
+        "Many people dry the flowers for home skin salves. Pick fully open flowers in the morning and dry them on a screen out of the sun."]
+    ],
+    faq: [
+      ["Is calendula the same as marigold?", "No. Calendula is sometimes called pot marigold, but it's a different plant from the Tagetes marigolds grown as summer annuals."],
+      ["When should I sow calendula?", "In early spring, and again in late summer for fall flowers. It handles light frost."],
+      ["Why do my calendula leaves have white powder?", "That's powdery mildew, common in late summer. It rarely stops flowering. Pull tired plants and rely on a fresh sowing."]
+    ]
+  },
+  ranunculus: {
+    keys: [["Soak corms","3–4 hours"], ["Days to bloom","About 90"], ["Damage below","About 25°F"], ["Biggest risk","Corm rot"]],
+    sections: [
+      ["Planting the corms",
+        "Ranunculus grow from small, dry, claw-shaped corms. Soak them in room-temperature water for three to four hours until they plump, then plant 2 inches deep with the claws pointing down.",
+        "Many growers pre-sprout soaked corms in a tray of damp potting mix in a cool spot for 10 to 14 days before planting. That gives a head start and lets you skip any corms that rot."],
+      ["Timing and frost",
+        "Young plants handle light frost but are damaged by hard freezes below about 25°F. In most of the Northwest they go in during early spring, with frost cloth on hand for cold nights. They bloom in late spring and stop when summer heat arrives.",
+        "Experienced west-side growers also plant in fall under a hoop house or cold frame for earlier, bigger plants. Outdoors without cover, fall plantings often rot in wet, cold winters."],
+      ["Drainage and harvest",
+        "The corms rot in cold, soggy soil, so plant in a raised bed or loose soil that drains well, and don't water again until leaves appear.",
+        "Cut stems when the buds are colored and feel soft like a marshmallow. They open in the vase and last a week or more. Most gardeners replant fresh corms each year."]
+    ],
+    faq: [
+      ["Why did my ranunculus corms rot?", "Too much water before the leaves appeared, or cold, poorly drained soil. Water once after planting, then wait, and use raised beds."],
+      ["Do ranunculus come back every year?", "Sometimes in mild, well-drained gardens, but they rarely bloom as well. Most growers plant fresh corms each spring."],
+      ["When do ranunculus bloom?", "About 90 days after planting. Spring-planted corms bloom in late spring and early summer."]
+    ]
+  },
+  snapdragons: {
+    keys: [["Start indoors","8–10 weeks before frost"], ["Light to sprout","Yes, don't cover"], ["Frost","Handles light frost"], ["Biggest risk","Rust"]],
+    sections: [
+      ["Starting from seed",
+        "Snapdragon seeds are tiny and need light to germinate, so press them onto the surface of moist seed-starting mix without covering them. They take one to two weeks to sprout and grow slowly at first.",
+        "Start them indoors eight to ten weeks before your last frost, or buy young plants. Harden them off and plant out a few weeks before the last frost; they handle light frost and grow best in cool weather."],
+      ["Growing tall stems",
+        "Give them full sun and good soil with compost. Pinch young plants above the third set of leaves for more, shorter stems, or leave them unpinched for a single tall spike.",
+        "Tall types like Rocket need support. Stretch netting over the bed early so stems grow up through it."],
+      ["Cutting and rust",
+        "Cut stems when the lower third of the flowers are open. Cut low, and side shoots bloom again later.",
+        "Rust causes orange-brown spots under the leaves in damp weather. Water at the soil, give plants space, and pull and bin infected plants. On the west side, snapdragons often survive mild winters and bloom early the next year."]
+    ],
+    faq: [
+      ["Do snapdragons come back every year?", "They're short-lived perennials grown as annuals. In mild west-side winters many survive and bloom again early the next year, though second-year plants are often weaker."],
+      ["Why won't my snapdragon seeds sprout?", "They were probably covered. The seeds need light, so press them onto the surface and keep them moist."],
+      ["Can snapdragons handle frost?", "Yes, light frost. Plant them out a few weeks before your last frost, and cover them on very cold nights."]
+    ]
+  },
+  persimmons: {
+    keys: [["Years to fruit","3–5"], ["Pollination","Self-fertile (Asian)"], ["Harvest","October–November"], ["Cold hardiness","About 0°F (Asian)"]],
+    sections: [
+      ["Astringent or not",
+        "Asian persimmons come in two kinds. Non-astringent types like Fuyu and Jiro can be eaten crisp like an apple once they're orange. Astringent types like Hachiya and Saijo are mouth-puckering until they soften to jelly on the counter.",
+        "Most Asian persimmons set fruit without pollination, so one tree is enough. American persimmons are smaller, hardier trees; many need a second tree to fruit, though some varieties like Meader are self-fertile."],
+      ["Heat and siting in the Northwest",
+        "Persimmons leaf out late and ripen late, so the main challenge here is enough summer heat and a long enough fall. West of the Cascades, plant in your sunniest, warmest spot, such as by a south wall. Hot eastern valleys ripen fruit easily but have colder winters; choose hardier types like Saijo there. In the high desert, the frost-free season is usually too short for persimmons to ripen.",
+        "Young trees have a long taproot and dislike being moved. Plant a small tree, water deeply through the first two summers, and expect slow growth the first year."],
+      ["Harvest",
+        "Fruit ripens in October and November, often after the leaves drop, which is a striking sight. Clip fruit with a short stem left on.",
+        "Pick before a hard freeze. Astringent fruit can be picked firm and softened indoors. Persimmons have few pests here; birds and fruit drop in cool summers are the usual troubles."]
+    ],
+    faq: [
+      ["Can you grow persimmons in Portland or Seattle?", "Yes. Fuyu and other Asian persimmons fruit west of the Cascades in a warm, sunny spot. Fruit ripens in late fall."],
+      ["Do persimmon trees need a pollinator?", "Most Asian persimmons don't. Many American persimmons do, unless you buy a self-fertile variety."],
+      ["Why are my persimmons so bitter?", "You probably have an astringent type like Hachiya. Let the fruit soften completely, until it feels like a water balloon, before eating."]
+    ]
+  },
+  "asian-pears": {
+    keys: [["Years to fruit","3–5"], ["Pollination","Needs a partner"], ["Harvest","August–September"], ["Biggest risk","Fire blight"]],
+    sections: [
+      ["Pollination",
+        "Most Asian pears need a second variety that blooms at the same time. Another Asian pear works, and so do many European pears like Bartlett. Shinseiki and 20th Century are partly self-fertile but still crop better with a partner.",
+        "Asian pears bloom early, so late spring frosts can damage the flowers. Planting on a slope where cold air drains away helps."],
+      ["Thinning for good fruit",
+        "Asian pears tend to set far more fruit than the tree can size up. About three weeks after bloom, thin each cluster to one fruit, spacing them about 6 inches apart. It feels harsh, but you'll get bigger, sweeter pears and a crop every year.",
+        "Prune in late winter to keep the tree open. Semi-dwarf trees, 12 to 15 feet tall, are the easiest size for home gardens."],
+      ["Harvest and fire blight",
+        "Unlike European pears, which ripen off the tree, Asian pears ripen on the tree. Pick when the color changes and the fruit tastes sweet. They're crisp, juicy and keep for weeks in the fridge.",
+        "Fire blight is a bacterial disease that blackens shoots as if burned. Cut infected shoots 8 to 12 inches below the damage on a dry day, and disinfect pruners between cuts. Avoid heavy nitrogen fertilizer, which drives the soft growth blight attacks."]
+    ],
+    faq: [
+      ["Do Asian pears need a pollinator?", "Most do. Plant a second Asian pear or a European pear like Bartlett that blooms at the same time."],
+      ["When are Asian pears ripe?", "Usually August into September in the Northwest. Taste one: when it's sweet and the color has changed, the tree is ready."],
+      ["Why are my Asian pears so small?", "The tree set too much fruit. Thin to one fruit per cluster a few weeks after bloom."]
+    ]
+  },
+  quince: {
+    keys: [["Years to fruit","3–5"], ["Pollination","Self-fertile"], ["Harvest","October"], ["Biggest risk","Leaf blight"]],
+    sections: [
+      ["What quince is",
+        "Fruiting quince, Cydonia oblonga, is a small tree related to apples and pears, with big pink-white spring flowers and golden, fragrant fruit in fall. It's not the same as flowering quince, an ornamental shrub with small, hard fruit.",
+        "Most varieties are too hard and sour to eat raw. Cooked slowly, the flesh turns pink and perfumed, which is why quince is prized for jelly, paste and poached fruit. Aromatnaya is one of the few soft enough to eat fresh when fully ripe."],
+      ["Planting and care",
+        "Quince is self-fertile, so one tree is enough. Plant in full sun in soil that drains reasonably well. It blooms late, after most frosts, and it's very cold-hardy.",
+        "Trees grow 12 to 15 feet and need only light pruning in late winter to remove crossing branches and open the center."],
+      ["Diseases",
+        "Quince leaf blight is the main problem in wet west-side springs: brown spots on leaves and fruit and early leaf drop. Rake and remove fallen leaves in autumn and prune for good airflow.",
+        "Quince can also get fire blight. Cut blackened shoots well below the damage on a dry day."]
+    ],
+    faq: [
+      ["Can you eat quince raw?", "Most varieties are too hard and sour. Cook them. A few, like Aromatnaya, soften enough to eat fresh when fully ripe."],
+      ["When is quince ready to pick?", "In October, when the fruit turns from green to fully yellow and smells strongly fragrant."],
+      ["Does quince need a pollinator?", "No. Quince is self-fertile, so one tree fruits on its own."]
+    ]
+  },
+  mulberries: {
+    keys: [["Years to fruit","2–3"], ["Pollination","Usually self-fertile"], ["Harvest","Summer, over weeks"], ["Biggest risk","Stains and birds"]],
+    sections: [
+      ["Choosing a mulberry",
+        "Fruiting mulberries are fast, tough trees with sweet berries that look like long blackberries. Illinois Everbearing, a hybrid, is the most popular choice for flavor, hardiness and a long picking season.",
+        "Full-size trees reach 30 feet or more. Gerardi Dwarf stays small enough for a large pot or small yard. Pakistan has very long fruit but is less cold-hardy, so it suits only the mildest gardens."],
+      ["Siting it right",
+        "Ripe berries drop and stain. Plant over lawn or mulch, away from driveways, patios, sidewalks and where cars park. Birds love the fruit, and they spread the seeds.",
+        "Mulberries grow in most soils in full sun and handle drought once established. Water deeply through the first two summers."],
+      ["Harvest and pruning",
+        "Berries ripen over several weeks in summer. Spread a sheet under the tree and give the branches a gentle shake; ripe fruit falls. Eat them fresh or freeze them. They don't keep long.",
+        "Prune in late winter to keep the tree a size you can pick and net. Mulberries bleed sap if pruned in spring, which is harmless but messy."]
+    ],
+    faq: [
+      ["Do mulberries need a pollinator?", "Most fruiting varieties, including Illinois Everbearing, set fruit without a second tree."],
+      ["Will mulberries stain my patio?", "Yes. Dropped fruit stains paving and cars. Plant the tree over lawn or mulch."],
+      ["Which mulberry is best for the Northwest?", "Illinois Everbearing is the safest pick: hardy, productive and sweet. Gerardi Dwarf suits small spaces."]
+    ]
+  },
+  thimbleberry: {
+    keys: [["Native range","Both sides"], ["Height","4–6 ft"], ["Harvest","July–August"], ["Thorns","None"]],
+    sections: [
+      ["A native raspberry relative",
+        "Thimbleberry grows wild across the Northwest, from coastal forest edges to eastern mountains. It's a thornless shrub with big, soft, maple-shaped leaves, white flowers in late spring and flat, cup-shaped red berries in summer.",
+        "The flowers feed native bees and the fruit feeds birds, which makes it a good plant for a wildlife hedge or the edge of a wooded yard."],
+      ["Planting and spreading",
+        "Plant in part shade to full sun in ordinary soil with some moisture. It grows in shade but fruits more in sun. Water through the first summer.",
+        "Thimbleberry spreads by underground stems and forms a thicket in a few years. That's ideal for a wild corner but not a tidy bed. Pull or mow suckers that stray."],
+      ["Harvest and care",
+        "Berries ripen in mid to late summer. They're soft and seedy, with a tart-sweet flavor, and they crumble easily, so they don't travel. Eat them fresh or make jam.",
+        "Like raspberries, each cane fruits once. Cut old canes to the ground in late winter to keep the patch open."]
+    ],
+    faq: [
+      ["Are thimbleberries edible?", "Yes. They're soft, tart-sweet and good fresh or in jam."],
+      ["Does thimbleberry have thorns?", "No. Unlike most of its raspberry and blackberry relatives, it's thornless."],
+      ["Does thimbleberry spread?", "Yes, by underground stems. Plant it where a thicket is welcome."]
+    ]
+  },
+  salmonberry: {
+    keys: [["Native range","West side"], ["Bloom","February–April"], ["Harvest","May–June"], ["Height","6–10 ft"]],
+    sections: [
+      ["Early flowers for hummingbirds",
+        "Salmonberry is one of the first native shrubs to bloom west of the Cascades, with magenta flowers from late winter into spring. Rufous hummingbirds arrive in time to feed on them, and native bees use them too.",
+        "The berries ripen in late spring, earlier than most native fruit, in colors from golden orange to deep red."],
+      ["Planting",
+        "It thrives in moist soil and grows wild along streams and in damp woods. Plant in part shade or sun where the soil stays moist. Water through the first two summers.",
+        "Salmonberry spreads by roots and forms thickets that are great for wildlife and erosion control on wet slopes. Its canes are prickly, so keep it away from paths."],
+      ["Harvest and care",
+        "Pick berries when fully colored and soft. They're juicy and mild, best eaten fresh, and don't keep long.",
+        "Cut a few of the oldest canes to the ground in winter. Olympic Double is a selection with double flowers that's grown mostly for show."]
+    ],
+    faq: [
+      ["Are salmonberries edible?", "Yes. They're juicy and mild. Flavor varies a lot from plant to plant."],
+      ["When does salmonberry bloom?", "From late winter into spring, often starting in February in western Oregon and Washington."],
+      ["Will salmonberry grow in dry soil?", "Not well. It needs moist soil and suits low spots, stream banks and shady, damp areas."]
+    ]
+  },
+  salal: {
+    keys: [["Native range","West side and coast"], ["Soil pH","Acidic"], ["Height","1–6 ft"], ["Biggest risk","Slow start"]],
+    sections: [
+      ["The forest-floor evergreen",
+        "Salal is the glossy, leathery evergreen shrub that covers the forest floor in western Oregon, western Washington and along the coast. It has pink, bell-shaped flowers in late spring and dark purple berries in late summer.",
+        "Its height depends on the spot: knee-high in dry shade, head-high in rich, moist woods. Florists use the cut foliage, which lasts a long time in arrangements."],
+      ["Planting",
+        "Plant in part shade in acidic soil rich in organic matter, such as under conifers. Mix in leaf mold or bark compost. On the coast it handles full sun; inland, full sun and dry soil stress it.",
+        "Salal is famously slow to settle in. Expect a year or two with little top growth while roots establish. After that, it spreads by underground stems into a dense groundcover."],
+      ["Berries and care",
+        "The berries are edible, mild and seedy. People eat them fresh, dried or in jam, often mixed with other fruit. Birds and other wildlife eat them too.",
+        "Water through the first two summers and mulch with leaves or bark. Once established, it needs no fertilizer or irrigation in shade."]
+    ],
+    faq: [
+      ["Are salal berries edible?", "Yes. They're mild and seedy, good in jam or mixed with other berries."],
+      ["Why isn't my salal growing?", "It's slow to establish and can sit still for a year or two. Make sure the soil is acidic and the plant isn't in hot, dry sun inland."],
+      ["Does salal grow east of the Cascades?", "Rarely. It's a plant of the wet west side and coast and struggles in hot, dry inland summers and alkaline soil."]
+    ]
+  },
+  kinnikinnick: {
+    keys: [["Native range","Both sides"], ["Height","4–8 in"], ["Spread","Several feet per plant"], ["Biggest risk","Wet soil"]],
+    sections: [
+      ["A tough evergreen groundcover",
+        "Kinnikinnick, also called bearberry, is a low, trailing evergreen shrub with small, glossy leaves. It has pink, bell-shaped flowers in spring and red berries in fall and winter that feed birds.",
+        "It grows wild on sandy, rocky ground on both sides of the Cascades, from coastal bluffs to mountain slopes, and it's an early nectar source for native bees."],
+      ["Planting for success",
+        "Give it sun or light shade and soil that drains fast: sandy, gravelly or rocky. It fails in heavy clay and wet soil. Don't add compost or fertilizer.",
+        "It grows slowly. Plant small plants 12 to 24 inches apart for coverage in a few years, and mulch between them with gravel or bark to hold back weeds. Don't bury the stems."],
+      ["Care",
+        "Water through the first summer, then only during long droughts. Once established it needs almost nothing.",
+        "Vancouver Jade is a vigorous selection with good disease resistance. Massachusetts is another widely sold, hardy selection."]
+    ],
+    faq: [
+      ["Is kinnikinnick the same as bearberry?", "Yes. Both are common names for Arctostaphylos uva-ursi."],
+      ["How fast does kinnikinnick spread?", "Slowly at first. Expect two to four years to fill in when plants are a foot or two apart."],
+      ["Can you eat kinnikinnick berries?", "They're edible but dry and mealy. Most gardeners leave them for the birds."]
+    ]
+  },
+  "western-columbine": {
+    keys: [["Native range","Both sides"], ["Bloom","May–July"], ["Height","1–3 ft"], ["Lifespan","3–4 years, reseeds"]],
+    sections: [
+      ["A hummingbird flower",
+        "Western columbine has nodding red flowers with yellow centers and long spurs, built for hummingbird beaks. It blooms from late spring into summer and grows wild in open woods, meadows and rocky slopes on both sides of the Cascades.",
+        "Its lacy, blue-green leaves look good even when it's not in bloom."],
+      ["Planting from plants or seed",
+        "Plant young plants in spring or fall in sun or part shade. Any soil that drains reasonably well works. In hot eastern gardens, afternoon shade helps.",
+        "Seed needs a cold, moist period to sprout. Scatter it on the soil surface in fall and let winter do the work, or chill it in the fridge in damp sand for a few weeks before spring sowing."],
+      ["Care and reseeding",
+        "Each plant lives only a few years, but it reseeds. Let a few seed pods ripen and split to keep columbines coming. Garden hybrid columbines cross with it easily, so keep them apart if you want true seedlings.",
+        "Leaf miners leave white trails in the leaves. They're harmless to the plant; cut the foliage back after flowering and fresh leaves grow in."]
+    ],
+    faq: [
+      ["Does western columbine attract hummingbirds?", "Yes. The red, spurred flowers are made for hummingbirds."],
+      ["Does columbine come back every year?", "Plants live a few years and reseed, so a patch keeps going if you let some seed drop."],
+      ["Why are there white lines in my columbine leaves?", "Leaf miners, small larvae that tunnel inside the leaves. It's cosmetic. Cut damaged leaves back after flowering."]
+    ]
+  },
+  "douglas-aster": {
+    keys: [["Native range","West side"], ["Bloom","July–September"], ["Height","2–4 ft"], ["Soil","Moist"]],
+    sections: [
+      ["Late-season food for pollinators",
+        "Douglas aster has lavender to blue-violet daisies with yellow centers from midsummer into early fall. That's when many gardens slow down, so it's a valuable source of nectar for bees, butterflies and other pollinators.",
+        "It grows wild in moist meadows, along streams and in coastal areas west of the Cascades."],
+      ["Planting",
+        "Plant in full sun to part shade in moist soil. It suits rain gardens, low spots and meadow plantings, and it tolerates heavy soil.",
+        "It spreads by underground stems into a patch. That's great in a meadow or a big bed, but dig out runners where you don't want them."],
+      ["Care",
+        "Water through the first summer, and in long dry spells after that. Dry soil invites powdery mildew late in the summer.",
+        "Cutting stems back by about a third in early June makes shorter, bushier plants that flop less. Leave seed heads standing for finches and cut stems down in late winter."]
+    ],
+    faq: [
+      ["When does Douglas aster bloom?", "From midsummer into early fall, usually July through September."],
+      ["Does Douglas aster spread?", "Yes, by underground stems. It forms a patch over a few years."],
+      ["Is Douglas aster good for a rain garden?", "Yes. It likes moist soil and handles wet winters, which suits the lower zones of a rain garden."]
+    ]
+  },
+  "oregon-sunshine": {
+    keys: [["Native range","Both sides"], ["Bloom","May–July"], ["Height","1–2 ft"], ["Water","Very little once established"]],
+    sections: [
+      ["A dry-garden native",
+        "Oregon sunshine, also called woolly sunflower, is a low perennial with silvery-gray, woolly leaves and bright yellow daisies from late spring into summer. It grows wild on dry, rocky slopes, roadsides and grasslands on both sides of the Cascades.",
+        "Native bees and butterflies visit the flowers, and the silver leaves look good all season."],
+      ["Planting",
+        "Plant in the sunniest, driest spot you have, in lean, gravelly or sandy soil that drains fast. Don't add compost or fertilizer.",
+        "Seed sown on the soil surface in fall germinates after a winter of cold, wet weather. Young plants can go in during spring or fall."],
+      ["Care",
+        "Water only during the first summer. After that, summer watering and rich soil are what kill it.",
+        "Shear plants lightly after bloom to keep them compact. Individual plants are short-lived, but they reseed in open, gravelly ground."]
+    ],
+    faq: [
+      ["Why did my Oregon sunshine die?", "Usually too much water or soil that's too rich. It needs full sun, lean soil and dry summers."],
+      ["Is Oregon sunshine a sunflower?", "It's in the same daisy family, but it's a low perennial, not a tall annual sunflower."],
+      ["Can I grow Oregon sunshine from seed?", "Yes. Sow on the surface in fall so the seed gets a cold, wet winter before it sprouts."]
+    ]
+  },
+  "pacific-ninebark": {
+    keys: [["Native range","West side"], ["Bloom","May–June"], ["Height","6–12 ft"], ["Soil","Moist preferred"]],
+    sections: [
+      ["A big native shrub",
+        "Pacific ninebark is a fast-growing deciduous shrub with maple-like leaves, peeling bark and rounded clusters of small white flowers in late spring. Bees and other pollinators visit the flowers, and birds use the dense branches for cover.",
+        "It grows wild along streams, lake edges and moist woods west of the Cascades. East of the mountains, the related mallow ninebark grows on dry slopes."],
+      ["Planting",
+        "Plant in full sun to part shade in moist soil. It handles ordinary garden soil too, and tolerates wet winter ground, which makes it useful in rain gardens and along ditches.",
+        "Give it room: it can reach 10 feet or more tall and wide. It makes a good informal hedge or screen."],
+      ["Care",
+        "Water through the first two summers. In dry spots it may get powdery mildew in late summer.",
+        "Cut a few of the oldest stems to the ground in late winter to keep it full and keep the peeling bark on younger stems visible."]
+    ],
+    faq: [
+      ["How big does Pacific ninebark get?", "Usually 6 to 12 feet tall and nearly as wide."],
+      ["Is Pacific ninebark the same as the purple ninebarks at garden centers?", "No. Purple-leaved varieties like Diabolo are eastern North American ninebark. Pacific ninebark is the Northwest native."],
+      ["Does ninebark grow in wet soil?", "Yes. It grows wild along streams and handles wet winter soil, which makes it good for rain gardens."]
+    ]
+  },
+  "sword-fern": {
+    keys: [["Native range","West side"], ["Light","Part to full shade"], ["Height","2–4 ft"], ["Evergreen","Yes"]],
+    sections: [
+      ["The fern of west-side forests",
+        "Western sword fern is the large evergreen fern that carpets forests in western Oregon and Washington. Its dark green fronds stay fresh all winter, which makes it one of the most useful plants for shady yards.",
+        "It's long-lived and grows into a big clump over time."],
+      ["Planting",
+        "Plant in part to full shade, such as under trees or on the north side of a building, in soil rich in organic matter. Set the crown at soil level; buried crowns can rot.",
+        "Water through the first two summers. Established ferns in shade with leaf mulch need little help, but sword ferns have been dying back in some Puget Sound forests after hot, dry summers, so water deeply during long droughts, especially if they're in sun."],
+      ["Care",
+        "In early spring, before the new fiddleheads unroll, cut off old, tattered fronds at the base. Leave healthy fronds, which feed the plant.",
+        "Let fallen leaves stay around the crown as mulch. Sword ferns need no fertilizer."]
+    ],
+    faq: [
+      ["Can sword fern grow in sun?", "In cool coastal gardens, some. Inland, sun and dry soil scorch the fronds. Shade is best."],
+      ["Should I cut back my sword fern?", "Remove old, tattered fronds in early spring before new growth unrolls. It isn't required, but it keeps the plant tidy."],
+      ["Why are my sword fern fronds turning brown?", "Usually drought or too much sun. Water deeply in dry spells, mulch with leaves and keep it in shade."]
+    ]
+  },
+  "oregon-iris": {
+    keys: [["Native range","West side"], ["Bloom","April–June"], ["Height","12–18 in"], ["Divide","Fall only"]],
+    sections: [
+      ["A tough native iris",
+        "Oregon iris, Iris tenax, grows wild in meadows, open woods and roadsides in western Oregon and southwestern Washington. Its flowers are usually lavender to deep purple, but white, cream and yellow forms occur.",
+        "The narrow, grassy leaves form a tidy clump. They're so tough that tenax means tenacious; people once used the leaf fibers to make cord."],
+      ["Planting",
+        "Plant in full sun to light shade in soil that drains well. It handles clay if water doesn't stand on it, and it likes dry summers. Water through the first summer only.",
+        "Pacific Coast hybrid irises are garden hybrids of Oregon iris and its relatives, with a wider range of colors. They need the same care."],
+      ["Moving and dividing",
+        "Oregon iris dislikes being disturbed. Clumps dug in spring or summer often die. If you need to divide it, do it in fall after the rains start, when new white roots are growing.",
+        "Trim old, dead leaves in late winter. It needs no fertilizer."]
+    ],
+    faq: [
+      ["When does Oregon iris bloom?", "From April to June, depending on elevation and how warm the spring is."],
+      ["Can I divide Oregon iris?", "Yes, but only in fall after the rains start, when new roots are growing. Divisions made in spring or summer often fail."],
+      ["Does Oregon iris need water in summer?", "Not once established. It's adapted to dry summers, and summer watering can rot it."]
+    ]
   }
 };
 Object.values(notes).forEach(n => { n.notes = true; });

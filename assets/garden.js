@@ -18,7 +18,7 @@
   var HOW = { "Plant seeds in the ground": "from seed", "Plant seeds or young plants": "from seed or as starts", "Plant young plants or sets": "as starts or sets",
     "Plant young plants (starts)": "as starts", "Plant seed potatoes": "using seed potatoes", "Plant young plants": "as young plants" };
   // Quick crops that do best sown a little at a time.
-  var REPEAT = ["radishes", "lettuce", "spinach", "beans", "carrots", "beets", "arugula", "cilantro", "bok-choy", "turnips", "kohlrabi", "dill"];
+  var REPEAT = ["radishes", "lettuce", "spinach", "beans", "carrots", "beets", "arugula", "cilantro", "bok-choy", "turnips", "kohlrabi", "dill", "mustard-greens"];
   // Working spacing in inches for the bed planner (the middle of the range on each plant's guide).
   var SPACE = { peas: 3, radishes: 2, spinach: 4, lettuce: 9, onions: 4, carrots: 3, beets: 4, kale: 18, broccoli: 18, cabbage: 18, chard: 10,
     potatoes: 12, beans: 4, corn: 12, cucumbers: 12, "summer-squash": 36, "winter-squash": 48, tomatoes: 24, peppers: 18, basil: 12, dahlias: 21,
@@ -29,7 +29,11 @@
     "hardy-kiwi": 144, artichokes: 42, huckleberries: 48, "oregon-grape": 48, "red-flowering-currant": 60, serviceberry: 96, camas: 5,
     lavender: 27, tomatillos: 36, zinnias: 10, peonies: 36,
     collards: 21, parsnips: 4, celery: 11, "ground-cherries": 30, "sweet-potatoes": 15, pumpkins: 60, honeyberries: 54, currants: 54,
-    gooseberries: 54, elderberries: 84 };
+    gooseberries: 54, elderberries: 84,
+    "mustard-greens": 9, mache: 4, radicchio: 10, sorrel: 12, horseradish: 21, sage: 21, "lemon-balm": 21, tarragon: 21,
+    cosmos: 12, nasturtiums: 11, marigolds: 10, calendula: 11, ranunculus: 8, snapdragons: 10,
+    persimmons: 210, "asian-pears": 162, quince: 162, mulberries: 270, thimbleberry: 42, salmonberry: 60, salal: 30, kinnikinnick: 18,
+    "western-columbine": 15, "douglas-aster": 21, "oregon-sunshine": 15, "pacific-ninebark": 84, "sword-fern": 30, "oregon-iris": 15 };
   var RATINGS = [["good", "Did well"], ["ok", "OK"], ["poor", "Struggled"]];
   // One-tap starting points: plants plus bed sizes in feet.
   var STARTERS = [
@@ -44,7 +48,7 @@
   var TAG = { now: "Plant now", last: "Last chance", indoor: "Start indoors", soon: "Coming up", later: "Not in season" };
 
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
-  function lc(n) { return n === "Swiss chard" ? n : n.toLowerCase().replace(/^brussels/, "Brussels").replace(/^oregon/, "Oregon"); }
+  function lc(n) { return n === "Swiss chard" ? n : n.toLowerCase().replace(/^brussels/, "Brussels").replace(/^(oregon|douglas|pacific|asian)/, function (w) { return w[0].toUpperCase() + w.slice(1); }); }
   function cropOf(id) { for (var i = 0; i < D.crops.length; i++) if (D.crops[i].id === id) return D.crops[i]; return null; }
   function fresh(s) {
     s = s || {};
