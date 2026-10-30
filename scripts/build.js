@@ -150,8 +150,18 @@ GARDEN_PHOTOS.forEach(r => [480, 800].forEach(w => ["jpg", "webp"].forEach(ext =
 const initials = n => n.split(/\s+/).map(w => w[0]).join("").slice(0, 2).toUpperCase();
 
 // Search engines cut titles past about 70 characters, so long ones drop the site name.
-const TITLE_MAX = 70;
+// Google shows about 60 characters of a title, so the brand suffix is dropped when it would push past that.
+const TITLE_MAX = 60;
 const shortTitle = t => t.length > TITLE_MAX ? t.replace(/ \| Rainline Garden$/, "") : t;
+// The first of several wordings that fits in a search result title.
+const fitTitle = (...ts) => ts.find(t => t.length <= TITLE_MAX) || ts[ts.length - 1];
+// Descriptions over about 160 characters get cut off in search results.
+const fitDesc = (...ds) => ds.find(d => d.length <= 160) || ds[ds.length - 1];
+// "In Portland: May 15 – Jun 12. " for a crop's description, the window most people search for.
+const portDates = (c, port) => { const r = rowFor(port, c.id), w = G.crops[c.id].fall ? win(r, "fall") : win(r, "spring") || win(r, "fall");
+  return w ? `In Portland: ${P.fmtRange(w.start, w.end)}. ` : ""; };
+// "Red-flowering currant" -> "Red-Flowering Currant" for titles.
+const titleCase = t => t.replace(/[A-Za-z][^\s-]*/g, (w, i) => i && /^(and|or|of|in|the|for)$/.test(w) ? w : w[0].toUpperCase() + w.slice(1));
 
 function layout({ rel, title, description, canonical, current, body, scripts, jsonld, noindex, image }) {
   const base = rel; // relative prefix back to the site root, e.g. "../../"
@@ -242,7 +252,9 @@ ${(scripts || []).map(s => `<script src="${base}assets/${s}"></script>`).join("\
 // Dates are masked when comparing, so a page whose content hasn't changed keeps its old "Updated" date
 // instead of every rebuild restamping the whole site.
 const DATE_RE = /\d{4}-\d\d-\d\d|(?:January|February|March|April|May|June|July|August|September|October|November|December)(?: \d{1,2},)? \d{4}/g;
-const sameBut = (a, b) => a.replace(DATE_RE, "D") === b.replace(DATE_RE, "D");
+// Only the page body counts: a new title or description isn't new content, so it keeps the old date too.
+const bodyOf = h => h.slice(h.indexOf("<body"));
+const sameBut = (a, b) => bodyOf(a).replace(DATE_RE, "D") === bodyOf(b).replace(DATE_RE, "D");
 // Pages built before dates went month-and-year printed full dates; read them as the new format so they keep their date.
 const toMonthYear = s => s.replace(/(Updated|Last updated) (\d{4}-\d\d-\d\d)\./g, (m, w, d) => `${w} ${w === "Updated" ? stamp(d) : monthYear(d)}.`)
   .replace(/(<time datetime="(\d{4}-\d\d-\d\d)">)[A-Z][a-z]+ \d{1,2}, \d{4}</g, (m, t, d) => t + monthYear(d) + "<");
@@ -343,7 +355,9 @@ function crumbs(rel, items) {
 }
 
 function relatedArticles(rel, cropId, max) {
-  const list = ARTICLES.filter(a => a.crops.includes(cropId)).slice(0, max || Infinity);
+  // Articles about this crop come first: ones that list it first, and of those, ones about the fewest crops.
+  const list = ARTICLES.filter(a => a.crops.includes(cropId))
+    .sort((a, b) => a.crops.indexOf(cropId) - b.crops.indexOf(cropId) || a.crops.length - b.crops.length).slice(0, max || Infinity);
   if (!list.length) return "";
   return `<aside class="reads"><h2>Read more</h2><ul>${list.map(a => `<li><a href="${rel}articles/${a.slug}/">${esc(a.title)}</a><span>${esc(a.description)}</span></li>`).join("")}</ul></aside>`;
 }
@@ -468,8 +482,8 @@ function categoryTiles(rel) {
 /* Home */
 write("", "index.html", layout({
   rel: "", canonical: "", current: "",
-  title: "Rainline Garden: Oregon & Washington Planting Calendar and Frost Dates",
-  description: "When to plant vegetables where you live in Oregon and Washington. Enter your ZIP for local frost dates and a planting calendar built from NOAA frost data and regional growing guidance.",
+  title: "Oregon & Washington Planting Calendar | Rainline Garden",
+  description: "When to plant vegetables where you live in Oregon and Washington. Enter your ZIP for local frost dates and a planting calendar built from NOAA frost data.",
   jsonld: [{ "@context": "https://schema.org", "@type": "WebSite", name: "Rainline Garden", url: CONFIG.siteUrl, publisher: OWNER_LD }],
   body: `
 ${photo("hero", "", { big: "hero", small: "heroSm", cls: "hero-art", sizes: "(min-width: 70rem) 66rem, calc(100vw - 32px)", eager: true })}
@@ -558,8 +572,10 @@ D.places.forEach(place => {
   const bc = crumbs("../../", [["Frost dates", "frost-dates/"], [placeLabel(place), null]]);
   write("../../", `frost-dates/${place.slug}/index.html`, layout({
     rel: "../../", canonical: `frost-dates/${place.slug}/`, current: "frost-dates/",
-    title: (t => t.length > TITLE_MAX ? `${placeLabel(place)} Frost Dates` : t)(`${placeLabel(place)} Frost Dates and Planting Calendar`),
-    description: `The typical last spring frost in ${placeLabel(place)} is ${P.fmtLong(f.spring50)} and the first fall frost is ${P.fmtLong(f.fall50)}. See when to plant tomatoes, peas, garlic and ${D.crops.length - 3} more crops.`,
+    title: fitTitle(`${placeLabel(place)} Last Frost Date and Planting Calendar`, `${placeLabel(place)} Last Frost Date & Planting Calendar`,
+      `${placeLabel(place)} Last and First Frost Dates`, `${placeLabel(place)} Last Frost Date`),
+    description: fitDesc(`Last frost date in ${placeLabel(place)}: ${P.fmtLong(f.spring50)} on average. First fall frost: ${P.fmtLong(f.fall50)}. When to plant tomatoes, peas, garlic and ${D.crops.length - 3} more crops.`,
+      `Last frost date in ${placeLabel(place)}: ${P.fmtLong(f.spring50)} on average. First fall frost: ${P.fmtLong(f.fall50)}. When to plant ${D.crops.length} crops there.`),
     jsonld: [bc.ld],
     body: `${bc.html}
 <section class="hero" id="live" data-place="${place.slug}">
@@ -655,8 +671,10 @@ D.crops.forEach(c => {
   const sci = SCIENCE[c.id] || NOTES[c.id];
   write("../../", `when-to-plant/${c.id}/index.html`, layout({
     rel: "../../", canonical: `when-to-plant/${c.id}/`, current: WHEN_INDEX,
-    title: (t => t.length > TITLE_MAX ? t.replace(", by City", "") : t)(`When to Plant ${c.name} in Oregon and Washington, by City`),
-    description: `${c.name} planting dates for ${D.places.length} Oregon and Washington towns, from Portland and Seattle to Bend and Spokane, plus a beginner-friendly growing guide.`,
+    title: fitTitle(`When to Plant ${titleCase(c.name)} in Oregon and Washington`, `When to Plant ${titleCase(c.name)} in Oregon & Washington`, `When to Plant ${titleCase(c.name)} in the Northwest`),
+    description: fitDesc(`When to plant ${lc(c.name)} in Oregon and Washington. ${portDates(c, port)}Dates for ${D.places.length} towns from Seattle to Bend, plus a growing guide.`,
+      `When to plant ${lc(c.name)} in Oregon and Washington. ${portDates(c, port)}Dates for ${D.places.length} towns, plus a growing guide.`,
+      `When to plant ${lc(c.name)} in Oregon and Washington: dates for ${D.places.length} towns from Portland and Seattle to Bend, plus a growing guide.`),
     image: PHOTOS["crop:" + c.id] && photoFile("crop:" + c.id, "banner"),
     jsonld: sci ? [hb.ld, faqLd(sci.faq)] : [hb.ld],
     body: `${hb.html}
@@ -708,8 +726,10 @@ D.categories.forEach(k => {
   const list = k.crops.map(cropById);
   write(rel, `${WHEN_INDEX}${k.id}/index.html`, layout({
     rel, canonical: `${WHEN_INDEX}${k.id}/`, current: WHEN_INDEX,
-    title: `When to Plant ${k.name} in Oregon and Washington | Rainline Garden`,
-    description: `Planting dates and growing guides for ${list.map(c => lc(c.name)).join(", ")} in Oregon and Washington.`.slice(0, 300),
+    title: fitTitle(`When to Plant ${titleCase(k.name)} in Oregon and Washington`, `When to Plant ${titleCase(k.name)} in Oregon & Washington`, `When to Plant ${titleCase(k.name)} in the Northwest`),
+    description: fitDesc(`When to plant ${listOf(list.map(c => lc(c.name)))} in Oregon and Washington, with dates for every town and growing guides.`,
+      `When to plant ${listOf(list.slice(0, 5).map(c => lc(c.name)))} and more in Oregon and Washington, with dates for every town.`,
+      `When to plant ${listOf(list.slice(0, 3).map(c => lc(c.name)))} and more in Oregon and Washington, with dates for every town.`),
     jsonld: [kb.ld],
     image: PHOTOS["cat:" + k.id] && photoFile("cat:" + k.id, "banner"),
     body: `${kb.html}
@@ -953,11 +973,12 @@ function monthPlanting(m) {
   });
 }
 const articleBySlug = Object.fromEntries(ARTICLES.map(a => [a.slug, a]));
-const chip = c => `<a class="mp-crop" href="../when-to-plant/${c.id}/">${R.icon(c.id, "../", 22)}${esc(c.name)}</a>`;
+const chip = (c, rel = "../") => `<a class="mp-crop" href="${rel}when-to-plant/${c.id}/">${R.icon(c.id, rel, 22)}${esc(c.name)}</a>`;
+const monthSlug = m => P.MONTHS_LONG[m - 1].toLowerCase();
 const choreMonth = c => {
   const name = P.MONTHS_LONG[c.m - 1], count = Object.values(c.tasks).reduce((n, t) => n + t.length, 0);
   return `<section class="cm" id="${name.toLowerCase()}" data-m="${c.m}" aria-labelledby="cm-h-${c.m}">
-<header class="cm-head">${R.icon(MONTH_ICONS[c.m - 1], "../", 44)}<div><h2 id="cm-h-${c.m}">${name}</h2><p>${esc(c.intro)}</p></div><span class="cm-prog" data-total="${count}"></span></header>
+<header class="cm-head">${R.icon(MONTH_ICONS[c.m - 1], "../", 44)}<div><h2 id="cm-h-${c.m}">${name}</h2><p>${esc(c.intro)} <a href="${monthSlug(c.m)}/">What to plant in ${name}</a></p></div><span class="cm-prog" data-total="${count}"></span></header>
 <div class="cm-grid">${CHORE_KINDS.filter(([k]) => c.tasks[k] && c.tasks[k].length).map(([k, label]) => `<div class="cm-card cm-${k}"><h3>${label}</h3><ul>${c.tasks[k].map(([t, r], i) =>
     `<li${r ? ` data-r="${r}"` : ""}><label><input type="checkbox" data-id="${c.m}-${k}-${i}" disabled><span>${esc(t)}${r ? ` <span class="cm-tag cm-tag-${r}">${REGION_TAGS[r]}</span>` : ""}</span></label></li>`).join("")}</ul></div>`).join("")}</div>
 <details class="cm-byregion"><summary>What can be planted in ${name}, by region</summary><div class="cm-plant-body">${monthPlanting(c.m).map(x => `<div class="cm-region" data-r="${x.r}"><h4>${x.label}</h4>
@@ -980,10 +1001,56 @@ write("../", "garden-calendar/index.html", layout({
 </div>
 <div id="cm-mine" class="cm-mine" hidden></div>
 <div class="cm-list">${CHORES.map(choreMonth).join("")}</div>
+<h2>What to plant each month</h2>
+<ul class="cm-month-links">${CHORES.map(c => `<li><a href="${monthSlug(c.m)}/">What to plant in ${P.MONTHS_LONG[c.m - 1]}</a></li>`).join("")}</ul>
 <p class="station cm-foot">Region tags: <strong>West side</strong> is the Willamette Valley, Puget Sound and southern Oregon valleys; <strong>Coast</strong> is the outer coast; <strong>East side</strong> is the Columbia Basin and low eastern valleys; <strong>High desert and inland</strong> is Central Oregon, the Klamath Basin and Spokane. Jobs without a tag apply everywhere, a few weeks later the colder your garden is.</p>
 ${ad("calendar-bottom")}`,
   scripts: ["data.js", "plan.js", "chores.js"]
 }), "0.8");
+
+/* One page per month: what to plant there, with dates by region, and that month's jobs. */
+CHORES.forEach(c => {
+  const rel = "../../", name = P.MONTHS_LONG[c.m - 1], slug = monthSlug(c.m);
+  const prev = CHORES[(c.m + 10) % 12], next = CHORES[c.m % 12];
+  const a = P.CUM[c.m - 1] + 1, b = c.m < 12 ? P.CUM[c.m] : 365;
+  const overlaps = w => w && w.start <= b && w.end >= a;
+  const regions = monthPlanting(c.m);
+  const plans = REGION_TOWNS.map(([, s]) => P.plan(D, P.findPlace(D, s)));
+  // Every crop that can go in somewhere this month, with its dates in each region's town.
+  const ids = D.crops.map(x => x.id).filter(id => regions.some(r => r.out.concat(r.indoor).some(x => x.id === id)));
+  const cell = (pl, id) => { const r = rowFor(pl, id), out = r.windows.filter(overlaps), parts = [];
+    if (r.indoor && overlaps(r.indoor)) parts.push(`Start indoors ${P.fmtRange(r.indoor.start, r.indoor.end)}`);
+    out.forEach(w => parts.push(`Plant ${P.fmtRange(w.start, w.end)}`));
+    return parts.length ? parts.join("<br>") : '<span class="none">—</span>'; };
+  const table = ids.length ? `<div class="table-wrap"><table class="plan"><thead><tr><th scope="col">Plant</th>${REGION_TOWNS.map(([, , l]) => `<th scope="col">${l}</th>`).join("")}</tr></thead><tbody>
+${ids.map(id => { const cr = cropById(id); return `<tr><th scope="row"><div class="crop-cell">${R.icon(id, rel, 32)}<div><a href="${rel}when-to-plant/${id}/">${esc(cr.name)}</a></div></div></th>${plans.map((pl, i) => `<td data-label="${REGION_TOWNS[i][2]}">${cell(pl, id)}</td>`).join("")}</tr>`; }).join("\n")}
+</tbody></table></div>` : "";
+  const sentence = x => { const town = P.findPlace(D, REGION_TOWNS.find(t => t[2] === x.label)[1]).city;
+    const out = x.out.map(cr => lc(cr.name)), ind = x.indoor.map(cr => lc(cr.name));
+    if (!out.length && !ind.length) return `<p><strong>${x.label}</strong> (${esc(town)}): nothing goes in this month.</p>`;
+    return `<p><strong>${x.label}</strong> (${esc(town)}): ${out.length ? `plant ${listOf(out)} outside` : "nothing goes outside yet"}${ind.length ? `${out.length ? ", and" : ", but you can"} start ${listOf(ind)} indoors` : ""}.</p>`; };
+  const count = regions.reduce((n, x) => Math.max(n, x.out.length), 0);
+  const bc = crumbs(rel, [["Monthly chores", "garden-calendar/"], [name, null]]);
+  write(rel, `garden-calendar/${slug}/index.html`, layout({
+    rel, canonical: `garden-calendar/${slug}/`, current: "garden-calendar/",
+    title: `What to Plant in ${name} in Oregon and Washington`,
+    description: fitDesc(`What to plant in ${name} in Oregon and Washington, with dates for the west side, coast, east side and high desert, plus ${name}'s garden jobs.`,
+      `What to plant in ${name} in Oregon and Washington, with dates by region and ${name}'s garden jobs.`),
+    jsonld: [bc.ld],
+    body: `${bc.html}
+<section class="hero"><h1>What to plant in ${name} in Oregon and Washington</h1>
+<p class="lede">${esc(c.intro)}${count ? ` Up to ${count} of our plants can go in somewhere in the Northwest this month.` : ""}</p></section>
+<h2>What to plant in ${name}, by region</h2>
+<div class="prose">${regions.map(sentence).join("\n")}</div>
+${table ? `<h2>${name} planting dates</h2>\n<p>Dates are for one typical town in each region. Colder gardens run later; <a href="${rel}">use the planner</a> for your own town.</p>\n${table}` : ""}
+<h2>${name} garden jobs</h2>
+<div class="cm-grid">${CHORE_KINDS.filter(([k]) => c.tasks[k] && c.tasks[k].length).map(([k, label]) => `<div class="cm-card cm-${k}"><h3>${label}</h3><ul>${c.tasks[k].map(([t, r]) =>
+    `<li class="cm-plain">${esc(t)}${r ? ` <span class="cm-tag cm-tag-${r}">${REGION_TAGS[r]}</span>` : ""}</li>`).join("")}</ul></div>`).join("")}</div>
+${ad("month-mid")}
+${c.articles.length ? `<h2>Read next</h2>\n${articleCards(rel, c.articles.filter(s => articleBySlug[s]).map(s => articleBySlug[s]))}` : ""}
+<nav class="cm-pager" aria-label="Other months"><a href="../${monthSlug(prev.m)}/">← ${P.MONTHS_LONG[prev.m - 1]}</a><a href="../">All months</a><a href="../${monthSlug(next.m)}/">${P.MONTHS_LONG[next.m - 1]} →</a></nav>`
+  }), "0.7");
+});
 
 /* How it works */
 const z = D.zones;
