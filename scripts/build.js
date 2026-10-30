@@ -907,7 +907,8 @@ write("../", "my-garden/index.html", layout({
   body: `${gpb.html}
 <section class="hero"><h1>My garden plan</h1>
 <p class="lede">Pick your town and what you want to grow. You get a dated to-do list for the next 12 months, a cheat sheet for each plant and room for notes. It saves on this device as you go, and you can print it or add the dates to your phone's calendar.</p></section>
-<form id="gp-form" class="finder" novalidate>
+<h2 class="gp-step"><span class="gp-step-n" aria-hidden="true">1</span>Your town</h2>
+<form id="gp-form" class="finder gp-finder" novalidate>
   <div class="field"><label for="gp-zip">ZIP code</label><input id="gp-zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" placeholder="97214"></div>
   <span class="or">or</span>
   <div class="field field-select"><label for="gp-place">Town</label><select id="gp-place"><option value="">Choose a town</option></select></div>
@@ -916,10 +917,12 @@ write("../", "my-garden/index.html", layout({
 </form>
 <p id="gp-msg" class="msg" role="status" aria-live="polite"></p>
 <section id="gp-share" class="gp-share" hidden aria-live="polite"></section>
-<details id="gp-pick" class="gp-pick" open><summary><span>What do you want to grow?</span> <span id="gp-count" class="gp-count"></span></summary>
+<details id="gp-pick" class="gp-pick" open><summary><span class="gp-step-n" aria-hidden="true">2</span><span>What do you want to grow?</span> <span id="gp-count" class="gp-count"></span></summary>
 <div id="gp-starters" class="gp-starters"></div>
 <p class="gp-pick-help">Or pick plants one by one. Once you choose a town, each plant shows <em>Plant now</em>, or the month its next step starts. Not sure what suits you? <a href="../what-to-grow/">Take the plant quiz</a>.</p>
 <p id="gp-pick-note" class="gp-pick-note" role="status" aria-live="polite" hidden></p>
+<div class="gp-find"><label for="gp-find" class="sr">Find a plant</label><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><input id="gp-find" type="search" autocomplete="off" spellcheck="false" placeholder="Find a plant, like beans or basil"></div>
+<p id="gp-find-none" class="gp-find-none" role="status" hidden>No plants match that. Try another name, or <a href="../what-to-grow/">take the plant quiz</a>.</p>
 ${D.categories.map(k => `<fieldset><legend>${k.name}</legend><div class="gp-opts">${k.crops.map(id => `<label class="gp-opt"><input type="checkbox" value="${id}">${R.icon(id, "../", 28)}<span>${cropById(id).name}</span></label>`).join("")}</div></fieldset>`).join("")}
 <p class="gp-pick-foot"><button type="button" class="linkish" id="gp-clear">Clear my plan</button> · Your plan stays in this browser. Nothing is sent to us.</p>
 </details>
