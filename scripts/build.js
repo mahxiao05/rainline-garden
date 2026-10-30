@@ -630,6 +630,31 @@ function townCompare(p) {
   return phoneFold("compare", `How the season in ${city} compares`, `<div class="prose">${out.map(t => `<p>${t}</p>`).join("\n")}</div>`);
 }
 
+// Which ZIP codes a town page answers for, worked out the same way the planner looks a ZIP up.
+function zipNote(place) {
+  const rel = "../";
+  if (place.zips) return `<p class="zips"><strong>ZIP codes that use these dates:</strong> ${place.zips.join(", ")}. <a href="../../">Check another ZIP in the planner</a>.</p>`;
+  if (!place.zip3) return "";
+  const own = D.places.filter(x => x !== place && x.zips && x.zips.some(z => place.zip3.includes(z.slice(0, 3))));
+  return `<p class="zips"><strong>ZIP codes that use these dates:</strong> any starting with ${listOf(place.zip3)}${own.length ? `, except in towns with their own page (${own.map(x => `<a href="${rel}${x.slug}/">${esc(x.city)}</a>`).join(" · ")})` : ""}. <a href="../../">Check your ZIP in the planner</a>.</p>`;
+}
+
+// Short questions and answers about the town's frost dates, also given to search engines as FAQ data.
+function townQuestions(p) {
+  const city = p.place.city, f = p.frost;
+  const tom = rowFor(p, "tomatoes"), sp = win(tom, "spring"), garlic = win(rowFor(p, "garlic"), "fall");
+  const rank = ALL_PLANS.slice().sort((a, b) => b.frost.season - a.frost.season).findIndex(x => x.frost.season <= f.season) + 1;
+  const where = rank <= 10 ? "one of the longest" : rank > ALL_PLANS.length - 10 ? "one of the shortest" : rank <= ALL_PLANS.length / 2 ? "longer than most" : "shorter than most";
+  return [
+    [`When is the last frost in ${city}?`, `${P.fmtLong(f.spring50)} in a typical year. Frost is over by ${P.fmtLong(f.spring10)} in 9 years out of 10, so that's the safer date for tender plants like tomatoes and basil.`],
+    [`When is the first frost in ${city}?`, `Around ${P.fmtLong(f.fall50)}. It comes as early as ${P.fmtLong(f.fall10)} in 1 year out of 10.`],
+    [`When can I plant tomatoes in ${city}?`, `Set out tomato plants ${P.fmtRange(sp.start, sp.end)}${tom.indoor ? `, after starting seeds indoors ${P.fmtRange(tom.indoor.start, tom.indoor.end)}` : ""}.` +
+      (tom.cover ? ` Keep frost cover handy until about ${P.fmt(tom.coverUntil)}.` : "") + (tom.season === "short" || tom.season === "tight" ? " The season is short here, so pick an early variety." : "")],
+    [`When should I plant garlic in ${city}?`, `Plant garlic cloves ${P.fmtRange(garlic.start, garlic.end)}, and harvest next summer when the lower leaves turn brown.`],
+    [`How long is the growing season in ${city}?`, `About ${f.season} frost-free days, ${where} of the ${ALL_PLANS.length} Oregon and Washington towns we cover.`]
+  ];
+}
+
 /* City pages */
 D.places.forEach(place => {
   const p = P.plan(D, place);
@@ -638,29 +663,34 @@ D.places.forEach(place => {
   const tomato = win(rowFor(p, "tomatoes"), "spring");
   const peas = win(rowFor(p, "peas"), "spring");
   const bc = crumbs("../../", [["Frost dates", "frost-dates/"], [placeLabel(place), null]]);
+  const qas = townQuestions(p);
   write("../../", `frost-dates/${place.slug}/index.html`, layout({
     rel: "../../", canonical: `frost-dates/${place.slug}/`, current: "frost-dates/",
     title: fitTitle(`${placeLabel(place)} Last Frost Date and Planting Calendar`, `${placeLabel(place)} Last Frost Date & Planting Calendar`,
       `${placeLabel(place)} Last and First Frost Dates`, `${placeLabel(place)} Last Frost Date`),
     description: fitDesc(`Last frost date in ${placeLabel(place)}: ${P.fmtLong(f.spring50)} on average. First fall frost: ${P.fmtLong(f.fall50)}. When to plant tomatoes, peas, garlic and ${D.crops.length - 3} more crops.`,
       `Last frost date in ${placeLabel(place)}: ${P.fmtLong(f.spring50)} on average. First fall frost: ${P.fmtLong(f.fall50)}. When to plant ${D.crops.length} crops there.`),
-    jsonld: [bc.ld],
+    jsonld: [bc.ld, faqLd(qas)],
     body: `${bc.html}
 <section class="hero" id="live" data-place="${place.slug}">
 <h1>${esc(place.city)}, ${place.state} frost dates and planting calendar</h1>
 <p class="lede">The typical last spring frost in ${esc(place.city)} is ${P.fmtLong(f.spring50)}, and the first fall frost is around ${P.fmtLong(f.fall50)}. Plant peas from ${P.fmt(peas.start)}; plant tomatoes from ${P.fmt(tomato.start)}.</p>
 </section>
 ${R.frostFacts(p)}
-${R.regionNote(p, true)}
-${townCompare(p)}
+<section class="frost-risk" id="risk">${R.frostRisk(p)}</section>
 <h2>What to plant now</h2>
 <div id="now"><p class="empty">Turn on JavaScript to see what's in season today. The full calendar is below.</p></div>
 <p class="plan-link"><a class="btn btn-ghost" href="../../my-garden/?place=${place.slug}">Make a garden plan for ${esc(place.city)}</a> Pick your plants and get a dated, printable to-do list.</p>
+${R.regionNote(p, true)}
+${townCompare(p)}
 ${phoneFold("calendar", "Planting calendar", `<div id="chart">${R.chart(p)}</div>`)}
 ${ad("city-mid")}
 <h2>Planting dates for ${esc(place.city)}</h2>
 ${R.table(p, "../../")}
 <p class="station">New to this? Read the <a href="../../beginners-guide/">beginner's guide</a> or look up a term in the <a href="../../glossary/">glossary</a>.</p>
+${zipNote(place)}
+<h2 id="faq">Common questions about frost in ${esc(place.city)}</h2>
+${faqHtml(qas)}
 ${newsletter(place.city)}
 <h2>Nearby areas with similar weather</h2>
 <ul class="places">${nearby.map(x => `<li><a href="../${x.slug}/">${esc(placeLabel(x))}</a></li>`).join("")}</ul>

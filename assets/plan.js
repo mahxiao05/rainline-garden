@@ -47,6 +47,9 @@
     if (f.fall50 < f.spring50) f.fall50 += 365;
     if (f.fall10 < f.spring50) f.fall10 += 365;
     f.season = f.fall50 - f.spring50;
+    // The 90% dates frame the frost-chance strip. A December spring90 belongs to the year before; a winter fall90 to the next.
+    if (st.spring90) { f.spring90 = doy(st.spring90); if (f.spring90 > f.spring50) f.spring90 -= 365; }
+    if (st.fall90) { f.fall90 = doy(st.fall90); if (f.fall90 < f.fall50) f.fall90 += 365; }
 
     var out = [];
     D.crops.forEach(function (c) {
