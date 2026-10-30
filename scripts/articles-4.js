@@ -10,7 +10,7 @@ module.exports = [
     description: "The leaves piling up in your yard every October are the best free soil builder there is. How to make leaf mold, which leaves to use, and where to put it.",
     crops: ["blueberries", "garlic", "rhubarb", "lettuce"],
     published: "2026-10-23",
-    body: ({ link }) => `
+    body: ({ link, fig }) => `
 <p>Every fall, Northwest yards and streets fill with maples, oaks and alders dropping their leaves, and plenty of them end up in yard-waste bins. That's a lot of free organic matter leaving the garden. With a little patience, those same leaves turn into leaf mold: a dark, crumbly, earthy-smelling material that holds water like a sponge and makes heavy soil easier to work.</p>
 <p>Leaf mold isn't the same as compost. Compost is made mostly by bacteria, needs a mix of greens and browns, and works best when it heats up. Leaf mold is made slowly by fungi, needs nothing but leaves and water, and never has to be turned. Our wet, mild winters west of the Cascades are close to ideal for it.</p>
 <h2>Which leaves to use</h2>
@@ -28,6 +28,7 @@ module.exports = [
 <li><strong>Wait.</strong> Shredded leaves give a rough, usable leaf mold in about 6 to 12 months. Whole leaves take one to two years to become fine, dark and crumbly. You don't need to turn the pile, though mixing it once in spring speeds things up a little.</li>
 </ol>
 <p>A heap of leaves left in a cold, dry corner can sit unchanged for years. If yours isn't breaking down, it's almost always too dry.</p>
+${fig(1)}
 <h2>Where to use it</h2>
 <ul>
 <li><strong>As mulch.</strong> Half-rotted leaf mold makes a good mulch around perennials, shrubs and <a href="${link("when-to-plant/blueberries/")}">blueberries</a>, which like the slightly acidic, woodland-style layer it makes. Keep it a few inches back from stems.</li>
@@ -47,7 +48,7 @@ module.exports = [
     description: "Late winter is the time to prune apples and pears. Which cuts to make, how much to take off, and why cherries, plums and peaches wait for a different season.",
     crops: ["apples", "pears", "cherries", "plums", "peaches"],
     published: "2026-10-23",
-    body: ({ link }) => `
+    body: ({ link, fig }) => `
 <p>Apples and pears are pruned while they're dormant, after the leaves fall and before the buds start to swell. A bare tree is easy to read: you can see every branch, where it's crowded and where it's heading. A little pruning each winter keeps a tree a size you can pick from, lets light and air into the middle, and helps the fruit ripen and stay healthy through our damp springs.</p>
 <h2>When to prune</h2>
 <p>Late winter is best, roughly February to early March. Pruning in fall or early winter isn't harmful in mild west-side gardens, but cuts made just before a hard freeze can be damaged by the cold, so most growers wait until the worst of winter has passed. East of the Cascades and in the high desert, wait until the severe cold is over, then finish before the buds open.</p>
@@ -67,6 +68,7 @@ module.exports = [
 <li><strong>Branches growing into the center or straight down.</strong> The goal is an open tree where light reaches the inner fruit.</li>
 <li><strong>Height control, last.</strong> If the tree is getting too tall, cut a tall upright limb back to a side branch that's heading outward.</li>
 </ol>
+${fig(1)}
 <h2>Two kinds of cuts</h2>
 <p><strong>Thinning cuts</strong> remove a whole branch back to where it joins a larger one. They open up the tree without causing a flush of new growth, and they should make up most of your pruning. Cut just outside the slightly swollen ring at the base of the branch, called the branch collar. Don't cut flush with the trunk, and don't leave a long stub. Wound paint isn't needed; the tree seals the cut itself.</p>
 <p><strong>Heading cuts</strong> shorten a branch partway along, just above a bud. They make the tree push several new shoots below the cut, which is useful on a young tree you're shaping but turns into a thicket on a mature one. Use them sparingly.</p>
@@ -186,7 +188,7 @@ module.exports = [
     description: "Late winter is fruit tree season. How to choose, store and plant a bare-root apple, pear, plum or cherry so it gets off to a strong start.",
     crops: ["apples", "pears", "plums", "cherries", "peaches"],
     published: "2026-10-23",
-    body: ({ link }) => `
+    body: ({ link, fig }) => `
 <p>Every late winter, nurseries across Oregon and Washington fill with bundles of leafless young trees with their roots wrapped in damp sawdust. These bare-root trees are the cheapest way to start an orchard, there's a far bigger choice of varieties than in summer, and they often establish faster than potted trees because their roots go straight into your soil.</p>
 <p>The catch is timing. A bare-root tree has to be planted while it's dormant, so the season is short: roughly late January to March west of the Cascades, and from when the ground thaws until early spring east of the mountains.</p>
 <h2>Before you buy</h2>
@@ -209,6 +211,7 @@ module.exports = [
 <li><strong>Water it in</strong> slowly and deeply, even if the ground is already damp. This settles soil around the roots.</li>
 <li><strong>Mulch</strong> a wide circle with wood chips or leaves, keeping it a hand's width away from the trunk.</li>
 </ol>
+${fig(1)}
 <h2>After planting</h2>
 <p>Stake only if the site is windy or the tree is top-heavy, with a loose, flexible tie, and remove the stake after a year. Many growers cut a young unbranched tree (a "whip") back to about knee to waist height at planting to encourage low branches; a branched tree only needs any damaged or crossing branches removed.</p>
 <p>The first summer is the hardest. A new tree has a small root system and needs a deep soaking about once a week through dry spells, especially in the long rainless stretch from July to September. In sunny eastern and high desert gardens, painting the trunk with white latex paint diluted half and half with water helps prevent winter sunscald.</p>
@@ -222,7 +225,7 @@ module.exports = [
     description: "Summer-bearing or fall-bearing, how to plant canes so they don't drown in winter, and the pruning that keeps a raspberry patch productive for years.",
     crops: ["raspberries"],
     published: "2026-10-23",
-    body: ({ link }) => `
+    body: ({ link, fig }) => `
 <p>Raspberries love the Northwest. Cool nights, mild summers and long days suit them so well that northwest Washington grows a large share of the country's red raspberries. A home patch planted well can produce for ten years or more.</p>
 <p>The two things that decide success are drainage and pruning. Get those right and raspberries are one of the most rewarding fruits you can grow here.</p>
 <h2>Summer-bearing or fall-bearing?</h2>
@@ -242,6 +245,7 @@ module.exports = [
 <h2>Pruning, the easy way</h2>
 <p><strong>Summer-bearing:</strong> right after harvest, cut every cane that just fruited down to the ground. They're easy to spot: grayer, with dried fruiting stems. Leave the green new canes. In late winter, thin those to the strongest canes, about 4 to 6 inches apart, and trim tips that have grown above the trellis.</p>
 <p><strong>Fall-bearing:</strong> in late winter, cut all canes to the ground. You'll get one fall crop on the new growth, with no sorting of old and new canes. (You can instead leave the lower parts of the canes for a small early-summer crop too, but most home growers prefer the simple mow-down.)</p>
+${fig(1)}
 <h2>Feeding, watering and pests</h2>
 <p>Spread compost along the row each spring. Raspberries are shallow-rooted, so they need steady water from flowering through harvest: a soaker hose or drip line under mulch is ideal, and keeping the leaves dry helps prevent fruit mold.</p>
 <p>The main fruit pest is spotted wing drosophila, a tiny fruit fly that lays eggs in ripening berries. Pick every day or two during harvest, don't leave overripe or fallen berries in the patch, and refrigerate what you pick straight away. Birds are the other thieves; light netting over the row helps in heavy years.</p>
@@ -255,7 +259,8 @@ module.exports = [
     description: "The two pests that chew and crowd Northwest cabbage-family crops, how to spot them early, and how to keep them off without harsh sprays.",
     crops: ["kale", "broccoli", "cabbage", "brussels-sprouts", "collards", "cauliflower"],
     published: "2026-10-23",
-    body: ({ link }) => `
+    gardenPhoto: "janelle-red-cabbage-bed",
+    body: ({ link, fig }) => `
 <p>Kale, broccoli, cabbage and their relatives are some of the easiest crops in a Northwest garden, and two pests know it. Green caterpillars chew holes through the leaves in summer, and gray aphids pack the undersides of leaves and the inside of Brussels sprouts by fall. Both are easy to manage if you catch them early.</p>
 <h2>Cabbage worms</h2>
 <p>If small white butterflies are flitting around your garden in summer, they're almost certainly cabbage whites, and they're laying eggs on your cabbage-family plants. The eggs hatch into velvety green caterpillars that match the leaves so well you'll usually see the damage first: ragged holes, chewed edges and small dark green droppings in the leaf joints and broccoli heads. Cabbage loopers, pale green caterpillars that arch their backs as they move, cause the same kind of damage.</p>
@@ -275,6 +280,7 @@ module.exports = [
 <li><strong>Insecticidal soap</strong> works on contact, so it has to hit the aphids directly, including under leaves. Several applications may be needed. Avoid spraying in hot sun.</li>
 <li><strong>Go easy on nitrogen.</strong> Lush, heavily fertilized growth is exactly what aphids like best.</li>
 </ul>
+${fig(1)}
 <h2>Plan around them</h2>
 <p>Spring plantings often finish before either pest builds up, which is one more reason to plant on time; see the <a href="${link("when-to-plant/broccoli/")}">broccoli</a> and <a href="${link("when-to-plant/kale/")}">kale</a> guides for your dates. For summer-planted fall and winter crops, put row cover on at planting. At the end of the season, pull out spent cabbage-family plants rather than leaving them all winter, since aphids can overwinter on old stems, especially in mild west-side gardens.</p>
 <p>And don't panic over a few holes. Kale with some chewed leaves still tastes the same, and a quick soak in salty water before cooking draws out any caterpillars hiding in broccoli heads.</p>`
