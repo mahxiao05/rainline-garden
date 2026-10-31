@@ -33,9 +33,13 @@ const CONFIG = {
   adsenseClient: "ca-pub-7867146450299069", // AdSense publisher ID; also written to ads.txt
   adsenseSlot: "7360740911", // AdSense display ad unit (responsive) shown in each page's ad slot; empty leaves the slots blank
   amazonTag: "", // Amazon Associates tracking ID, e.g. "rainline-20"; product links work without it but earn nothing
-  newsletterAction: "", // email signup form URL, e.g. "https://buttondown.com/api/emails/embed-subscribe/rainline"; signup boxes stay hidden until set
-  newsletterField: "email", // the form field name your email provider expects
-  newsletterTagField: "tag", // field your provider uses to tag subscribers; My garden plan tags frost-alert signups "frost-alert" and "frost-{town}"
+  // Monthly planting email (MailerLite). Copy these from the MailerLite embedded form's HTML; the signup boxes stay hidden until newsletterAction is set.
+  newsletterAction: "", // the form's action URL
+  newsletterField: "fields[email]", // the email field's name
+  newsletterGroupField: "groups[]", // the field name MailerLite uses for the group a signup joins
+  newsletterGroups: { west: "", coast: "", east: "", inland: "", high: "" }, // MailerLite group ID for each climate region (groups are named after D.zones)
+  newsletterHidden: {}, // any other hidden fields in the embed code, as { name: value }
+  frostAlerts: false, // frost alert signup on My garden plan; off until frost alert emails actually get sent
   goatcounterCode: "", // free, cookie-free visitor stats: the code you picked at goatcounter.com, e.g. "rainline"
   updated: new Date().toISOString().slice(0, 10)
 };
@@ -349,13 +353,26 @@ function gearBox(items, title) {
 <p class="fine">${CONFIG.amazonTag ? "These links go to Amazon. If you buy through them, Rainline Garden earns a small commission at no cost to you." : "These links go to Amazon search results."}</p></aside>`;
 }
 
-function newsletter(where) {
+// Monthly email signup: email plus town. The town picks the MailerLite group for its climate region,
+// since each region gets its own email. town = a place slug to preselect (town pages); otherwise the last town the visitor chose.
+const nlOptions = sel => D.areas.map(a => {
+  const towns = D.places.filter(p => p.area === a.id).sort((x, y) => x.city.localeCompare(y.city));
+  return towns.length ? `<optgroup label="${esc(a.name)}, ${a.state}">${towns.map(p => `<option value="${esc(CONFIG.newsletterGroups[p.zone] || p.zone)}" data-slug="${p.slug}"${p.slug === sel ? " selected" : ""}>${esc(p.city)}</option>`).join("")}</optgroup>` : "";
+}).join("");
+const NL_JS = `<script>(function(){var f=document.querySelector(".signup-form");if(!f)return;var s=f.querySelector("select"),done=f.parentNode.querySelector(".signup-done");
+if(!s.value){var k="";try{k=localStorage.getItem("rainline-place")||""}catch(e){}var o=k&&s.querySelector('option[data-slug="'+k+'"]');if(o)o.selected=true}
+f.addEventListener("submit",function(e){if(!window.fetch||!window.FormData)return;e.preventDefault();var b=f.querySelector("button");b.disabled=true;
+fetch(f.action,{method:"POST",body:new FormData(f),mode:"no-cors"}).then(function(){f.hidden=true;done.hidden=false;done.focus()},function(){b.disabled=false;f.submit()})})})()</script>`;
+function newsletter(where, town) {
   if (!CONFIG.newsletterAction) return "";
   return `<aside class="signup"><div><h2>Get a monthly planting reminder</h2>
-<p>One short email a month with what to plant and what to do in ${where || "your Northwest garden"}. No spam; unsubscribe any time.</p></div>
-<form action="${esc(CONFIG.newsletterAction)}" method="post" target="_blank" class="signup-form">
+<p>One short email on the 1st of each month with what to plant and what to do in ${esc(where || "your Northwest garden")}, written for your climate region. No spam; unsubscribe any time.</p></div>
+<div><form action="${esc(CONFIG.newsletterAction)}" method="post" target="_blank" class="signup-form">
 <label for="nl-email" class="sr">Email address</label><input id="nl-email" type="email" name="${esc(CONFIG.newsletterField)}" placeholder="you@example.com" required autocomplete="email">
-<button class="btn" type="submit">Sign me up</button></form></aside>`;
+<label for="nl-town" class="sr">Your town</label><select id="nl-town" name="${esc(CONFIG.newsletterGroupField)}" required><option value=""${town ? "" : " selected"} disabled>Nearest town</option>${nlOptions(town)}</select>
+${Object.entries(CONFIG.newsletterHidden).map(([k, v]) => `<input type="hidden" name="${esc(k)}" value="${esc(v)}">`).join("")}<button class="btn" type="submit">Sign me up</button></form>
+<p class="signup-done" tabindex="-1" hidden>Thanks, you're on the list. If an email asks you to confirm, tap the link in it.</p>
+<p class="signup-fine">Your email address and region go to MailerLite, which sends the email for us. <a href="${CONFIG.basePath}privacy/">Privacy</a></p></div></aside>${NL_JS}`;
 }
 
 function beginnerBox(rel, slug, where, onGuide) {
@@ -750,7 +767,7 @@ ${zipNote(place)}
 ${stationBox(p)}
 <h2 id="faq">Common questions about frost in ${esc(place.city)}</h2>
 ${faqHtml(qas)}
-${newsletter(place.city)}
+${newsletter(place.city, place.slug)}
 <h2>Nearby areas with similar weather</h2>
 <ul class="places">${nearby.map(x => `<li><a href="../${x.slug}/">${esc(placeLabel(x))}</a></li>`).join("")}</ul>
 <p><a href="../">All town calendars</a> or <a href="../../">look up your ZIP</a>.</p>
@@ -1014,7 +1031,7 @@ ${D.categories.map(k => `<fieldset><legend>${k.name}</legend><div class="gp-opts
 <p>Pick a town first, then start small: five to eight plants is plenty for one raised bed. The ready-made plans above are a quick way in; the salad bed and the five easy crops both suit a first garden. Check the list once a week in spring, when jobs come quickly, and once a month in summer.</p>
 <p>Print the plan or save it as a PDF to keep by the back door, or add the dates to your phone's calendar so reminders come to you. Your plan saves in this browser as you go, and nothing is sent to us, so it stays private. If you use more than one device, print it or share the link to copy it across.</p>
 <p>Not sure what to grow? The <a href="../what-to-grow/">plant quiz</a> suggests plants for your space, sun and time, and the <a href="../beginners-guide/">beginner's guide</a> covers the basics.</p>
-</div>${CONFIG.newsletterAction ? `
+</div>${CONFIG.newsletterAction && CONFIG.frostAlerts ? `
 <template id="gp-alert-tpl"><form action="${esc(CONFIG.newsletterAction)}" method="post" target="_blank" class="gp-alert-form">
 <p>Or get an email when frost is on the way in {town}.</p>
 <input type="hidden" name="${esc(CONFIG.newsletterTagField)}" value="frost-alert"><input type="hidden" name="${esc(CONFIG.newsletterTagField)}" value="frost-{slug}">
@@ -1369,8 +1386,10 @@ write("../", "privacy/index.html", layout({
 <div class="prose">
 <p>Rainline Garden is owned and operated by ${CONFIG.owner} ("we", "us"). This policy explains what happens to your information when you use the site.</p>
 <h2>What we collect</h2>
-<p>Rainline Garden has no accounts.${CONFIG.newsletterAction ? " If you sign up for the monthly email or frost alerts, your address goes to our email provider and is used only to send that email; every message has an unsubscribe link." : ""} The ZIP code you enter is matched to a town inside your browser and is never sent to our server. Your browser's local storage keeps a few things on your own device: the last town you chose, your light or dark display choice, the jobs you tick off and the region you pick on the monthly chores page, and your garden plan if you make one on the My garden plan page (the town, the plants you picked, tasks you checked off, bed sizes, your harvest log and your notes). None of it is sent to us. The plant quiz runs in your browser too: your answers are kept in the page address so you can share your results, and are never sent to us. You can clear it by clearing site data in your browser or with the "Clear my plan" link on the plan page.</p>
-<h2>Advertising</h2>
+<p>Rainline Garden has no accounts. The ZIP code you enter is matched to a town inside your browser and is never sent to our server. Your browser's local storage keeps a few things on your own device: the last town you chose, your light or dark display choice, the jobs you tick off and the region you pick on the monthly chores page, and your garden plan if you make one on the My garden plan page (the town, the plants you picked, tasks you checked off, bed sizes, your harvest log and your notes). None of it is sent to us. The plant quiz runs in your browser too: your answers are kept in the page address so you can share your results, and are never sent to us. You can clear it by clearing site data in your browser or with the "Clear my plan" link on the plan page.</p>
+${CONFIG.newsletterAction ? `<h2>Monthly planting email</h2>
+<p>If you sign up for the monthly planting email, the email address you enter and the region of the town you pick are sent to MailerLite, the email service that stores our mailing list and sends the email for us. We use them only to send you that email once a month, written for your region. We don't sell or share the list. MailerLite may record whether an email is opened and which links are clicked. Every email has an unsubscribe link, and unsubscribing removes you from the list. You can also ask us to delete your address at <a href="mailto:${CONFIG.contactEmail}">${CONFIG.contactEmail}</a>. MailerLite handles the data under its own <a href="https://www.mailerlite.com/legal/privacy-policy" rel="noopener">privacy policy</a>.</p>
+` : ""}<h2>Advertising</h2>
 <p>This site uses Google AdSense to show ads. Google and its partners use cookies to serve ads based on your visits to this and other websites. You can opt out of personalized advertising at <a href="https://www.google.com/settings/ads">Google Ads Settings</a>, and learn more at <a href="https://policies.google.com/technologies/ads">How Google uses information from sites that use its services</a>.</p>
 <h2>Affiliate links</h2>
 <p>Some links to products go to Amazon.${CONFIG.amazonTag ? " As an Amazon Associate, Rainline Garden earns from qualifying purchases, at no extra cost to you." : ""} Amazon may set its own cookies when you follow them.</p>
