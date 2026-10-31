@@ -746,6 +746,13 @@ function steps(c, r, g) {
   return `<ol class="steps">${out.map(s => `<li>${s}</li>`).join("")}</ol>`;
 }
 
+// Plant page intro: one town per state on each side of the Cascades (Portland, Seattle west; Spokane, Bend east).
+function hubLede(c, port, sea, bend, spo) {
+  const spring = p => { const w = win(rowFor(p, c.id), "spring"); return P.fmtRange(w.start, w.end); };
+  const west = spring(port) === spring(sea) ? `Portland and Seattle ${spring(port)}` : `Portland ${spring(port)}; Seattle ${spring(sea)}`;
+  return `Plant in the garden: ${west}; Spokane ${spring(spo)}; Bend ${spring(bend)}.`;
+}
+
 function quickFacts(c, g) {
   const rows = [["Difficulty", badge(g.difficulty)], ["Sun", g.sun], ["Spacing", g.spacing], ["Planting depth", g.depth],
     ["Frost", g.frost ? g.frost : c.group === "warm" ? "Killed by frost" : c.group === "fall" ? "Very hardy; grows through winter" : c.group === "berry" ? "Hardy perennial; comes back every year" : "Handles light frost"]];
@@ -765,6 +772,7 @@ D.crops.forEach(c => {
   const dates = p => { const r = rowFor(p, c.id); return cols.map(([l, get]) => { const w = get(r); return `<td data-label="${l}">${w ? P.fmtRange(w.start, w.end) : '<span class="none">—</span>'}</td>`; }).join(""); };
   const sorted = plans.slice().sort((a, b) => a.place.state.localeCompare(b.place.state) || a.place.city.localeCompare(b.place.city));
   const port = plans.find(p => p.place.slug === "portland-or"), bend = plans.find(p => p.place.slug === "bend-or");
+  const sea = plans.find(p => p.place.slug === "seattle-wa"), spo = plans.find(p => p.place.slug === "spokane-wa");
   const hb = crumbs("../../", [["When to plant", WHEN_INDEX], [catById(c.cat).name, `${WHEN_INDEX}${c.cat}/`], [c.name, null]]);
   const sci = SCIENCE[c.id] || NOTES[c.id];
   write("../../", `when-to-plant/${c.id}/index.html`, layout({
@@ -779,7 +787,7 @@ D.crops.forEach(c => {
 ${banner("crop:" + c.id, "../../")}
 <section class="hero hero-crop">${PHOTOS["crop:" + c.id] ? "" : R.icon(c.id, "../../", 120)}<div>
 <h1>When to plant ${lc(c.name)} in Oregon and Washington</h1>
-<p class="lede">${g.fall ? g.fall.lede : `In Portland: ${answer(c, rowFor(port, c.id), null).replace(/<\/?strong>/g, "")} In Bend: ${P.fmtRange(win(rowFor(bend, c.id), "spring").start, win(rowFor(bend, c.id), "spring").end)}.`} Find your city below.</p></div></section>
+<p class="lede">${g.fall ? g.fall.lede : hubLede(c, port, sea, bend, spo)} <a href="#your-town">Find your town</a></p></div></section>
 ${sci ? scienceBody(c, g, sci, { head, dates, plans: sorted, port }) : `${quickFacts(c, g)}
 <p class="callout">${esc(c.note)}</p>
 <h2>${singular(c.name).replace(/^./, x => x.toUpperCase())} planting dates</h2>
