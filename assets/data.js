@@ -91,11 +91,11 @@
       anchors: { coolEarly: "03-25", coolTrans: "04-01", warmSeed: "05-15", warmTrans: "05-20", hotTrans: "06-01", garlicStart: "10-01", garlicEnd: "11-15" } },
     west: { name: "West-side valleys", blurb: "The Willamette Valley, Puget Sound and southern Oregon valleys. Long frost-free seasons, but soil stays cold and wet into May, so warm crops wait for warm soil, not just the last frost.",
       anchors: { coolEarly: "03-01", coolTrans: "03-15", warmSeed: "05-10", warmTrans: "05-15", hotTrans: "05-25", garlicStart: "10-01", garlicEnd: "11-15" } },
-    east: { name: "Columbia Basin and low eastern valleys", blurb: "Hot, dry summers and quick spring warm-up. Warm crops go in earlier than west of the Cascades, and irrigation matters more than rain.",
+    east: { name: "East-side valleys", blurb: "The Columbia Basin, Yakima Valley and other low valleys east of the Cascades. Hot, dry summers and quick spring warm-up. Warm crops go in earlier than west of the Cascades, and irrigation matters more than rain.",
       anchors: { coolEarly: "03-20", coolTrans: "04-01", warmSeed: "04-25", warmTrans: "05-01", hotTrans: "05-10", garlicStart: "10-01", garlicEnd: "11-01" } },
-    inland: { name: "Inland Northwest", blurb: "Higher, colder interior valleys. Cold springs and an earlier fall mean a shorter season; quick-maturing varieties pay off.",
+    inland: { name: "Inland Northwest", blurb: "Spokane, Ellensburg, the Okanogan, La Grande and other higher, colder interior valleys. Cold springs and an earlier fall mean a shorter season; quick-maturing varieties pay off.",
       anchors: { coolEarly: "04-01", coolTrans: "04-15", warmSeed: "05-15", warmTrans: "05-20", hotTrans: "05-30", garlicStart: "09-25", garlicEnd: "10-31" } },
-    high: { name: "High desert and mountains", blurb: "Central and high eastern Oregon. Frost is possible almost any month. Use row covers, wall-o-water or cloches for warm crops, and choose short-season varieties.",
+    high: { name: "High desert", blurb: "Central Oregon and the high, cold valleys of eastern Oregon. Frost is possible almost any month. Use row covers, wall-o-water or cloches for warm crops, and choose short-season varieties.",
       anchors: { coolEarly: "04-20", coolTrans: "04-15", warmSeed: "05-25", warmTrans: "05-25", hotTrans: "06-05", garlicStart: "09-20", garlicEnd: "10-20" } }
   };
 
@@ -374,7 +374,7 @@
     { m: 9, title: "September", items: [
       "Pinch off new tomato flowers so the plant ripens fruit already on the vine.",
       "Plant a cover crop, such as crimson clover or cereal rye, in emptied beds.",
-      "High desert and inland gardens: watch the forecast and cover tender crops on cold nights.",
+      "High desert and Inland Northwest gardens: watch the forecast and cover tender crops on cold nights.",
       "Save seed from open-pollinated beans and tomatoes." ] },
     { m: 10, title: "October", items: [
       "Plant garlic cloves, pointed end up, about 2 inches deep.",

@@ -774,6 +774,7 @@ const glossary = [
   ["Pollination", "pollination", "Moving pollen between flowers so they can turn into fruit. Bees do most of it; squash, berries and fruit trees all depend on it."],
   ["Fruit set", "fruit-set", "When a pollinated flower starts to swell into a fruit. Cold nights below about 55\u00b0F can stop tomatoes and peppers setting fruit."],
   ["Side-dressing", "side-dressing", "Adding fertilizer or compost along a row or around plants partway through the season, when hungry crops start to need more."],
+  ["Cordon", "cordon", "A plant trained to a single main stem, like a tall tomato tied to one stake or string with its side shoots pinched off. Apples and pears can be grown as cordons against a fence too."],
   ["Pinching", "pinching", "Nipping off the tip of a shoot to make a plant bushier, as with basil, or removing the side shoots (suckers) on vining tomatoes."],
   ["Staking and trellising", "trellis", "Supports that hold plants up off the ground: stakes or cages for tomatoes, a trellis or netting for peas, pole beans and cucumbers."],
   ["Overwintering", "overwintering", "Keeping a crop in the ground through winter, like garlic, kale, leeks or fava beans, for an early harvest the next year."],

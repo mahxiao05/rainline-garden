@@ -871,6 +871,9 @@ details.cm-byregion > summary { cursor: pointer; padding: 10px 14px; font-weight
 .cm-month-links { display: grid; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); gap: 4px 16px; padding-left: 1.2rem; }
 .cm-pager { display: flex; justify-content: space-between; gap: 12px; margin: 2rem 0 1rem; padding-top: 1rem; border-top: 1px solid var(--line); }
 /* Plant-type pages and "plants for" pages */
+.cat-now label, .town-line label { font-weight: 700; }
+.cat-now select, .town-line select { font: inherit; padding: 4px 8px; margin: 0 4px 0 2px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink); max-width: 100%; }
+.town-line { background: var(--paper); border: 1px solid var(--line); border-left: 4px solid var(--moss); border-radius: 10px; padding: 10px 14px; margin: 0 0 1.2rem; }
 .cat-now { background: var(--paper); border: 1px solid var(--line); border-left: 4px solid var(--moss); border-radius: 10px; padding: 10px 14px; margin: 0 0 1.2rem; }
 .order { margin: 0 0 1rem; }
 .order > div { display: grid; grid-template-columns: 8.5rem 1fr; gap: 10px; padding: 8px 0; border-top: 1px solid var(--line); }
@@ -883,7 +886,8 @@ details.cm-byregion > summary { cursor: pointer; padding: 10px 14px; font-weight
 .pick-list .ico { flex: none; }
 @media (max-width: 30rem) { .order > div { grid-template-columns: 1fr; gap: 2px; } }
 /* Plant-page extras: tags, year strip, how many, neighbors, pests */
-.plant-tags { margin: -0.5rem 0 1.2rem; }
+.plant-tags-h { margin: -0.4rem 0 6px; font-size: .9rem; color: var(--muted, #5b6b62); }
+.plant-tags { margin: 0 0 1.2rem; }
 .plant-tags a { padding: 5px 14px; font-weight: 700; color: var(--moss); }
 .table-wrap:has(> .year) { position: relative; }
 .year { width: 100%; border-collapse: separate; border-spacing: 3px; table-layout: fixed; min-width: 34rem; }
@@ -944,4 +948,63 @@ details.cm-byregion > summary { cursor: pointer; padding: 10px 14px; font-weight
   .risk-card { padding: 16px 14px; }
   .risk-bar { gap: 1px; }
   .risk-months span:nth-child(even) { display: none; }
+}
+
+/* My garden plan: numbered steps, plant search, next job, compact season check, folds and sticky section buttons */
+.gp-step { display: flex; align-items: center; gap: 10px; }
+.gp-step-n { flex: none; display: inline-grid; place-items: center; width: 1.6em; height: 1.6em; border-radius: 50%; background: var(--moss); color: var(--on-moss, #fff); font-family: var(--sans); font-size: .8em; font-weight: 700; line-height: 1; }
+h2.gp-step { font-size: 1.35rem; margin: 2rem 0 0; }
+.hero + h2.gp-step { margin-top: 1.25rem; }
+.gp-finder { margin-top: .75rem; }
+.gp-title h2.gp-step { align-items: flex-start; }
+.gp-title h2.gp-step .gp-step-n { margin-top: .15em; font-size: .62em; }
+.gp-pick summary { display: flex; align-items: center; gap: 10px; list-style: none; }
+.gp-pick summary::-webkit-details-marker { display: none; }
+.gp-pick summary .gp-step-n { font-size: .62em; }
+.gp-pick summary::after { content: ""; margin-left: auto; flex: none; width: 9px; height: 9px; border-right: 2.5px solid var(--muted); border-bottom: 2.5px solid var(--muted); transform: rotate(45deg); transition: transform .15s; }
+.gp-pick[open] summary::after { transform: rotate(-135deg); }
+.gp-find { position: relative; max-width: 24rem; margin: 0 0 1rem; }
+.gp-find svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+.gp-find input { width: 100%; font: inherit; font-size: 1.05rem; padding: 9px 12px 9px 38px; min-height: 44px; border: 1.5px solid var(--line); border-radius: 999px; background: var(--bg); color: var(--ink); }
+.gp-find input:focus { border-color: var(--moss); outline: 0; box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 35%, transparent); }
+.gp-find-none { margin: 0 0 1rem; color: var(--muted); }
+.gp-opt[hidden], .gp-pick fieldset[hidden], .gp-find-none[hidden] { display: none; }
+.gp-next { display: flex; gap: 12px; align-items: center; margin: 0 0 .7rem; font-size: 1.08rem; }
+.gp-next .gp-text { align-items: center; }
+.gp-away { color: var(--muted); font-size: .95rem; white-space: nowrap; }
+.gp-week-empty { margin-bottom: .35rem; }
+.gp-warns li .gp-x { margin-left: auto; margin-top: -2px; }
+.gp-warns li > div { min-width: 0; }
+.gp-warns p.gp-when { margin: 0; color: var(--ink); }
+.gp-warns p.gp-when-note { margin: .15rem 0 0; font-size: .92rem; color: var(--muted); }
+.gp-season .gp-warn-act { margin: .6rem 0 0; }
+.gp-mine { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 8px; }
+.gp-mine summary { cursor: pointer; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; font-weight: 700; color: var(--fir); font-size: .95rem; padding: 4px 0; }
+.gp-mine summary span { font-weight: 400; color: var(--muted); font-size: .88rem; }
+.gp-mine summary { list-style: none; }
+.gp-mine summary::-webkit-details-marker { display: none; }
+.gp-mine summary::before { content: ""; align-self: center; width: 7px; height: 7px; margin-right: 2px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(-45deg); transition: transform .15s; }
+.gp-mine[open] summary::before { transform: rotate(45deg); }
+.gp-mine > .gp-mini:first-of-type { margin-top: 4px; }
+.gp-more { margin-top: 2.5rem; border-top: 1px solid var(--line); scroll-margin-top: calc(var(--head-h, 61px) + 64px); }
+.gp-more > summary { cursor: pointer; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; padding: 18px 0 6px; list-style: none; }
+.gp-more > summary::-webkit-details-marker { display: none; }
+.gp-more-t { font-family: var(--serif); font-weight: 800; font-size: 1.6rem; color: var(--fir); display: inline-flex; align-items: center; gap: 10px; }
+.gp-more-t::after { content: ""; width: 9px; height: 9px; border-right: 2.5px solid var(--muted); border-bottom: 2.5px solid var(--muted); transform: translateY(-3px) rotate(45deg); transition: transform .15s; }
+.gp-more[open] .gp-more-t::after { transform: translateY(2px) rotate(-135deg); }
+.gp-more-s { color: var(--muted); font-size: .98rem; }
+.gp-more > .gp-sec:first-of-type { margin-top: 1.25rem; }
+.gp-jump { position: sticky; top: var(--head-h, 61px); z-index: 10; margin-left: -16px; margin-right: -16px; padding: 8px 16px; background: color-mix(in srgb, var(--bg) 94%, transparent); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.gp-out h2[id], .gp-sec, .gp-week { scroll-margin-top: calc(var(--head-h, 61px) + 64px); }
+@media (max-width: 560px) {
+  .gp-task label { grid-template-columns: 22px 4.4rem 1fr; gap: 8px; }
+  .gp-task .gp-date { white-space: normal; font-size: .95rem; line-height: 1.3; }
+  .gp-text { grid-column: auto; }
+  .gp-more-t { font-size: 1.4rem; }
+}
+@media print {
+  .gp-find, .gp-find-none, .gp-step-n, .gp-more > summary, .gp-mine > summary::before { display: none !important; }
+  .gp-jump { position: static; }
+  .gp-mine { border-top: 0; padding-top: 0; }
+  .gp-mine > summary, .hero + h2.gp-step { display: none !important; }
 }
