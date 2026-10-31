@@ -589,19 +589,25 @@ write("", "index.html", layout({
   description: "When to plant vegetables where you live in Oregon, Washington and Idaho. Enter your ZIP for local frost dates and a planting calendar built from NOAA frost data.",
   jsonld: [{ "@context": "https://schema.org", "@type": "WebSite", name: "Rainline Garden", url: CONFIG.siteUrl, publisher: OWNER_LD }],
   body: `
-${photo("hero", "", { big: "hero", small: "heroSm", cls: "hero-art", sizes: "(min-width: 70rem) 66rem, calc(100vw - 32px)", eager: true })}
+<div class="home-top">
+${photo("hero", "", { big: "hero", small: "heroSm", cls: "hero-art", sizes: "(min-width: 70rem) 33rem, (min-width: 900px) 46vw, calc(100vw - 32px)", eager: true })}
 <section class="hero">
+<p class="eyebrow">Oregon · Washington · Idaho</p>
 <h1>Plant on Northwest time.</h1>
-<p class="lede">The Cascades draw a rain line through Oregon and Washington, and the dry side runs on into Idaho. Which side you're on decides when you plant. Enter your ZIP or pick a town for local frost dates, what to plant this week, and a full-year planting calendar.</p>
-<form id="finder" class="finder" novalidate>
-  <div class="field"><label for="zip">ZIP code</label><input id="zip" name="zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" placeholder="e.g. 97214"></div>
-  <span class="or">or</span>
-  <div class="field field-select"><label for="place">Town</label><select id="place" name="place"><option value="">Choose a town</option></select></div>
-  <button class="btn" type="submit">Use this town</button>
-  <button type="button" id="near-me" class="btn btn-ghost near-btn" hidden>Use my location</button>
+<p class="lede">Local frost dates and a year-round planting calendar for your town, on either side of the Cascades.</p>
+<form id="finder" class="home-find" novalidate>
+  <div class="home-find-box">
+    <label class="home-find-in" for="where"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><span class="sr">ZIP code or town</span><input id="where" name="where" type="text" autocomplete="off" spellcheck="false" enterkeyhint="go" placeholder="ZIP code or town" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="where-list"></label>
+    <button class="btn" type="submit">Show my dates</button>
+  </div>
+  <ul id="where-list" class="where-list" role="listbox" aria-label="Matching towns" hidden></ul>
 </form>
+<p class="home-find-alt"><button type="button" id="near-me" class="link-btn" hidden><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg><span>Use my location</span></button><a href="frost-dates/">Browse all ${D.places.length} towns</a></p>
 <p id="msg" class="msg" role="status" aria-live="polite"></p>
+<ul class="trust"><li>${D.places.length} towns</li><li>NOAA frost records</li><li>Free, no sign-up</li></ul>
+<p class="home-saved" hidden>Showing dates for <strong></strong>. <button type="button" class="link-btn home-change">Change town</button></p>
 </section>
+</div>
 <section id="result" aria-live="polite"></section>
 <section id="season-now" class="home-sec season-now" aria-live="polite" hidden></section>
 <section class="home-sec plan-cta"><div><h2>Plan your garden</h2>
