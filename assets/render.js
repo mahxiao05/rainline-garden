@@ -30,7 +30,7 @@
   function regionNote(p, brief) {
     return '<p class="region"><strong>' + p.zone.name + '.</strong> ' + p.zone.blurb + '</p>' +
       '<p class="station">Frost dates are 1991–2020 NOAA climate normals for ' + p.station.name +
-      ' (' + p.station.elev + ' m elevation).' + (brief ? '' : ' Gardens in cold hollows or at higher elevation can frost later in spring and earlier in fall; city gardens and warm, south-facing spots often run a week or so ahead.') +
+      ' (' + (Math.round(p.station.elev * 3.281 / 10) * 10 || Math.round(p.station.elev * 3.281)).toLocaleString('en-US') + ' ft elevation).' + (brief ? '' : ' Gardens in cold hollows or at higher elevation can frost later in spring and earlier in fall; city gardens and warm, south-facing spots often run a week or so ahead.') +
       (p.place.note ? ' ' + p.place.note : '') + '</p>';
   }
 
@@ -149,6 +149,14 @@
   }
   var RISK = [["k1", "Unlikely"], ["k2", "Possible"], ["k3", "Likely"], ["k4", "Very likely"]];
 
+  // Frost being over isn't the same as tomato time: the soil has to warm too. Name the real window so nobody plants on the frost date.
+  function tomatoLine(p) {
+    var r = (p.crops || []).filter(function (x) { return x.crop.id === "tomatoes"; })[0];
+    var w = r && r.windows.filter(function (x) { return x.kind === "spring"; })[0];
+    if (!w) return "";
+    return '<br>Tomatoes go out <strong>' + P.fmtRange(w.start, w.end) + '</strong>' + (r.cover ? ', under frost cover at first' : ', once the soil is warm');
+  }
+
   // One cell per week, coloured by the chance of frost that week, with today's marker in the browser.
   function frostRisk(p, today) {
     var f = p.frost, h = "";
@@ -160,7 +168,7 @@
     var months = "";
     for (var m = 0; m < 12; m++) months += '<span style="left:' + (P.CUM[m] / 365 * 100).toFixed(2) + '%">' + P.MONTHS[m] + '</span>';
     return '<div class="risk-head"><h2>Chance of frost through the year</h2>' +
-      '<p class="risk-safe">Safe for tomatoes and basil: <strong>after ' + P.fmt(f.spring10) + '</strong></p></div>' +
+      '<p class="risk-safe">Frost over in 9 years out of 10: <strong>after ' + P.fmt(f.spring10) + '</strong>' + tomatoLine(p) + '</p></div>' +
       '<div class="risk-bar" role="img" aria-label="Chance of frost by week in ' + p.place.city + ': likely until about ' + P.fmt(f.spring50) +
       ', possible until ' + P.fmt(f.spring10) + ', and possible again from ' + P.fmt(f.fall10) + '.">' + h + '</div>' +
       '<div class="risk-months" aria-hidden="true">' + months + '</div>' +

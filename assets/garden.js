@@ -497,7 +497,7 @@
     function ev(key, doy, summary, desc, alarms) { var d = realDate(doy); return { uid: "frost-" + key + "-" + d.getFullYear() + "-" + place.slug, date: d, summary: summary, desc: desc + " " + cal, alarms: alarms }; }
     var evs = [
       ev("spring", f.spring50, "Typical last frost in " + place.city, "Half of years still see a frost after today. Keep covers handy for tender plants until " + P.fmtLong(f.spring10) + ".", ["-P7DT0H", "PT8H"]),
-      ev("spring-safe", f.spring10, "Frost risk is low now in " + place.city, "Only 1 year in 10 has a frost after today. Safe to plant tomatoes, squash and other tender crops.", ["PT8H"]),
+      ev("spring-safe", f.spring10, "Frost risk is low now in " + place.city, "Only 1 year in 10 has a frost after today. Tender crops like tomatoes and squash still wait for warm soil, so go by their dates in your plan.", ["PT8H"]),
       ev("fall-early", f.fall10, "Early frost possible in " + place.city, "1 year in 10 has its first fall frost by today. Watch the forecast and have covers ready.", ["-P7DT0H", "PT8H"]),
       ev("fall", f.fall50, "Typical first fall frost in " + place.city, "Pick tomatoes, squash, beans and basil before tonight if frost is forecast.", ["-P7DT0H", "PT8H"])
     ].sort(function (a, b) { return a.date - b.date; });

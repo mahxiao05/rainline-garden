@@ -54,7 +54,7 @@
     load().then(function () {
       var t = index.filter(function (x) { return x.p === slug; })[0];
       if (!t) return;
-      el.innerHTML = 'Your town: <a href="' + base + t.u + '">' + esc(t.t) + ' calendar</a> · <a href="' + base + '?place=' + slug + '">planner</a>';
+      el.innerHTML = 'Your town: <a href="' + base + t.u + '">' + esc(t.t) + ' calendar</a>';
       el.hidden = false;
     });
   }
