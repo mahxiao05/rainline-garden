@@ -133,7 +133,7 @@ module.exports = [
       perennial: [["Plant and divide perennials; fall rain gets them established.", "west"], ["Plant new strawberry plants or move runners into place."],
         ["Lift and dry onion sets you'll replant."]]
     }, articles: ["winter-cover-crops", "planting-garlic-in-the-northwest", "fall-and-winter-vegetable-garden"] },
-  { m: 10, intro: "Garlic month. The first frost reaches most of the west side by early November, so finish harvesting tender crops.",
+  { m: 10, intro: "Garlic month. The first fall frost reaches most west-side valleys between late October and late November, so finish harvesting tender crops.",
     tasks: {
       plant: [["Plant garlic cloves, pointed end up, about 2 inches deep.", "west"], ["Plant shallots and overwintering onion sets."],
         ["Plant tulips, daffodils and other spring bulbs."], ["Sow fava beans and cover crops in empty beds.", "west"]],

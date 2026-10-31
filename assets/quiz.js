@@ -131,7 +131,7 @@
     var q = QUESTIONS[step], h = progress() + '<h2 class="quiz-q" tabindex="-1">' + esc(q.q) + '</h2>' + (q.help ? '<p class="quiz-help">' + esc(q.help) + '</p>' : '');
     if (q.id === "town") {
       h += '<form class="finder quiz-town" id="quiz-town" novalidate>' +
-        '<div class="field"><label for="quiz-zip">ZIP code</label><input id="quiz-zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" placeholder="97214"></div>' +
+        '<div class="field"><label for="quiz-zip">ZIP code</label><input id="quiz-zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" placeholder="e.g. 97214"></div>' +
         '<span class="or">or</span><div class="field field-select"><label for="quiz-place">Town</label><select id="quiz-place"><option value="">Choose a town</option></select></div>' +
         '<button class="btn" type="submit">Next</button>' +
         '<button type="button" id="near-me" class="btn btn-ghost near-btn" hidden>Use my location</button></form><p id="quiz-msg" class="msg" role="status" aria-live="polite"></p>';
