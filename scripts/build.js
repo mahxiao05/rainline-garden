@@ -178,7 +178,7 @@ function layout({ rel, title, description, canonical, current, body, scripts, js
     plan: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="4" y="3.5" width="16" height="17" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="m8 9 1.5 1.5L12 8M8 15l1.5 1.5L12 14M14.5 9.5H17M14.5 15.5H17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     menu: '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path class="m1" d="M4 7h16"/><path class="m2" d="M4 12h16"/><path class="m3" d="M4 17h16"/></svg>'
   };
-  const MAIN = [["", "Planner"], ["when-to-plant/", "When to plant"], ["frost-dates/", "Frost dates"]];
+  const MAIN = [["", "Home"], ["when-to-plant/", "When to plant"], ["frost-dates/", "Town calendars"]];
   const nav = MAIN.map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("") +
     `<div class="nav-more"><button type="button" class="nav-more-btn${learnOn ? " is-current" : ""}" aria-expanded="false" aria-controls="nav-learn">Learn${ICON.chev}</button>` +
     `<div class="nav-menu" id="nav-learn" hidden>${LEARN.map(([href, label, sub]) => `<a href="${base}${href}"${cur(href)}><strong>${label}</strong><span>${sub}</span></a>`).join("")}</div></div>`;
@@ -298,7 +298,7 @@ function groupedRows(plans, dates) {
 const TOWN_PICK_JS = `<script>(function(){var box=document.querySelector(".town-pick"),sel=box.querySelector("select"),out=box.querySelector(".town-pick-out");
 function show(slug){var a=document.querySelector('.area-groups a[data-slug="'+slug+'"]');if(!a)return false;sel.value=slug;
 var h=[].map.call(a.closest("tr").querySelectorAll("td"),function(td){return '<p><b>'+td.innerHTML+'</b> <span>'+td.getAttribute("data-label")+'</span></p>'}).join("");
-out.innerHTML=h+'<a href="'+a.getAttribute("href")+'">Full planting calendar for '+a.textContent+' &rarr;</a>';return true}
+out.innerHTML=h+'<a href="'+a.getAttribute("href")+'">Full '+a.textContent+' calendar &rarr;</a>';return true}
 var t=(location.search.match(/[?&]town=([a-z-]+)/)||[])[1];
 if(t&&show(t)){try{localStorage.setItem("rainline-place",t)}catch(e){}}else try{var s=localStorage.getItem("rainline-place");if(s)show(s)}catch(e){}
 sel.addEventListener("change",function(){if(show(sel.value)){try{localStorage.setItem("rainline-place",sel.value)}catch(e){}}})})()</script>`;
@@ -308,7 +308,7 @@ function areaTables(head, dates, plans) {
   const pickOut = firstRow.replace(/^.*?<\/th>/, "").replace(/<\/tr>$/, "").replace(/<td data-label="([^"]*)">(.*?)<\/td>/g, '<p><b>$2</b> <span>$1</span></p>');
   return `<div class="town-pick" id="your-town"><label for="town-pick">Your town</label>
 <select id="town-pick">${P.byArea(D).map(g => `<optgroup label="${esc(g.area.name)} (${g.area.state})">${g.places.map(pl => `<option value="${pl.slug}"${pl.slug === "portland-or" ? " selected" : ""}>${esc(placeLabel(pl))}</option>`).join("")}</optgroup>`).join("")}</select>
-<div class="town-pick-out" aria-live="polite">${pickOut}<a href="../../frost-dates/portland-or/">Full planting calendar for Portland, OR &rarr;</a></div></div>
+<div class="town-pick-out" aria-live="polite">${pickOut}<a href="../../frost-dates/portland-or/">Full Portland, OR calendar &rarr;</a></div></div>
 <details class="all-towns"><summary>See every town (${plans.length})</summary>
 <div class="area-groups">${P.byArea(D).map(g => `<details class="area-group"><summary>${esc(g.area.name)}, ${g.area.state} <span>${g.places.length} towns</span></summary><div class="table-wrap"><table class="plan"><thead>${head}</thead><tbody>${groupedRows(g.places.map(pl => bySlug(pl.slug)), dates)}</tbody></table></div></details>`).join("")}</div></details>
 ${TOWN_PICK_JS}`;
@@ -340,14 +340,14 @@ function newsletter(where) {
 <button class="btn" type="submit">Sign me up</button></form></aside>`;
 }
 
-function beginnerBox(rel, slug, where) {
+function beginnerBox(rel, slug, where, onGuide) {
   const cards = G.beginner.map(id => {
     const c = cropById(id);
     const href = slug ? `${rel}when-to-plant/${id}/?town=${slug}#your-town` : `${rel}when-to-plant/${id}/`;
     return `<li><a class="card" href="${href}">${R.icon(id, rel, 64)}<span class="card-t">${c.name}</span><span class="card-s">${G.beginnerWhy[id]}</span></a></li>`;
   }).join("");
   return `<section class="beginner"><h2>New to gardening? Start with these 5 easy crops</h2>
-<p>They're forgiving, quick and hard to kill${where ? ` in ${esc(where)}` : ""}. Tap one for planting dates and step-by-step instructions, or read the <a href="${rel}beginners-guide/">beginner's guide</a>.</p>
+<p>They're forgiving, quick and hard to kill${where ? ` in ${esc(where)}` : ""}. Tap one for planting dates and step-by-step instructions${onGuide ? "" : `, or read the <a href="${rel}beginners-guide/">beginner's guide</a>`}.</p>
 <ul class="cards">${cards}</ul></section>`;
 }
 
@@ -370,7 +370,7 @@ function relatedArticles(rel, cropId, max) {
 // Topics for grouping the articles page. Articles about one crop use that crop's icon;
 // general articles set `icon` to a drawing in assets/img/topics/.
 const ARTICLE_TOPICS = [
-  ["crops", "Crop guides", "How to grow specific vegetables, fruit and flowers here."],
+  ["crops", "Plant guides", "How to grow specific vegetables, fruit and flowers here."],
   ["timing", "Timing and seasons", "Frost dates, soil temperature, seed starting and planning the year."],
   ["soil", "Beds, soil and water", "Raised beds, containers, soil care and summer watering."],
   ["problems", "Pests and diseases", "Slugs, blight and the other troubles of a wet climate."],
@@ -445,13 +445,13 @@ ${PHONE_FOLD_JS}`;
 const phoneFold = (id, title, body) => `<details class="fold" id="${id}" data-phone-fold open><summary><h2>${title}</h2></summary>
 ${body}</details>`;
 const PHONE_FOLD_JS = `<script>(function(){var f=document.querySelectorAll("details[data-phone-fold]");if(matchMedia("(max-width: 40rem)").matches)f.forEach(function(d){if("#"+d.id!==location.hash)d.open=false});function show(){var d=location.hash&&document.getElementById(location.hash.slice(1));if(d&&d.matches("details[data-phone-fold]"))d.open=true}addEventListener("hashchange",show)})()</script>`;
-const jump = (sci, vars) => `<nav class="jump" aria-label="On this page"><a href="#dates">Planting dates</a><a href="#grow">How to grow</a>${vars ? '<a href="#varieties">Varieties</a>' : ""}<a href="#how-many">How many</a><a href="#numbers">Key numbers</a><a href="#science">${sci.notes ? "Growing notes" : "How it works"}</a><a href="#neighbors">Neighbors</a><a href="#pests">Pests</a><a href="#faq">Questions</a></nav>`;
+const jump = (sci, vars) => `<nav class="jump" aria-label="On this page"><a href="#dates">Planting dates</a><a href="#grow">How to grow</a>${vars ? '<a href="#varieties">Varieties</a>' : ""}<a href="#how-many">How much to grow</a><a href="#numbers">Key numbers</a><a href="#science">${sci.notes ? "Growing notes" : "The science"}</a><a href="#neighbors">Neighbors</a><a href="#pests">Pests</a><a href="#faq">Questions</a></nav>`;
 
 /* Plant-page extras from scripts/plant-extras.js and scripts/collections.js */
 // Tags linking to the "Plants for..." pages this plant appears on.
 function plantTags(c, g, port) {
   const on = COLLECTIONS.filter(x => x.ids ? x.ids.includes(c.id) : x.pick(c, g, rowFor(port, c.id)));
-  return on.length ? `<ul class="chips plant-tags" aria-label="Good for">${on.map(x => `<li><a href="../../${x.slug}/">${esc(x.tag)}</a></li>`).join("")}</ul>` : "";
+  return on.length ? `<p class="plant-tags-h">Also on these lists:</p><ul class="chips plant-tags" aria-label="Also on these lists">${on.map(x => `<li><a href="../../${x.slug}/">${esc(x.tag)}</a></li>`).join("")}</ul>` : "";
 }
 // Months a "6-9" or "11-3" or "6-7,10" string covers, as indexes 0-11.
 function monthSet(spec) {
@@ -489,7 +489,7 @@ function yearStrip(c, ex, port) {
 function howMany(c, ex) {
   const flower = c.cat === "flowers";
   const parts = [["How many to plant", ex.many], ["What to expect", ex.yield], [flower ? "In the vase" : "Storing the harvest", ex.store]].filter(([, t]) => t);
-  return `<h2 id="how-many">How many to plant</h2>
+  return `<h2 id="how-many">How much to grow</h2>
 <div class="hm-grid">${parts.map(([h, t]) => `<section class="hm-card"><h3>${h}</h3><p>${esc(t)}</p></section>`).join("")}</div>`;
 }
 function neighbors(c, ex) {
@@ -504,13 +504,13 @@ function pestCards(c, ex) {
 <div class="sci-cards">${ex.pests.map(([h, signs, fix]) => `<section class="sci-card pest-card"><h3>${esc(h)}</h3><p><strong>Signs:</strong> ${esc(signs)}</p><p><strong>What to do:</strong> ${esc(fix)}</p></section>`).join("\n")}</div>`);
 }
 const faqHtml = qas => `<div class="faq">${qas.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("")}</div>`;
-const sideCard = (g, note) => `<aside class="side-card"><h3>Varieties that do well here</h3><ul class="vars">${g.varieties.map(v => `<li>${esc(v)}</li>`).join("")}</ul>
+const sideCard = (g, note) => `<aside class="side-card"><h3>Top picks for here</h3><ul class="vars">${g.varieties.map(v => `<li>${esc(v)}</li>`).join("")}</ul>
 <h3>Watch out for</h3><p>${esc(g.problem)}</p>${note ? `<p class="note">${esc(note)}</p>` : ""}</aside>`;
 // Popular variety cards from scripts/varieties.js, shown on each plant's main page.
 function varietyCards(c) {
   const vs = VARIETIES[c.id];
   if (!vs) return "";
-  return phoneFold("varieties", `Popular ${singular(c.name)} varieties`, `<p class="lede-sm">Widely sold picks that do well somewhere in Oregon or Washington. The tag says which side of the mountains suits each one best.</p>
+  return phoneFold("varieties", `More ${singular(c.name)} varieties`, `<p class="lede-sm">More widely sold picks that do well somewhere in Oregon or Washington. The tag says which side of the mountains suits each one best.</p>
 <div class="var-cards">${vs.map(v => `<section class="var-card"><h3>${esc(v.name)}</h3><p class="var-meta">${esc(v.type)}${v.days ? ` <span>&middot; ${esc(v.days)}</span>` : ""}</p><p>${esc(v.note)}</p><p class="var-where">${esc(v.where)}</p></section>`).join("")}</div>`);
 }
 // Click-to-load how-to video from scripts/videos.js: shows the plant's own photo until clicked, then YouTube's official player.
@@ -521,7 +521,7 @@ function videoBox(c) {
   return `
 <section class="video" aria-label="How-to video">
 <button type="button" class="video-play" data-yt="${v.id}" aria-label="Play video: ${esc(v.title)}">${poster}<span class="video-icon" aria-hidden="true"></span><span class="video-t">${esc(v.title)}</span></button>
-<p class="video-meta">Video by ${esc(v.channel)}. Plays from YouTube when you click it. <a href="https://www.youtube.com/watch?v=${v.id}" rel="noopener" target="_blank">Watch on YouTube</a></p>
+<p class="video-meta">${v.note ? `${esc(v.note)} ` : ""}Video by ${esc(v.channel)}. Plays from YouTube when you click it. <a href="https://www.youtube.com/watch?v=${v.id}" rel="noopener" target="_blank">Watch on YouTube</a></p>
 <script>document.querySelectorAll(".video-play").forEach(function(b){b.addEventListener("click",function(){var f=document.createElement("iframe");f.src="https://www.youtube-nocookie.com/embed/"+b.dataset.yt+"?autoplay=1&rel=0";f.title=b.getAttribute("aria-label").replace(/^Play video: /,"");f.allow="autoplay; encrypted-media; picture-in-picture; fullscreen";f.allowFullscreen=true;f.referrerPolicy="strict-origin-when-cross-origin";f.className="video-frame";b.replaceWith(f);f.focus()})})</script>
 </section>`;
 }
@@ -530,7 +530,7 @@ function scienceParts(sci, c) {
   return `<h2 id="numbers">Key numbers</h2>
 <ul class="keys">${sci.keys.map(([l, v]) => `<li><span class="k-v">${esc(v)}</span><span class="k-l">${esc(l)}</span></li>`).join("")}</ul>${tip ? `
 <p class="care-tip"><strong>Top care tip:</strong> ${esc(tip)}</p>` : ""}
-${phoneFold("science", sci.notes ? "Growing notes" : "How it works", `<p class="lede-sm">${sci.notes ? "What makes the difference in Northwest gardens, in plain language." : "The plant biology behind the advice above, in plain language."}</p>
+${phoneFold("science", sci.notes ? "Growing notes" : "The plant science", `<p class="lede-sm">${sci.notes ? "What makes the difference in Northwest gardens, in plain language." : "The plant biology behind the advice above, in plain language."}</p>
 <div class="sci-cards">${sci.sections.map(([h, ...ps]) => `<section class="sci-card"><h3>${esc(h)}</h3>${ps.map(p => `<p>${esc(p)}</p>`).join("")}</section>`).join("\n")}</div>`)}`;
 }
 function stepsForHub(c, g, port) {
@@ -557,12 +557,12 @@ write("", "index.html", layout({
 ${photo("hero", "", { big: "hero", small: "heroSm", cls: "hero-art", sizes: "(min-width: 70rem) 66rem, calc(100vw - 32px)", eager: true })}
 <section class="hero">
 <h1>Plant on Northwest time.</h1>
-<p class="lede">The Cascades draw a rain line through Oregon and Washington, and which side you're on decides when you plant. Enter your ZIP or pick a city for local frost dates, what to plant this week, and a full-year planting calendar.</p>
+<p class="lede">The Cascades draw a rain line through Oregon and Washington, and which side you're on decides when you plant. Enter your ZIP or pick a town for local frost dates, what to plant this week, and a full-year planting calendar.</p>
 <form id="finder" class="finder" novalidate>
-  <div class="field"><label for="zip">ZIP code</label><input id="zip" name="zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" placeholder="97214"></div>
+  <div class="field"><label for="zip">ZIP code</label><input id="zip" name="zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" placeholder="e.g. 97214"></div>
   <span class="or">or</span>
-  <div class="field field-select"><label for="place">City</label><select id="place" name="place"><option value="">Choose a city</option></select></div>
-  <button class="btn" type="submit">Show my calendar</button>
+  <div class="field field-select"><label for="place">Town</label><select id="place" name="place"><option value="">Choose a town</option></select></div>
+  <button class="btn" type="submit">Use this town</button>
   <button type="button" id="near-me" class="btn btn-ghost near-btn" hidden>Use my location</button>
 </form>
 <p id="msg" class="msg" role="status" aria-live="polite"></p>
@@ -633,10 +633,10 @@ function townCompare(p) {
 // Which ZIP codes a town page answers for, worked out the same way the planner looks a ZIP up.
 function zipNote(place) {
   const rel = "../";
-  if (place.zips) return `<p class="zips"><strong>ZIP codes that use these dates:</strong> ${place.zips.join(", ")}. <a href="../../">Check another ZIP in the planner</a>.</p>`;
+  if (place.zips) return `<p class="zips"><strong>ZIP codes that use these dates:</strong> ${place.zips.join(", ")}. <a href="../../">Look up another ZIP</a>.</p>`;
   if (!place.zip3) return "";
   const own = D.places.filter(x => x !== place && x.zips && x.zips.some(z => place.zip3.includes(z.slice(0, 3))));
-  return `<p class="zips"><strong>ZIP codes that use these dates:</strong> any starting with ${listOf(place.zip3)}${own.length ? `, except in towns with their own page (${own.map(x => `<a href="${rel}${x.slug}/">${esc(x.city)}</a>`).join(" · ")})` : ""}. <a href="../../">Check your ZIP in the planner</a>.</p>`;
+  return `<p class="zips"><strong>ZIP codes that use these dates:</strong> any starting with ${listOf(place.zip3)}${own.length ? `, except in towns with their own page (${own.map(x => `<a href="${rel}${x.slug}/">${esc(x.city)}</a>`).join(" · ")})` : ""}. <a href="../../">Look up your ZIP</a>.</p>`;
 }
 
 // Short questions and answers about the town's frost dates, also given to search engines as FAQ data.
@@ -646,7 +646,7 @@ function townQuestions(p) {
   const rank = ALL_PLANS.slice().sort((a, b) => b.frost.season - a.frost.season).findIndex(x => x.frost.season <= f.season) + 1;
   const where = rank <= 10 ? "one of the longest" : rank > ALL_PLANS.length - 10 ? "one of the shortest" : rank <= ALL_PLANS.length / 2 ? "longer than most" : "shorter than most";
   return [
-    [`When is the last frost in ${city}?`, `${P.fmtLong(f.spring50)} in a typical year. Frost is over by ${P.fmtLong(f.spring10)} in 9 years out of 10, so that's the safer date for tender plants like tomatoes and basil.`],
+    [`When is the last frost in ${city}?`, `${P.fmtLong(f.spring50)} in a typical year. Frost is over by ${P.fmtLong(f.spring10)} in 9 years out of 10, Tender plants like tomatoes wait longer than that, for warm soil: see the tomato question below.`],
     [`When is the first frost in ${city}?`, `Around ${P.fmtLong(f.fall50)}. It comes as early as ${P.fmtLong(f.fall10)} in 1 year out of 10.`],
     [`When can I plant tomatoes in ${city}?`, `Set out tomato plants ${P.fmtRange(sp.start, sp.end)}${tom.indoor ? `, after starting seeds indoors ${P.fmtRange(tom.indoor.start, tom.indoor.end)}` : ""}.` +
       (tom.cover ? ` Keep frost cover handy until about ${P.fmt(tom.coverUntil)}.` : "") + (tom.season === "short" || tom.season === "tight" ? " The season is short here, so pick an early variety." : "")],
@@ -694,7 +694,7 @@ ${faqHtml(qas)}
 ${newsletter(place.city)}
 <h2>Nearby areas with similar weather</h2>
 <ul class="places">${nearby.map(x => `<li><a href="../${x.slug}/">${esc(placeLabel(x))}</a></li>`).join("")}</ul>
-<p><a href="../">All Oregon and Washington cities</a> or <a href="../../">use the planner with your ZIP</a>.</p>
+<p><a href="../">All town calendars</a> or <a href="../../">look up your ZIP</a>.</p>
 ${PHONE_FOLD_JS}`,
     scripts: SCRIPTS
   }), "0.8");
@@ -747,10 +747,11 @@ function steps(c, r, g) {
 }
 
 // Plant page intro: one town per state on each side of the Cascades (Portland, Seattle west; Spokane, Bend east).
-function hubLede(c, port, sea, bend, spo) {
-  const spring = p => { const w = win(rowFor(p, c.id), "spring"); return P.fmtRange(w.start, w.end); };
+function hubLede(c, port, sea, bend, spo, kind = "spring") {
+  const spring = p => { const w = win(rowFor(p, c.id), kind); return w ? P.fmtRange(w.start, w.end) : ""; };
   const west = spring(port) === spring(sea) ? `Portland and Seattle ${spring(port)}` : `Portland ${spring(port)}; Seattle ${spring(sea)}`;
-  return `Plant in the garden: ${west}; Spokane ${spring(spo)}; Bend ${spring(bend)}.`;
+  const east = [["Spokane", spo], ["Bend", bend]].filter(([, p]) => spring(p)).map(([n, p]) => `; ${n} ${spring(p)}`).join("");
+  return `${kind === "fall" ? "Plant in fall" : "Plant in the garden"}: ${west}${east}.`;
 }
 
 function quickFacts(c, g) {
@@ -787,7 +788,7 @@ D.crops.forEach(c => {
 ${banner("crop:" + c.id, "../../")}
 <section class="hero hero-crop">${PHOTOS["crop:" + c.id] ? "" : R.icon(c.id, "../../", 120)}<div>
 <h1>When to plant ${lc(c.name)} in Oregon and Washington</h1>
-<p class="lede">${g.fall ? g.fall.lede : hubLede(c, port, sea, bend, spo)} <a href="#your-town">Find your town</a></p></div></section>
+<p class="lede">${g.fall ? hubLede(c, port, sea, bend, spo, "fall") : hubLede(c, port, sea, bend, spo)} <a href="#your-town">Find your town</a></p></div></section>
 ${sci ? scienceBody(c, g, sci, { head, dates, plans: sorted, port }) : `${quickFacts(c, g)}
 <p class="callout">${esc(c.note)}</p>
 <h2>${singular(c.name).replace(/^./, x => x.toUpperCase())} planting dates</h2>
@@ -817,7 +818,7 @@ write("../", "when-to-plant/index.html", layout({
   jsonld: [wb.ld],
   body: `${wb.html}
 <section class="hero"><h1>When to plant vegetables, herbs and berries in the Northwest</h1>
-<p class="lede">${D.crops.length} plants in ${D.categories.length} groups. Pick one for its planting dates in every Oregon and Washington city we cover, plus how to grow it. New to this? Start with the ones marked Easy.</p></section>
+<p class="lede">${D.crops.length} plants in ${D.categories.length} groups. Pick one for its planting dates in every Oregon and Washington town we cover, plus how to grow it. New to this? Start with the ones marked Easy.</p></section>
 ${categoryTiles("../")}
 <h2>Plants for your conditions</h2>
 ${collectionChips("../")}
@@ -856,15 +857,15 @@ D.categories.forEach(k => {
     image: PHOTOS["cat:" + k.id] && photoFile("cat:" + k.id, "banner"),
     body: `${kb.html}
 ${banner("cat:" + k.id, rel)}
-<section class="hero"><h1>${esc(x.h1 || `When to plant ${k.name.toLowerCase()} in the Northwest`)}</h1>
-<p class="lede">${k.blurb} Pick a plant for its dates in every city we cover and a step-by-step growing guide.</p></section>
+<section class="hero"><h1>${esc(x.h1 || `When to plant ${k.name.toLowerCase()} in Oregon and Washington`)}</h1>
+<p class="lede">${k.blurb} Pick a plant for its dates in every town we cover and a step-by-step growing guide.</p></section>
 <p class="cat-now" data-crops="${k.crops.join(" ")}" hidden></p>
 ${cards}
 <h2>Planting order</h2>
 <p class="note">When each one first goes in around Portland, starting indoors where that comes first. Colder towns run later.</p>
 ${plantingOrder(list, refs[0], rel)}
 <h2>Planting windows at a glance</h2>
-<p class="note">Main planting window in four reference cities. Each plant's page has every city.</p>
+<p class="note">Main planting window in four reference towns. Each plant's page has every town.</p>
 <div class="table-wrap"><table class="plan"><thead><tr><th scope="col">Plant</th>${refs.map(r => `<th scope="col">${esc(r.place.city)}</th>`).join("")}</tr></thead><tbody>${list.map(c => `<tr><th scope="row"><a href="../${c.id}/">${c.name}</a></th>${refs.map(r => `<td data-label="${esc(r.place.city)}">${first(r, c.id)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
 <h2>Growing ${k.name.toLowerCase()} in the Northwest</h2>
 <div class="prose">${CATEGORY_GUIDES[k.id].map(t => `<p>${esc(t)}</p>`).join("\n")}</div>
@@ -885,7 +886,8 @@ COLLECTIONS.forEach(x => {
   const ids = x.ids || D.crops.filter(c => x.pick(c, G.crops[c.id], rowFor(port, c.id))).map(c => c.id);
   ids.forEach(id => { if (!cropById(id)) throw new Error(`${x.slug} lists unknown plant ${id}`); });
   const note = c => { if (!x.fallNote) return x.note(c, G.crops[c.id]);
-    const r = rowFor(port, c.id), w = win(r, "fall"); return `${G.crops[c.id].fall ? "Plant" : c.overwinter ? "Sow to overwinter" : "Sow or plant for fall"} ${P.fmtRange(w.start, w.end)} in Portland.`; };
+    const r = rowFor(port, c.id), w = win(r, "fall"); return `${fallPre(c)} ${P.fmtRange(w.start, w.end)} in Portland.`; };
+  const fallPre = c => G.crops[c.id].fall ? "Plant" : c.overwinter ? "Sow to overwinter" : "Sow or plant for fall";
   const groups = D.categories.map(k => [k, k.crops.filter(id => ids.includes(id)).map(cropById)]).filter(([, cs]) => cs.length);
   const cb = crumbs(rel, [["When to plant", WHEN_INDEX], [x.label, null]]);
   write(rel, `${x.slug}/index.html`, layout({
@@ -895,13 +897,15 @@ COLLECTIONS.forEach(x => {
 <section class="hero"><h1>${esc(x.h1)}</h1>
 <p class="lede">${esc(x.intro[0])}</p></section>
 <div class="prose">${x.intro.slice(1).map(t => `<p>${esc(t)}</p>`).join("\n")}</div>
-${groups.map(([k, cs]) => `<h2>${esc(k.name)}</h2>\n<ul class="pick-list">${cs.map(c => `<li><a href="${rel}${WHEN_INDEX}${c.id}/">${R.icon(c.id, rel, 44)}<span><span class="card-t">${esc(c.name)}</span><span class="card-s">${esc(note(c))}</span></span></a></li>`).join("")}</ul>`).join("\n")}
+${x.fallNote ? `<p class="town-line" hidden><label for="fall-town">Dates below are for</label> <select id="fall-town"></select></p>` : ""}
+${groups.map(([k, cs]) => `<h2>${esc(k.name)}</h2>\n<ul class="pick-list">${cs.map(c => `<li><a href="${rel}${WHEN_INDEX}${c.id}/">${R.icon(c.id, rel, 44)}<span><span class="card-t">${esc(c.name)}</span><span class="card-s"${x.fallNote ? ` data-fall="${c.id}" data-pre="${fallPre(c)}"` : ""}>${esc(note(c))}</span></span></a></li>`).join("")}</ul>`).join("\n")}
 ${ad("collection-mid")}
 <h2>Common questions</h2>
 ${faqHtml(x.faq)}
 <h2>More ways to choose</h2>
 ${collectionChips(rel)}
-<p><a href="${rel}${WHEN_INDEX}">See all ${D.crops.length} plants</a></p>`
+<p><a href="${rel}${WHEN_INDEX}">See all ${D.crops.length} plants</a></p>`,
+    scripts: x.fallNote ? ["data.js", "plan.js", "falltown.js"] : undefined
   }), "0.8");
 });
 
@@ -917,7 +921,7 @@ write("../", "my-garden/index.html", layout({
 <p class="lede">Pick your town and what you want to grow. You get a dated to-do list for the next 12 months, a cheat sheet for each plant and room for notes. It saves on this device as you go, and you can print it or add the dates to your phone's calendar.</p></section>
 <h2 class="gp-step"><span class="gp-step-n" aria-hidden="true">1</span>Your town</h2>
 <form id="gp-form" class="finder gp-finder" novalidate>
-  <div class="field"><label for="gp-zip">ZIP code</label><input id="gp-zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" placeholder="97214"></div>
+  <div class="field"><label for="gp-zip">ZIP code</label><input id="gp-zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" placeholder="e.g. 97214"></div>
   <span class="or">or</span>
   <div class="field field-select"><label for="gp-place">Town</label><select id="gp-place"><option value="">Choose a town</option></select></div>
   <button class="btn" type="submit">Use this town</button>
@@ -937,7 +941,7 @@ ${D.categories.map(k => `<fieldset><legend>${k.name}</legend><div class="gp-opts
 <section id="gp-out" class="gp-out" aria-live="polite"><p class="empty gp-empty">Choose your town and pick some plants to see your plan.</p></section>
 <div class="guide prose">
 <h2>What's in your plan</h2>
-<p><strong>A dated to-do list.</strong> Every job for the next 12 months, in order: when to start seeds indoors, when to plant in the garden, when to sow again for fall, and when frost is still a risk. The dates come from your town's frost records and the same planting windows as the <a href="../frost-dates/">frost-date calendars</a>, so a Spokane plan and a Seattle plan can be weeks apart.</p>
+<p><strong>A dated to-do list.</strong> Every job for the next 12 months, in order: when to start seeds indoors, when to plant in the garden, when to sow again for fall, and when frost is still a risk. The dates come from your town's frost records and the same planting windows as the <a href="../frost-dates/">town calendars</a>, so a Spokane plan and a Seattle plan can be weeks apart.</p>
 <p><strong>A cheat sheet for each plant.</strong> Sun, spacing, planting depth, when and how to harvest, and the main problem to watch for, taken from each plant's growing guide, so you don't have to keep a dozen tabs open.</p>
 <p><strong>Notes and a harvest log.</strong> Note the variety and where you planted it, log each harvest, and rate how each plant did. Next year your plan shows how it went last time, and that record is worth more than any chart.</p>
 <h2>Using it through the season</h2>
@@ -1006,10 +1010,10 @@ write("../", "beginners-guide/index.html", layout({
 <h2><span class="num">4</span> Grow easy crops first</h2>
 <p>Radishes, lettuce, bush beans, zucchini and kale are forgiving and quick. Leave peppers and big pumpkins for year two.</p>
 </div>
-${beginnerBox("../", null)}
+${beginnerBox("../", null, null, true)}
 <div class="guide prose">
 <h2><span class="num">5</span> Plant on your local dates</h2>
-<p>The biggest beginner mistake here is planting warm-season crops too early. A sunny April week doesn't mean the soil is warm, and tomatoes or beans planted into cold soil sit and sulk or rot. <a href="../">Enter your ZIP in the planner</a> to get dates for where you live.</p>
+<p>The biggest beginner mistake here is planting warm-season crops too early. A sunny April week doesn't mean the soil is warm, and tomatoes or beans planted into cold soil sit and sulk or rot. <a href="../">Enter your ZIP on the home page</a> to get dates for where you live.</p>
 <h2><span class="num">6</span> Water deeply, not daily</h2>
 <p>Once summer dries out, give the garden about an inch of water a week (more east of the Cascades) in one or two deep soakings. A soaker hose or drip line on a timer makes this nearly automatic, and keeping leaves dry helps prevent disease.</p>
 <h2><span class="num">7</span> Stay ahead of slugs</h2>
@@ -1044,7 +1048,7 @@ ${a.gardenPhoto ? gardenGrid(rel, GARDEN_PHOTOS.filter(r => r.img === a.gardenPh
 ${byBox(rel, a.author || DEFAULT_AUTHOR)}
 </article>
 ${ad("article-bottom")}
-<h2>Crops in this article</h2>
+<h2>Plants in this article</h2>
 <ul class="chips">${a.crops.map(id => `<li><a href="${rel}when-to-plant/${id}/">${R.icon(id, rel, 24)}${cropById(id).name}</a></li>`).join("")}</ul>
 ${newsletter()}
 <h2>More guides</h2>
@@ -1089,11 +1093,11 @@ const areaLists = s => P.byArea(D).filter(g => g.area.state === s).map(g => `<de
 const NEAR_PTS = JSON.stringify(D.places.map(x => [x.slug, ...x.ll]));
 write("../", "frost-dates/index.html", layout({
   rel: "../", canonical: "frost-dates/", current: "frost-dates/",
-  title: "Oregon and Washington Frost Dates by City | Rainline Garden",
+  title: "Oregon and Washington Frost Dates and Planting Calendars by Town | Rainline Garden",
   description: `Typical last spring and first fall frost dates for ${D.places.length} Oregon and Washington towns, from 1991-2020 NOAA climate normals, with a planting calendar for each.`,
   body: `
-<section class="hero"><h1>Frost dates by city</h1>
-<p class="lede">Typical last spring and first fall frost dates for Oregon and Washington, from NOAA's 1991–2020 climate normals. Pick a city for its full planting calendar.</p></section>
+<section class="hero"><h1>Town calendars: frost and planting dates</h1>
+<p class="lede">Typical last spring and first fall frost dates for Oregon and Washington, from NOAA's 1991–2020 climate normals. Pick a town for its full calendar: frost dates, what to plant now and every planting date for the year.</p></section>
 <div class="town-find"><div class="field town-filter"><label for="town-q">Find a town</label><input id="town-q" type="search" autocomplete="off" placeholder="Start typing, like Hood River"></div>
 <button type="button" id="near-me" class="btn btn-ghost near-btn" hidden>Use my location</button></div>
 <p id="near-out" class="near-out" aria-live="polite" hidden></p>
@@ -1110,7 +1114,7 @@ document.querySelectorAll("#town-lists [data-state]").forEach(function(h){var e=
 addEventListener("DOMContentLoaded",function(){RainlineNear(document.getElementById("near-me"),document.getElementById("near-out"),${NEAR_PTS},function(slug){location.href=slug+"/"})});</script>
 <h2>How to use these dates</h2>
 <div class="prose">
-<p>"Typical" means the median: in half of years the last spring frost comes later. Each city page also shows the date when frost is over in 9 years out of 10, which is the safer date for tender plants like tomatoes and basil.</p>
+<p>"Typical" means the median: in half of years the last spring frost comes later. Each town page also shows the date when frost is over in 9 years out of 10. Tender plants like tomatoes and basil need that, and warm soil too, so they often go out weeks later: each town page gives their dates.</p>
 <p>Each town's dates come from one weather station, usually an airport. Gardens in cold hollows or at higher elevation can frost later in spring and earlier in fall; city gardens and warm, south-facing spots often run a week or so ahead. If your garden is in a frost pocket, add a week to spring dates and take a week off fall ones.</p>
 <p>Dates are a guide, not a guarantee. Check the soil before planting: cool-season crops need it workable and not soggy, and warm-season crops need it warm. A $10 soil thermometer pays for itself.</p>
 </div>`,
@@ -1121,9 +1125,9 @@ addEventListener("DOMContentLoaded",function(){RainlineNear(document.getElementB
 const CHORES = require("./chores.js");
 const MONTH_ICONS = ["potatoes", "onions", "peas", "lettuce", "tomatoes", "beans", "cucumbers", "corn", "winter-squash", "garlic", "cabbage", "kale"];
 const CHORE_KINDS = [["plant", "Plant and sow"], ["indoor", "Start indoors"], ["harvest", "Harvest"], ["care", "Garden care"], ["pests", "Pests and problems"], ["perennial", "Fruit, berries and flowers"]];
-const REGION_TAGS = { west: "West side", coast: "Coast", east: "East side", high: "High desert and inland" };
+const REGION_TAGS = { west: "West-side valleys", coast: "Coast", east: "East-side valleys", high: "High desert and Inland Northwest" };
 // One town stands in for each climate region in the "planting by region" lists.
-const REGION_TOWNS = [["west", "portland-or", "West-side valleys"], ["coast", "astoria-or", "Coast"], ["east", "pendleton-or", "Columbia Basin and eastern valleys"], ["high", "bend-or", "High desert"], ["high", "spokane-wa", "Inland Northwest"]];
+const REGION_TOWNS = [["west", "portland-or", D.zones.west.name], ["coast", "astoria-or", D.zones.coast.name], ["east", "pendleton-or", D.zones.east.name], ["high", "bend-or", D.zones.high.name], ["high", "spokane-wa", D.zones.inland.name]];
 function monthPlanting(m) {
   const a = P.CUM[m - 1] + 1, b = m < 12 ? P.CUM[m] : 365;
   const overlaps = w => w.start <= b && w.end >= a;
@@ -1144,18 +1148,18 @@ const choreMonth = c => {
 <details class="cm-byregion"><summary>What can be planted in ${name}, by region</summary><div class="cm-plant-body">${monthPlanting(c.m).map(x => `<div class="cm-region" data-r="${x.r}"><h4>${x.label}</h4>
 ${x.out.length ? `<p><span class="cm-k">Outside</span>${x.out.map(chip).join("")}</p>` : `<p class="cm-none">Nothing outside this month.</p>`}
 ${x.indoor.length ? `<p><span class="cm-k">Indoors</span>${x.indoor.map(chip).join("")}</p>` : ""}</div>`).join("")}
-<p class="station">Based on typical frost dates for one town in each region. <a href="../">Use the planner</a> for your exact dates.</p></div></details>
+<p class="station">Based on typical frost dates for one town in each region. <a href="../">Look up your town</a> for your exact dates.</p></div></details>
 ${c.articles.length ? `<p class="cm-reads"><span>Read next:</span> ${c.articles.filter(s => articleBySlug[s]).map(s => `<a href="../articles/${s}/">${articleIcon(articleBySlug[s], "../", 22)}${esc(articleBySlug[s].title)}</a>`).join("")}</p>` : ""}
 </section>`;
 };
 write("../", "garden-calendar/index.html", layout({
   rel: "../", canonical: "garden-calendar/", current: "garden-calendar/",
-  title: "Pacific Northwest Garden Calendar: Monthly Chores | Rainline Garden",
+  title: "Monthly Garden Chores for Oregon and Washington | Rainline Garden",
   description: "Month-by-month garden chores for Oregon and Washington: what to plant, start indoors, harvest, prune and watch for, with notes for the coast, west side, east side and high desert.",
   body: `
 <section class="hero"><h1>Monthly garden chores</h1>
-<p class="lede">What to do in a Northwest garden each month: what to plant and start indoors, what to harvest, and the care, pest and pruning jobs that keep things going. Tick jobs off as you go. For exact planting dates where you live, <a href="../">use the planner</a>.</p></section>
-<div class="cm-filter" role="group" aria-label="Show jobs for"><span>Show jobs for</span>${[["all", "Everywhere"], ["west", "West side"], ["coast", "Coast"], ["east", "East side"], ["high", "High desert and inland"]].map(([v, l]) => `<button type="button" data-region="${v}" aria-pressed="${v === "all"}">${l}</button>`).join("")}</div>
+<p class="lede">What to do in a Northwest garden each month: what to plant and start indoors, what to harvest, and the care, pest and pruning jobs that keep things going. Tick jobs off as you go. For exact planting dates where you live, <a href="../">look up your town</a>.</p></section>
+<div class="cm-filter" role="group" aria-label="Show jobs for"><span>Show jobs for</span>${[["all", "All jobs"], ...Object.entries(REGION_TAGS)].map(([v, l]) => `<button type="button" data-region="${v}" aria-pressed="${v === "all"}">${l}</button>`).join("")}</div>
 <div class="cm-tools">
 <nav class="cm-months" aria-label="Months">${P.MONTHS.map((m, i) => `<a href="#${P.MONTHS_LONG[i].toLowerCase()}" data-m="${i + 1}">${m}</a>`).join("")}</nav>
 </div>
@@ -1163,7 +1167,7 @@ write("../", "garden-calendar/index.html", layout({
 <div class="cm-list">${CHORES.map(choreMonth).join("")}</div>
 <h2>What to plant each month</h2>
 <ul class="cm-month-links">${CHORES.map(c => `<li><a href="${monthSlug(c.m)}/">What to plant in ${P.MONTHS_LONG[c.m - 1]}</a></li>`).join("")}</ul>
-<p class="station cm-foot">Region tags: <strong>West side</strong> is the Willamette Valley, Puget Sound and southern Oregon valleys; <strong>Coast</strong> is the outer coast; <strong>East side</strong> is the Columbia Basin and low eastern valleys; <strong>High desert and inland</strong> is Central Oregon, the Klamath Basin and Spokane. Jobs without a tag apply everywhere, a few weeks later the colder your garden is.</p>
+<p class="station cm-foot">Region tags: <strong>West-side valleys</strong> are the Willamette Valley, Puget Sound and southern Oregon valleys; <strong>Coast</strong> is the outer coast; <strong>East-side valleys</strong> are the Columbia Basin, Yakima Valley and other low valleys east of the Cascades; <strong>High desert and Inland Northwest</strong> covers Central Oregon, the Klamath Basin, the cold eastern valleys and Spokane. Each town calendar names its region. Jobs without a tag apply everywhere, a few weeks later the colder your garden is.</p>
 ${ad("calendar-bottom")}`,
   scripts: ["data.js", "plan.js", "chores.js"]
 }), "0.8");
@@ -1202,7 +1206,7 @@ ${ids.map(id => { const cr = cropById(id); return `<tr><th scope="row"><div clas
 <p class="lede">${esc(c.intro)}${count ? ` Up to ${count} of our plants can go in somewhere in the Northwest this month.` : ""}</p></section>
 <h2>What to plant in ${name}, by region</h2>
 <div class="prose">${regions.map(sentence).join("\n")}</div>
-${table ? `<h2>${name} planting dates</h2>\n<p>Dates are for one typical town in each region. Colder gardens run later; <a href="${rel}">use the planner</a> for your own town.</p>\n${table}` : ""}
+${table ? `<h2>${name} planting dates</h2>\n<p>Dates are for one typical town in each region. Colder gardens run later; <a href="${rel}">look up your own town</a>.</p>\n${table}` : ""}
 <h2>${name} garden jobs</h2>
 <div class="cm-grid">${CHORE_KINDS.filter(([k]) => c.tasks[k] && c.tasks[k].length).map(([k, label]) => `<div class="cm-card cm-${k}"><h3>${label}</h3><ul>${c.tasks[k].map(([t, r]) =>
     `<li class="cm-plain">${esc(t)}${r ? ` <span class="cm-tag cm-tag-${r}">${REGION_TAGS[r]}</span>` : ""}</li>`).join("")}</ul></div>`).join("")}</div>
@@ -1286,7 +1290,7 @@ write("../", "privacy/index.html", layout({
 <div class="prose">
 <p>Rainline Garden is owned and operated by ${CONFIG.owner} ("we", "us"). This policy explains what happens to your information when you use the site.</p>
 <h2>What we collect</h2>
-<p>Rainline Garden has no accounts.${CONFIG.newsletterAction ? " If you sign up for the monthly email or frost alerts, your address goes to our email provider and is used only to send that email; every message has an unsubscribe link." : ""} The ZIP code you enter is matched to a city inside your browser and is never sent to our server. Your browser's local storage keeps a few things on your own device: the last city you chose in the planner, your light or dark display choice, the jobs you tick off and the region you pick on the monthly chores page, and your garden plan if you make one on the My garden plan page (the city, the plants you picked, tasks you checked off, bed sizes, your harvest log and your notes). None of it is sent to us. The plant quiz runs in your browser too: your answers are kept in the page address so you can share your results, and are never sent to us. You can clear it by clearing site data in your browser or with the "Clear my plan" link on the plan page.</p>
+<p>Rainline Garden has no accounts.${CONFIG.newsletterAction ? " If you sign up for the monthly email or frost alerts, your address goes to our email provider and is used only to send that email; every message has an unsubscribe link." : ""} The ZIP code you enter is matched to a town inside your browser and is never sent to our server. Your browser's local storage keeps a few things on your own device: the last town you chose, your light or dark display choice, the jobs you tick off and the region you pick on the monthly chores page, and your garden plan if you make one on the My garden plan page (the town, the plants you picked, tasks you checked off, bed sizes, your harvest log and your notes). None of it is sent to us. The plant quiz runs in your browser too: your answers are kept in the page address so you can share your results, and are never sent to us. You can clear it by clearing site data in your browser or with the "Clear my plan" link on the plan page.</p>
 <h2>Advertising</h2>
 <p>This site uses Google AdSense to show ads. Google and its partners use cookies to serve ads based on your visits to this and other websites. You can opt out of personalized advertising at <a href="https://www.google.com/settings/ads">Google Ads Settings</a>, and learn more at <a href="https://policies.google.com/technologies/ads">How Google uses information from sites that use its services</a>.</p>
 <h2>Affiliate links</h2>
@@ -1322,7 +1326,7 @@ write("../", "terms/index.html", layout({
 <h2>Gardening information</h2>
 <p>Planting dates on Rainline Garden are estimates based on 30-year weather averages and university extension guidance. Weather in any given year can be earlier or later, so check your local forecast before planting tender crops. We can't guarantee results and aren't responsible for crop losses.</p>
 <h2>Using the site</h2>
-<p>You're welcome to use the planner and guides for your own garden, and to link to any page. Please don't copy the site's text, illustrations or data tables wholesale onto another website.</p>
+<p>You're welcome to use the calendars, garden plan and guides for your own garden, and to link to any page. Please don't copy the site's text, illustrations or data tables wholesale onto another website.</p>
 <h2>Links and ads</h2>
 <p>The site shows ads and links to other websites, including affiliate links to stores. We don't control those sites and aren't responsible for their content or products. See the <a href="../privacy/">privacy policy</a> for how ads and links use cookies.</p>
 <h2>Changes</h2>
@@ -1334,7 +1338,7 @@ const B = CONFIG.basePath;
 write(B, "404.html", layout({
   rel: B, canonical: "", current: null,
   title: "Page not found | Rainline Garden", description: "That page doesn't exist.",
-  body: `<section class="hero prose"><h1>That page doesn't exist.</h1><p class="lede">Try the <a href="${B}">planner</a>, the <a href="${B}what-to-grow/">plant quiz</a>, the <a href="${B}when-to-plant/">crop guides</a> or the <a href="${B}frost-dates/">list of cities</a>.</p></section>
+  body: `<section class="hero prose"><h1>That page doesn't exist.</h1><p class="lede">Try the <a href="${B}">home page</a>, the <a href="${B}what-to-grow/">plant quiz</a>, the <a href="${B}when-to-plant/">plant guides</a> or the <a href="${B}frost-dates/">town calendars</a>.</p></section>
 <script>/* Old one-plant-one-town pages were folded into the plant guides; send visitors to the guide with their town picked. */
 (function(){var m=location.pathname.match(/when-to-plant[/]([a-z-]+)[/]([a-z-]+-(?:or|wa))[/]?$/);if(m)location.replace("${B}when-to-plant/"+m[1]+"/?town="+m[2]+"#your-town")})()</script>`
 }), null);
@@ -1356,11 +1360,11 @@ fs.writeFileSync(path.join(ROOT, "assets/guide-data.js"),
 /* Header search index: plants, towns, articles and pages. Loaded by assets/nav.js the first time search opens. */
 const searchIndex = [
   ...D.crops.map(c => ({ t: c.name, s: "Plant · " + (D.categories.find(k => k.crops.includes(c.id)) || {}).name, u: "when-to-plant/" + c.id + "/", k: "crop", c: c.id, i: "assets/img/crops/" + c.id + ".webp" })),
-  ...D.places.map(p => ({ t: p.city + ", " + p.state, s: "Frost dates and planting calendar", u: "frost-dates/" + p.slug + "/", k: "town", p: p.slug })),
+  ...D.places.map(p => ({ t: p.city + ", " + p.state, s: "Town calendar: frost and planting dates", u: "frost-dates/" + p.slug + "/", k: "town", p: p.slug })),
   ...D.categories.map(k => ({ t: k.name, s: k.crops.length + " plants", u: "when-to-plant/" + k.id + "/", k: "group", i: "assets/img/crops/" + k.crops[0] + ".webp" })),
   ...ARTICLES.map(a => ({ t: a.title, s: "Article", u: "articles/" + a.slug + "/", k: "article", i: a.icon ? "assets/img/topics/" + a.icon + ".svg" : a.crops && a.crops[0] ? "assets/img/crops/" + a.crops[0] + ".webp" : "" })),
   ...G.glossary.map(g => ({ t: g[0], s: "Glossary", u: "glossary/#" + g[1], k: "term" })),
-  ...[["", "Planner", "Your local planting calendar"], ["my-garden/", "My garden plan", "Plan, track and print your garden"], ["what-to-grow/", "Plant quiz", "Find the plants that suit your space and time"], ["frost-dates/", "Frost dates by city", "Every town we cover"],
+  ...[["", "Home", "Look up your town's planting dates"], ["my-garden/", "My garden plan", "Plan, track and print your garden"], ["what-to-grow/", "Plant quiz", "Find the plants that suit your space and time"], ["frost-dates/", "Town calendars", "Frost and planting dates for every town"],
     ["beginners-guide/", "Beginner's guide", "Start your first garden"], ["garden-calendar/", "Monthly chores", "What to do each month"], ["about/", "About", "Who writes Rainline Garden"], ["contact/", "Contact", "Questions and corrections"]]
     .map(([u, t, sub]) => ({ t, s: sub, u, k: "page" }))
 ];
