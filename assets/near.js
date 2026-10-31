@@ -3,11 +3,11 @@
 window.RainlineNear = function (b, out, T, found) {
   if (!b || !navigator.geolocation) return;
   b.hidden = false;
-  var hides = out.hidden;
+  var hides = out.hidden, lab = b.querySelector("span") || b;
   function km(a, o, c, p) { var r = Math.PI / 180, x = (p - o) * r * Math.cos((a + c) / 2 * r), y = (c - a) * r; return 6371 * Math.sqrt(x * x + y * y); }
-  function done(text) { b.disabled = false; b.textContent = "Use my location"; if (text) { out.textContent = text; out.hidden = false; } }
+  function done(text) { b.disabled = false; lab.textContent = "Use my location"; if (text) { out.textContent = text; out.hidden = false; } }
   b.addEventListener("click", function () {
-    b.disabled = true; b.textContent = "Finding you…"; out.textContent = ""; if (hides) out.hidden = true;
+    b.disabled = true; lab.textContent = "Finding you…"; out.textContent = ""; if (hides) out.hidden = true;
     navigator.geolocation.getCurrentPosition(function (pos) {
       var la = pos.coords.latitude, lo = pos.coords.longitude, best = null, bd = 1 / 0;
       T.forEach(function (t) { for (var i = 1; i < t.length; i += 2) { var d = km(la, lo, t[i], t[i + 1]); if (d < bd) { bd = d; best = t[0]; } } });

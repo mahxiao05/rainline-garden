@@ -20,7 +20,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="stylesheet" href="assets/fonts/fonts.css">
-<link rel="stylesheet" href="assets/style.css?v=b81103f4">
+<link rel="stylesheet" href="assets/style.css?v=69a73be1">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7867146450299069" crossorigin="anonymous"></script>
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Rainline Garden","url":"https://rainlinegarden.org/","publisher":{"@type":"Organization","name":"X Ventures LLC","url":"https://rainlinegarden.org/"}}</script>
@@ -47,20 +47,26 @@
 </header>
 <main id="main" class="wrap">
 
-<figure class="hero-art"><picture><source type="image/webp" srcset="assets/img/photos/hero-1600.webp 1600w, assets/img/photos/hero-800.webp 800w" sizes="(min-width: 70rem) 66rem, calc(100vw - 32px)">
-<img src="assets/img/photos/hero-1600.jpg" srcset="assets/img/photos/hero-1600.jpg 1600w, assets/img/photos/hero-800.jpg 800w" sizes="(min-width: 70rem) 66rem, calc(100vw - 32px)" width="1600" height="600" alt="A raised vegetable bed full of lettuce and flowering chives in a green backyard garden" fetchpriority="high" decoding="async"></picture></figure>
+<div class="home-top">
+<figure class="hero-art"><picture><source type="image/webp" srcset="assets/img/photos/hero-1600.webp 1600w, assets/img/photos/hero-800.webp 800w" sizes="(min-width: 70rem) 33rem, (min-width: 900px) 46vw, calc(100vw - 32px)">
+<img src="assets/img/photos/hero-1600.jpg" srcset="assets/img/photos/hero-1600.jpg 1600w, assets/img/photos/hero-800.jpg 800w" sizes="(min-width: 70rem) 33rem, (min-width: 900px) 46vw, calc(100vw - 32px)" width="1600" height="600" alt="A raised vegetable bed full of lettuce and flowering chives in a green backyard garden" fetchpriority="high" decoding="async"></picture></figure>
 <section class="hero">
+<p class="eyebrow">Oregon · Washington · Idaho</p>
 <h1>Plant on Northwest time.</h1>
-<p class="lede">The Cascades draw a rain line through Oregon and Washington, and the dry side runs on into Idaho. Which side you're on decides when you plant. Enter your ZIP or pick a town for local frost dates, what to plant this week, and a full-year planting calendar.</p>
-<form id="finder" class="finder" novalidate>
-  <div class="field"><label for="zip">ZIP code</label><input id="zip" name="zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" placeholder="e.g. 97214"></div>
-  <span class="or">or</span>
-  <div class="field field-select"><label for="place">Town</label><select id="place" name="place"><option value="">Choose a town</option></select></div>
-  <button class="btn" type="submit">Use this town</button>
-  <button type="button" id="near-me" class="btn btn-ghost near-btn" hidden>Use my location</button>
+<p class="lede">Local frost dates and a year-round planting calendar for your town, on either side of the Cascades.</p>
+<form id="finder" class="home-find" novalidate>
+  <div class="home-find-box">
+    <label class="home-find-in" for="where"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><span class="sr">ZIP code or town</span><input id="where" name="where" type="text" autocomplete="off" spellcheck="false" enterkeyhint="go" placeholder="ZIP code or town" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="where-list"></label>
+    <button class="btn" type="submit">Show my dates</button>
+  </div>
+  <ul id="where-list" class="where-list" role="listbox" aria-label="Matching towns" hidden></ul>
 </form>
+<p class="home-find-alt"><button type="button" id="near-me" class="link-btn" hidden><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg><span>Use my location</span></button><a href="frost-dates/">Browse all 86 towns</a></p>
 <p id="msg" class="msg" role="status" aria-live="polite"></p>
+<ul class="trust"><li>86 towns</li><li>NOAA frost records</li><li>Free, no sign-up</li></ul>
+<p class="home-saved" hidden>Showing dates for <strong></strong>. <button type="button" class="link-btn home-change">Change town</button></p>
 </section>
+</div>
 <section id="result" aria-live="polite"></section>
 <section id="season-now" class="home-sec season-now" aria-live="polite" hidden></section>
 <section class="home-sec plan-cta"><div><h2>Plan your garden</h2>
@@ -96,8 +102,8 @@
 <script src="assets/data.js?v=32cd5294"></script>
 <script src="assets/plan.js?v=b996308b"></script>
 <script src="assets/render.js?v=382fdea2"></script>
-<script src="assets/near.js?v=0a8606b4"></script>
-<script src="assets/app.js?v=2feba35f"></script>
+<script src="assets/near.js?v=243179ab"></script>
+<script src="assets/app.js?v=7fb98a69"></script>
 <script src="assets/nav.js?v=318c120e" defer></script>
 </body>
 </html>
