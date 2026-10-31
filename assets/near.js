@@ -11,7 +11,8 @@ window.RainlineNear = function (b, out, T, found) {
     navigator.geolocation.getCurrentPosition(function (pos) {
       var la = pos.coords.latitude, lo = pos.coords.longitude, best = null, bd = 1 / 0;
       T.forEach(function (t) { for (var i = 1; i < t.length; i += 2) { var d = km(la, lo, t[i], t[i + 1]); if (d < bd) { bd = d; best = t[0]; } } });
-      if (bd > 150) return done("That looks like it's outside Oregon and Washington, so we don't have a town near you yet.");
+      if (bd > 150) return done("That looks like it's outside Oregon, Washington and Idaho, so we don't have a town near you yet.");
+      if (!best) return done("We don't have frost records close enough to you to give reliable dates yet. If a town on the list has a climate like yours, pick it instead.");
       done(); found(best);
     }, function (err) {
       done(err.code === 1

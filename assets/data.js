@@ -5,7 +5,7 @@
  *   fall50 = median first fall freeze; fall10 = only a 10% chance of a freeze before this date.
  *   spring90 / fall90 = the 90% dates (a freeze after spring90, or before fall90, in 9 years out of 10).
  * Planting windows: regional dates for when the soil is usually ready in each climate region
- *   (west side, coast, southern valleys, high desert, inland valleys). Washington areas use the
+ *   (west side, coast, southern valleys, high desert, inland valleys). Washington and Idaho towns use the
  *   closest matching region.
  * To update: edit the values below, then run `node scripts/build.js`.
  */
@@ -81,7 +81,21 @@
     "USC00458207": { name: "Sunnyside", spring10: "05-18", spring50: "05-01", fall50: "10-06", fall10: "09-25", spring90: "04-16", fall90: "10-22", elev: 228 },
     "USC00453222": { name: "Goldendale", spring10: "06-09", spring50: "05-19", fall50: "09-25", fall10: "09-08", spring90: "05-02", fall90: "10-09", elev: 500 },
     "USW00094129": { name: "Pullman-Moscow Regional Airport", spring10: "05-14", spring50: "04-29", fall50: "10-02", fall10: "09-17", spring90: "04-07", fall90: "10-25", elev: 778 },
-    "USC00451630": { name: "Colville", spring10: "05-17", spring50: "05-02", fall50: "10-02", fall10: "09-19", spring90: "04-19", fall90: "10-17", elev: 474 }
+    "USC00451630": { name: "Colville", spring10: "05-17", spring50: "05-02", fall50: "10-02", fall10: "09-19", spring90: "04-19", fall90: "10-17", elev: 474 },
+    "USC00101956": { name: "Coeur d'Alene", spring10: "05-06", spring50: "04-22", fall50: "10-18", fall10: "10-04", spring90: "04-04", fall90: "11-05", elev: 650 },
+    "USC00108137": { name: "Sandpoint Experiment Station", spring10: "05-25", spring50: "05-08", fall50: "09-28", fall10: "09-11", spring90: "04-23", fall90: "10-11", elev: 648 },
+    "USC00101079": { name: "Bonners Ferry", spring10: "05-16", spring50: "04-30", fall50: "10-04", fall10: "09-18", spring90: "04-16", fall90: "10-19", elev: 632 },
+    "USW00024149": { name: "Lewiston-Nez Perce County Airport", spring10: "04-26", spring50: "04-06", fall50: "10-26", fall10: "10-10", spring90: "03-20", fall90: "11-12", elev: 438 },
+    "USW00024131": { name: "Boise Airport", spring10: "05-09", spring50: "04-24", fall50: "10-21", fall10: "10-05", spring90: "04-04", fall90: "11-05", elev: 858 },
+    "USC00106305": { name: "Nampa Sugar Factory", spring10: "05-18", spring50: "04-29", fall50: "10-13", fall10: "09-29", spring90: "04-15", fall90: "10-28", elev: 753 },
+    "USC00102942": { name: "Emmett", spring10: "05-17", spring50: "04-30", fall50: "10-17", fall10: "10-02", spring90: "04-17", fall90: "11-01", elev: 728 },
+    "USC00105708": { name: "McCall", spring10: "07-10", spring50: "06-22", fall50: "09-02", fall10: "08-14", spring90: "06-03", fall90: "09-18", elev: 1532 },
+    "USW00094178": { name: "Twin Falls Magic Valley Regional Airport", spring10: "05-28", spring50: "05-09", fall50: "10-04", fall10: "09-20", spring90: "04-25", fall90: "10-20", elev: 1265 },
+    "USW00024133": { name: "Burley Municipal Airport", spring10: "05-23", spring50: "05-07", fall50: "10-04", fall10: "09-21", spring90: "04-23", fall90: "10-18", elev: 1262 },
+    "USC00107210": { name: "Pocatello", spring10: "05-18", spring50: "05-02", fall50: "10-11", fall10: "09-26", spring90: "04-17", fall90: "10-26", elev: 1359 },
+    "USC00104455": { name: "Idaho Falls", spring10: "06-02", spring50: "05-09", fall50: "10-01", fall10: "09-17", spring90: "04-27", fall90: "10-15", elev: 1445 },
+    "USC00107644": { name: "Rexburg (BYU-Idaho)", spring10: "06-02", spring50: "05-12", fall50: "09-24", fall10: "09-06", spring90: "04-29", fall90: "10-08", elev: 1526 },
+    "USC00108080": { name: "Salmon", spring10: "06-09", spring50: "05-17", fall50: "09-24", fall10: "09-09", spring90: "05-03", fall90: "10-05", elev: 1205 }
   };
 
   /* Climate regions. Anchors are the earliest sensible dates (MM-DD) for each kind of planting,
@@ -91,11 +105,11 @@
       anchors: { coolEarly: "03-25", coolTrans: "04-01", warmSeed: "05-15", warmTrans: "05-20", hotTrans: "06-01", garlicStart: "10-01", garlicEnd: "11-15" } },
     west: { name: "West-side valleys", blurb: "The Willamette Valley, Puget Sound and southern Oregon valleys. Long frost-free seasons, but soil stays cold and wet into May, so warm crops wait for warm soil, not just the last frost.",
       anchors: { coolEarly: "03-01", coolTrans: "03-15", warmSeed: "05-10", warmTrans: "05-15", hotTrans: "05-25", garlicStart: "10-01", garlicEnd: "11-15" } },
-    east: { name: "East-side valleys", blurb: "The Columbia Basin, Yakima Valley and other low valleys east of the Cascades. Hot, dry summers and quick spring warm-up. Warm crops go in earlier than west of the Cascades, and irrigation matters more than rain.",
+    east: { name: "East-side valleys", blurb: "The Columbia Basin, Yakima Valley, Boise's Treasure Valley, Lewiston and other low valleys east of the Cascades. Hot, dry summers and quick spring warm-up. Warm crops go in earlier than west of the Cascades, and irrigation matters more than rain.",
       anchors: { coolEarly: "03-20", coolTrans: "04-01", warmSeed: "04-25", warmTrans: "05-01", hotTrans: "05-10", garlicStart: "10-01", garlicEnd: "11-01" } },
-    inland: { name: "Inland Northwest", blurb: "Spokane, Ellensburg, the Okanogan, La Grande and other higher, colder interior valleys. Cold springs and an earlier fall mean a shorter season; quick-maturing varieties pay off.",
+    inland: { name: "Inland Northwest", blurb: "Spokane, Ellensburg, the Okanogan, La Grande, north Idaho, the Magic Valley, eastern Idaho and other higher, colder interior valleys. Cold springs and an earlier fall mean a shorter season; quick-maturing varieties pay off.",
       anchors: { coolEarly: "04-01", coolTrans: "04-15", warmSeed: "05-15", warmTrans: "05-20", hotTrans: "05-30", garlicStart: "09-25", garlicEnd: "10-31" } },
-    high: { name: "High desert", blurb: "Central Oregon and the high, cold valleys of eastern Oregon. Frost is possible almost any month. Use row covers, wall-o-water or cloches for warm crops, and choose short-season varieties.",
+    high: { name: "High desert", blurb: "Central Oregon, the high, cold valleys of eastern Oregon, and Idaho mountain towns like McCall and Salmon. Frost is possible almost any month. Use row covers, wall-o-water or cloches for warm crops, and choose short-season varieties.",
       anchors: { coolEarly: "04-20", coolTrans: "04-15", warmSeed: "05-25", warmTrans: "05-25", hotTrans: "06-05", garlicStart: "09-20", garlicEnd: "10-20" } }
   };
 
@@ -113,7 +127,24 @@
     { id: "sw-wa", name: "Southwest Washington", state: "WA" },
     { id: "ncw", name: "Wenatchee and the Okanogan", state: "WA" },
     { id: "basin", name: "Yakima Valley and Columbia Basin", state: "WA" },
-    { id: "spokane", name: "Spokane and eastern Washington", state: "WA" }
+    { id: "spokane", name: "Spokane and eastern Washington", state: "WA" },
+    { id: "north-id", name: "North Idaho", state: "ID" },
+    { id: "lewiston-id", name: "Lewiston and Moscow", state: "ID" },
+    { id: "boise-id", name: "Boise and southwest Idaho", state: "ID" },
+    { id: "eastern-id", name: "Magic Valley and eastern Idaho", state: "ID" }
+  ];
+
+  /* Spots with no NOAA frost records near enough to give dates. "Use my location" tells people here we don't cover them yet,
+   * instead of sending them to a town with a very different climate. ZIPs here are simply left off every town's list. */
+  var gaps = [
+    { name: "Wood River Valley (Hailey, Ketchum, Sun Valley)", ll: [43.520, -114.315, 43.681, -114.364] },
+    { name: "Stanley and Challis", ll: [44.216, -114.938, 44.505, -114.232] },
+    { name: "Arco and Mackay", ll: [43.636, -113.300, 43.911, -113.615] },
+    { name: "Teton Valley (Driggs and Victor)", ll: [43.723, -111.111, 43.603, -111.111] },
+    { name: "Island Park", ll: [44.424, -111.371] },
+    { name: "Bear Lake and Montpelier", ll: [42.322, -111.298] },
+    { name: "Preston and Franklin", ll: [42.096, -111.876, 42.013, -111.802] },
+    { name: "Grangeville and the Camas Prairie", ll: [45.927, -116.122] }
   ];
 
   /* Places people can pick. zip3 = default for 3-digit ZIP prefixes; zips = specific 5-digit overrides.
@@ -165,7 +196,7 @@
     { slug: "lakeview-or", city: "Lakeview", state: "OR", ll: [42.189, -120.346], station: "USC00354670", zone: "high", area: "central-or", zips: ["97630"] },
     { slug: "hood-river-or", city: "Hood River", state: "OR", ll: [45.705, -121.521], station: "USC00354003", zone: "east", area: "eastern-or", zips: ["97031", "97014"] },
     { slug: "hermiston-or", city: "Hermiston", state: "OR", ll: [45.84, -119.289], station: "USW00004113", zone: "east", area: "eastern-or", zips: ["97838", "97818", "97882", "97844", "97875"] },
-    { slug: "ontario-or", city: "Ontario", state: "OR", ll: [44.027, -116.963], station: "USW00024162", zone: "east", area: "eastern-or", zips: ["97914", "97913", "97918"] },
+    { slug: "ontario-or", city: "Ontario", state: "OR", ll: [44.027, -116.963], station: "USW00024162", zone: "east", area: "eastern-or", zips: ["97914", "97913", "97918", "83619", "83655", "83661", "83672"] },
     { slug: "la-grande-or", city: "La Grande", state: "OR", ll: [45.325, -118.088], station: "USC00354622", zone: "inland", area: "eastern-or", zips: ["97850", "97827", "97883"] },
     { slug: "john-day-or", city: "John Day", state: "OR", ll: [44.416, -118.953], station: "USC00354291", zone: "high", area: "eastern-or", zips: ["97845", "97820", "97869", "97865"] },
     { slug: "enterprise-or", city: "Enterprise and Joseph", state: "OR", ll: [45.426, -117.279, 45.354, -117.23], station: "USC00354329", zone: "high", area: "eastern-or", zips: ["97828", "97846", "97885", "97857"] },
@@ -189,7 +220,22 @@
     { slug: "sunnyside-wa", city: "Sunnyside, Grandview and Prosser", state: "WA", ll: [46.324, -120.009, 46.251, -119.902, 46.207, -119.769], station: "USC00458207", zone: "east", area: "basin", zips: ["98944", "98930", "99350", "98935", "98932"] },
     { slug: "goldendale-wa", city: "Goldendale", state: "WA", ll: [45.821, -120.822], station: "USC00453222", zone: "inland", area: "basin", zips: ["98620"] },
     { slug: "pullman-wa", city: "Pullman", state: "WA", ll: [46.731, -117.18], station: "USW00094129", zone: "inland", area: "spokane", zips: ["99163", "99164", "99111"] },
-    { slug: "colville-wa", city: "Colville", state: "WA", ll: [48.547, -117.906], station: "USC00451630", zone: "inland", area: "spokane", zips: ["99114", "99109", "99141", "99156"] }
+    { slug: "colville-wa", city: "Colville", state: "WA", ll: [48.547, -117.906], station: "USC00451630", zone: "inland", area: "spokane", zips: ["99114", "99109", "99141", "99156"] },
+    { slug: "coeur-d-alene-id", city: "Coeur d'Alene and Post Falls", state: "ID", ll: [47.678, -116.78, 47.718, -116.952], station: "USC00101956", zone: "inland", area: "north-id", zips: ["83801", "83810", "83814", "83815", "83816", "83833", "83835", "83842", "83854", "83858", "83869", "83876", "83877"] },
+    { slug: "sandpoint-id", city: "Sandpoint", state: "ID", ll: [48.277, -116.553], station: "USC00108137", zone: "inland", area: "north-id", zips: ["83803", "83804", "83809", "83813", "83822", "83825", "83836", "83840", "83841", "83852", "83856", "83860", "83862", "83864", "83865", "83888"] },
+    { slug: "bonners-ferry-id", city: "Bonners Ferry", state: "ID", ll: [48.691, -116.316], station: "USC00101079", zone: "inland", area: "north-id", zips: ["83805", "83826", "83845", "83847", "83853"] },
+    { slug: "lewiston-id", city: "Lewiston", state: "ID", ll: [46.417, -117.017], station: "USW00024149", zone: "east", area: "lewiston-id", zips: ["83501", "83540", "83551", "99402", "99403"], note: "Lewiston sits low in the canyon where the Snake and Clearwater rivers meet, which gives it the longest season of any Idaho town we cover. Clarkston, across the river in Washington, shares these dates. Towns up on the prairie above the canyon are colder." },
+    { slug: "moscow-id", city: "Moscow", state: "ID", ll: [46.732, -117.0], station: "USW00094129", zone: "inland", area: "lewiston-id", zips: ["83832", "83834", "83843", "83844", "83855", "83857", "83871", "83872"], note: "These dates come from the Pullman-Moscow airport, between the two towns." },
+    { slug: "boise-id", city: "Boise and Meridian", state: "ID", ll: [43.614, -116.203, 43.612, -116.391], station: "USW00024131", zone: "east", area: "boise-id", zip3: ["837"], zips: ["83616", "83634", "83642", "83669", "83680"] },
+    { slug: "nampa-id", city: "Nampa and Caldwell", state: "ID", ll: [43.541, -116.563, 43.663, -116.687], station: "USC00106305", zone: "east", area: "boise-id", zips: ["83605", "83606", "83607", "83626", "83628", "83630", "83639", "83641", "83644", "83651", "83652", "83653", "83656", "83660", "83676", "83686", "83687"] },
+    { slug: "emmett-id", city: "Emmett", state: "ID", ll: [43.874, -116.5], station: "USC00102942", zone: "east", area: "boise-id", zips: ["83617", "83629", "83636", "83670"] },
+    { slug: "mccall-id", city: "McCall", state: "ID", ll: [44.911, -116.099], station: "USC00105708", zone: "high", area: "boise-id", zips: ["83615", "83638", "83654"], note: "McCall has the shortest season of any town we cover. Frost is possible in any summer month, so warm crops need a greenhouse, a hoop house or row covers." },
+    { slug: "twin-falls-id", city: "Twin Falls", state: "ID", ll: [42.563, -114.461], station: "USW00094178", zone: "inland", area: "eastern-id", zips: ["83301", "83303", "83316", "83321", "83325", "83328", "83334", "83338", "83341", "83355"], note: "These dates come from the Magic Valley airport south of town. Gardens in town usually run about a week milder." },
+    { slug: "burley-id", city: "Burley and Rupert", state: "ID", ll: [42.536, -113.793, 42.619, -113.677], station: "USW00024133", zone: "inland", area: "eastern-id", zips: ["83318", "83323", "83335", "83336", "83343", "83344", "83347", "83350"] },
+    { slug: "pocatello-id", city: "Pocatello", state: "ID", ll: [42.871, -112.446], station: "USC00107210", zone: "inland", area: "eastern-id", zips: ["83201", "83202", "83203", "83204", "83205", "83206", "83209", "83210", "83245", "83250", "83262", "83277"], note: "These dates come from the weather station in town. The Pocatello airport, out on the plain northwest of town, runs about three weeks colder (its typical last frost is May 23), so gardens outside town should plan on later dates." },
+    { slug: "idaho-falls-id", city: "Idaho Falls", state: "ID", ll: [43.467, -112.034], station: "USC00104455", zone: "inland", area: "eastern-id", zips: ["83218", "83236", "83274", "83401", "83402", "83404", "83405", "83406", "83415", "83427", "83444", "83454"], note: "These dates come from a weather station in town. The Idaho Falls airport typically sees its last frost about two weeks later, around May 23, so gardens out on the open plain should allow for that." },
+    { slug: "rexburg-id", city: "Rexburg", state: "ID", ll: [43.826, -111.79], station: "USC00107644", zone: "inland", area: "eastern-id", zips: ["83421", "83431", "83434", "83436", "83440", "83441", "83442", "83443", "83445", "83448", "83451", "83460"] },
+    { slug: "salmon-id", city: "Salmon", state: "ID", ll: [45.176, -113.896], station: "USC00108080", zone: "high", area: "eastern-id", zips: ["83462", "83467"] }
   ];
 
   /* Crops.
@@ -393,6 +439,6 @@
       "Rest. The seed catalogs are coming." ] }
   ];
 
-  var D = { stations: stations, zones: zones, areas: areas, places: places, crops: crops, categories: categories, chores: chores };
+  var D = { stations: stations, zones: zones, areas: areas, places: places, gaps: gaps, crops: crops, categories: categories, chores: chores };
   if (typeof module !== "undefined" && module.exports) module.exports = D; else root.RainlineData = D;
 })(this);

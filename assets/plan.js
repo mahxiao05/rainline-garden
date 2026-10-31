@@ -34,7 +34,8 @@
     for (i = 0; i < D.places.length; i++) { p = D.places[i]; if (p.zips && p.zips.indexOf(zip) >= 0) return { place: p }; }
     var z3 = zip.slice(0, 3);
     for (i = 0; i < D.places.length; i++) { p = D.places[i]; if (p.zip3 && p.zip3.indexOf(z3) >= 0) return { place: p }; }
-    return { error: "That ZIP isn't in Oregon or Washington. Rainline Garden covers the Pacific Northwest only for now." };
+    if (z3 >= "832" && z3 <= "838") return { error: "We don't have a town close enough to that Idaho ZIP to give reliable dates yet. If one of the Idaho towns on the list has a climate like yours, pick it instead." };
+    return { error: "That ZIP isn't in Oregon, Washington or Idaho. Rainline Garden covers the Pacific Northwest only for now." };
   }
 
   function plan(D, place) {
@@ -122,6 +123,11 @@
   }
 
   // Towns grouped by area (D.areas order), each group sorted by name.
+  // Points for "Use my location": each town, plus spots we have no frost records for (slug ""), so people there aren't sent to a far-off town.
+  function nearPoints(D) {
+    return D.places.map(function (x) { return [x.slug].concat(x.ll); }).concat((D.gaps || []).map(function (g) { return [""].concat(g.ll); }));
+  }
+
   function byArea(D) {
     return D.areas.map(function (a) {
       return { area: a, places: D.places.filter(function (x) { return x.area === a.id; })
@@ -141,6 +147,6 @@
 
   var API = { MONTHS: MONTHS, MONTHS_LONG: MONTHS_LONG, CUM: CUM, doy: doy, fromDoy: fromDoy, fmt: fmt, fmtLong: fmtLong,
     fmtRange: fmtRange, plan: plan, nowList: nowList, season: season, findPlace: findPlace, placeForZip: placeForZip,
-    byArea: byArea, fillPlaceSelect: fillPlaceSelect };
+    byArea: byArea, fillPlaceSelect: fillPlaceSelect, nearPoints: nearPoints };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else root.RainlinePlan = API;
 })(this);

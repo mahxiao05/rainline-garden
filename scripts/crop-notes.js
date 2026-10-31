@@ -1106,7 +1106,7 @@ const notes = {
         "Slugs are the main pest. A cold frame or row cover speeds growth in winter and keeps leaves cleaner. In spring, let a few plants flower and drop seed, and mâche often comes back on its own in fall."]
     ],
     faq: [
-      ["When should I plant mâche in Oregon and Washington?", "Sow in late summer, from mid-August into September, for picking from late fall through winter. You can also sow in early spring, but it bolts quickly as days lengthen."],
+      ["When should I plant mâche in the Northwest?", "Sow in late summer, from mid-August into September, for picking from late fall through winter. You can also sow in early spring, but it bolts quickly as days lengthen."],
       ["Why isn't my mâche sprouting?", "The soil is probably too warm. Mâche germinates best in cool soil. Sow a little later, keep the bed moist and shaded, and be patient for up to two weeks."],
       ["What does mâche taste like?", "Mild, tender and slightly nutty, with no bitterness. It's good on its own with a light dressing or mixed with sharper greens like arugula."]
     ]

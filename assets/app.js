@@ -104,7 +104,7 @@
     out.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
   });
   sel.addEventListener("change", function () { zip.value = ""; if (sel.value) show(P.findPlace(D, sel.value), false); });
-  if (window.RainlineNear) RainlineNear(document.getElementById("near-me"), msg, D.places.map(function (x) { return [x.slug].concat(x.ll); }), function (slug) {
+  if (window.RainlineNear) RainlineNear(document.getElementById("near-me"), msg, P.nearPoints(D), function (slug) {
     zip.value = ""; sel.value = slug; msg.textContent = ""; show(P.findPlace(D, slug), false);
     out.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
   });

@@ -189,7 +189,7 @@ ${fig(1)}
     crops: ["apples", "pears", "plums", "cherries", "peaches"],
     published: "2026-10-23",
     body: ({ link, fig }) => `
-<p>Every late winter, nurseries across Oregon and Washington fill with bundles of leafless young trees with their roots wrapped in damp sawdust. These bare-root trees are the cheapest way to start an orchard, there's a far bigger choice of varieties than in summer, and they often establish faster than potted trees because their roots go straight into your soil.</p>
+<p>Every late winter, nurseries across the Northwest fill with bundles of leafless young trees with their roots wrapped in damp sawdust. These bare-root trees are the cheapest way to start an orchard, there's a far bigger choice of varieties than in summer, and they often establish faster than potted trees because their roots go straight into your soil.</p>
 <p>The catch is timing. A bare-root tree has to be planted while it's dormant, so the season is short: roughly late January to March west of the Cascades, and from when the ground thaws until early spring east of the mountains.</p>
 <h2>Before you buy</h2>
 <ul>

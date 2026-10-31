@@ -150,7 +150,7 @@
       P.fillPlaceSelect(sel, D);
       var saved = answers.town; if (!saved) { try { saved = localStorage.getItem("rainline-place"); } catch (e) { /* ignore */ } }
       if (saved && P.findPlace(D, saved)) sel.value = saved;
-      if (window.RainlineNear) RainlineNear(document.getElementById("near-me"), document.getElementById("quiz-msg"), D.places.map(function (x) { return [x.slug].concat(x.ll); }), function (slug) {
+      if (window.RainlineNear) RainlineNear(document.getElementById("near-me"), document.getElementById("quiz-msg"), P.nearPoints(D), function (slug) {
         answers.town = slug; started = true; step++; show();
       });
     }
