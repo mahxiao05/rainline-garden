@@ -89,7 +89,7 @@ const byLd = id => id === SITE_BY ? { "@type": "Organization", name: CONFIG.site
 const byAvatar = (rel, id, cls) => id === SITE_BY ? `<img class="avatar avatar-site ${cls || ""}" src="${rel}assets/icon.svg" alt="Rainline Garden logo" aria-hidden="true" width="96" height="96">` : avatar(rel, id, cls);
 const byName = (rel, id) => id === SITE_BY ? `<a href="${rel}about/">${CONFIG.siteName}</a>` : `<a href="${rel}about/#${id}">${AUTHORS[id].name}</a>`;
 const byBox = (rel, id) => id === SITE_BY
-  ? `<aside class="author-box">${byAvatar(rel, id, "avatar-lg")}<div><h2>About Rainline Garden</h2><p>Free planting calendars and growing guides for Oregon and Washington gardens, built from NOAA frost records for ${D.places.length} towns.</p><a href="${rel}about/">More about us</a></div></aside>`
+  ? `<aside class="author-box">${byAvatar(rel, id, "avatar-lg")}<div><h2>About Rainline Garden</h2><p>Free planting calendars and growing guides for Oregon, Washington and Idaho gardens, built from NOAA frost records for ${D.places.length} towns.</p><a href="${rel}about/">More about us</a></div></aside>`
   : `<aside class="author-box">${avatar(rel, id, "avatar-lg")}<div><h2>About the author</h2><p>${esc(AUTHORS[id].short)}</p><a href="${rel}about/#${id}">More about ${AUTHORS[id].name.split(" ")[0]}</a></div></aside>`;
 const authorCard = (rel, id, heading) => { const a = AUTHORS[id]; return `<section class="profile" id="${id}">
 <div class="profile-cover"><img src="${rel}assets/img/${a.cover}" alt="Garden illustration for ${a.name}" aria-hidden="true" width="1200" height="320" loading="lazy"></div>
@@ -240,7 +240,7 @@ ${search}
 ${body}
 </main>
 <footer class="site-foot"><div class="wrap">
-<p><strong class="foot-brand">Rainline Garden</strong><br>Free planting calendars for Oregon and Washington gardens.<br>Frost data from NOAA climate normals. Updated ${stamp(CONFIG.updated)}.${CONFIG.amazonTag ? "<br>As an Amazon Associate, Rainline Garden earns from qualifying purchases." : ""}</p>
+<p><strong class="foot-brand">Rainline Garden</strong><br>Free planting calendars for Oregon, Washington and Idaho gardens.<br>Frost data from NOAA climate normals. Updated ${stamp(CONFIG.updated)}.${CONFIG.amazonTag ? "<br>As an Amazon Associate, Rainline Garden earns from qualifying purchases." : ""}</p>
 <nav aria-label="Footer"><a href="${base}glossary/">Glossary</a><a href="${base}how-it-works/">How it works</a><a href="${base}about/">About</a><a href="${base}contact/">Contact</a><a href="${base}privacy/">Privacy</a><a href="${base}terms/">Terms</a></nav>
 <p class="owner">&copy; ${YEAR} ${CONFIG.owner}. Rainline Garden is owned and operated by ${CONFIG.owner}.</p>
 </div></footer>
@@ -510,7 +510,7 @@ const sideCard = (g, note) => `<aside class="side-card"><h3>Top picks for here</
 function varietyCards(c) {
   const vs = VARIETIES[c.id];
   if (!vs) return "";
-  return phoneFold("varieties", `More ${singular(c.name)} varieties`, `<p class="lede-sm">More widely sold picks that do well somewhere in Oregon or Washington. The tag says which side of the mountains suits each one best.</p>
+  return phoneFold("varieties", `More ${singular(c.name)} varieties`, `<p class="lede-sm">More widely sold picks that do well somewhere in the Northwest. The tag says which side of the mountains suits each one best.</p>
 <div class="var-cards">${vs.map(v => `<section class="var-card"><h3>${esc(v.name)}</h3><p class="var-meta">${esc(v.type)}${v.days ? ` <span>&middot; ${esc(v.days)}</span>` : ""}</p><p>${esc(v.note)}</p><p class="var-where">${esc(v.where)}</p></section>`).join("")}</div>`);
 }
 // Click-to-load how-to video from scripts/videos.js: shows the plant's own photo until clicked, then YouTube's official player.
@@ -550,14 +550,14 @@ function categoryTiles(rel) {
 /* Home */
 write("", "index.html", layout({
   rel: "", canonical: "", current: "",
-  title: "Oregon & Washington Planting Calendar | Rainline Garden",
-  description: "When to plant vegetables where you live in Oregon and Washington. Enter your ZIP for local frost dates and a planting calendar built from NOAA frost data.",
+  title: "Oregon, Washington & Idaho Planting Calendar | Rainline Garden",
+  description: "When to plant vegetables where you live in Oregon, Washington and Idaho. Enter your ZIP for local frost dates and a planting calendar built from NOAA frost data.",
   jsonld: [{ "@context": "https://schema.org", "@type": "WebSite", name: "Rainline Garden", url: CONFIG.siteUrl, publisher: OWNER_LD }],
   body: `
 ${photo("hero", "", { big: "hero", small: "heroSm", cls: "hero-art", sizes: "(min-width: 70rem) 66rem, calc(100vw - 32px)", eager: true })}
 <section class="hero">
 <h1>Plant on Northwest time.</h1>
-<p class="lede">The Cascades draw a rain line through Oregon and Washington, and which side you're on decides when you plant. Enter your ZIP or pick a town for local frost dates, what to plant this week, and a full-year planting calendar.</p>
+<p class="lede">The Cascades draw a rain line through Oregon and Washington, and the dry side runs on into Idaho. Which side you're on decides when you plant. Enter your ZIP or pick a town for local frost dates, what to plant this week, and a full-year planting calendar.</p>
 <form id="finder" class="finder" novalidate>
   <div class="field"><label for="zip">ZIP code</label><input id="zip" name="zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" placeholder="e.g. 97214"></div>
   <span class="or">or</span>
@@ -599,14 +599,14 @@ const nDays = n => `${n} day${n === 1 ? "" : "s"}`;
 const listOf = xs => xs.length < 2 ? xs.join("") : `${xs.slice(0, -1).join(", ")} and ${xs[xs.length - 1]}`;
 const SPREADS = ALL_PLANS.map(x => x.frost.spring10 - x.frost.spring50).sort((a, b) => a - b);
 const MID_SPREAD = SPREADS[Math.floor(SPREADS.length / 2)];
-const inArea = n => /^(Portland area|Willamette|Oregon Coast|Olympic|Columbia Gorge|North Sound|Yakima Valley)/.test(n) ? `the ${n}` : n;
+const inArea = n => /^(Portland area|Willamette|Oregon Coast|Olympic|Columbia Gorge|North Sound|Yakima Valley|Magic Valley)/.test(n) ? `the ${n}` : n;
 function townCompare(p) {
   const city = esc(p.place.city), f = p.frost, area = D.areas.find(a => a.id === p.place.area);
   const bySeason = ALL_PLANS.slice().sort((a, b) => b.frost.season - a.frost.season);
   const rank = bySeason.findIndex(x => x.frost.season <= f.season) + 1;
   const top = bySeason[0], low = bySeason[bySeason.length - 1];
   const has = /,| and /.test(p.place.city) ? "have" : "has", out = [];
-  out.push(`With ${f.season} frost-free days, ${city} ${has} the ${rank === 1 ? "longest" : rank === bySeason.length ? "shortest" : `${ordinal(rank)}-longest`} season of the ${bySeason.length} Oregon and Washington towns we cover. ` +
+  out.push(`With ${f.season} frost-free days, ${city} ${has} the ${rank === 1 ? "longest" : rank === bySeason.length ? "shortest" : `${ordinal(rank)}-longest`} season of the ${bySeason.length} Oregon, Washington and Idaho towns we cover. ` +
     (rank === 1 ? `The shortest is ${esc(low.place.city)} at ${low.frost.season} days.` : rank === bySeason.length ? `The longest is ${esc(top.place.city)} at ${top.frost.season} days.` : `They run from ${low.frost.season} days in ${esc(low.place.city)} to ${top.frost.season} days in ${esc(top.place.city)}.`));
   const peers = ALL_PLANS.filter(x => x.place.area === p.place.area && x.place.slug !== p.place.slug);
   if (peers.length) {
@@ -651,7 +651,7 @@ function townQuestions(p) {
     [`When can I plant tomatoes in ${city}?`, `Set out tomato plants ${P.fmtRange(sp.start, sp.end)}${tom.indoor ? `, after starting seeds indoors ${P.fmtRange(tom.indoor.start, tom.indoor.end)}` : ""}.` +
       (tom.cover ? ` Keep frost cover handy until about ${P.fmt(tom.coverUntil)}.` : "") + (tom.season === "short" || tom.season === "tight" ? " The season is short here, so pick an early variety." : "")],
     [`When should I plant garlic in ${city}?`, `Plant garlic cloves ${P.fmtRange(garlic.start, garlic.end)}, and harvest next summer when the lower leaves turn brown.`],
-    [`How long is the growing season in ${city}?`, `About ${f.season} frost-free days, ${where} of the ${ALL_PLANS.length} Oregon and Washington towns we cover.`]
+    [`How long is the growing season in ${city}?`, `About ${f.season} frost-free days, ${where} of the ${ALL_PLANS.length} Oregon, Washington and Idaho towns we cover.`]
   ];
 }
 
@@ -662,7 +662,7 @@ D.places.forEach(place => {
   const nearby = nearbyOf(place);
   const tomato = win(rowFor(p, "tomatoes"), "spring");
   const peas = win(rowFor(p, "peas"), "spring");
-  const bc = crumbs("../../", [["Frost dates", "frost-dates/"], [placeLabel(place), null]]);
+  const bc = crumbs("../../", [["Town calendars", "frost-dates/"], [placeLabel(place), null]]);
   const qas = townQuestions(p);
   write("../../", `frost-dates/${place.slug}/index.html`, layout({
     rel: "../../", canonical: `frost-dates/${place.slug}/`, current: "frost-dates/",
@@ -746,12 +746,16 @@ function steps(c, r, g) {
   return `<ol class="steps">${out.map(s => `<li>${s}</li>`).join("")}</ol>`;
 }
 
-// Plant page intro: one town per state on each side of the Cascades (Portland, Seattle west; Spokane, Bend east).
-function hubLede(c, port, sea, bend, spo, kind = "spring") {
+// Plant page intro: one town per state on each side of the Cascades (Portland, Seattle west; Spokane, Boise, Bend east).
+// Neighbors in the list with the same dates share one entry ("Portland and Seattle May 15 – Jun 12").
+function hubLede(c, towns, kind = "spring") {
   const spring = p => { const w = win(rowFor(p, c.id), kind); return w ? P.fmtRange(w.start, w.end) : ""; };
-  const west = spring(port) === spring(sea) ? `Portland and Seattle ${spring(port)}` : `Portland ${spring(port)}; Seattle ${spring(sea)}`;
-  const east = [["Spokane", spo], ["Bend", bend]].filter(([, p]) => spring(p)).map(([n, p]) => `; ${n} ${spring(p)}`).join("");
-  return `${kind === "fall" ? "Plant in fall" : "Plant in the garden"}: ${west}${east}.`;
+  const parts = [];
+  towns.filter(([, p]) => spring(p)).forEach(([n, p]) => {
+    const last = parts[parts.length - 1];
+    if (last && last.d === spring(p)) last.n.push(n); else parts.push({ n: [n], d: spring(p) });
+  });
+  return `${kind === "fall" ? "Plant in fall" : "Plant in the garden"}: ${parts.map(x => `${listOf(x.n)} ${x.d}`).join("; ")}.`;
 }
 
 function quickFacts(c, g) {
@@ -774,21 +778,24 @@ D.crops.forEach(c => {
   const sorted = plans.slice().sort((a, b) => a.place.state.localeCompare(b.place.state) || a.place.city.localeCompare(b.place.city));
   const port = plans.find(p => p.place.slug === "portland-or"), bend = plans.find(p => p.place.slug === "bend-or");
   const sea = plans.find(p => p.place.slug === "seattle-wa"), spo = plans.find(p => p.place.slug === "spokane-wa");
+  const boi = plans.find(p => p.place.slug === "boise-id");
+  const ledeTowns = [["Portland", port], ["Seattle", sea], ["Spokane", spo], ["Boise", boi], ["Bend", bend]];
   const hb = crumbs("../../", [["When to plant", WHEN_INDEX], [catById(c.cat).name, `${WHEN_INDEX}${c.cat}/`], [c.name, null]]);
   const sci = SCIENCE[c.id] || NOTES[c.id];
   write("../../", `when-to-plant/${c.id}/index.html`, layout({
     rel: "../../", canonical: `when-to-plant/${c.id}/`, current: WHEN_INDEX,
-    title: fitTitle(`When to Plant ${titleCase(c.name)} in Oregon and Washington`, `When to Plant ${titleCase(c.name)} in Oregon & Washington`, `When to Plant ${titleCase(c.name)} in the Northwest`),
-    description: fitDesc(`When to plant ${lc(c.name)} in Oregon and Washington. ${portDates(c, port)}Dates for ${D.places.length} towns from Seattle to Bend, plus a growing guide.`,
-      `When to plant ${lc(c.name)} in Oregon and Washington. ${portDates(c, port)}Dates for ${D.places.length} towns, plus a growing guide.`,
-      `When to plant ${lc(c.name)} in Oregon and Washington: dates for ${D.places.length} towns from Portland and Seattle to Bend, plus a growing guide.`),
+    title: fitTitle(`When to Plant ${titleCase(c.name)} in Oregon, Washington and Idaho`, `When to Plant ${titleCase(c.name)} in Oregon, Washington & Idaho`, `When to Plant ${titleCase(c.name)} in the Pacific Northwest`, `When to Plant ${titleCase(c.name)} in the Northwest`),
+    description: fitDesc(`When to plant ${lc(c.name)} in Oregon, Washington and Idaho. ${portDates(c, port)}Dates for ${D.places.length} towns from Seattle to Boise, plus a growing guide.`,
+      `When to plant ${lc(c.name)} in Oregon, Washington and Idaho. ${portDates(c, port)}Dates for ${D.places.length} towns, plus a growing guide.`,
+      `When to plant ${lc(c.name)} in Oregon, Washington and Idaho: dates for ${D.places.length} towns from Portland and Seattle to Boise, plus a growing guide.`,
+      `When to plant ${lc(c.name)} in Oregon, Washington and Idaho: dates for ${D.places.length} towns, plus a growing guide.`),
     image: PHOTOS["crop:" + c.id] && photoFile("crop:" + c.id, "banner"),
     jsonld: sci ? [hb.ld, faqLd(sci.faq)] : [hb.ld],
     body: `${hb.html}
 ${banner("crop:" + c.id, "../../")}
 <section class="hero hero-crop">${PHOTOS["crop:" + c.id] ? "" : R.icon(c.id, "../../", 120)}<div>
-<h1>When to plant ${lc(c.name)} in Oregon and Washington</h1>
-<p class="lede">${g.fall ? hubLede(c, port, sea, bend, spo, "fall") : hubLede(c, port, sea, bend, spo)} <a href="#your-town">Find your town</a></p></div></section>
+<h1>When to plant ${lc(c.name)} in Oregon, Washington and Idaho</h1>
+<p class="lede">${g.fall ? hubLede(c, ledeTowns, "fall") : hubLede(c, ledeTowns)} <a href="#your-town">Find your town</a></p></div></section>
 ${sci ? scienceBody(c, g, sci, { head, dates, plans: sorted, port }) : `${quickFacts(c, g)}
 <p class="callout">${esc(c.note)}</p>
 <h2>${singular(c.name).replace(/^./, x => x.toUpperCase())} planting dates</h2>
@@ -813,12 +820,12 @@ ${newsletter()}
 const wb = crumbs("../", [["When to plant", null]]);
 write("../", "when-to-plant/index.html", layout({
   rel: "../", canonical: WHEN_INDEX, current: WHEN_INDEX,
-  title: "When to Plant Vegetables, Herbs and Berries in Oregon and Washington | Rainline Garden",
-  description: `Planting dates for ${D.crops.length} vegetables, herbs, berries and flowers in ${D.places.length} Oregon and Washington towns, with difficulty ratings and beginner-friendly growing guides.`,
+  title: "When to Plant Vegetables in Oregon, Washington and Idaho",
+  description: `Planting dates for ${D.crops.length} vegetables, herbs, berries and flowers in ${D.places.length} Oregon, Washington and Idaho towns, with difficulty ratings and beginner-friendly growing guides.`,
   jsonld: [wb.ld],
   body: `${wb.html}
 <section class="hero"><h1>When to plant vegetables, herbs and berries in the Northwest</h1>
-<p class="lede">${D.crops.length} plants in ${D.categories.length} groups. Pick one for its planting dates in every Oregon and Washington town we cover, plus how to grow it. New to this? Start with the ones marked Easy.</p></section>
+<p class="lede">${D.crops.length} plants in ${D.categories.length} groups. Pick one for its planting dates in every Oregon, Washington and Idaho town we cover, plus how to grow it. New to this? Start with the ones marked Easy.</p></section>
 ${categoryTiles("../")}
 <h2>Plants for your conditions</h2>
 ${collectionChips("../")}
@@ -840,7 +847,7 @@ D.categories.forEach(k => {
   const rel = "../../";
   const x = CATEGORY_EXTRAS[k.id] || {};
   const kb = crumbs(rel, [["When to plant", WHEN_INDEX], [k.name, null]]);
-  const refs = ["portland-or", "seattle-wa", "bend-or", "spokane-wa"].map(slug => P.plan(D, P.findPlace(D, slug)));
+  const refs = ["portland-or", "seattle-wa", "bend-or", "spokane-wa", "boise-id"].map(slug => P.plan(D, P.findPlace(D, slug)));
   const first = (pl, id) => { const r = rowFor(pl, id); const w = win(r, "spring") || win(r, "fall"); return P.fmtRange(w.start, w.end); };
   const list = k.crops.map(cropById);
   const cards = x.groups
@@ -849,15 +856,15 @@ D.categories.forEach(k => {
   if (x.groups) { const ids = x.groups.flatMap(gr => gr[2]); if (ids.length !== k.crops.length || k.crops.some(id => !ids.includes(id))) throw new Error(`Groups on ${k.id} must list each plant once`); }
   write(rel, `${WHEN_INDEX}${k.id}/index.html`, layout({
     rel, canonical: `${WHEN_INDEX}${k.id}/`, current: WHEN_INDEX,
-    title: x.title || fitTitle(`When to Plant ${titleCase(k.name)} in Oregon and Washington`, `When to Plant ${titleCase(k.name)} in Oregon & Washington`, `When to Plant ${titleCase(k.name)} in the Northwest`),
-    description: fitDesc(`When to plant ${listOf(list.map(c => lc(c.name)))} in Oregon and Washington, with dates for every town and growing guides.`,
-      `When to plant ${listOf(list.slice(0, 5).map(c => lc(c.name)))} and more in Oregon and Washington, with dates for every town.`,
-      `When to plant ${listOf(list.slice(0, 3).map(c => lc(c.name)))} and more in Oregon and Washington, with dates for every town.`),
+    title: x.title || fitTitle(`When to Plant ${titleCase(k.name)} in Oregon, Washington and Idaho`, `When to Plant ${titleCase(k.name)} in Oregon, Washington & Idaho`, `When to Plant ${titleCase(k.name)} in the Pacific Northwest`, `When to Plant ${titleCase(k.name)} in the Northwest`),
+    description: fitDesc(`When to plant ${listOf(list.map(c => lc(c.name)))} in Oregon, Washington and Idaho, with dates for every town and growing guides.`,
+      `When to plant ${listOf(list.slice(0, 5).map(c => lc(c.name)))} and more in Oregon, Washington and Idaho, with dates for every town.`,
+      `When to plant ${listOf(list.slice(0, 3).map(c => lc(c.name)))} and more in Oregon, Washington and Idaho, with dates for every town.`),
     jsonld: [kb.ld],
     image: PHOTOS["cat:" + k.id] && photoFile("cat:" + k.id, "banner"),
     body: `${kb.html}
 ${banner("cat:" + k.id, rel)}
-<section class="hero"><h1>${esc(x.h1 || `When to plant ${k.name.toLowerCase()} in Oregon and Washington`)}</h1>
+<section class="hero"><h1>${esc(x.h1 || `When to plant ${k.name.toLowerCase()} in Oregon, Washington and Idaho`)}</h1>
 <p class="lede">${k.blurb} Pick a plant for its dates in every town we cover and a step-by-step growing guide.</p></section>
 <p class="cat-now" data-crops="${k.crops.join(" ")}" hidden></p>
 ${cards}
@@ -865,7 +872,7 @@ ${cards}
 <p class="note">When each one first goes in around Portland, starting indoors where that comes first. Colder towns run later.</p>
 ${plantingOrder(list, refs[0], rel)}
 <h2>Planting windows at a glance</h2>
-<p class="note">Main planting window in four reference towns. Each plant's page has every town.</p>
+<p class="note">Main planting window in five reference towns. Each plant's page has every town.</p>
 <div class="table-wrap"><table class="plan"><thead><tr><th scope="col">Plant</th>${refs.map(r => `<th scope="col">${esc(r.place.city)}</th>`).join("")}</tr></thead><tbody>${list.map(c => `<tr><th scope="row"><a href="../${c.id}/">${c.name}</a></th>${refs.map(r => `<td data-label="${esc(r.place.city)}">${first(r, c.id)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
 <h2>Growing ${k.name.toLowerCase()} in the Northwest</h2>
 <div class="prose">${CATEGORY_GUIDES[k.id].map(t => `<p>${esc(t)}</p>`).join("\n")}</div>
@@ -913,7 +920,7 @@ ${collectionChips(rel)}
 const gpb = crumbs("../", [["My garden plan", null]]);
 write("../", "my-garden/index.html", layout({
   rel: "../", canonical: "my-garden/", current: "my-garden/",
-  title: "My Garden Plan: Free Planting Planner for Oregon and Washington | Rainline Garden",
+  title: "My Garden Plan: Free Planner for Oregon, Washington & Idaho",
   description: "Pick your town and the plants you want to grow. Get a dated to-do list for the next 12 months, a cheat sheet for each plant and space for notes. Saves on your device, prints cleanly and adds the dates to your calendar.",
   jsonld: [gpb.ld],
   body: `${gpb.html}
@@ -962,7 +969,7 @@ const chipList = ids => `<ul class="chips">${ids.map(id => `<li><a href="../when
 const qzb = crumbs("../", [["Plant quiz", null]]);
 write("../", "what-to-grow/index.html", layout({
   rel: "../", canonical: "what-to-grow/", current: "what-to-grow/",
-  title: "What Should I Grow? Plant Quiz for Oregon and Washington Gardens | Rainline Garden",
+  title: "What Should I Grow? Quiz for Oregon, Washington & Idaho",
   description: "Answer eight quick questions about your town, space, sun and time, and get the vegetables, herbs, fruit and flowers that suit your Northwest garden, with local planting dates.",
   jsonld: [qzb.ld],
   body: `${qzb.html}
@@ -995,7 +1002,7 @@ const starter = [["Raised bed kit (4 × 8 feet)", "raised garden bed kit 4x8"], 
 write("../", "beginners-guide/index.html", layout({
   rel: "../", canonical: "beginners-guide/", current: "beginners-guide/",
   title: "Vegetable Gardening for Beginners in the Pacific Northwest | Rainline Garden",
-  description: "A plain-language guide to starting your first vegetable garden in Oregon or Washington: where to put it, what to grow first, when to plant and how to keep slugs away.",
+  description: "A plain-language guide to starting your first vegetable garden in Oregon, Washington or Idaho: where to put it, what to grow first, when to plant and how to keep slugs away.",
   jsonld: [bgb.ld],
   body: `${bgb.html}
 <section class="hero"><h1>Your first Northwest vegetable garden</h1>
@@ -1059,7 +1066,7 @@ const ib = crumbs("../", [["Articles", null]]);
 write("../", "articles/index.html", layout({
   rel: "../", canonical: "articles/", current: "articles/",
   title: "Northwest Gardening Articles | Rainline Garden",
-  description: "Practical guides for vegetable gardening in Oregon and Washington: varieties that ripen here, winter gardens, short seasons, slugs and soil temperature.",
+  description: "Practical guides for vegetable gardening in Oregon, Washington and Idaho: varieties that ripen here, winter gardens, short seasons, slugs and soil temperature.",
   jsonld: [ib.ld],
   body: `${ib.html}
 <section class="hero"><h1>Guides for Northwest gardeners</h1>
@@ -1090,14 +1097,14 @@ const placeItem = x => {
 // Areas are open in the HTML and folded on phones by the script below, so the page is a short list of areas there.
 const areaLists = s => P.byArea(D).filter(g => g.area.state === s).map(g => `<details class="area-list" open><summary><h3>${esc(g.area.name)}</h3><span>${g.places.length} ${g.places.length === 1 ? "town" : "towns"}</span></summary><ul class="places">${g.places.map(placeItem).join("")}</ul></details>`).join("");
 // "Use my location": town points for picking the nearest town in the browser. The location never leaves the page.
-const NEAR_PTS = JSON.stringify(D.places.map(x => [x.slug, ...x.ll]));
+const NEAR_PTS = JSON.stringify(P.nearPoints(D));
 write("../", "frost-dates/index.html", layout({
   rel: "../", canonical: "frost-dates/", current: "frost-dates/",
-  title: "Oregon and Washington Frost Dates and Planting Calendars by Town | Rainline Garden",
-  description: `Typical last spring and first fall frost dates for ${D.places.length} Oregon and Washington towns, from 1991-2020 NOAA climate normals, with a planting calendar for each.`,
+  title: "Oregon, Washington and Idaho Frost Dates by Town",
+  description: `Typical last spring and first fall frost dates for ${D.places.length} Oregon, Washington and Idaho towns, from 1991-2020 NOAA climate normals, with a planting calendar for each.`,
   body: `
 <section class="hero"><h1>Town calendars: frost and planting dates</h1>
-<p class="lede">Typical last spring and first fall frost dates for Oregon and Washington, from NOAA's 1991–2020 climate normals. Pick a town for its full calendar: frost dates, what to plant now and every planting date for the year.</p></section>
+<p class="lede">Typical last spring and first fall frost dates for Oregon, Washington and Idaho, from NOAA's 1991–2020 climate normals. Pick a town for its full calendar: frost dates, what to plant now and every planting date for the year.</p></section>
 <div class="town-find"><div class="field town-filter"><label for="town-q">Find a town</label><input id="town-q" type="search" autocomplete="off" placeholder="Start typing, like Hood River"></div>
 <button type="button" id="near-me" class="btn btn-ghost near-btn" hidden>Use my location</button></div>
 <p id="near-out" class="near-out" aria-live="polite" hidden></p>
@@ -1105,6 +1112,7 @@ write("../", "frost-dates/index.html", layout({
 <div id="town-lists">
 <h2 data-state>Oregon</h2>${areaLists("OR")}
 <h2 data-state>Washington</h2>${areaLists("WA")}
+<h2 data-state>Idaho</h2>${areaLists("ID")}
 </div>
 <script>(function(){var q=document.getElementById("town-q"),none=document.getElementById("town-none");if(!q)return;var secs=document.querySelectorAll("#town-lists .area-list"),saved=null;
 if(matchMedia("(max-width: 40rem)").matches)secs.forEach(function(d){d.open=false});
@@ -1154,8 +1162,8 @@ ${c.articles.length ? `<p class="cm-reads"><span>Read next:</span> ${c.articles.
 };
 write("../", "garden-calendar/index.html", layout({
   rel: "../", canonical: "garden-calendar/", current: "garden-calendar/",
-  title: "Monthly Garden Chores for Oregon and Washington | Rainline Garden",
-  description: "Month-by-month garden chores for Oregon and Washington: what to plant, start indoors, harvest, prune and watch for, with notes for the coast, west side, east side and high desert.",
+  title: "Monthly Garden Chores for Oregon, Washington and Idaho",
+  description: "Month-by-month garden chores for Oregon, Washington and Idaho: what to plant, start indoors, harvest, prune and watch for, with notes for the coast, west side, east side and high desert.",
   body: `
 <section class="hero"><h1>Monthly garden chores</h1>
 <p class="lede">What to do in a Northwest garden each month: what to plant and start indoors, what to harvest, and the care, pest and pruning jobs that keep things going. Tick jobs off as you go. For exact planting dates where you live, <a href="../">look up your town</a>.</p></section>
@@ -1167,7 +1175,7 @@ write("../", "garden-calendar/index.html", layout({
 <div class="cm-list">${CHORES.map(choreMonth).join("")}</div>
 <h2>What to plant each month</h2>
 <ul class="cm-month-links">${CHORES.map(c => `<li><a href="${monthSlug(c.m)}/">What to plant in ${P.MONTHS_LONG[c.m - 1]}</a></li>`).join("")}</ul>
-<p class="station cm-foot">Region tags: <strong>West-side valleys</strong> are the Willamette Valley, Puget Sound and southern Oregon valleys; <strong>Coast</strong> is the outer coast; <strong>East-side valleys</strong> are the Columbia Basin, Yakima Valley and other low valleys east of the Cascades; <strong>High desert and Inland Northwest</strong> covers Central Oregon, the Klamath Basin, the cold eastern valleys and Spokane. Each town calendar names its region. Jobs without a tag apply everywhere, a few weeks later the colder your garden is.</p>
+<p class="station cm-foot">Region tags: <strong>West-side valleys</strong> are the Willamette Valley, Puget Sound and southern Oregon valleys; <strong>Coast</strong> is the outer coast; <strong>East-side valleys</strong> are the Columbia Basin, Yakima Valley, Boise's Treasure Valley, Lewiston and other low valleys east of the Cascades; <strong>High desert and Inland Northwest</strong> covers Central Oregon, the Klamath Basin, the cold eastern valleys, Spokane, north Idaho, the Magic Valley, eastern Idaho and Idaho's mountain towns. Each town calendar names its region. Jobs without a tag apply everywhere, a few weeks later the colder your garden is.</p>
 ${ad("calendar-bottom")}`,
   scripts: ["data.js", "plan.js", "chores.js"]
 }), "0.8");
@@ -1197,12 +1205,12 @@ ${ids.map(id => { const cr = cropById(id); return `<tr><th scope="row"><div clas
   const bc = crumbs(rel, [["Monthly chores", "garden-calendar/"], [name, null]]);
   write(rel, `garden-calendar/${slug}/index.html`, layout({
     rel, canonical: `garden-calendar/${slug}/`, current: "garden-calendar/",
-    title: `What to Plant in ${name} in Oregon and Washington`,
-    description: fitDesc(`What to plant in ${name} in Oregon and Washington, with dates for the west side, coast, east side and high desert, plus ${name}'s garden jobs.`,
-      `What to plant in ${name} in Oregon and Washington, with dates by region and ${name}'s garden jobs.`),
+    title: fitTitle(`What to Plant in ${name} in Oregon, Washington and Idaho`, `What to Plant in ${name} in Oregon, Washington & Idaho`),
+    description: fitDesc(`What to plant in ${name} in Oregon, Washington and Idaho, with dates for the west side, coast, east side and high desert, plus ${name}'s garden jobs.`,
+      `What to plant in ${name} in Oregon, Washington and Idaho, with dates by region and ${name}'s garden jobs.`),
     jsonld: [bc.ld],
     body: `${bc.html}
-<section class="hero"><h1>What to plant in ${name} in Oregon and Washington</h1>
+<section class="hero"><h1>What to plant in ${name} in Oregon, Washington and Idaho</h1>
 <p class="lede">${esc(c.intro)}${count ? ` Up to ${count} of our plants can go in somewhere in the Northwest this month.` : ""}</p></section>
 <h2>What to plant in ${name}, by region</h2>
 <div class="prose">${regions.map(sentence).join("\n")}</div>
@@ -1236,10 +1244,10 @@ write("../", "how-it-works/index.html", layout({
 <p>A frost here means 32°F, which damages tender crops like tomatoes and basil. A hard freeze, about 28°F or colder, is what finally stops hardy crops like kale and cabbage.</p>
 <p>Most stations are at airports. Airports in valley bottoms can run colder than nearby hillsides, and city centers can run warmer. Your own garden may differ by a week or more.</p>
 <h2 id="rain-line">West and east of the rain line</h2>
-<p>The Cascades split the region in two. West of the mountains (the coast, the Willamette Valley, Puget Sound and the southern Oregon valleys), winters are wet and mild and summers are dry, usually from July until the fall rains return in October. East of the mountains, in the rain shadow, rain is scarce all year, summers are hot and winters are colder. My garden plan uses your side of the line for its watering reminders: west-side plans get a reminder to start watering in early July and to ease off in mid October; east-side plans get one in early June and another at the end of September.</p>
+<p>The Cascades split the region in two. West of the mountains (the coast, the Willamette Valley, Puget Sound and the southern Oregon valleys), winters are wet and mild and summers are dry, usually from July until the fall rains return in October. East of the mountains, in the rain shadow that stretches across eastern Oregon and Washington and on into Idaho, rain is scarce all year, summers are hot and winters are colder. My garden plan uses your side of the line for its watering reminders: west-side plans get a reminder to start watering in early July and to ease off in mid October; east-side plans get one in early June and another at the end of September.</p>
 <h2>Planting dates</h2>
 <p>Each crop gets the <em>later</em> of two dates:</p>
-<ol><li><strong>A regional date</strong> for when the soil is usually ready, based on typical soil warming in each climate region (the table below lists them). Washington areas use the closest matching region.</li>
+<ol><li><strong>A regional date</strong> for when the soil is usually ready, based on typical soil warming in each climate region (the table below lists them). Washington and Idaho towns use the closest matching region.</li>
 <li><strong>A frost check</strong> against your local typical last frost: hardy early crops up to 6 weeks before it, frost-tolerant transplants up to 4 weeks before, warm-season transplants not before it, warm-season seeds and heat lovers like peppers, eggplant, melons and basil a week after it.</li></ol>
 <p>Seed-starting dates count back from the outdoor date (for example, tomatoes 6–8 weeks ahead). Fall planting dates count back from your typical first fall frost, capped at October 15 because fall crops need daylight to grow, not just mild weather. Warm-season crops are flagged when planting at the window's start leaves too few days before fall frost for a typical variety to produce.</p>
 </div>
@@ -1255,13 +1263,13 @@ write("../", "how-it-works/index.html", layout({
 write("../", "about/index.html", layout({
   rel: "../", canonical: "about/", current: "about/",
   title: "About Rainline Garden",
-  description: "Rainline Garden is a free planting calendar made for Oregon and Washington gardeners.",
+  description: "Rainline Garden is a free planting calendar made for gardeners in Oregon, Washington and Idaho.",
   jsonld: [{ "@context": "https://schema.org", "@type": "AboutPage", name: "About Rainline Garden", url: CONFIG.siteUrl + "about/", publisher: OWNER_LD, mainEntity: Object.keys(AUTHORS).map(id => ({ ...authorLd(id), description: AUTHORS[id].bio })) }],
   body: `<section class="hero prose"><h1>About Rainline Garden</h1>
 <p class="lede">A free planting calendar built for Pacific Northwest gardens, not adapted from a national chart.</p></section>
 <div class="prose"><p>National planting guides treat the whole country the same way. The Northwest doesn't cooperate: coastal gardens rarely frost but never get hot, west-side valleys have long seasons and cold spring soil, and the high desert can frost in July. Rainline Garden gives each area its own dates, built from NOAA weather records and regional growing research.</p>
 <h2 id="name">Why "Rainline"?</h2>
-<p>The Cascade Mountains draw a line through Oregon and Washington. West of it, Pacific storms drop their rain: winters are wet and mild, summers are dry, and the soil stays cold into May. East of it sits the rain shadow, with little rain, hot summers and hard winters. That rain line is the biggest reason a planting date for Portland is wrong for Bend, and it's why this site gives every town its own dates. The rain also sets the garden's rhythm on both sides: when the spring rains ease, when the summer dry spell means watering, and when the fall rains return.</p>
+<p>The Cascade Mountains draw a line through Oregon and Washington. West of it, Pacific storms drop their rain: winters are wet and mild, summers are dry, and the soil stays cold into May. East of it sits the rain shadow, with little rain, hot summers and hard winters, and it runs on across Idaho: Boise's hot valley, the short seasons of the Snake River Plain and north Idaho's cooler lake country. That rain line is the biggest reason a planting date for Portland is wrong for Bend, and it's why this site gives every town its own dates. The rain also sets the garden's rhythm on both sides: when the spring rains ease, when the summer dry spell means watering, and when the fall rains return.</p>
 <h2>Who writes Rainline Garden</h2>
 <p>Two Oregon gardeners with different strengths: Jigmey covers vegetables and planting dates, and Elaine covers soil, perennials, herbs and native plants.</p>
 ${authorCard("../", "jigmey-dorjee", "Vegetables and planting dates")}

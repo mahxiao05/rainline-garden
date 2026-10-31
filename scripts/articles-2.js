@@ -11,12 +11,12 @@ module.exports = [
     slug: "planting-garlic-in-the-northwest",
     topic: "crops",
     author: "jigmey-dorjee",
-    title: "When and How to Plant Garlic in Oregon and Washington",
+    title: "When and How to Plant Garlic in Oregon, Washington and Idaho",
     description: "Garlic goes in during fall and comes out the next summer. Here's when to plant it where you live, which kind to buy, and how to harvest and cure it.",
     crops: ["garlic", "shallots"],
     published: "2026-10-14",
     body: ({ D, P, link, fig }) => {
-      const pdx = win(D, P, "portland-or", "garlic", "fall"), spo = win(D, P, "spokane-wa", "garlic", "fall"), bend = win(D, P, "bend-or", "garlic", "fall");
+      const pdx = win(D, P, "portland-or", "garlic", "fall"), spo = win(D, P, "spokane-wa", "garlic", "fall"), bend = win(D, P, "bend-or", "garlic", "fall"), boi = win(D, P, "boise-id", "garlic", "fall");
       return `
 <p>Garlic is one of the easiest and most rewarding crops in a Northwest garden, and it runs on a different schedule from almost everything else. You plant it in fall, it grows roots and a few leaves before winter, sits through the cold, and then bulks up in spring. By early summer you're digging heads of garlic out of a bed you haven't thought about since October.</p>
 <h2>When to plant</h2>
@@ -24,6 +24,7 @@ module.exports = [
 <ul>
 <li><strong>Portland and the west side:</strong> ${pdx.range}. <a href="${link("when-to-plant/garlic/?town=portland-or#your-town")}">See Portland's garlic page</a>.</li>
 <li><strong>Spokane and the inland Northwest:</strong> ${spo.range}.</li>
+<li><strong>Boise and the Treasure Valley:</strong> ${boi.range}.</li>
 <li><strong>Bend and the high desert:</strong> ${bend.range}.</li>
 </ul>
 <p>If you miss the window, you can still plant in early spring as soon as the soil can be worked, but the heads will be smaller.</p>
@@ -52,7 +53,7 @@ ${fig(1)}
     topic: "timing", icon: "seed-tray",
     author: "jigmey-dorjee",
     title: "Starting Vegetable Seeds Indoors: A Northwest Timeline",
-    description: "When to start tomatoes, peppers and other seeds indoors in Oregon and Washington, plus the simple setup that grows strong seedlings.",
+    description: "When to start tomatoes, peppers and other seeds indoors in Oregon, Washington and Idaho, plus the simple setup that grows strong seedlings.",
     crops: ["tomatoes", "peppers", "eggplant", "broccoli", "cabbage", "lettuce", "kale"],
     published: "2026-10-14",
     body: ({ D, P, link, fig }) => {
@@ -131,7 +132,7 @@ ${fig(1)}
     slug: "growing-strawberries-in-the-northwest",
     topic: "crops",
     author: "elaine-holloway",
-    title: "Growing Strawberries in Oregon and Washington",
+    title: "Growing Strawberries in the Pacific Northwest",
     description: "June-bearing or everbearing? How to plant strawberries, keep them out of the mud, and keep a patch productive for years.",
     crops: ["strawberries"],
     published: "2026-10-14",
@@ -161,7 +162,7 @@ ${fig(1)}
     topic: "flowers", icon: "bee",
     author: "elaine-holloway",
     title: "Native Plants for a Northwest Pollinator Garden",
-    description: "Native shrubs and flowers that feed bees, butterflies and hummingbirds from late winter to fall, and how to plant for pollinators in Oregon and Washington.",
+    description: "Native shrubs and flowers that feed bees, butterflies and hummingbirds from late winter to fall, and how to plant for pollinators in Northwest gardens.",
     crops: ["sunflowers", "dahlias"],
     published: "2026-10-14",
     body: ({ link }) => `
@@ -199,7 +200,7 @@ ${fig(1)}
     topic: "soil", icon: "cover-crop",
     author: "elaine-holloway",
     title: "Winter Cover Crops for Northwest Vegetable Beds",
-    description: "Why to sow cover crops in empty beds each fall, which ones grow well in Oregon and Washington, and how to turn them under in spring.",
+    description: "Why to sow cover crops in empty beds each fall, which ones grow well in Northwest gardens, and how to turn them under in spring.",
     crops: ["fava-beans", "garlic"],
     published: "2026-10-14",
     body: ({ link }) => `
@@ -302,12 +303,12 @@ ${fig(1)}
     slug: "growing-potatoes-in-the-northwest",
     topic: "crops",
     author: "jigmey-dorjee",
-    title: "Growing Potatoes in Oregon and Washington",
+    title: "Growing Potatoes in Oregon, Washington and Idaho",
     description: "When to plant potatoes in the Northwest, how to cut and plant seed potatoes, hilling, and when to dig for new potatoes and storage potatoes.",
     crops: ["potatoes"],
     published: "2026-10-14",
     body: ({ D, P, link }) => {
-      const pdx = win(D, P, "portland-or", "potatoes"), spo = win(D, P, "spokane-wa", "potatoes"), bend = win(D, P, "bend-or", "potatoes");
+      const pdx = win(D, P, "portland-or", "potatoes"), spo = win(D, P, "spokane-wa", "potatoes"), bend = win(D, P, "bend-or", "potatoes"), boi = win(D, P, "boise-id", "potatoes");
       return `
 <p>Potatoes are one of the most productive crops you can grow in a small space, and they like the Northwest's cool spring weather. Digging them up is like a treasure hunt, which makes them a favorite with kids.</p>
 <h2>When to plant</h2>
@@ -315,6 +316,7 @@ ${fig(1)}
 <ul>
 <li><strong>Portland:</strong> ${pdx.range}. <a href="${link("when-to-plant/potatoes/?town=portland-or#your-town")}">Details</a>.</li>
 <li><strong>Spokane:</strong> ${spo.range}.</li>
+<li><strong>Boise:</strong> ${boi.range}.</li>
 <li><strong>Bend:</strong> ${bend.range}.</li>
 </ul>
 <h2>Start with certified seed potatoes</h2>

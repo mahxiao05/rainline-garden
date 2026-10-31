@@ -1,6 +1,6 @@
 # Rainline Garden
 
-Free planting calendars and frost dates for Oregon and Washington gardens.
+Free planting calendars and frost dates for Oregon, Washington and Idaho gardens.
 
 Live site: https://mahxiao05.github.io/rainline-garden/
 

@@ -132,12 +132,12 @@ module.exports = [
     slug: "growing-peas-in-the-northwest",
     author: "jigmey-dorjee",
     topic: "crops",
-    title: "Growing Peas in Oregon and Washington",
+    title: "Growing Peas in Oregon, Washington and Idaho",
     description: "Peas love a cool Northwest spring. Here's when to sow them where you live, which kind to grow, and how to keep them producing until summer heat arrives.",
     crops: ["peas", "sweet-peas", "fava-beans"],
     published: "2026-10-14",
     body: ({ D, P, link }) => {
-      const pdx = win(D, P, "portland-or", "peas"), spo = win(D, P, "spokane-wa", "peas"), bend = win(D, P, "bend-or", "peas");
+      const pdx = win(D, P, "portland-or", "peas"), spo = win(D, P, "spokane-wa", "peas"), bend = win(D, P, "bend-or", "peas"), boi = win(D, P, "boise-id", "peas");
       return `
 <p>Peas are one of the first crops into the ground each spring and one of the best suited to the Northwest. They like cool weather, handle light frost, and stop producing once summer turns hot. A long, mild spring like ours gives them plenty of time.</p>
 <h2>When to plant</h2>
@@ -145,6 +145,7 @@ module.exports = [
 <ul>
 <li><strong>Portland and the west side:</strong> ${pdx.range}. <a href="${link("when-to-plant/peas/?town=portland-or#your-town")}">See Portland's pea page</a>.</li>
 <li><strong>Spokane and the inland Northwest:</strong> ${spo.range}.</li>
+<li><strong>Boise and the Treasure Valley:</strong> ${boi.range}.</li>
 <li><strong>Bend and the high desert:</strong> ${bend.range}.</li>
 </ul>
 <p>The earlier part of each window is better. Peas sown late run into heat just as they start to flower.</p>

@@ -522,7 +522,7 @@
     out.scrollIntoView({ behavior: "smooth", block: "start" });
   });
   sel.addEventListener("change", function () { zip.value = ""; msg.textContent = ""; state.place = sel.value; save(); render(); });
-  if (window.RainlineNear) RainlineNear(document.getElementById("near-me"), msg, D.places.map(function (x) { return [x.slug].concat(x.ll); }), function (slug) {
+  if (window.RainlineNear) RainlineNear(document.getElementById("near-me"), msg, P.nearPoints(D), function (slug) {
     zip.value = ""; msg.textContent = ""; state.place = slug; save(); render();
     out.scrollIntoView({ behavior: "smooth", block: "start" });
   });
