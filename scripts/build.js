@@ -19,6 +19,8 @@ const CARE_TIPS = require("./care-tips.js");
 const CATEGORY_GUIDES = require("./category-guides.js");
 const VARIETIES = require("./varieties.js");
 const VIDEOS = require("./videos.js");
+const AREA_TIPS = require("./area-tips.js");
+const STATION_CHECK = require("./station-check.js");
 const { SIZES, fileBase, sizesFor } = require("./photo-sizes.js");
 const ARTICLES = require("./articles-4.js").concat(require("./articles-3.js"), require("./articles-2.js"), require("./articles.js")); // newest first
 
@@ -296,16 +298,32 @@ function groupedRows(plans, dates) {
 // "Find your town": a picker that shows one town's dates, with every town folded under one toggle.
 // The picker reads its dates from the town's row in the tables below, so it needs no extra data.
 const TOWN_PICK_JS = `<script>(function(){var box=document.querySelector(".town-pick"),sel=box.querySelector("select"),out=box.querySelector(".town-pick-out");
+var M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],C=[0,31,59,90,120,151,181,212,243,273,304,334];
+function fmt(n){for(var m=11;m>=0;m--)if(n>C[m])return M[m]+" "+(n-C[m]);return ""}
+function when(d){return d<7?"in "+d+" day"+(d===1?"":"s"):"in about "+Math.round(d/7)+" week"+(Math.round(d/7)===1?"":"s")}
+function verdict(tds,town){var now=new Date(),t=C[now.getMonth()]+now.getDate(),w=[];
+tds.forEach(function(td){if(td.hasAttribute("data-s"))w.push({k:td.getAttribute("data-k"),l:td.getAttribute("data-label"),s:+td.getAttribute("data-s"),e:+td.getAttribute("data-e")})});
+if(!w.length)return "";var g=w.filter(function(x){return x.k==="garden"})[0];
+var open=w.filter(function(x){return x.k!=="indoor"&&t>=x.s&&t<=x.e})[0];
+if(open)return "<b>Yes, plant now.</b> "+(open.k==="fall"?"The fall window":"The window")+" in "+town+" is open until "+fmt(open.e)+".";
+var ind=w.filter(function(x){return x.k==="indoor"&&t>=x.s&&t<=x.e})[0];
+if(ind)return "<b>Start seeds indoors now</b>, through "+fmt(ind.e)+(g?". They go in the garden from "+fmt(g.s)+".":".");
+var next=w.filter(function(x){return x.s>t}).sort(function(a,b){return a.s-b.s})[0];
+if(next)return (g&&g.e<t?"<b>Too late for spring.</b> Next chance: "+next.l.toLowerCase():"<b>Not yet.</b> "+next.l)+" from "+fmt(next.s)+", "+when(next.s-t)+".";
+var first=w.slice().sort(function(a,b){return a.s-b.s})[0];
+return "<b>Too late for this year</b> in "+town+". Next chance: "+first.l.toLowerCase()+" from "+fmt(first.s)+" next year."}
 function show(slug){var a=document.querySelector('.area-groups a[data-slug="'+slug+'"]');if(!a)return false;sel.value=slug;
-var h=[].map.call(a.closest("tr").querySelectorAll("td"),function(td){return '<p><b>'+td.innerHTML+'</b> <span>'+td.getAttribute("data-label")+'</span></p>'}).join("");
-out.innerHTML=h+'<a href="'+a.getAttribute("href")+'">Full '+a.textContent+' calendar &rarr;</a>';return true}
-var t=(location.search.match(/[?&]town=([a-z-]+)/)||[])[1];
-if(t&&show(t)){try{localStorage.setItem("rainline-place",t)}catch(e){}}else try{var s=localStorage.getItem("rainline-place");if(s)show(s)}catch(e){}
+var tds=[].slice.call(a.closest("tr").querySelectorAll("td")),v=verdict(tds,a.textContent.replace(/, [A-Z]{2}$/,""));
+var h=tds.map(function(td){return '<p><b>'+td.innerHTML+'</b> <span>'+td.getAttribute("data-label")+'</span></p>'}).join("");
+out.innerHTML=(v?'<p class="pick-now"><span>Is it too late to plant?</span> '+v+'</p>':'')+h+'<a href="'+a.getAttribute("href")+'">Full '+a.textContent+' calendar &rarr;</a>';return true}
+var t=(location.search.match(/[?&]town=([a-z-]+)/)||[])[1],done=false;
+if(t&&show(t)){done=true;try{localStorage.setItem("rainline-place",t)}catch(e){}}else try{var s=localStorage.getItem("rainline-place");if(s)done=show(s)}catch(e){}
+if(!done)show(sel.value);
 sel.addEventListener("change",function(){if(show(sel.value)){try{localStorage.setItem("rainline-place",sel.value)}catch(e){}}})})()</script>`;
 function areaTables(head, dates, plans) {
   const bySlug = slug => plans.find(p => p.place.slug === slug);
   const first = bySlug("portland-or"), firstRow = groupedRows([first], dates);
-  const pickOut = firstRow.replace(/^.*?<\/th>/, "").replace(/<\/tr>$/, "").replace(/<td data-label="([^"]*)">(.*?)<\/td>/g, '<p><b>$2</b> <span>$1</span></p>');
+  const pickOut = firstRow.replace(/^.*?<\/th>/, "").replace(/<\/tr>$/, "").replace(/<td data-label="([^"]*)"[^>]*>(.*?)<\/td>/g, '<p><b>$2</b> <span>$1</span></p>');
   return `<div class="town-pick" id="your-town"><label for="town-pick">Your town</label>
 <select id="town-pick">${P.byArea(D).map(g => `<optgroup label="${esc(g.area.name)} (${g.area.state})">${g.places.map(pl => `<option value="${pl.slug}"${pl.slug === "portland-or" ? " selected" : ""}>${esc(placeLabel(pl))}</option>`).join("")}</optgroup>`).join("")}</select>
 <div class="town-pick-out" aria-live="polite">${pickOut}<a href="../../frost-dates/portland-or/">Full Portland, OR calendar &rarr;</a></div></div>
@@ -630,6 +648,46 @@ function townCompare(p) {
   return phoneFold("compare", `How the season in ${city} compares`, `<div class="prose">${out.map(t => `<p>${t}</p>`).join("\n")}</div>`);
 }
 
+// Local advice for the town's area (scripts/area-tips.js), and how far the frost date sits from the tomato date.
+function townLocal(p) {
+  const city = esc(p.place.city), area = D.areas.find(a => a.id === p.place.area), tip = AREA_TIPS[p.place.area];
+  if (!tip) throw new Error(`scripts/area-tips.js has no tip for area ${p.place.area}`);
+  const tom = win(rowFor(p, "tomatoes"), "spring"), gap = tom.start - p.frost.spring50;
+  const weeks = Math.round(gap / 7);
+  const gapLine = weeks >= 3 ? `<p><strong>Frost date isn't planting date.</strong> The typical last frost in ${city} is ${P.fmtLong(p.frost.spring50)}, but tomatoes wait until ${P.fmtLong(tom.start)}, about ${weeks} weeks later, ${p.place.zone === "west" ? "because the soil is still too cold for them to grow" : p.place.zone === "coast" ? "because the soil and nights are still too cold for them" : "for warmer soil and less risk of a late frost"}. <a href="../../articles/soil-temperature/">Why soil temperature matters</a>.</p>` : "";
+  return `<div class="local">
+<p class="region"><strong>${p.zone.name}.</strong> ${p.zone.blurb}</p>
+<p><strong>Gardening in ${inArea(area.name)}.</strong> ${tip}</p>
+${gapLine}</div>`;
+}
+
+// Where the town's frost dates come from: the station, how far away it is, and why it was picked (scripts/station-check.js).
+const AIRPORT = /Airport|Field|Air Terminal|Airpark|Air Station/;
+function townNames(place) {
+  const inner = place.city.match(/\((.*)\)/);
+  return (inner ? inner[1] : place.city).split(/, | and /).filter(Boolean);
+}
+const milesFrom = (m, dir, town) => m < 1 ? `less than a mile from ${town}` : `about ${Math.round(m)} mile${Math.round(m) === 1 ? "" : "s"} ${dir} of ${town}`;
+function stationBox(p) {
+  const place = p.place, s = p.station, chk = STATION_CHECK[place.slug];
+  if (!chk) throw new Error(`scripts/station-check.js has no entry for ${place.slug}: rerun the station check`);
+  const names = townNames(place), city = esc(place.city);
+  const where = chk.miles.length === names.length && names.length > 1
+    ? chk.miles.map((m, i) => milesFrom(m, chk.dir[i], esc(names[i]))).join(", ").replace(/, ([^,]*)$/, " and $1")
+    : milesFrom(chk.miles[0], chk.dir[0], esc(names[0]));
+  const ft = (Math.round(s.elev * 3.281 / 10) * 10 || Math.round(s.elev * 3.281)).toLocaleString("en-US");
+  const kind = AIRPORT.test(s.name)
+    ? "It's an airport station, out on open ground, so a garden in town, on a slope or in a low spot can run a few days earlier or later."
+    : "It's a NOAA cooperative station, not an airport station.";
+  // The box already names the station, so drop a note's opening "These dates come from..." sentence.
+  const note = place.note ? esc(place.note.replace(/^These dates come from [^.]*\.\s*/, "")) : "";
+  const inTown = chk.miles[0] < 1 && s.name === names[0];
+  const why = chk.closest ? `It's the closest weather station to ${city} with NOAA's 1991–2020 frost records.` : "";
+  return `<section class="station-box" id="station"><h2>Where these dates come from</h2>
+<p>The frost dates for ${city} come from ${inTown ? `the NOAA weather station in ${esc(s.name)}` : AIRPORT.test(s.name) ? `the NOAA weather station at ${esc(s.name)}, ${where}` : `NOAA's ${esc(s.name)}${/Station/.test(s.name) ? "" : " weather station"}, ${where}`}, at ${ft} feet. ${why} ${note || kind}</p>
+<p class="station">They're NOAA's 1991–2020 climate normals: 30-year averages, not a forecast. <a href="../../how-it-works/#stations">How we pick each town's station</a>.</p></section>`;
+}
+
 // Which ZIP codes a town page answers for, worked out the same way the planner looks a ZIP up.
 function zipNote(place) {
   const rel = "../";
@@ -681,7 +739,7 @@ ${R.frostFacts(p)}
 <h2>What to plant now</h2>
 <div id="now"><p class="empty">Turn on JavaScript to see what's in season today. The full calendar is below.</p></div>
 <p class="plan-link"><a class="btn btn-ghost" href="../../my-garden/?place=${place.slug}">Make a garden plan for ${esc(place.city)}</a> Pick your plants and get a dated, printable to-do list.</p>
-${R.regionNote(p, true)}
+${townLocal(p)}
 ${townCompare(p)}
 ${phoneFold("calendar", "Planting calendar", `<div id="chart">${R.chart(p)}</div>`)}
 ${ad("city-mid")}
@@ -689,6 +747,7 @@ ${ad("city-mid")}
 ${R.table(p, "../../")}
 <p class="station">New to this? Read the <a href="../../beginners-guide/">beginner's guide</a> or look up a term in the <a href="../../glossary/">glossary</a>.</p>
 ${zipNote(place)}
+${stationBox(p)}
 <h2 id="faq">Common questions about frost in ${esc(place.city)}</h2>
 ${faqHtml(qas)}
 ${newsletter(place.city)}
@@ -771,10 +830,10 @@ D.crops.forEach(c => {
   const plans = D.places.map(pl => P.plan(D, pl));
 
   /* Crop hub */
-  const cols = [["Start seeds indoors", r => r.indoor], ["Plant in the garden", r => win(r, "spring")], [g.fall ? "Plant in fall" : c.overwinter ? "Sow to overwinter" : "Plant again for fall", r => win(r, "fall")]]
+  const cols = [["Start seeds indoors", r => r.indoor, "indoor"], ["Plant in the garden", r => win(r, "spring"), "garden"], [g.fall ? "Plant in fall" : c.overwinter ? "Sow to overwinter" : "Plant again for fall", r => win(r, "fall"), "fall"]]
     .filter(([, get]) => plans.some(p => get(rowFor(p, c.id))));
   const head = `<tr><th scope="col">Towns</th>${cols.map(([l]) => `<th scope="col">${l}</th>`).join("")}</tr>`;
-  const dates = p => { const r = rowFor(p, c.id); return cols.map(([l, get]) => { const w = get(r); return `<td data-label="${l}">${w ? P.fmtRange(w.start, w.end) : '<span class="none">—</span>'}</td>`; }).join(""); };
+  const dates = p => { const r = rowFor(p, c.id); return cols.map(([l, get, k]) => { const w = get(r); return w ? `<td data-label="${l}" data-k="${k}" data-s="${w.start}" data-e="${w.end}">${P.fmtRange(w.start, w.end)}</td>` : `<td data-label="${l}"><span class="none">—</span></td>`; }).join(""); };
   const sorted = plans.slice().sort((a, b) => a.place.state.localeCompare(b.place.state) || a.place.city.localeCompare(b.place.city));
   const port = plans.find(p => p.place.slug === "portland-or"), bend = plans.find(p => p.place.slug === "bend-or");
   const sea = plans.find(p => p.place.slug === "seattle-wa"), spo = plans.find(p => p.place.slug === "spokane-wa");
@@ -1225,6 +1284,10 @@ ${c.articles.length ? `<h2>Read next</h2>\n${articleCards(rel, c.articles.filter
 });
 
 /* How it works */
+const HOW_AIRPORTS = D.places.filter(x => AIRPORT.test(D.stations[x.station].name)).length;
+const HOW_CLOSEST = D.places.filter(x => STATION_CHECK[x.slug].closest).length;
+const STATE_NAMES = { OR: "Oregon", WA: "Washington", ID: "Idaho" };
+const HOW_STATES = listOf(["OR", "WA", "ID"].map(st => `${D.places.filter(x => x.state === st).length} in ${STATE_NAMES[st]}`));
 const z = D.zones;
 const zoneRows = Object.keys(z).map(k => `<tr><th scope="row">${z[k].name}</th><td>${P.fmt(P.doy(z[k].anchors.coolEarly))}</td><td>${P.fmt(P.doy(z[k].anchors.coolTrans))}</td><td>${P.fmt(P.doy(z[k].anchors.warmSeed))}</td><td>${P.fmt(P.doy(z[k].anchors.warmTrans))}</td><td>${P.fmt(P.doy(z[k].anchors.hotTrans))}</td><td>${P.fmtRange(P.doy(z[k].anchors.garlicStart), P.doy(z[k].anchors.garlicEnd))}</td></tr>`).join("");
 const stationRows = D.places.map(x => { const s = D.stations[x.station]; return `<tr><th scope="row">${esc(placeLabel(x))}</th><td>${esc(s.name)} (${x.station})</td><td>${P.fmt(P.doy(s.spring50))}</td><td>${P.fmt(P.doy(s.spring10))}</td><td>${P.fmt(P.doy(s.fall50))}</td><td>${P.fmt(P.doy(s.fall10))}</td></tr>`; }).join("");
@@ -1242,7 +1305,13 @@ write("../", "how-it-works/index.html", layout({
 <li><strong>9-in-10 safe date:</strong> the date after which there's only a 10% chance.</li>
 <li><strong>Typical first fall frost:</strong> the date by which there's a 50% chance of the first freeze.</li></ul>
 <p>A frost here means 32°F, which damages tender crops like tomatoes and basil. A hard freeze, about 28°F or colder, is what finally stops hardy crops like kale and cabbage.</p>
-<p>Most stations are at airports. Airports in valley bottoms can run colder than nearby hillsides, and city centers can run warmer. Your own garden may differ by a week or more.</p>
+<p>${HOW_AIRPORTS} of the ${D.places.length} towns use a station at an airport. Airports in valley bottoms can run colder than nearby hillsides, and city centers can run warmer. Your own garden may differ by a week or more.</p>
+<h2 id="stations">How we pick each town's station</h2>
+<p>Rainline Garden covers ${D.places.length} towns: ${HOW_STATES}. Each one gets its own NOAA weather station rather than a state or regional average, and its page names that station, how far it is from town and how high it sits.</p>
+<ul><li><strong>Closest first.</strong> ${HOW_CLOSEST} of the ${D.places.length} towns use the closest weather station that has NOAA's 1991–2020 frost records. We checked every station within 20 miles of each town.</li>
+<li><strong>Sometimes another one.</strong> The other ${D.places.length - HOW_CLOSEST} use a different station nearby, and their pages say how far away it is.</li>
+<li><strong>Local quirks noted.</strong> Where a nearby station is known to run warmer or colder than town, such as the airports at Portland and Pocatello, the town's page says so.</li>
+<li><strong>No guessing.</strong> Where no station has frost records close enough, such as the Wood River Valley around Hailey and Ketchum, we leave the area out rather than borrow dates from a town with different weather.</li></ul>
 <h2 id="rain-line">West and east of the rain line</h2>
 <p>The Cascades split the region in two. West of the mountains (the coast, the Willamette Valley, Puget Sound and the southern Oregon valleys), winters are wet and mild and summers are dry, usually from July until the fall rains return in October. East of the mountains, in the rain shadow that stretches across eastern Oregon and Washington and on into Idaho, rain is scarce all year, summers are hot and winters are colder. My garden plan uses your side of the line for its watering reminders: west-side plans get a reminder to start watering in early July and to ease off in mid October; east-side plans get one in early June and another at the end of September.</p>
 <h2>Planting dates</h2>
@@ -1268,6 +1337,8 @@ write("../", "about/index.html", layout({
   body: `<section class="hero prose"><h1>About Rainline Garden</h1>
 <p class="lede">A free planting calendar built for Pacific Northwest gardens, not adapted from a national chart.</p></section>
 <div class="prose"><p>National planting guides treat the whole country the same way. The Northwest doesn't cooperate: coastal gardens rarely frost but never get hot, west-side valleys have long seasons and cold spring soil, and the high desert can frost in July. Rainline Garden gives each area its own dates, built from NOAA weather records and regional growing research.</p>
+<h2 id="towns">${D.places.length} towns, each with its own dates</h2>
+<p>Rainline Garden covers only the Northwest, and covers it closely, with ${HOW_STATES}, from Astoria to Idaho Falls. Every town gets its own NOAA frost dates and planting calendar, with notes on the local soil, weather and pests, so Hillsboro, Bend and Pocatello each get dates that fit them instead of a state average. <a href="../frost-dates/">Find your town</a>.</p>
 <h2 id="name">Why "Rainline"?</h2>
 <p>The Cascade Mountains draw a line through Oregon and Washington. West of it, Pacific storms drop their rain: winters are wet and mild, summers are dry, and the soil stays cold into May. East of it sits the rain shadow, with little rain, hot summers and hard winters, and it runs on across Idaho: Boise's hot valley, the short seasons of the Snake River Plain and north Idaho's cooler lake country. That rain line is the biggest reason a planting date for Portland is wrong for Bend, and it's why this site gives every town its own dates. The rain also sets the garden's rhythm on both sides: when the spring rains ease, when the summer dry spell means watering, and when the fall rains return.</p>
 <h2>Who writes Rainline Garden</h2>
@@ -1279,7 +1350,7 @@ ${authorCard("../", "elaine-holloway", "Soil, perennials and native plants")}
 ${Object.keys(CONTRIBUTORS).map(id => contributorCard("../", id)).join("\n")}
 <h2>How we make this site</h2>
 <ul>
-<li><strong>Frost dates</strong> come from NOAA's 1991–2020 climate normals for the weather station nearest each town.</li>
+<li><strong>Frost dates</strong> come from NOAA's 1991–2020 climate normals for a weather station picked for each town. Each town page names its station and how far away it is; <a href="../how-it-works/#stations">here's how we pick them</a>.</li>
 <li><strong>Planting windows</strong> follow regional timing for when the soil is ready for each kind of crop, checked against those frost dates.</li>
 <li><strong>Articles</strong> combine that research with hands-on growing experience. Each one is checked against the sources before it's published and updated when the guidance changes.</li>
 <li><strong>Corrections</strong> are welcome. If a date doesn't match your garden, <a href="../contact/">tell us</a> and we'll check it.</li>

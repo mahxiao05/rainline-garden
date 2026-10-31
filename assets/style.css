@@ -1008,3 +1008,16 @@ h2.gp-step { font-size: 1.35rem; margin: 2rem 0 0; }
   .gp-mine { border-top: 0; padding-top: 0; }
   .gp-mine > summary, .hero + h2.gp-step { display: none !important; }
 }
+
+/* Town pages: local advice and where the frost dates come from */
+.local { max-width: 46rem; }
+.local p:not(.region) { margin: .5rem 0 0; }
+.station-box { max-width: 46rem; margin: 1.5rem 0; padding: 16px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; }
+.station-box h2 { margin-top: 0; font-size: 1.2rem; }
+.station-box p { margin: 0 0 .5rem; }
+.station-box .station { margin: 0; }
+
+/* Plant pages: "Is it too late to plant?" line in the town picker */
+.town-pick-out .pick-now { margin: 0 0 10px; padding: 10px 12px; border-radius: 8px; background: var(--moss-soft); }
+.town-pick-out .pick-now span { display: block; color: var(--muted); font-size: .85rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px; }
+.town-pick-out .pick-now b { font-size: 1rem; margin-right: 0; }
