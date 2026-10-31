@@ -748,10 +748,9 @@ function steps(c, r, g) {
 
 // Plant page intro: one town per state on each side of the Cascades (Portland, Seattle west; Spokane, Bend east).
 function hubLede(c, port, sea, bend, spo) {
-  const plain = p => answer(c, rowFor(p, c.id), null).replace(/<\/?strong>/g, "");
   const spring = p => { const w = win(rowFor(p, c.id), "spring"); return P.fmtRange(w.start, w.end); };
-  const west = plain(port) === plain(sea) ? `In Portland and Seattle: ${plain(port)}` : `In Portland: ${plain(port)} In Seattle: ${spring(sea)}.`;
-  return `${west} In Spokane: ${spring(spo)}. In Bend: ${spring(bend)}.`;
+  const west = spring(port) === spring(sea) ? `Portland and Seattle ${spring(port)}` : `Portland ${spring(port)}; Seattle ${spring(sea)}`;
+  return `Plant in the garden: ${west}; Spokane ${spring(spo)}; Bend ${spring(bend)}.`;
 }
 
 function quickFacts(c, g) {
@@ -788,7 +787,7 @@ D.crops.forEach(c => {
 ${banner("crop:" + c.id, "../../")}
 <section class="hero hero-crop">${PHOTOS["crop:" + c.id] ? "" : R.icon(c.id, "../../", 120)}<div>
 <h1>When to plant ${lc(c.name)} in Oregon and Washington</h1>
-<p class="lede">${g.fall ? g.fall.lede : hubLede(c, port, sea, bend, spo)} Find your city below.</p></div></section>
+<p class="lede">${g.fall ? g.fall.lede : hubLede(c, port, sea, bend, spo)} <a href="#your-town">Find your town</a></p></div></section>
 ${sci ? scienceBody(c, g, sci, { head, dates, plans: sorted, port }) : `${quickFacts(c, g)}
 <p class="callout">${esc(c.note)}</p>
 <h2>${singular(c.name).replace(/^./, x => x.toUpperCase())} planting dates</h2>
