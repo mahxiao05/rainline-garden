@@ -918,7 +918,7 @@ details.cm-byregion > summary { cursor: pointer; padding: 10px 14px; font-weight
 :root { --risk4: #24527F; --risk3: #6E9BCB; --risk2: #E2B13C; --risk1: #7DBB6C; }
 :root[data-theme="dark"] { --risk4: #5B93D3; --risk3: #A3C7EE; --risk2: #D9A93A; --risk1: #5FA352; }
 .season-tag { display: inline-block; font: 700 .78rem/1 var(--sans); letter-spacing: .05em; text-transform: uppercase; background: var(--moss-soft); color: var(--fir); padding: 6px 10px; border-radius: 999px; vertical-align: 3px; margin-right: 4px; }
-.frost-risk { margin: 28px 0 8px; padding: 20px 22px; border: 1px solid var(--line); border-radius: 16px; background: var(--paper); }
+.risk-card { margin: 28px 0 8px; padding: 20px 22px; border: 1px solid var(--line); border-radius: 16px; background: var(--paper); }
 .risk-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 16px; }
 .risk-head h2 { margin: 0; font-size: 1.35rem; }
 .risk-safe { margin: 0; color: var(--muted); font-size: 1rem; }
@@ -945,7 +945,7 @@ details.cm-byregion > summary { cursor: pointer; padding: 10px 14px; font-weight
   #live + .facts .fact-s { display: none; }
   #live + .facts .fact-v { font-size: 1.15rem; }
   #live + .facts .fact-k { font-size: .8rem; }
-  .frost-risk { padding: 16px 14px; }
+  .risk-card { padding: 16px 14px; }
   .risk-bar { gap: 1px; }
   .risk-months span:nth-child(even) { display: none; }
 }
