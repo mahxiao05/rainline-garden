@@ -20,9 +20,44 @@
       if (ledeEl) ledeEl.innerHTML = R.seasonLede(p, today);
       var riskEl = document.getElementById("risk");
       if (riskEl) riskEl.innerHTML = R.frostRisk(p, today);
-      var chartEl = document.getElementById("chart");
-      if (chartEl) chartEl.innerHTML = R.chart(p, today);
+      var cal = document.getElementById("calendar");
+      if (cal) { R.calToday(cal, today); calendarPicker(cal); }
     }
+  }
+
+  // Town pages: the plant-group tiles show one group at a time, and the search looks through every group.
+  function calendarPicker(cal) {
+    var tools = cal.querySelector(".pc-tools"), q = document.getElementById("pc-q"), none = cal.querySelector(".pc-none");
+    var tabs = cal.querySelectorAll(".pc-tab"), groups = cal.querySelectorAll(".pc-group");
+    if (!tools || !q) return;
+    tools.hidden = false;
+    cal.classList.add("pc-on");
+    function n(t) { return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, " ").trim(); }
+    function pick(g) {
+      groups.forEach(function (d) { d.classList.toggle("is-on", d.getAttribute("data-g") === g); });
+      tabs.forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-g") === g ? "true" : "false"); });
+    }
+    tabs.forEach(function (b) {
+      b.addEventListener("click", function () {
+        if (q.value) { q.value = ""; search(); }
+        pick(b.getAttribute("data-g"));
+      });
+    });
+    function search() {
+      var v = n(q.value), any = false;
+      cal.classList.toggle("pc-searching", !!v);
+      groups.forEach(function (d) {
+        var c = 0;
+        d.querySelectorAll(".pc-card").forEach(function (li) {
+          var m = !v || (" " + n(li.getAttribute("data-n"))).indexOf(" " + v) >= 0;
+          li.hidden = !m; if (m) c++;
+        });
+        d.classList.toggle("has-hit", !!v && c > 0);
+        if (c) any = true;
+      });
+      none.textContent = v && !any ? "No plant by that name yet. Try another name, or pick a group above." : "";
+    }
+    q.addEventListener("input", search);
   }
 
   // Monthly calendar: highlight this month.

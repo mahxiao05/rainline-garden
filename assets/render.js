@@ -104,6 +104,73 @@
     }).join("") + '</div>';
   }
 
+  // Town-page planting calendar: one photo tile per plant group, and a card per plant with a small
+  // year bar and its dates. Without JavaScript every group shows; the page script turns the tiles
+  // into a picker and adds the search and today's marker.
+  function calDates(r) {
+    var out = [];
+    if (r.indoor) out.push('<li><i class="bar-in"></i>Indoors <b>' + P.fmtRange(r.indoor.start, r.indoor.end) + '</b></li>');
+    r.windows.forEach(function (w) {
+      out.push('<li><i class="bar-' + w.kind + '"></i>' + (w.kind === "fall" ? (r.windows.length > 1 ? "Again for fall" : "Fall") : "Plant") + ' <b>' + P.fmtRange(w.start, w.end) + '</b></li>');
+    });
+    return out.join("");
+  }
+  function calFlag(r) {
+    if (r.season === "short") return "Short season here: use transplants, a fast variety and row cover.";
+    if (r.season === "tight") return "Tight season: choose an early variety.";
+    if (r.cover) return "Frost possible until about " + P.fmt(r.coverUntil) + ": keep frost cover handy.";
+    return "";
+  }
+  function calCard(p, r, base) {
+    var bars = (r.indoor ? '<i class="bar bar-in" style="' + span(r.indoor.start, r.indoor.end) + '"></i>' : "") +
+      r.windows.map(function (w) { return '<i class="bar bar-' + w.kind + '" style="' + span(w.start, w.end) + '"></i>'; }).join("");
+    var f = calFlag(r);
+    return '<li class="pc-card" data-n="' + r.crop.name + '">' + icon(r.crop.id, base, 44) +
+      '<div class="pc-name"><a href="' + cropUrl(r.crop.id, p.place.slug, base) + '">' + r.crop.name + '</a><span>' + r.crop.how + '</span></div>' +
+      '<div class="pc-yr" aria-hidden="true"><div class="pc-trk">' + bars + '</div><div class="pc-mo">' +
+      P.MONTHS.map(function (m) { return '<span>' + m.charAt(0) + '</span>'; }).join("") + '</div></div>' +
+      '<ul class="pc-dates">' + calDates(r) + '</ul>' + (f ? '<p class="pc-flag">' + f + '</p>' : '') + '</li>';
+  }
+  function townCal(p, base, photo) {
+    var f = p.frost;
+    var groups = D.categories.map(function (k) {
+      return { k: k, rows: p.crops.filter(function (r) { return r.crop.cat === k.id; }) };
+    }).filter(function (g) { return g.rows.length; });
+    var plants = function (n) { return n + (n === 1 ? " plant" : " plants"); };
+    return '<div class="pc-tools" hidden><label class="pc-find" for="pc-q"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>' +
+      '<span class="sr">Find a plant</span><input id="pc-q" type="search" autocomplete="off" spellcheck="false" placeholder="Find a plant, like beans or basil"></label>' +
+      '<ul class="pc-tabs" aria-label="Plant groups">' + groups.map(function (g, i) {
+        var src = photo ? photo(g.k.id) : "";
+        return '<li><button type="button" class="pc-tab" data-g="' + g.k.id + '" aria-pressed="' + (i === 0) + '">' +
+          (src ? '<img src="' + src + '" width="480" height="240" alt="" loading="lazy" decoding="async">' : "") +
+          '<b>' + g.k.name + '</b><small>' + plants(g.rows.length) + '</small></button></li>';
+      }).join("") + '</ul></div>' +
+      '<div class="pc-frost"><span>Frost</span><div class="pc-ftrk">' +
+      '<i class="band frost-hard" style="' + span(1, f.spring50) + '"></i>' +
+      '<i class="band frost-risk" style="' + span(f.spring50, f.spring10) + '"></i>' +
+      '<i class="band frost-free" style="' + span(f.spring10, Math.min(f.fall10, 366)) + '"></i>' +
+      (f.fall10 < 366 ? '<i class="band frost-risk" style="' + span(f.fall10, Math.min(f.fall50, 366)) + '"></i>' : "") +
+      (f.fall50 < 366 ? '<i class="band frost-hard" style="' + span(f.fall50, 366) + '"></i>' : "") +
+      '</div></div>' +
+      groups.map(function (g, i) {
+        return '<div class="pc-group' + (i === 0 ? ' is-on' : '') + '" data-g="' + g.k.id + '"><h3 class="pc-gh">' + g.k.name + ' <span>' + plants(g.rows.length) + '</span></h3>' +
+          '<ul class="pc-cards">' + g.rows.map(function (r) { return calCard(p, r, base); }).join("") + '</ul></div>';
+      }).join("") +
+      '<p class="pc-none" role="status" aria-live="polite"></p>' +
+      '<ul class="legend pc-legend"><li><i class="key bar-in"></i>Start seeds indoors</li><li><i class="key bar-spring"></i>Plant in the garden</li><li><i class="key bar-fall"></i>Plant again for fall</li>' +
+      '<li class="pc-key-now" hidden><i class="key key-today"></i>Today</li><li><i class="key frost-risk"></i>Frost possible</li><li><i class="key frost-hard"></i>Frost likely</li></ul>';
+  }
+  // Marks today on each card's year bar.
+  function calToday(el, today) {
+    var cur = -1;
+    for (var c = 0; c < 12; c++) if (today > P.CUM[c]) cur = c;
+    el.querySelectorAll(".pc-trk").forEach(function (t) {
+      if (!t.querySelector(".now")) t.insertAdjacentHTML("beforeend", '<span class="now" style="left:' + pct(today) + '"></span>');
+    });
+    el.querySelectorAll(".pc-mo").forEach(function (m) { if (m.children[cur]) m.children[cur].className = "is-now"; });
+    var k = el.querySelector(".pc-key-now"); if (k) k.hidden = false;
+  }
+
   function nowBlock(p, today, base) {
     var n = P.nowList(p, today);
     // Three empty columns read like a broken page, so say it once and point to the next job.
@@ -216,7 +283,7 @@
     return '<span class="season-tag">' + tag + '</span> ' + s;
   }
 
-  var API = { icon: icon, cropUrl: cropUrl, frostFacts: frostFacts, regionNote: regionNote, chart: chart, table: table, nowBlock: nowBlock,
+  var API = { icon: icon, cropUrl: cropUrl, frostFacts: frostFacts, regionNote: regionNote, chart: chart, table: table, townCal: townCal, calToday: calToday, nowBlock: nowBlock,
     frostRisk: frostRisk, seasonLede: seasonLede, nextJob: nextJob };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else root.RainlineRender = API;
 })(this);

@@ -775,10 +775,11 @@ ${R.frostFacts(p)}
 <p class="plan-link"><a class="btn btn-ghost" href="../../my-garden/?place=${place.slug}">Make a garden plan for ${esc(place.city)}</a> Pick your plants and get a dated, printable to-do list.</p>
 ${townLocal(p)}
 ${townCompare(p)}
-${phoneFold("calendar", "Planting calendar", `<div id="chart">${R.chart(p)}</div>`)}
+<section class="pc" id="calendar"><h2>Planting calendar</h2>
+<p class="pc-sub">Pick a group to see when each plant goes in, or search for one.</p>
+${R.townCal(p, "../../", id => PHOTOS["cat:" + id] ? "../../" + photoFile("cat:" + id, "thumb", "webp") : "")}
+</section>
 ${ad("city-mid")}
-<h2>Planting dates for ${esc(place.city)}</h2>
-${R.table(p, "../../")}
 <p class="station">New to this? Read the <a href="../../beginners-guide/">beginner's guide</a> or look up a term in the <a href="../../glossary/">glossary</a>.</p>
 ${zipNote(place)}
 ${stationBox(p)}
