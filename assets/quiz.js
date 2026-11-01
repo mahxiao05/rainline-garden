@@ -167,7 +167,8 @@
   }
   function showResults() {
     var res = score(answers), place = res.place;
-    try { localStorage.setItem("rainline-place", place.slug); } catch (e) { /* ignore */ }
+    try { localStorage.setItem("rainline-place", place.slug); localStorage.setItem("rainline-place-name", place.slug + "|" + place.city + ", " + place.state); } catch (e) { /* ignore */ }
+    if (window.RainlineHeadTown) window.RainlineHeadTown();
     if (history.replaceState) history.replaceState(null, "", location.pathname + toQuery(answers));
     var h = '<div class="quiz-result"><p class="quiz-count">Your results</p><h2 class="quiz-q" tabindex="-1">' + (res.top.length ? 'Your best plants for ' + esc(place.city) : 'Nothing fits all of that') + '</h2>';
     if (!res.top.length) {

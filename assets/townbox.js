@@ -70,8 +70,11 @@ window.RainlineTownBox = function (root, opts) {
     list.innerHTML = shown.map(function (t, i) { return '<li id="' + id + "-" + i + '" role="option" aria-selected="false">' + t.label + "</li>"; }).join("");
     list.hidden = false; active = -1; input.setAttribute("aria-expanded", "true");
   }
-  function go(t, viaZip) { input.value = t.city + ", " + t.state; closeList(); say(""); store(t.slug); if (opts.onPick) opts.onPick(full(t), viaZip); }
-  function store(slug) { try { localStorage.setItem("rainline-place", slug); } catch (e) { /* private mode */ } }
+  function go(t, viaZip) { input.value = t.city + ", " + t.state; closeList(); say(""); store(t); if (opts.onPick) opts.onPick(full(t), viaZip); }
+  function store(t) {
+    try { localStorage.setItem("rainline-place", t.slug); localStorage.setItem("rainline-place-name", t.slug + "|" + t.city + ", " + t.state); } catch (e) { /* private mode */ }
+    if (window.RainlineHeadTown) window.RainlineHeadTown();
+  }
 
   input.addEventListener("input", function () { say(""); openList(); });
   input.addEventListener("keydown", function (e) {
