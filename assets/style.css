@@ -147,6 +147,22 @@ img.avatar.avatar-site { background: var(--paper); border: 1px solid var(--line)
 /* Hero / finder */
 .hero { padding: 2.75rem 0 1.5rem; }
 .hero .lede { font-size: 1.25rem; color: var(--muted); max-width: 36rem; }
+.rl-art { margin: 1rem 0 1.5rem; }
+.rl-art svg { display: block; width: 100%; height: auto; }
+.rl-labels { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: .4rem; font-weight: 700; font-size: .95rem; color: var(--fir); }
+.seasons { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; max-width: 34rem; margin: 0 0 1.75rem; }
+.seasons a { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 4px 8px; border-radius: 16px; border: 1.5px solid transparent; text-decoration: none; color: var(--fir); }
+.seasons a:hover { border-color: var(--line); background: var(--paper); }
+.seasons a:focus-visible { outline: 2px solid var(--moss); outline-offset: 2px; }
+.seasons a.is-now { border-color: var(--moss); background: var(--moss-soft); }
+.seasons svg { display: block; margin-bottom: 4px; }
+.seasons strong { font-size: 1rem; }
+.seasons span { font-size: .85rem; color: var(--muted); }
+.gp-empty-wrap { text-align: center; padding: .5rem 0 1rem; }
+.gp-empty-art { display: block; width: 260px; max-width: 72%; height: auto; margin: 0 auto .5rem; }
+:root[data-theme="dark"] .rl-art svg, :root[data-theme="dark"] .seasons svg, :root[data-theme="dark"] .gp-empty-art { filter: brightness(.88); }
+:root[data-theme="dark"] .gpa-shadow { fill: #1E2823; }
+@media print { .rl-art, .seasons, .gp-empty-art { display: none; } }
 .sprout-rule { display: flex; align-items: flex-end; gap: 12px; margin: 2.5rem 0 2rem; }
 .sprout-rule::before, .sprout-rule::after { content: ""; flex: 1; height: 2px; margin-bottom: 4px; background: var(--line); }
 .sprout-rule svg { flex: none; display: block; }
