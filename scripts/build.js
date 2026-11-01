@@ -393,6 +393,8 @@ function crumbs(rel, items) {
   return { html, ld };
 }
 
+// A row of seedlings that marks the end of an article's text. Articles only, once per article.
+const SPROUT_DIVIDER = `<div class="sprout-rule" aria-hidden="true"><svg viewBox="0 0 160 40" width="160" height="40"><g class="sr-stem" fill="none" stroke-width="2.5" stroke-linecap="round"><path d="M20 36v-6M50 36v-10M80 36v-16M110 36v-10M140 36v-6"/></g><g class="sr-leaf"><circle cx="20" cy="29" r="3"/><path d="M50 27c-7 0-9-5-9-7 5 0 9 3 9 7z"/><path d="M80 23c-10 0-12-7-12-10 7 0 12 5 12 10z"/><path d="M110 27c7 0 9-5 9-7-5 0-9 3-9 7z"/><circle cx="140" cy="29" r="3"/></g><g class="sr-leaf2"><path d="M50 27c7 0 9-5 9-7-5 0-9 3-9 7z"/><path d="M80 22c10 0 12-7 12-10-7 0-12 5-12 10z"/><path d="M110 27c-7 0-9-5-9-7 5 0 9 3 9 7z"/></g></svg></div>`;
 function relatedArticles(rel, cropId, max) {
   // Articles about this crop come first: ones that list it first, and of those, ones about the fewest crops.
   const list = ARTICLES.filter(a => a.crops.includes(cropId))
@@ -1162,6 +1164,7 @@ ${banner("article:" + a.slug, rel)}
 <p class="byline">${byAvatar(rel, a.author || DEFAULT_AUTHOR)}<span>By ${byName(rel, a.author || DEFAULT_AUTHOR)}<br><span class="byline-d">Updated ${stamp(CONFIG.updated)}</span></span></p></div></header>
 ${toc.nav}
 <div class="prose">${toc.html}</div>
+${SPROUT_DIVIDER}
 ${a.gardenPhoto ? gardenGrid(rel, GARDEN_PHOTOS.filter(r => r.img === a.gardenPhoto)) : ""}
 ${byBox(rel, a.author || DEFAULT_AUTHOR)}
 </article>

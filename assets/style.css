@@ -147,6 +147,12 @@ img.avatar.avatar-site { background: var(--paper); border: 1px solid var(--line)
 /* Hero / finder */
 .hero { padding: 2.75rem 0 1.5rem; }
 .hero .lede { font-size: 1.25rem; color: var(--muted); max-width: 36rem; }
+.sprout-rule { display: flex; align-items: flex-end; gap: 12px; margin: 2.5rem 0 2rem; }
+.sprout-rule::before, .sprout-rule::after { content: ""; flex: 1; height: 2px; margin-bottom: 4px; background: var(--line); }
+.sprout-rule svg { flex: none; display: block; }
+.sr-stem { stroke: #35662B; } .sr-leaf { fill: #6BA84F; } .sr-leaf2 { fill: #4E8A3E; }
+:root[data-theme="dark"] .sr-stem { stroke: #7FC4A2; } :root[data-theme="dark"] .sr-leaf { fill: #8FD08A; } :root[data-theme="dark"] .sr-leaf2 { fill: #5FAE7E; }
+@media print { .sprout-rule { display: none; } }
 .gp-privacy { max-width: 36rem; margin-top: .5rem; color: var(--muted); font-size: .95rem; }
 .gp-privacy > summary { cursor: pointer; display: inline-flex; align-items: center; gap: .4rem; min-height: 44px; font-weight: 600; color: var(--moss); }
 .gp-privacy > summary::-webkit-details-marker { display: none; }
