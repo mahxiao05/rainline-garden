@@ -787,7 +787,6 @@ ${townCompare(p)}
 <p class="pc-sub">Pick a group to see when each plant goes in, or search for one.</p>
 ${R.townCal(p, "../../", id => PHOTOS["cat:" + id] ? "../../" + photoFile("cat:" + id, "thumb", "webp") : "")}
 </section>
-${ad("city-mid")}
 <p class="station">New to this? Read the <a href="../../beginners-guide/">beginner's guide</a> or look up a term in the <a href="../../glossary/">glossary</a>.</p>
 ${zipNote(place)}
 ${stationBox(p)}
@@ -957,8 +956,7 @@ ${cropGrid("../", c => `${c.id}/`)}
 <script>(function(){var q=document.getElementById("plant-q"),none=document.getElementById("plant-none"),secs=document.querySelectorAll("#grid-folds .grid-fold");if(!q)return;
 function n(t){return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim()}
 q.addEventListener("input",function(){var v=n(q.value),any=false;secs.forEach(function(d){var c=0;d.querySelectorAll(".cards li").forEach(function(li){var t=" "+n(li.querySelector(".card-t").textContent),m=!v||t.indexOf(" "+v)>=0;li.hidden=!m;if(m)c++});d.hidden=!c;d.open=!!v&&c>0;if(c)any=true});
-document.querySelector(".idx-browse").hidden=!!v;none.textContent=v&&!any?"No plant by that name yet. Try another name, or browse the groups below.":"";})})();</script>
-${ad("index-bottom")}`
+document.querySelector(".idx-browse").hidden=!!v;none.textContent=v&&!any?"No plant by that name yet. Try another name, or browse the groups below.":"";})})();</script>`
 }), "0.9");
 
 /* Category pages */

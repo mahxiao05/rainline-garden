@@ -128,7 +128,7 @@
     return '<li class="pc-card" data-n="' + r.crop.name + '">' + icon(r.crop.id, base, 44) +
       '<div class="pc-name"><a href="' + cropUrl(r.crop.id, p.place.slug, base) + '">' + r.crop.name + '</a><span>' + r.crop.how + '</span></div>' +
       '<div class="pc-yr" aria-hidden="true"><div class="pc-trk">' + bars + '</div><div class="pc-mo">' +
-      P.MONTHS.map(function (m) { return '<span>' + m.charAt(0) + '</span>'; }).join("") + '</div></div>' +
+      '<span></span>'.repeat(12) + '</div></div>' +
       '<ul class="pc-dates">' + calDates(r) + '</ul>' + (f ? '<p class="pc-flag">' + f + '</p>' : '') + '</li>';
   }
   function townCal(p, base, photo) {
