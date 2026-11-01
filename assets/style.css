@@ -1162,3 +1162,40 @@ h2.gp-step { font-size: 1.35rem; margin: 2rem 0 0; }
 .glossary > div[hidden] { display: none; }
 .how-facts { margin-bottom: 1rem; }
 .cm-note { margin: .25rem 0 1rem; font-size: .95rem; color: var(--muted); }
+
+/* Town calendars map (assets/townmap.js): Census outlines, a dot per town, area picker and the area's town list. */
+.town-map { margin: 1.5rem 0 1rem; }
+.town-map h2 { margin-top: 0; }
+.tm-grid { display: grid; grid-template-columns: minmax(0, 1fr) 20rem; gap: 1.25rem; align-items: start; }
+.tm-card, .tm-panel { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 14px; min-width: 0; }
+.tm-svg { display: block; width: 100%; height: auto; touch-action: manipulation; }
+.tm-states path { fill: var(--sand); stroke: color-mix(in srgb, var(--frost-hard) 70%, transparent); stroke-width: 1.2; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.tm-names text { font: 700 15px var(--serif); fill: var(--muted); opacity: .45; letter-spacing: .14em; text-transform: uppercase; text-anchor: middle; }
+.is-live .tm-names { transition: opacity .2s; }
+.is-zoomed .tm-names { opacity: 0; }
+.tm-dots circle { fill: var(--moss); stroke: var(--paper); stroke-width: 1.2; }
+.tm-dots a.is-dim circle { fill: var(--frost); }
+.tm-dots a.is-on circle { stroke: var(--ink); }
+.tm-labels text { font-family: var(--sans); font-weight: 700; fill: var(--fir); paint-order: stroke; stroke: var(--sand); }
+.tm-labels a:hover text { text-decoration: underline; }
+.tm-pick { margin-top: 12px; }
+.tm-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.tm-chips span { width: 100%; font-size: .8rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+.tm-chips button { font: inherit; font-size: .92rem; border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 999px; padding: 4px 11px; cursor: pointer; }
+.tm-chips button:hover { border-color: var(--moss); }
+.tm-chips button[aria-pressed="true"] { background: var(--moss); border-color: var(--moss); color: var(--on-moss); font-weight: 700; }
+.tm-select { display: none; align-items: center; gap: 10px; }
+.tm-select span { color: var(--muted); }
+.tm-select select { flex: 1; min-width: 0; font: inherit; padding: 9px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--ink); }
+.tm-panel h3 { font-size: 1.25rem; margin: 0 0 2px; }
+.tm-sub, .tm-hint { color: var(--muted); font-size: .92rem; margin: 0 0 8px; }
+.tm-hint { margin: 0; }
+.tm-panel ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.tm-panel li a { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 10px; border-radius: 8px; text-decoration: none; color: var(--ink); }
+.tm-panel li a:hover, .tm-panel li a.is-on { background: var(--moss-soft); }
+.tm-panel li b { color: var(--fir); }
+.tm-panel li b { min-width: 0; }
+.tm-panel li span { color: var(--muted); font-size: .92rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tm-credit { font-size: .85rem; color: var(--muted); margin: 8px 0 0; }
+@media (max-width: 52rem) { .tm-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 40rem) { .tm-chips { display: none; } .tm-select { display: flex; } .tm-card { padding: 10px; } }
