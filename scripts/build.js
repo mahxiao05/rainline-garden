@@ -1226,6 +1226,25 @@ const placeItem = x => {
 };
 // Areas are open in the HTML and folded on phones by the script below, so the page is a short list of areas there.
 const areaLists = s => P.byArea(D).filter(g => g.area.state === s).map(g => `<details class="area-list" open><summary><h3>${esc(g.area.name)}</h3><span>${g.places.length} ${g.places.length === 1 ? "town" : "towns"}</span></summary><ul class="places">${g.places.map(placeItem).join("")}</ul></details>`).join("");
+// Town map: Census state outlines plus a dot per town (scripts/map-proj.js, scripts/map-states.js). Dots are plain links,
+// so the map works without JavaScript; assets/townmap.js adds the area picker, zoom, labels and town list.
+const MAP = require("./map-proj.js"), MAP_STATES = require("./map-states.js");
+const townMap = () => {
+  const dots = D.places.map(x => {
+    const st = D.stations[x.station], [cx, cy] = MAP.xy(x.ll[0], x.ll[1]), last = P.fmt(P.doy(st.spring50)), first = P.fmt(P.doy(st.fall50));
+    return `<a href="${x.slug}/" tabindex="-1" data-slug="${x.slug}" data-area="${x.area}" data-name="${esc(x.city)}" data-dates="${last} – ${first}" data-last="${P.doy(st.spring50)}"><title>${esc(placeLabel(x))}: last frost ${last}, first frost ${first}</title><circle cx="${cx}" cy="${cy}" r="5.5"/></a>`;
+  }).join("");
+  const opts = s => D.areas.filter(a => a.state === s).map(a => `<option value="${a.id}">${esc(a.name)}</option>`).join("");
+  const chips = s => D.areas.filter(a => a.state === s).map(a => `<button type="button" data-area="${a.id}" aria-pressed="false">${esc(a.name)}</button>`).join("");
+  return `<section class="town-map" aria-labelledby="tm-h"><h2 id="tm-h">Find your town on the map</h2>
+<div class="tm-grid"><div class="tm-card">
+<svg class="tm-svg" viewBox="0 0 ${MAP.W} ${MAP.H}" aria-hidden="true"><g class="tm-states">${Object.values(MAP_STATES).map(d => `<path d="${d}"/>`).join("")}</g>
+<g class="tm-names"><text x="300" y="92">Washington</text><text x="228" y="410">Oregon</text><text x="492" y="335">Idaho</text></g><g class="tm-dots">${dots}</g><g class="tm-labels"></g></svg>
+<div class="tm-pick" hidden><label class="tm-select"><span>Area</span><select id="tm-area"><option value="">All areas</option><optgroup label="Oregon">${opts("OR")}</optgroup><optgroup label="Washington">${opts("WA")}</optgroup><optgroup label="Idaho">${opts("ID")}</optgroup></select></label>
+<div class="tm-chips" role="group" aria-label="Zoom to an area"><button type="button" data-area="" aria-pressed="true">All areas</button><span>Oregon</span>${chips("OR")}<span>Washington</span>${chips("WA")}<span>Idaho</span>${chips("ID")}</div></div>
+</div><div class="tm-panel" id="tm-panel" aria-live="polite"><p class="tm-hint">Tap a dot to open that town's calendar, or find it in the list below.</p></div></div>
+<p class="tm-credit">State outlines: US Census Bureau. Town locations: GeoNames.</p></section>`;
+};
 write("../", "frost-dates/index.html", layout({
   rel: "../", canonical: "frost-dates/", current: "frost-dates/",
   title: "Oregon, Washington and Idaho Frost Dates by Town",
@@ -1234,6 +1253,7 @@ write("../", "frost-dates/index.html", layout({
 <section class="hero"><p class="eyebrow">${D.places.length} towns · NOAA frost records</p><h1>Town calendars</h1>
 <p class="lede">Frost dates, what to plant now and a full-year planting calendar for each town.</p>
 ${townBox({ id: "town-box", rel: "../", button: "Open calendar", lite: true })}</section>
+${townMap()}
 <div id="town-lists">
 <h2 data-state>Oregon</h2>${areaLists("OR")}
 <h2 data-state>Washington</h2>${areaLists("WA")}
@@ -1248,7 +1268,7 @@ var t=s&&(el.getAttribute("data-towns")||"").split(";").filter(function(x){retur
 <p>Each town's dates come from one weather station, usually an airport. Gardens in cold hollows or at higher elevation can frost later in spring and earlier in fall; city gardens and warm, south-facing spots often run a week or so ahead. If your garden is in a frost pocket, add a week to spring dates and take a week off fall ones.</p>
 <p>Dates are a guide, not a guarantee. Check the soil before planting: cool-season crops need it workable and not soggy, and warm-season crops need it warm. A $10 soil thermometer pays for itself.</p>
 </div>`,
-  scripts: ["townbox.js"]
+  scripts: ["townbox.js", "townmap.js"]
 }), "0.9");
 
 /* Monthly calendar */
