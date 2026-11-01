@@ -11,11 +11,17 @@
   var towns = Array.prototype.map.call(root.querySelectorAll(".tm-dots a"), function (a) {
     var c = a.querySelector("circle");
     return { a: a, c: c, slug: a.getAttribute("data-slug"), area: a.getAttribute("data-area"), name: a.getAttribute("data-name"),
-      dates: a.getAttribute("data-dates"), last: +a.getAttribute("data-last"), href: a.getAttribute("href"), x: +c.getAttribute("cx"), y: +c.getAttribute("cy") };
+      dates: a.getAttribute("data-dates"), last: +a.getAttribute("data-last"), first: +a.getAttribute("data-first"), days: +a.getAttribute("data-days"), href: a.getAttribute("href"), x: +c.getAttribute("cx"), y: +c.getAttribute("cy") };
   });
   var area = null, sel = null, reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   root.querySelector(".tm-pick").hidden = false;
   root.classList.add("is-live");
+  // The panel beside the map lists the picked area's towns, so the long lists below are only for readers without JavaScript.
+  var lists = document.getElementById("town-lists");
+  if (lists) lists.hidden = true;
+  var fact = panel.querySelector(".tm-fact"), factHtml = fact ? fact.outerHTML : "";
+  var CUM = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334], now = new Date(), today = CUM[now.getMonth()] + now.getDate();
+  function pct(n) { return (Math.max(0, Math.min(365, n - 1)) / 365 * 100).toFixed(2) + "%"; }
 
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function el(n, attrs, parent) { var e = document.createElementNS(NS, n); for (var k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
@@ -60,9 +66,12 @@
     mine.slice().sort(function (a, b) { return a.y - b.y; }).forEach(function (t) {
       var link = el("a", { href: t.href }, labels), text = el("text", { "font-size": fs, "stroke-width": 3 * g }, link);
       text.textContent = narrow ? t.name.replace(/ \(.*\)/, "").split(/,| and /)[0] : t.name;
-      var w = (text.getComputedTextLength() || text.textContent.length * fs * 0.58) + 4 * g, h = fs * 1.15, spot = null, best = Infinity, nDots = mine.length;
+      // On wider screens a second, smaller line gives the town's frost dates.
+      var sub = narrow ? null : el("text", { "class": "tm-d", "font-size": fs * 0.82, "stroke-width": 3 * g }, link);
+      if (sub) sub.textContent = t.dates;
+      var w = Math.max(text.getComputedTextLength() || text.textContent.length * fs * 0.58, sub ? sub.getComputedTextLength() || 0 : 0) + 4 * g, h = fs * (sub ? 2.15 : 1.15), spot = null, best = Infinity, nDots = mine.length;
       [[9, 4, "start"], [-9, 4, "end"], [9, 16, "start"], [9, -8, "start"], [-9, 16, "end"], [-9, -8, "end"], [0, 20, "middle"], [0, -12, "middle"], [0, 32, "middle"], [0, -24, "middle"]].forEach(function (c, i) {
-        var x0 = c[2] === "start" ? t.x + c[0] * g : c[2] === "end" ? t.x + c[0] * g - w : t.x - w / 2, y0 = t.y + c[1] * g - h * 0.8;
+        var x0 = c[2] === "start" ? t.x + c[0] * g : c[2] === "end" ? t.x + c[0] * g - w : t.x - w / 2, y0 = t.y + c[1] * g - fs * 0.92;
         // Covering a dot is worse than touching another label; running off the map is worst. Ties go to the earlier spot.
         var score = i * 0.01 + (x0 < vb[0] || x0 + w > vb[0] + vb[2] ? 100 : 0);
         taken.forEach(function (b, j) { if (x0 < b[0] + b[2] && x0 + w > b[0] && y0 < b[1] + b[3] && y0 + h > b[1]) score += j < nDots ? 10 : 5; });
@@ -70,14 +79,23 @@
       });
       taken.push([spot[1], spot[2], w, h]);
       text.setAttribute("x", t.x + spot[0][0] * g); text.setAttribute("y", t.y + spot[0][1] * g); text.setAttribute("text-anchor", spot[0][2]);
+      if (sub) { sub.setAttribute("x", t.x + spot[0][0] * g); sub.setAttribute("y", t.y + spot[0][1] * g + fs * 1.05); sub.setAttribute("text-anchor", spot[0][2]); }
     });
   }
 
+  // One card per town in the picked area: its frost-free season on a year bar, with today marked.
+  function card(t) {
+    return '<li><a class="tc' + (t === sel ? " is-on" : "") + '" href="' + t.href + '" data-slug="' + t.slug + '"><span class="tc-top"><b>' + esc(t.name) + '</b><small>' + t.days + ' frost-free days</small></span>' +
+      '<span class="tc-trk" aria-hidden="true"><i style="left:' + pct(t.last) + ';width:' + ((Math.min(t.first, 366) - t.last) / 365 * 100).toFixed(2) + '%"></i><i class="tc-now" style="left:' + pct(today) + '"></i></span>' +
+      '<span class="tc-mo" aria-hidden="true">' + "JFMAMJJASOND".split("").map(function (m) { return "<span>" + m + "</span>"; }).join("") + '</span>' +
+      '<span class="tc-dates"><span>Last frost <b>' + t.dates.split(" – ")[0] + '</b></span><span>First frost <b>' + t.dates.split(" – ")[1] + '</b></span></span></a></li>';
+  }
   function showPanel() {
-    if (!area) { panel.innerHTML = '<p class="tm-hint">Pick an area to zoom in, or tap a dot. Tap a town in view to open its calendar.</p>'; return; }
+    if (!area) { panel.innerHTML = '<p class="tm-hint">Pick an area to zoom in and see its towns, or tap a dot. Tap a town in view to open its calendar.</p>' + factHtml; return; }
     var list = towns.filter(function (t) { return t.area === area; }).sort(function (a, b) { return a.last - b.last || (a.name < b.name ? -1 : 1); });
-    panel.innerHTML = '<h3>' + esc(areaNames[area] || "") + '</h3><p class="tm-sub">Typical last spring frost to first fall frost</p><ul>' +
-      list.map(function (t) { return '<li><a href="' + t.href + '" data-slug="' + t.slug + '"' + (t === sel ? ' class="is-on"' : "") + '><b>' + esc(t.name) + '</b><span>' + t.dates + '</span></a></li>'; }).join("") + "</ul>";
+    var days = list.map(function (t) { return t.days; }), lo = Math.min.apply(0, days), hi = Math.max.apply(0, days);
+    panel.innerHTML = '<h3>' + esc(areaNames[area] || "") + '</h3><p class="tm-sub">' + list.length + (list.length === 1 ? " town" : " towns") + " · " + (lo === hi ? lo : lo + "–" + hi) + ' frost-free days</p><ul class="tc-list">' +
+      list.map(card).join("") + '</ul><ul class="tc-legend"><li><i class="tc-k-free"></i>Frost-free season</li><li><i class="tc-k-frost"></i>Frost likely</li><li><i class="tc-k-now"></i>Today</li></ul>';
   }
 
   function setArea(id, opts) {
