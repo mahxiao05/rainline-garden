@@ -1166,7 +1166,35 @@ h2.gp-step { font-size: 1.35rem; margin: 2rem 0 0; }
 .town-map h2 { margin-top: 0; }
 .tm-grid { display: grid; grid-template-columns: minmax(0, 1fr) 20rem; gap: 1.25rem; align-items: start; }
 .tm-card, .tm-panel { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 14px; min-width: 0; }
-.tm-svg { display: block; width: 100%; height: auto; touch-action: manipulation; }
+.tm-svg { display: block; width: 100%; height: auto; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.is-live .tm-svg { cursor: grab; }
+.is-panned .tm-svg, .is-full .tm-svg { touch-action: none; }
+.is-dragging .tm-svg { cursor: grabbing; }
+.tm-stage { position: relative; }
+.tm-ctrl { position: absolute; right: 8px; top: 8px; display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); overflow: hidden; box-shadow: 0 1px 4px rgb(0 0 0 / .12); }
+.tm-ctrl button, .tm-full { font: 700 1.3rem/1 var(--sans); width: 38px; height: 38px; display: grid; place-items: center; border: 0; background: none; color: var(--fir); cursor: pointer; padding: 0; }
+.tm-ctrl button + button { border-top: 1px solid var(--line); }
+.tm-ctrl button:hover, .tm-full:hover { background: var(--moss-soft); }
+.tm-ctrl svg, .tm-full svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.tm-full { position: absolute; left: 8px; top: 8px; width: auto; gap: 6px; grid-auto-flow: column; padding: 0 11px; font-size: .9rem; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); box-shadow: 0 1px 4px rgb(0 0 0 / .12); }
+.tm-tip { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); margin: 0; padding: 6px 12px; border-radius: 999px; background: color-mix(in srgb, var(--ink) 85%, transparent); color: var(--bg); font-size: .85rem; white-space: nowrap; pointer-events: none; }
+.tm-labels a.is-dim text { fill: var(--muted); font-weight: 600; }
+html.tm-lock, html.tm-lock body { overflow: hidden; }
+.town-map.is-full { position: fixed; inset: 0; z-index: 1000; margin: 0; padding: 10px; background: var(--bg); display: flex; flex-direction: column; }
+.is-full > h2, .is-full .tm-credit { display: none; }
+.is-full .tm-grid { flex: 1; min-height: 0; grid-template-rows: minmax(0, 1fr); }
+.is-full .tm-card { height: 100%; display: flex; flex-direction: column; min-height: 0; }
+.is-full .tm-stage { flex: 1; min-height: 0; }
+.is-full .tm-svg { height: 100%; }
+.is-full .tm-panel { max-height: 100%; overflow: auto; }
+.is-full .tm-chips { display: none; }
+.is-full .tm-select { display: flex; max-width: 28rem; }
+@media (max-width: 52rem) {
+  .is-full .tm-grid { grid-template-rows: minmax(0, 1fr) auto; gap: 8px; }
+  .is-full .tm-panel { max-height: 34dvh; padding: 10px; }
+  .is-full .tm-key { margin-top: 6px; font-size: .78rem; }
+}
+@media (max-width: 40rem) { .tm-full { height: 34px; font-size: .82rem; padding: 0 9px; } .tm-ctrl button { width: 34px; height: 34px; } }
 .tm-states path { fill: var(--sand); stroke: color-mix(in srgb, var(--frost-hard) 70%, transparent); stroke-width: 1.2; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
 .tm-names text { font: 700 15px var(--serif); fill: var(--muted); opacity: .45; letter-spacing: .14em; text-transform: uppercase; text-anchor: middle; }
 .is-live .tm-names { transition: opacity .2s; }
