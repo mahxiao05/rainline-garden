@@ -99,6 +99,7 @@ module.exports = [
     author: "elaine-holloway",
     topic: "soil", icon: "soil-ph",
     title: "Soil pH in the Northwest: Testing, Lime and When to Leave It Alone",
+    seoTitle: "Northwest Soil pH: How to Test It and When to Lime",
     description: "Heavy rain makes many west-side soils acidic, while east-side soils lean the other way. Here's how to find out what you have and what to do about it.",
     crops: ["blueberries", "potatoes", "broccoli", "cabbage", "kale", "beans"],
     published: "2026-10-14",
@@ -179,7 +180,7 @@ module.exports = [
     author: "jigmey-dorjee",
     topic: "problems", icon: "blight",
     title: "Late Blight on Tomatoes: How to Spot It and Keep It Away",
-    description: "Cool, wet weather makes late blight a real threat to Northwest tomatoes and potatoes. Learn the signs, how it differs from other leaf spots, and how to prevent it.",
+    description: "Cool, wet weather makes late blight a real threat to Northwest tomatoes and potatoes. How to spot it, tell it from other leaf spots and prevent it.",
     crops: ["tomatoes", "potatoes"],
     published: "2026-10-14",
     body: ({ link }) => `

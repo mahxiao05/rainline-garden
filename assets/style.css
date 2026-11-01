@@ -642,8 +642,6 @@ a.btn { display: inline-flex; align-items: center; text-decoration: none; }
 .cm-card li.is-done .cm-tag { text-decoration: none; }
 .cm-tag-west { background: var(--leaf); color: var(--easy); } .cm-tag-coast { background: var(--sky); color: var(--fir); }
 .cm-tag-east { background: var(--sand); color: var(--mod); } .cm-tag-high { background: var(--hard-bg); color: var(--hard); }
-.cm-byregion { margin-top: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); }
-details.cm-byregion > summary { cursor: pointer; padding: 10px 14px; font-weight: 700; color: var(--fir); }
 .cm-plant-body { padding: 0 14px 6px; }
 .cm-region { padding: 8px 0; border-top: 1px solid var(--line); }
 .cm-region h4 { margin: 0 0 4px; font-size: 1rem; color: var(--fir); }
@@ -871,7 +869,7 @@ details.cm-byregion > summary { cursor: pointer; padding: 10px 14px; font-weight
   .site-head, .site-foot, .finder, .theme-btn, .site-menu, .search-pop, .ad-slot, .nav, .hero-art, .signup, .gear, .beginner, .browse, .crumbs { display: none !important; }
   body { background: #fff; }
   .cm-tools, .cm-filter, .cm-reads, .cm-prog { display: none !important; }
-  .cm-byregion, .cm-card { break-inside: avoid; }
+  .cm-card { break-inside: avoid; }
   .gp-bar, .gp-pick, .gp-privacy, #gp-form, .gp-swaps, .gp-warn-act, #gp-msg, .hero .lede, .crumbs, .plan-link, .plan-cta, .gp-share, .gp-jump, .gp-logform, .gp-alert, .gp-x, .gp-rate, .gp-hcount, .gp-beds .btn { display: none !important; }
   .gp-task.is-soon { background: none; }
   .chart, .legend { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
