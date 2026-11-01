@@ -1296,3 +1296,12 @@ h2.gp-step { font-size: 1.35rem; margin: 2rem 0 0; }
 .tm-panel .tc-list { grid-template-columns: minmax(0, 1fr); }
 .tm-panel .tc-top b { min-width: 0; }
 @media (max-width: 52rem) and (min-width: 40.01rem) { .tm-panel .tc-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* Town map: Cascade Range and major rivers (Natural Earth) */
+:root { --tm-water: #6F9FC4; --tm-range: color-mix(in srgb, var(--moss) 13%, var(--sand)); --tm-peak: color-mix(in srgb, var(--moss) 45%, var(--sand)); }
+:root[data-theme="dark"] { --tm-water: #4D7C9F; --tm-range: color-mix(in srgb, var(--moss) 16%, var(--sand)); --tm-peak: color-mix(in srgb, var(--moss) 40%, var(--sand)); }
+.tm-range { fill: var(--tm-range); }
+.tm-svg #tm-peaks path { stroke: var(--tm-peak); stroke-width: .7; opacity: .7; }
+.tm-river { fill: none; stroke: var(--tm-water); stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.tm-r1 { stroke-width: 2.4; } .tm-r2 { stroke-width: 1.6; } .tm-r3 { stroke-width: 1; opacity: .85; }
+.tm-names .tm-pn { font: italic 700 12px var(--sans); paint-order: stroke; stroke: var(--sand); stroke-width: 3px; letter-spacing: .04em; text-transform: none; opacity: .9; fill: var(--tm-peak); }
+.tm-names .tm-rn { fill: var(--tm-water); }
