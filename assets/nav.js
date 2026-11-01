@@ -27,6 +27,8 @@
   }
   var setMore = panel(moreBtn, more);
   var setMenu = panel(menuBtn, menu, fillTown);
+  var chip = head.querySelector(".town-chip"), tpop = doc.getElementById("town-pop");
+  var setTown = panel(chip, tpop, fillChip);
   var setSearch = panel(searchBtn, pop, function () { load().then(run); input.value = ""; run(); setTimeout(function () { input.focus(); }, 0); });
 
   doc.addEventListener("click", function (e) {
@@ -36,7 +38,6 @@
     if (e.key === "Escape") panels.forEach(function (p) { if (!p.el.hidden) { p.set(false); p.btn.focus(); } });
     if ((e.ctrlKey || e.metaKey) && (e.key === "k" || e.key === "K")) { e.preventDefault(); setSearch(true); }
   });
-  if (/Mac|iPhone|iPad/.test(navigator.platform || "")) Array.prototype.forEach.call(head.querySelectorAll(".head-kbd"), function (k) { k.textContent = "⌘K"; });
 
   function load() {
     if (index) return Promise.resolve();
@@ -58,6 +59,37 @@
       el.hidden = false;
     });
   }
+
+  /* Town chip (wide screens): your saved town, with its calendar and a way to change it. The town's name is kept
+   * beside its slug ("slug|Salem, OR") so most pages never need to load the search index just to show it. */
+  function townName(slug) { try { var c = (localStorage.getItem("rainline-place-name") || "").split("|"); return c[0] === slug ? c[1] : ""; } catch (e) { return ""; } }
+  function fillChip() {
+    if (!chip) return;
+    var slug = town(), name = slug && townName(slug), label = chip.querySelector(".tc-name");
+    function draw(n) {
+      label.textContent = n || "Set your town";
+      chip.setAttribute("aria-label", n ? "Your town: " + n : "Set your town");
+      chip.title = n || "";
+      var city = n ? n.replace(/, [A-Z]{2}$/, "") : "";
+      tpop.innerHTML = n
+        ? '<a href="' + base + 'frost-dates/' + slug + '/"><strong>' + esc(city) + ' calendar</strong><span>Frost dates and planting calendar</span></a>' +
+          '<a href="' + base + '?change=1#where"><strong>Change town</strong><span>Type a ZIP code or town</span></a>'
+        : '<a href="' + base + '#where"><strong>Set your town</strong><span>Type a ZIP code or town for local dates</span></a>' +
+          '<a href="' + base + 'frost-dates/"><strong>Browse town calendars</strong><span>Every town on one map</span></a>';
+    }
+    if (!slug || name) return draw(name);
+    draw("");
+    load().then(function () {
+      var t = index.filter(function (x) { return x.p === slug; })[0];
+      if (!t) return;
+      try { localStorage.setItem("rainline-place-name", slug + "|" + t.t); } catch (e) { /* private mode */ }
+      draw(t.t);
+    });
+  }
+  // Town pickers elsewhere on the page call this after saving a town, so the chip keeps up.
+  window.RainlineHeadTown = fillChip;
+  fillChip();
+  if (tpop) tpop.parentNode.addEventListener("focusout", function (e) { if (!tpop.parentNode.contains(e.relatedTarget)) setTown(false); });
 
   /* Search */
   var KIND = { crop: "Plant", town: "Town", group: "Plant group", article: "Article", term: "Glossary", page: "Page" };
@@ -114,5 +146,5 @@
   }
   // Close the Learn menu when focus leaves it, so keyboard users don't leave it hanging open.
   if (more) more.parentNode.addEventListener("focusout", function (e) { if (!more.parentNode.contains(e.relatedTarget)) setMore(false); });
-  addEventListener("resize", function () { if (matchMedia("(min-width: 1061px)").matches) setMenu(false); });
+  addEventListener("resize", function () { if (matchMedia("(min-width: 861px)").matches) setMenu(false); });
 })();

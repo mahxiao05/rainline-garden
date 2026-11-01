@@ -621,6 +621,7 @@
       if (!confirm("Reset your garden plan? This clears your town, plants, ticks, beds, notes and harvest log on this device. It can't be undone.")) return;
       state = mine = fresh({});
       try { localStorage.removeItem("rainline-place"); } catch (err) { /* ignore */ }
+      if (window.RainlineHeadTown) window.RainlineHeadTown();
       changing = false; msg.textContent = "";
       save(); render();
       pick.open = true;

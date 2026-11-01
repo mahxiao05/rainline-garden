@@ -49,7 +49,7 @@ p { margin: 0 0 1rem; }
 .site-head::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: color-mix(in srgb, var(--frost-hard) 55%, transparent);
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='44'%3E%3Cg stroke='%23000' stroke-width='1.3' stroke-linecap='round'%3E%3Cpath d='M9 3 7 11'/%3E%3Cpath d='M31 14 29 22'/%3E%3Cpath d='M18 27 16 35'/%3E%3Cpath d='M41 33 39 41'/%3E%3C/g%3E%3C/svg%3E") repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='44'%3E%3Cg stroke='%23000' stroke-width='1.3' stroke-linecap='round'%3E%3Cpath d='M9 3 7 11'/%3E%3Cpath d='M31 14 29 22'/%3E%3Cpath d='M18 27 16 35'/%3E%3Cpath d='M41 33 39 41'/%3E%3C/g%3E%3C/svg%3E") repeat; }
 .site-head .wrap { display: flex; align-items: center; gap: .5rem 1rem; padding-top: 10px; padding-bottom: 10px; }
-.brand { display: inline-flex; align-items: center; gap: 10px; font-family: var(--serif); font-weight: 800; font-size: 1.4rem; color: var(--fir); text-decoration: none; white-space: nowrap; margin-right: auto; }
+.brand { display: inline-flex; align-items: center; gap: 10px; font-family: var(--serif); font-weight: 800; font-size: 1.4rem; color: var(--fir); text-decoration: none; white-space: nowrap; }
 .brand img { display: block; border-radius: 8px; }
 .nav { display: flex; align-items: center; gap: 2px; font-size: 1rem; }
 .nav > a, .nav-more-btn { text-decoration: none; color: var(--muted); padding: 7px 13px; border-radius: 999px; white-space: nowrap; transition: background-color .15s, color .15s; }
@@ -65,12 +65,29 @@ p { margin: 0 0 1rem; }
 .nav-menu a span { color: var(--muted); font-size: .9rem; }
 .nav-menu a:hover, .nav-menu a:focus-visible { background: color-mix(in srgb, var(--moss) 12%, transparent); }
 .nav-menu a[aria-current="page"] { background: var(--moss-soft); }
-.head-search { flex: none; display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 10px 0 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--paper); color: var(--muted); font: inherit; font-size: .98rem; cursor: pointer; }
+.head-search { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; padding: 0; border-radius: 50%; border: 1px solid var(--line); background: var(--paper); color: var(--muted); font: inherit; cursor: pointer; }
+.head-search span { display: none; }
 .head-search:hover, .head-search[aria-expanded="true"] { border-color: var(--moss); color: var(--fir); }
-.head-kbd { font: inherit; font-size: .78rem; padding: 1px 6px; border-radius: 6px; border: 1px solid var(--line); color: var(--muted); background: var(--bg); }
+/* Town chip: your saved town next to the logo on wide screens (filled in by nav.js). */
+.town-chip-wrap { position: relative; margin-right: auto; min-width: 0; }
+.town-chip { display: inline-flex; align-items: center; gap: 6px; max-width: 13rem; height: 36px; padding: 0 10px 0 9px; border-radius: 999px; border: 1px dashed color-mix(in srgb, var(--moss) 55%, var(--line)); background: color-mix(in srgb, var(--paper) 70%, transparent); color: var(--fir); font: inherit; font-size: .98rem; font-weight: 700; white-space: nowrap; cursor: pointer; }
+.town-chip > svg:first-child { flex: none; color: var(--moss); }
+.town-chip .chev { flex: none; color: var(--muted); transition: transform .15s; }
+.town-chip[aria-expanded="true"] .chev { transform: rotate(180deg); }
+.town-chip:hover, .town-chip[aria-expanded="true"] { border-style: solid; border-color: var(--moss); }
+.tc-name { overflow: hidden; text-overflow: ellipsis; }
+.town-pop { position: absolute; top: calc(100% + 10px); left: 0; width: 17rem; padding: 8px; border-radius: 14px; background: var(--paper); border: 1px solid var(--line); box-shadow: 0 18px 40px -10px rgba(16, 30, 44, .3); }
+.town-pop a { display: flex; flex-direction: column; gap: 1px; padding: 9px 12px; border-radius: 10px; text-decoration: none; }
+.town-pop a strong { color: var(--fir); font-size: 1.02rem; }
+.town-pop a span { color: var(--muted); font-size: .9rem; }
+.town-pop a:hover, .town-pop a:focus-visible { background: color-mix(in srgb, var(--moss) 12%, transparent); }
 .head-cta { flex: none; display: inline-flex; align-items: center; gap: 7px; height: 40px; padding: 0 15px 0 12px; border-radius: 999px; background: var(--moss); color: var(--on-moss); font-weight: 700; text-decoration: none; white-space: nowrap; transition: filter .15s; }
 .head-cta:hover { filter: brightness(1.12); }
 .head-cta[aria-current="page"] { background: var(--fir); color: var(--bg); }
+.cta-short { display: none; }
+/* Phones: the plan gets its own green button in the bar. */
+.plan-btn { display: none; flex: none; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--moss); color: var(--on-moss); }
+.plan-btn[aria-current="page"] { background: var(--fir); color: var(--bg); }
 .menu-btn { display: none; flex: none; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); background: var(--paper); color: var(--fir); cursor: pointer; }
 .menu-btn path { stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; transition: transform .2s, opacity .2s; transform-origin: 12px 12px; }
 .menu-btn[aria-expanded="true"] .m1 { transform: translateY(5px) rotate(45deg); }
@@ -80,9 +97,17 @@ p { margin: 0 0 1rem; }
 .site-menu .wrap { display: block; padding-top: 14px; padding-bottom: 22px; }
 .menu-town { margin: 0 0 12px; padding: 10px 14px; border-radius: 12px; background: var(--moss-soft); color: var(--fir); }
 .menu-town a { color: var(--fir); font-weight: 700; }
-.menu-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 22px; }
+.menu-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 18px; }
 .menu-h { font-family: var(--sans); font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 6px 0 4px; }
-.site-menu .menu-cols a { display: block; padding: 10px 2px; border-bottom: 1px solid var(--line); color: var(--fir); text-decoration: none; font-size: 1.1rem; }
+.site-menu .menu-cols a { display: block; padding: 8px 2px; border-bottom: 1px solid var(--line); color: var(--fir); text-decoration: none; font-size: 1.04rem; }
+/* Dark mode lives in the phone menu, so the bar keeps room for the plan button. */
+.theme-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 14px; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--paper); color: var(--fir); font: inherit; font-size: 1.02rem; cursor: pointer; }
+.theme-row > span { display: inline-flex; align-items: center; gap: 8px; }
+.theme-row .i-moon { width: 18px; height: 18px; }
+.theme-row .sw { flex: none; position: relative; width: 42px; height: 24px; border-radius: 99px; background: var(--line); transition: background-color .15s; }
+.theme-row .sw::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: var(--paper); box-shadow: 0 1px 3px rgba(0, 0, 0, .25); transition: left .15s; }
+.theme-row[aria-checked="true"] .sw { background: var(--moss); }
+.theme-row[aria-checked="true"] .sw::after { left: 21px; background: var(--on-moss); }
 .site-menu .menu-cols a[aria-current="page"] { font-weight: 800; color: var(--moss); }
 /* Search */
 .search-pop { border-top: 1px solid var(--line); background: var(--bg); box-shadow: 0 24px 40px -20px rgba(16, 30, 44, .35); }
@@ -103,7 +128,7 @@ p { margin: 0 0 1rem; }
 .search-k { flex: none; font-size: .8rem; color: var(--muted); padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); }
 .search-h { padding: 4px 10px; font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .search-empty { padding: 12px 10px; color: var(--muted); }
-.theme-btn { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); background: var(--paper); color: var(--fir); cursor: pointer; }
+.theme-btn { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid transparent; background: transparent; color: var(--fir); cursor: pointer; }
 .theme-btn:hover { border-color: var(--moss); }
 .theme-btn .i-sun { display: none; }
 :root[data-theme="dark"] .theme-btn .i-sun { display: block; }
@@ -484,19 +509,24 @@ table.plan { width: 100%; border-collapse: collapse; font-size: 1rem; background
 .site-foot nav { display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; }
 .site-foot a { color: var(--muted); }
 
+/* Header widths: full bar; then "My plan"; then no town chip; then phone layout (menu button, plan button, dark mode in the menu). */
 @media (max-width: 1180px) {
-  .head-search span, .head-kbd { display: none; }
-  .head-search { width: 40px; justify-content: center; padding: 0; border-radius: 50%; }
+  .cta-long { display: none; }
+  .cta-short { display: inline; }
+  .head-cta { padding: 0 14px 0 12px; }
 }
-@media (max-width: 1060px) {
-  .nav, .head-cta { display: none; }
-  .menu-btn { display: grid; }
+@media (max-width: 1040px) {
+  .town-chip-wrap { display: none; }
+  .brand { margin-right: auto; }
 }
-@media (min-width: 1061px) { .site-menu { display: none; } }
+@media (max-width: 860px) {
+  .nav, .head-cta, .theme-btn { display: none; }
+  .menu-btn, .plan-btn { display: grid; }
+}
+@media (min-width: 861px) { .site-menu { display: none; } }
 @media (max-width: 420px) {
   .brand { font-size: 1.25rem; gap: 8px; }
   .site-head .wrap { gap: .5rem .6rem; }
-  .menu-cols { grid-template-columns: 1fr; }
 }
 @media (max-width: 720px) {
   body { font-size: 1.05rem; }

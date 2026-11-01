@@ -104,6 +104,8 @@
   function show(place, viaZip) {
     var p = P.plan(D, place);
     store("rainline-place", place.slug);
+    store("rainline-place-name", place.slug + "|" + place.city + ", " + place.state);
+    if (window.RainlineHeadTown) window.RainlineHeadTown();
     out.innerHTML =
       '<div class="result-head"><h2>' + place.city + ', ' + place.state + '</h2>' +
       '<a href="' + base + 'frost-dates/' + place.slug + '/">Full ' + place.city + ' calendar</a></div>' +
@@ -124,9 +126,11 @@
 
   var box = RainlineTownBox(boxEl, { onPick: go });
 
-  var q = new URLSearchParams(location.search).get("place") || store("rainline-place");
+  var params = new URLSearchParams(location.search);
+  var q = params.get("place") || store("rainline-place");
   var start = q && P.findPlace(D, q);
   // A town already picked on an earlier visit (or linked with ?place=) shows straight away, with the box tucked behind "Change town".
-  if (start) { show(start, false); box.collapse(start); }
+  // The header's "Change town" link (?change=1) leaves the box open and ready to type in instead.
+  if (start) { show(start, false); if (params.has("change")) box.expand(true); else box.collapse(start); }
   else seasonNow(P.findPlace(D, "portland-or"));
 })();
