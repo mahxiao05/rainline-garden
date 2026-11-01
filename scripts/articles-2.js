@@ -347,6 +347,7 @@ ${fig(1)}
     topic: "soil", icon: "container",
     author: "jigmey-dorjee",
     title: "Growing Vegetables in Containers on a Northwest Balcony or Patio",
+    seoTitle: "Growing Vegetables in Pots on a Northwest Balcony or Patio",
     description: "No yard? Herbs, greens, tomatoes and more grow well in pots. Container sizes, soil, watering and the best crops for small Northwest spaces.",
     crops: ["tomatoes", "lettuce", "basil", "peppers", "strawberries", "kale"],
     published: "2026-10-14",
