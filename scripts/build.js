@@ -1252,20 +1252,26 @@ const areaLists = s => P.byArea(D).filter(g => g.area.state === s).map(g => `<de
 // Town map: Census state outlines plus a dot per town (scripts/map-proj.js, scripts/map-states.js). Dots are plain links,
 // so the map works without JavaScript; assets/townmap.js adds the area picker, zoom, labels and town list.
 const MAP = require("./map-proj.js"), MAP_STATES = require("./map-states.js");
+// Dot colors on the map: frost-free days a year, in four bands.
+const SEASON_BANDS = [[0, 119], [120, 179], [180, 239], [240, 999]];
 const townMap = () => {
   const dots = D.places.map(x => {
     const st = D.stations[x.station], [cx, cy] = MAP.xy(x.ll[0], x.ll[1]), last = P.fmt(P.doy(st.spring50)), first = P.fmt(P.doy(st.fall50));
-    return `<a href="${x.slug}/" tabindex="-1" data-slug="${x.slug}" data-area="${x.area}" data-name="${esc(x.city)}" data-dates="${last} – ${first}" data-last="${P.doy(st.spring50)}"><title>${esc(placeLabel(x))}: last frost ${last}, first frost ${first}</title><circle cx="${cx}" cy="${cy}" r="5.5"/></a>`;
+    const f = P.plan(D, x).frost, band = SEASON_BANDS.findIndex(([lo, hi]) => f.season >= lo && f.season <= hi) + 1;
+    return `<a href="${x.slug}/" tabindex="-1" data-slug="${x.slug}" data-area="${x.area}" data-name="${esc(x.city)}" data-dates="${last} – ${first}" data-last="${f.spring50}" data-first="${f.fall50}" data-days="${f.season}"><title>${esc(placeLabel(x))}: last frost ${last}, first frost ${first}, ${f.season} frost-free days</title><circle class="tm-s${band}" cx="${cx}" cy="${cy}" r="5.5"/></a>`;
   }).join("");
+  const seasons = D.places.map(x => [P.plan(D, x).frost.season, x]).sort((a, b) => a[0] - b[0]), short = seasons[0], long = seasons[seasons.length - 1];
   const opts = s => D.areas.filter(a => a.state === s).map(a => `<option value="${a.id}">${esc(a.name)}</option>`).join("");
   const chips = s => D.areas.filter(a => a.state === s).map(a => `<button type="button" data-area="${a.id}" aria-pressed="false">${esc(a.name)}</button>`).join("");
   return `<section class="town-map" aria-labelledby="tm-h"><h2 id="tm-h">Find your town on the map</h2>
 <div class="tm-grid"><div class="tm-card">
 <svg class="tm-svg" viewBox="0 0 ${MAP.W} ${MAP.H}" aria-hidden="true"><g class="tm-states">${Object.values(MAP_STATES).map(d => `<path d="${d}"/>`).join("")}</g>
 <g class="tm-names"><text x="300" y="92">Washington</text><text x="228" y="410">Oregon</text><text x="492" y="335">Idaho</text></g><g class="tm-dots">${dots}</g><g class="tm-labels"></g></svg>
+<ul class="tm-key" aria-label="Dot color: frost-free days a year"><li class="tm-key-h">Frost-free days</li>${SEASON_BANDS.map(([lo, hi], i) => `<li><i class="tm-s${i + 1}"></i>${hi > 900 ? `${lo}+` : i === 0 ? `under ${hi + 1}` : `${lo}–${hi}`}</li>`).join("")}</ul>
 <div class="tm-pick" hidden><label class="tm-select"><span>Area</span><select id="tm-area"><option value="">All areas</option><optgroup label="Oregon">${opts("OR")}</optgroup><optgroup label="Washington">${opts("WA")}</optgroup><optgroup label="Idaho">${opts("ID")}</optgroup></select></label>
 <div class="tm-chips" role="group" aria-label="Zoom to an area"><button type="button" data-area="" aria-pressed="true">All areas</button><span>Oregon</span>${chips("OR")}<span>Washington</span>${chips("WA")}<span>Idaho</span>${chips("ID")}</div></div>
-</div><div class="tm-panel" id="tm-panel" aria-live="polite"><p class="tm-hint">Tap a dot to open that town's calendar, or find it in the list below.</p></div></div>
+</div><div class="tm-panel" id="tm-panel" aria-live="polite"><p class="tm-hint">Tap a dot to open that town's calendar, or find it in the list below.</p>
+<p class="tm-fact">Longest frost-free season: <a href="${long[1].slug}/">${esc(long[1].city)}</a>, ${long[0]} days. Shortest: <a href="${short[1].slug}/">${esc(short[1].city)}</a>, ${short[0]} days.</p></div></div>
 <p class="tm-credit">State outlines: US Census Bureau. Town locations: GeoNames.</p></section>`;
 };
 write("../", "frost-dates/index.html", layout({

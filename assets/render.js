@@ -165,7 +165,7 @@
     var cur = -1;
     for (var c = 0; c < 12; c++) if (today > P.CUM[c]) cur = c;
     el.querySelectorAll(".pc-trk").forEach(function (t) {
-      if (!t.querySelector(".now")) t.insertAdjacentHTML("beforeend", '<span class="now" style="left:' + pct(today) + '"></span>');
+      if (!t.querySelector(".pc-now")) t.insertAdjacentHTML("beforeend", '<span class="pc-now" style="left:' + pct(today) + '"></span>');
     });
     el.querySelectorAll(".pc-mo").forEach(function (m) { if (m.children[cur]) m.children[cur].className = "is-now"; });
     var k = el.querySelector(".pc-key-now"); if (k) k.hidden = false;
