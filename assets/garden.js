@@ -12,6 +12,7 @@
   if (!form || !window.RainlineTownBox) return;
   var msg = document.getElementById("gp-msg"), changing = false, box;
   var out = document.getElementById("gp-out"), pick = document.getElementById("gp-pick"), share = document.getElementById("gp-share");
+  var emptyArt = out.querySelector(".gp-empty-art"); emptyArt = emptyArt ? emptyArt.outerHTML : ""; // illustration for the empty plan, from the page
   var alertTpl = document.getElementById("gp-alert-tpl");
   var starters = document.getElementById("gp-starters"), pickNote = document.getElementById("gp-pick-note");
 
@@ -416,7 +417,7 @@
     if (count) count.textContent = state.crops.length ? state.crops.length + " picked" : "";
     tagPicker(place ? P.plan(D, place) : null);
     if (!place || !state.crops.length) {
-      out.innerHTML = '<h2 class="gp-step">' + STEP3 + 'Your plan</h2><p class="empty gp-empty">' + (!place ? "Choose your town" : "Pick at least one plant") + ' to see your plan.</p>';
+      out.innerHTML = '<h2 class="gp-step">' + STEP3 + 'Your plan</h2><div class="gp-empty-wrap">' + emptyArt + '<p class="empty gp-empty">' + (!place ? "Choose your town" : "Pick at least one plant") + ' to see your plan.</p></div>';
       return;
     }
     var p = P.plan(D, place), list = tasks(p), chosen = chosenCrops();
