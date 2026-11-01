@@ -81,7 +81,15 @@
     Array.prototype.forEach.call(list.querySelectorAll(".cm-region"), function (el) { el.hidden = r !== "all" && el.dataset.r !== r; });
     Array.prototype.forEach.call(list.querySelectorAll(".cm"), progress);
     put("rainline-chores-region", r);
+    // With a saved town, say which region the jobs follow.
+    if (note) {
+      var mine = place && ZONE[place.zone] === r, lab = mine && document.querySelector('.cm-filter button[data-region="' + r + '"]');
+      note.hidden = !mine;
+      if (mine) note.innerHTML = 'Showing jobs for <strong>' + lab.textContent + '</strong>, where ' + place.city + ' is. <button type="button" class="link-btn" data-region="all">Show all regions</button>';
+    }
   }
+  var note = document.getElementById("cm-note");
+  if (note) note.addEventListener("click", function (e) { if (e.target.closest("[data-region]")) filter("all"); });
   Array.prototype.forEach.call(btns, function (b) { b.addEventListener("click", function () { filter(b.dataset.region); }); });
   filter(get("rainline-chores-region", place ? ZONE[place.zone] || "all" : "all"));
 

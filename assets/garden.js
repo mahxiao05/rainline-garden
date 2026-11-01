@@ -8,9 +8,9 @@
   var D = window.RainlineData, P = window.RainlinePlan, R = window.RainlineRender, H = window.RainlineGuideData;
   var KEY = "rainline-garden-plan";
   var base = document.documentElement.getAttribute("data-base") || "";
-  var form = document.getElementById("gp-form");
-  if (!form) return;
-  var zip = document.getElementById("gp-zip"), sel = document.getElementById("gp-place"), msg = document.getElementById("gp-msg");
+  var form = document.getElementById("gp-box");
+  if (!form || !window.RainlineTownBox) return;
+  var msg = document.getElementById("gp-msg"), changing = false, box;
   var out = document.getElementById("gp-out"), pick = document.getElementById("gp-pick"), share = document.getElementById("gp-share");
   var alertTpl = document.getElementById("gp-alert-tpl");
   var starters = document.getElementById("gp-starters"), pickNote = document.getElementById("gp-pick-note");
@@ -82,8 +82,11 @@
 
   function clearQuery() { if (history.replaceState) history.replaceState(null, "", location.pathname); }
 
-  // Town picker.
-  P.fillPlaceSelect(sel, D);
+  // Town picker: the shared town box. Once a town is chosen it tucks away behind "Change town".
+  box = RainlineTownBox(form, {
+    onPick: function (p) { changing = false; msg.textContent = ""; state.place = p.slug; save(); render(); out.scrollIntoView({ behavior: "smooth", block: "start" }); },
+    onChange: function () { changing = true; }
+  });
 
   var now = new Date(); now.setHours(0, 0, 0, 0);
   var YEAR = now.getFullYear();
@@ -404,9 +407,11 @@
   function render() {
     shareBanner();
     var place = P.findPlace(D, state.place);
-    sel.value = place ? place.slug : "";
+    if (place && !changing) box.collapse(place, "Your town: <strong>" + place.city + ", " + place.state + "</strong>.");
+    else if (!place) box.expand(false);
     form.hidden = preview; pick.hidden = preview;
     Array.prototype.forEach.call(pick.querySelectorAll("input[type=checkbox]"), function (b) { b.checked = state.crops.indexOf(b.value) >= 0; });
+    groupCounts();
     var count = document.getElementById("gp-count");
     if (count) count.textContent = state.crops.length ? state.crops.length + " picked" : "";
     tagPicker(place ? P.plan(D, place) : null);
@@ -510,22 +515,6 @@
     setTimeout(function () { s.textContent = "Saved on this device"; s.classList.remove("is-on"); }, 2500);
   }
 
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-    if (zip.value.trim()) {
-      var r = P.placeForZip(D, zip.value);
-      if (r.error) { msg.textContent = r.error; return; }
-      state.place = r.place.slug;
-    }
-    msg.textContent = "";
-    save(); render();
-    out.scrollIntoView({ behavior: "smooth", block: "start" });
-  });
-  sel.addEventListener("change", function () { zip.value = ""; msg.textContent = ""; state.place = sel.value; save(); render(); });
-  if (window.RainlineNear) RainlineNear(document.getElementById("near-me"), msg, P.nearPoints(D), function (slug) {
-    zip.value = ""; msg.textContent = ""; state.place = slug; save(); render();
-    out.scrollIntoView({ behavior: "smooth", block: "start" });
-  });
   pick.addEventListener("change", function (e) {
     var b = e.target; if (b.type !== "checkbox") return;
     state.crops = state.crops.filter(function (id) { return id !== b.value; });
@@ -544,7 +533,7 @@
       save(); render();
       if (pickNote) pickNote.hidden = true;
       if (state.place) { pick.open = false; out.scrollIntoView({ behavior: "smooth", block: "start" }); }
-      else { msg.textContent = "Now choose your town to see your plan."; zip.focus(); }
+      else { msg.textContent = "Now choose your town to see your plan."; form.querySelector("input").focus(); }
     });
   }
   out.addEventListener("change", function (e) {
@@ -631,7 +620,7 @@
       if (!confirm("Reset your garden plan? This clears your town, plants, ticks, beds, notes and harvest log on this device. It can't be undone.")) return;
       state = mine = fresh({});
       try { localStorage.removeItem("rainline-place"); } catch (err) { /* ignore */ }
-      zip.value = ""; sel.value = ""; msg.textContent = "";
+      changing = false; msg.textContent = "";
       save(); render();
       pick.open = true;
       msg.textContent = "Your plan was reset. Choose a town and plants to start a new one.";
@@ -668,15 +657,27 @@
   // Plant search in the picker: hides plants and whole groups that don't match.
   var find = document.getElementById("gp-find"), findNone = document.getElementById("gp-find-none");
   function plain(t) { return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9 ]/g, " ").trim(); }
+  // Groups start folded; a group with plants in your plan shows how many are picked. While searching, groups with
+  // a match open and the rest hide; clearing the search folds them back.
+  var groups = pick.querySelectorAll(".gp-group");
+  function groupCounts() {
+    if (!groups) return;
+    Array.prototype.forEach.call(groups, function (g) {
+      var n = g.querySelectorAll("input:checked").length, el = g.querySelector(".gp-group-n");
+      var total = g.querySelectorAll(".gp-opt").length;
+      el.textContent = total + " plants" + (n ? " · " + n + " picked" : "");
+    });
+  }
+  pick.addEventListener("change", groupCounts);
   if (find) find.addEventListener("input", function () {
     var q = plain(find.value), any = false;
-    Array.prototype.forEach.call(pick.querySelectorAll("fieldset"), function (fs) {
+    Array.prototype.forEach.call(groups, function (g) {
       var shown = 0;
-      Array.prototype.forEach.call(fs.querySelectorAll(".gp-opt"), function (lab) {
+      Array.prototype.forEach.call(g.querySelectorAll(".gp-opt"), function (lab) {
         var hit = !q || plain(lab.querySelector("span").textContent).indexOf(q) >= 0 || plain(lab.querySelector("input").value).indexOf(q) >= 0;
         lab.hidden = !hit; if (hit) shown++;
       });
-      fs.hidden = !shown; if (shown) any = true;
+      g.hidden = !shown; g.open = !!q && !!shown; if (shown) any = true;
     });
     if (findNone) findNone.hidden = any;
   });
@@ -687,4 +688,5 @@
 
   if (state.place && state.crops.length) pick.open = false;
   render();
+  groupCounts();
 })();
