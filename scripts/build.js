@@ -393,6 +393,8 @@ function crumbs(rel, items) {
   return { html, ld };
 }
 
+// A row of seedlings that marks the end of an article's text. Articles only, once per article.
+const SPROUT_DIVIDER = `<div class="sprout-rule" aria-hidden="true"><svg viewBox="0 0 160 40" width="160" height="40"><g class="sr-stem" fill="none" stroke-width="2.5" stroke-linecap="round"><path d="M20 36v-6M50 36v-10M80 36v-16M110 36v-10M140 36v-6"/></g><g class="sr-leaf"><circle cx="20" cy="29" r="3"/><path d="M50 27c-7 0-9-5-9-7 5 0 9 3 9 7z"/><path d="M80 23c-10 0-12-7-12-10 7 0 12 5 12 10z"/><path d="M110 27c7 0 9-5 9-7-5 0-9 3-9 7z"/><circle cx="140" cy="29" r="3"/></g><g class="sr-leaf2"><path d="M50 27c7 0 9-5 9-7-5 0-9 3-9 7z"/><path d="M80 22c10 0 12-7 12-10-7 0-12 5-12 10z"/><path d="M110 27c-7 0-9-5-9-7 5 0 9 3 9 7z"/></g></svg></div>`;
 function relatedArticles(rel, cropId, max) {
   // Articles about this crop come first: ones that list it first, and of those, ones about the fewest crops.
   const list = ARTICLES.filter(a => a.crops.includes(cropId))
@@ -1018,7 +1020,10 @@ write("../", "my-garden/index.html", layout({
   jsonld: [gpb.ld],
   body: `${gpb.html}
 <section class="hero"><p class="eyebrow">Free planner · saves on this device</p><h1>My garden plan</h1>
-<p class="lede">Pick your town and your plants. You get a dated to-do list for the year that saves as you go and prints on one page.</p></section>
+<p class="lede">Pick your town and your plants. You get a dated to-do list for the year that saves as you go and prints on one page.</p>
+<details class="gp-privacy"><summary>Your plan is saved in this browser. How does that work?</summary>
+<p>Your town, the plants you pick, the boxes you tick and your notes are kept in your browser's local storage, right on this device. That's why they're still here when you close the site and come back. There's no account and nothing is sent to us, so your plan stays private.</p>
+<p>It only lives in this browser on this device. Another phone, computer or browser starts with a blank plan, a private or incognito window forgets it when you close the window, and clearing your browsing data deletes it. To keep a copy, print the plan or save it as a PDF.</p></details></section>
 <h2 class="gp-step"><span class="gp-step-n" aria-hidden="true">1</span>Your town</h2>
 ${townBox({ id: "gp-box", rel: "../", button: "Use this town" })}
 <p id="gp-msg" class="msg" role="status" aria-live="polite"></p>
@@ -1159,6 +1164,7 @@ ${banner("article:" + a.slug, rel)}
 <p class="byline">${byAvatar(rel, a.author || DEFAULT_AUTHOR)}<span>By ${byName(rel, a.author || DEFAULT_AUTHOR)}<br><span class="byline-d">Updated ${stamp(CONFIG.updated)}</span></span></p></div></header>
 ${toc.nav}
 <div class="prose">${toc.html}</div>
+${SPROUT_DIVIDER}
 ${a.gardenPhoto ? gardenGrid(rel, GARDEN_PHOTOS.filter(r => r.img === a.gardenPhoto)) : ""}
 ${byBox(rel, a.author || DEFAULT_AUTHOR)}
 </article>
