@@ -20,7 +20,7 @@
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <link rel="manifest" href="../site.webmanifest">
 <link rel="stylesheet" href="../assets/fonts/fonts.css">
-<link rel="stylesheet" href="../assets/style.css?v=69a73be1">
+<link rel="stylesheet" href="../assets/style.css?v=4775a418">
 
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://rainlinegarden.org/"},{"@type":"ListItem","position":2,"name":"Plant quiz"}]}</script>
@@ -47,8 +47,15 @@
 </header>
 <main id="main" class="wrap">
 <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../">Home</a></li><li aria-current="page">Plant quiz</li></ol></nav>
-<section class="hero"><h1>What should I grow?</h1>
-<p class="lede">Eight quick questions about your town, space, sun and time. You get the plants that suit you, whether each one can go in now, and a one-tap garden plan.</p></section>
+<section class="hero"><p class="eyebrow">Plant quiz · 2 minutes</p><h1>What should I grow?</h1>
+<p class="lede">Eight quick questions. You get plants that suit your garden and a one-tap plan.</p></section>
+<template id="quiz-tbox"><div class="tbox" id="quiz-box">
+<form class="home-find" novalidate><div class="home-find-box"><label class="home-find-in" for="quiz-box-in"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><span class="sr">ZIP code or town</span><input id="quiz-box-in" type="text" autocomplete="off" spellcheck="false" enterkeyhint="go" placeholder="ZIP code or town" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="quiz-box-list"></label><button class="btn" type="submit">Next</button></div>
+<ul id="quiz-box-list" class="where-list" role="listbox" aria-label="Matching towns" hidden></ul></form>
+<p class="home-find-alt"><button type="button" class="link-btn tbox-near" hidden><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg><span>Use my location</span></button></p>
+<p class="msg tbox-msg" role="status" aria-live="polite"></p>
+<p class="tbox-saved" hidden><span class="tbox-saved-text"></span> <button type="button" class="link-btn tbox-change">Change town</button></p>
+</div></template>
 <section id="quiz" class="quiz" aria-live="polite"><noscript><p>The quiz needs JavaScript. You can still <a href="../when-to-plant/">browse every plant</a> or read the <a href="../beginners-guide/">beginner's guide</a>.</p></noscript></section>
 <div class="guide prose">
 <h2>How the quiz picks plants</h2>
@@ -69,7 +76,7 @@
 </div>
 </main>
 <footer class="site-foot"><div class="wrap">
-<p><strong class="foot-brand">Rainline Garden</strong><br>Free planting calendars for Oregon, Washington and Idaho gardens.<br>Frost data from NOAA climate normals. Updated <time datetime="2026-10-31">October 2026</time>.</p>
+<p><strong class="foot-brand">Rainline Garden</strong><br>Free planting calendars for Oregon, Washington and Idaho gardens.<br>Frost data from NOAA climate normals. Updated <time datetime="2026-11-01">November 2026</time>.</p>
 <nav aria-label="Footer"><a href="../glossary/">Glossary</a><a href="../how-it-works/">How it works</a><a href="../about/">About</a><a href="../contact/">Contact</a><a href="../privacy/">Privacy</a><a href="../terms/">Terms</a></nav>
 <p class="owner">&copy; 2026 X Ventures LLC. Rainline Garden is owned and operated by X Ventures LLC.</p>
 </div></footer>
@@ -79,7 +86,8 @@
 <script src="../assets/render.js?v=382fdea2"></script>
 <script src="../assets/guide-data.js?v=6f1386c7"></script>
 <script src="../assets/near.js?v=243179ab"></script>
-<script src="../assets/quiz.js?v=b6a6d82a"></script>
+<script src="../assets/townbox.js?v=822e6a1e"></script>
+<script src="../assets/quiz.js?v=71f3a607"></script>
 <script src="../assets/nav.js?v=318c120e" defer></script>
 </body>
 </html>

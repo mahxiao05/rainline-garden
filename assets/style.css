@@ -871,10 +871,6 @@ details.cm-byregion > summary { cursor: pointer; padding: 10px 14px; font-weight
 .cm-month-links { display: grid; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); gap: 4px 16px; padding-left: 1.2rem; }
 .cm-pager { display: flex; justify-content: space-between; gap: 12px; margin: 2rem 0 1rem; padding-top: 1rem; border-top: 1px solid var(--line); }
 /* Plant-type pages and "plants for" pages */
-.cat-now label, .town-line label { font-weight: 700; }
-.cat-now select, .town-line select { font: inherit; padding: 4px 8px; margin: 0 4px 0 2px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink); max-width: 100%; }
-.town-line { background: var(--paper); border: 1px solid var(--line); border-left: 4px solid var(--moss); border-radius: 10px; padding: 10px 14px; margin: 0 0 1.2rem; }
-.cat-now { background: var(--paper); border: 1px solid var(--line); border-left: 4px solid var(--moss); border-radius: 10px; padding: 10px 14px; margin: 0 0 1.2rem; }
 .order { margin: 0 0 1rem; }
 .order > div { display: grid; grid-template-columns: 8.5rem 1fr; gap: 10px; padding: 8px 0; border-top: 1px solid var(--line); }
 .order dt { font-weight: 700; }
@@ -1041,14 +1037,16 @@ h2.gp-step { font-size: 1.35rem; margin: 2rem 0 0; }
 .home-find-alt a, .link-btn { color: var(--moss); font-weight: 600; text-decoration: none; }
 .home-find-alt a:hover, .link-btn:hover { text-decoration: underline; }
 .link-btn { font: inherit; font-weight: 600; background: none; border: 0; padding: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
-.link-btn[hidden], .home-saved[hidden] { display: none; }
-.home-top .msg:empty { min-height: 0; margin: 0; }
+.link-btn[hidden], .tbox-saved[hidden] { display: none; }
+.tbox .msg:empty { min-height: 0; margin: 0; }
+.tbox .msg { max-width: 34rem; }
 .trust { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 1rem 0 0; padding: 0; list-style: none; color: var(--muted); font-size: .92rem; }
 .trust li { display: flex; align-items: center; gap: 6px; }
 .trust li::before { content: ""; width: 14px; height: 14px; flex: none; background: var(--moss); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7.5' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7.5' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat; }
-.home-saved { margin: 0; color: var(--muted); }
-.home-saved strong { color: var(--ink); font-weight: 600; }
-.hero.is-saved .home-find, .hero.is-saved .home-find-alt, .hero.is-saved .trust { display: none; }
+.tbox-saved { margin: 0; color: var(--muted); }
+.tbox-saved strong { color: var(--ink); font-weight: 600; }
+.tbox.is-saved .home-find, .tbox.is-saved .home-find-alt, .hero:has(.tbox.is-saved) .trust { display: none; }
+.tbox .home-find-alt:not(:has(a, button:not([hidden]))) { display: none; }
 @media (max-width: 720px) {
   .home-top .hero-art { height: 128px; }
   .home-find-box .btn { padding: 0 14px; }
@@ -1060,3 +1058,78 @@ h2.gp-step { font-size: 1.35rem; margin: 2rem 0 0; }
   .home-top .hero h1 { font-size: clamp(2.6rem, 3.6vw, 3.1rem); line-height: 1.05; }
   .home-top + #result:not(:empty) { margin-top: 2.5rem; }
 }
+/* Plant pages: your town's dates under the heading. */
+.your-dates { margin-top: 1rem; max-width: 36rem; }
+.yd-card { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; margin-bottom: .6rem; }
+.yd-card h2 { font-size: 1.2rem; margin: 0 0 .6rem; }
+.yd-card .town-pick-out { margin: 0; }
+.your-dates .tbox.is-saved .tbox-saved { font-size: .95rem; }
+/* "On this page": one row of links that scrolls sideways on phones. */
+.jump > span { color: var(--muted); font-size: .9rem; align-self: center; }
+@media (max-width: 720px) {
+  .jump { flex-wrap: nowrap; overflow-x: auto; white-space: nowrap; margin-left: -16px; margin-right: -16px; padding: 2px 16px 6px; scrollbar-width: none; }
+  .jump::-webkit-scrollbar { display: none; }
+  .jump a { flex: none; font-size: .9rem; padding: 5px 12px; }
+}
+/* A fold that holds the rest of a page's intro, so the list starts sooner. */
+.more-fold { max-width: 46rem; margin: 0 0 1.5rem; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); }
+.more-fold > summary { cursor: pointer; padding: 12px 16px; font-weight: 700; color: var(--fir); }
+.more-fold > .prose { padding: 0 16px 4px; }
+.cat-now, .town-line { margin: .75rem 0 0; max-width: 46rem; }
+.cat-now .tbox.is-saved, .town-line .tbox.is-saved { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; }
+.cat-now .tbox-saved, .town-line .tbox-saved { color: var(--ink); }
+@media (max-width: 720px) {
+  .pick-list.pick-list-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .pick-list.pick-list-2 li { margin: 0; }
+  .pick-list.pick-list-2 a { flex-direction: column; align-items: flex-start; gap: 6px; padding: 10px 12px; height: 100%; }
+  .pick-list.pick-list-2 .ico { width: 36px; height: 36px; }
+  .pick-list.pick-list-2 .card-s { font-size: .85rem; }
+}
+/* My garden plan: plant groups fold into one row each. */
+.gp-groups-h { font-weight: 700; color: var(--fir); margin: 1rem 0 .5rem; }
+.gp-group { border: 1px solid var(--line); border-radius: 12px; background: var(--bg); margin: 0 0 8px; }
+.gp-group > summary { cursor: pointer; padding: 11px 14px; font-weight: 700; color: var(--fir); display: flex; justify-content: space-between; gap: 10px; }
+.gp-group-n { color: var(--muted); font-weight: 400; font-size: .95rem; }
+.gp-group .gp-opts { padding: 0 12px 12px; }
+.gp-group[hidden] { display: none; }
+#gp-box { margin-bottom: .5rem; }
+
+/* Month pages: one card per region (yours first), the full date table folded */
+.mp-regions { display: grid; gap: 10px; max-width: 52rem; margin: 0 0 1rem; }
+.mp-region { border: 1px solid var(--line); border-radius: 12px; background: var(--paper); }
+.mp-region > summary { cursor: pointer; display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; padding: 12px 16px; }
+.mp-region-name { font-weight: 700; color: var(--fir); }
+.mp-region-n { font-size: .9rem; color: var(--muted); }
+.mp-region-body { padding: 0 16px 10px; }
+.mp-region-body > p:not(.station):not(.mp-mine):not(.cm-none) { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 6px 0; }
+.mp-region-body .station { margin: 8px 0 0; }
+.mp-region.is-mine { border-color: var(--moss); box-shadow: 0 0 0 1px var(--moss); }
+.mp-mine { margin: 0 0 8px; font-size: .95rem; }
+.mp-look { margin: 0 0 1.25rem; font-size: .95rem; }
+.mp-table { max-width: none; }
+.mp-table-note { padding: 0 16px; margin: 0 0 8px; color: var(--muted); font-size: .95rem; }
+.mp-table .table-wrap { margin: 0 8px 8px; }
+@media (max-width: 40rem) { .mp-region-body .cm-k { width: 100%; } }
+
+/* Plant index: "Find a plant" box and folded groups */
+.plant-find { max-width: 32rem; margin-top: 1rem; }
+.plant-find .home-find-box { padding-right: 6px; }
+.plant-find input::-webkit-search-cancel-button { cursor: pointer; }
+.grid-folds { display: grid; gap: 8px; margin: 0 0 1.5rem; }
+.grid-fold { border: 1px solid var(--line); border-radius: 12px; background: var(--paper); }
+.grid-fold > summary { cursor: pointer; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 12px 16px; }
+.grid-fold-t { font-weight: 700; color: var(--fir); }
+.grid-fold-n { font-size: .9rem; color: var(--muted); }
+.grid-fold > .grid-d { padding: 0 16px; margin-bottom: 10px; }
+.grid-fold > .cards { padding: 0 12px 12px; margin: 0; }
+#plant-none:empty { display: none; }
+.idx-browse[hidden] { display: none; }
+.town-src { margin: -.25rem 0 1.25rem; }
+
+/* Articles index: three guides per topic until "See all" */
+.topic-sec.is-short .reads-grid > li:nth-child(n+4) { display: none; }
+.topic-more { margin: .25rem 0 1rem; }
+#term-none:empty { display: none; }
+.glossary > div[hidden] { display: none; }
+.how-facts { margin-bottom: 1rem; }
+.cm-note { margin: .25rem 0 1rem; font-size: .95rem; color: var(--muted); }

@@ -130,11 +130,8 @@
   function showQuestion() {
     var q = QUESTIONS[step], h = progress() + '<h2 class="quiz-q" tabindex="-1">' + esc(q.q) + '</h2>' + (q.help ? '<p class="quiz-help">' + esc(q.help) + '</p>' : '');
     if (q.id === "town") {
-      h += '<form class="finder quiz-town" id="quiz-town" novalidate>' +
-        '<div class="field"><label for="quiz-zip">ZIP code</label><input id="quiz-zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" placeholder="e.g. 97214"></div>' +
-        '<span class="or">or</span><div class="field field-select"><label for="quiz-place">Town</label><select id="quiz-place"><option value="">Choose a town</option></select></div>' +
-        '<button class="btn" type="submit">Next</button>' +
-        '<button type="button" id="near-me" class="btn btn-ghost near-btn" hidden>Use my location</button></form><p id="quiz-msg" class="msg" role="status" aria-live="polite"></p>';
+      var tpl = document.getElementById("quiz-tbox");
+      h += (tpl ? tpl.innerHTML : "") + '<div class="quiz-nav quiz-town-nav" hidden><button type="button" class="btn" data-go="town">Next</button></div>';
     } else {
       var cur = answers[q.id] || (q.multi ? [] : "");
       h += '<div class="quiz-opts' + (q.multi ? ' is-multi' : '') + '" role="group" aria-label="' + esc(q.q) + '">' + q.opts.map(function (o) {
@@ -146,13 +143,15 @@
     }
     root.innerHTML = h;
     if (q.id === "town") {
-      var sel = document.getElementById("quiz-place");
-      P.fillPlaceSelect(sel, D);
-      var saved = answers.town; if (!saved) { try { saved = localStorage.getItem("rainline-place"); } catch (e) { /* ignore */ } }
-      if (saved && P.findPlace(D, saved)) sel.value = saved;
-      if (window.RainlineNear) RainlineNear(document.getElementById("near-me"), document.getElementById("quiz-msg"), P.nearPoints(D), function (slug) {
-        answers.town = slug; started = true; step++; show();
+      var nav = root.querySelector(".quiz-town-nav");
+      var box = RainlineTownBox(document.getElementById("quiz-box"), {
+        onPick: function (p) { answers.town = p.slug; started = true; step++; show(); },
+        onChange: function () { nav.hidden = true; }
       });
+      var saved = answers.town; if (!saved) { try { saved = localStorage.getItem("rainline-place"); } catch (e) { /* ignore */ } }
+      var sp = saved && P.findPlace(D, saved);
+      // A town picked before: keep it, tucked behind "Change town", and let Next carry on.
+      if (sp) { answers.town = sp.slug; box.collapse(sp, "Using <strong>" + esc(sp.city + ", " + sp.state) + "</strong>."); nav.hidden = false; }
     }
     var hq = root.querySelector(".quiz-q"); if (hq && started) hq.focus({ preventScroll: true });
   }
@@ -194,15 +193,6 @@
 
   function flash(t) { var f = root.querySelector(".quiz-flash"); if (f) { f.textContent = t; f.classList.add("is-on"); } }
 
-  root.addEventListener("submit", function (e) {
-    if (e.target.id !== "quiz-town") return;
-    e.preventDefault();
-    var zip = document.getElementById("quiz-zip").value.trim(), sel = document.getElementById("quiz-place"), msg = document.getElementById("quiz-msg");
-    if (zip) { var r = P.placeForZip(D, zip); if (r.error) { msg.textContent = r.error; return; } answers.town = r.place.slug; }
-    else if (sel.value) answers.town = sel.value;
-    else { msg.textContent = "Enter a ZIP code or choose a town."; return; }
-    started = true; step++; show();
-  });
   root.addEventListener("click", function (e) {
     var o = e.target.closest(".quiz-opt"), g = e.target.closest("[data-go]");
     if (o) {
@@ -218,7 +208,8 @@
     if (!g) return;
     var go = g.dataset.go;
     started = true;
-    if (go === "back") { step = Math.max(0, step - 1); show(); }
+    if (go === "town") { step++; show(); }
+    else if (go === "back") { step = Math.max(0, step - 1); show(); }
     else if (go === "next") { if (QUESTIONS[step].multi && !answers[QUESTIONS[step].id]) answers[QUESTIONS[step].id] = []; step++; show(); }
     else if (go === "again") { answers = { town: answers.town }; step = 0; if (history.replaceState) history.replaceState(null, "", location.pathname); show(); }
     else if (go === "link") {
