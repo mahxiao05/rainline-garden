@@ -1018,7 +1018,10 @@ write("../", "my-garden/index.html", layout({
   jsonld: [gpb.ld],
   body: `${gpb.html}
 <section class="hero"><p class="eyebrow">Free planner · saves on this device</p><h1>My garden plan</h1>
-<p class="lede">Pick your town and your plants. You get a dated to-do list for the year that saves as you go and prints on one page.</p></section>
+<p class="lede">Pick your town and your plants. You get a dated to-do list for the year that saves as you go and prints on one page.</p>
+<details class="gp-privacy"><summary>Your plan is saved in this browser. How does that work?</summary>
+<p>Your town, the plants you pick, the boxes you tick and your notes are kept in your browser's local storage, right on this device. That's why they're still here when you close the site and come back. There's no account and nothing is sent to us, so your plan stays private.</p>
+<p>It only lives in this browser on this device. Another phone, computer or browser starts with a blank plan, a private or incognito window forgets it when you close the window, and clearing your browsing data deletes it. To keep a copy, print the plan or save it as a PDF.</p></details></section>
 <h2 class="gp-step"><span class="gp-step-n" aria-hidden="true">1</span>Your town</h2>
 ${townBox({ id: "gp-box", rel: "../", button: "Use this town" })}
 <p id="gp-msg" class="msg" role="status" aria-live="polite"></p>
