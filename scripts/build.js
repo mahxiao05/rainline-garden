@@ -709,8 +709,11 @@ function cropGrid(rel, linkFor) {
   return `<div class="grid-folds" id="grid-folds">${D.categories.map(k => `<details class="grid-fold"><summary><span class="grid-fold-t">${k.name}</span><span class="grid-fold-n">${k.crops.length} plants</span></summary>
 <p class="grid-d">${k.blurb} <a href="${rel}${WHEN_INDEX}${k.id}/">Planting order for ${lc(k.name)}</a></p><ul class="cards cards-sm">${k.crops.map(id => cropCard(rel, cropById(id), linkFor(cropById(id)))).join("")}</ul></details>`).join("\n")}</div>`;
 }
-function categoryTiles(rel) {
-  return `<ul class="cat-tiles">${D.categories.map(k => `<li><a class="cat-tile" href="${rel}${WHEN_INDEX}${k.id}/">${PHOTOS["cat:" + k.id] ? `<img class="cat-photo" src="${rel}${photoFile("cat:" + k.id, "thumb", "webp")}" width="480" height="240" alt="${esc(PHOTOS["cat:" + k.id].alt)}" aria-hidden="true" loading="lazy" decoding="async">` : ""}<span class="cat-icons">${k.crops.slice(0, 3).map(id => R.icon(id, rel, 40)).join("")}</span><span class="card-t">${k.name}</span><span class="card-s">${k.crops.length} plants</span></a></li>`).join("")}</ul>`;
+// Plant-type tiles. With drops, each tile opens a list of its plants right under its row (assets/catdrop.js);
+// the tile still links to the plant-type page if scripts are off.
+function categoryTiles(rel, drops) {
+  const drop = k => drops ? `<li class="cat-drop" id="drop-${k.id}" hidden><div class="cat-drop-head"><span class="cat-drop-t">${k.name}</span><a href="${rel}${WHEN_INDEX}${k.id}/">Planting order for ${lc(k.name)} &rarr;</a></div><ul class="drop-rows">${k.crops.map(id => { const c = cropById(id); return `<li><a href="${rel}${WHEN_INDEX}${id}/">${R.icon(id, rel, 32)}<span class="drop-n">${c.name}</span>${badge(G.crops[id].difficulty)}</a></li>`; }).join("")}</ul></li>` : "";
+  return `<ul class="cat-tiles${drops ? " cat-tiles-drop" : ""}">${D.categories.map(k => `<li><a class="cat-tile" href="${rel}${WHEN_INDEX}${k.id}/"${drops ? ` data-drop="drop-${k.id}" aria-controls="drop-${k.id}"` : ""}>${PHOTOS["cat:" + k.id] ? `<img class="cat-photo" src="${rel}${photoFile("cat:" + k.id, "thumb", "webp")}" width="480" height="240" alt="${esc(PHOTOS["cat:" + k.id].alt)}" aria-hidden="true" loading="lazy" decoding="async">` : ""}<span class="cat-icons">${k.crops.slice(0, 3).map(id => R.icon(id, rel, 40)).join("")}</span><span class="card-t">${k.name}</span><span class="card-s">${k.crops.length} plants</span></a></li>${drop(k)}`).join("")}</ul>`;
 }
 
 /* Home */
@@ -1057,15 +1060,15 @@ write("../", "when-to-plant/index.html", layout({
 <p class="lede">Pick a plant for its dates in your town and how to grow it. New to this? Start with the ones marked Easy.</p>
 <form class="home-find plant-find" role="search" onsubmit="return false"><div class="home-find-box"><label class="home-find-in" for="plant-q">${SEARCH_SVG}<span class="sr">Find a plant</span><input id="plant-q" type="search" autocomplete="off" spellcheck="false" placeholder="Find a plant, like beans or basil"></label></div></form>
 <p id="plant-none" class="msg" role="status" aria-live="polite"></p></section>
-<div class="idx-browse">${categoryTiles("../")}
+<div class="idx-browse">${categoryTiles("../", true)}
 <h2>Plants for your conditions</h2>
-${collectionChips("../")}
-<h2>All plants by group</h2></div>
-${cropGrid("../", c => `${c.id}/`)}
-<script>(function(){var q=document.getElementById("plant-q"),none=document.getElementById("plant-none"),secs=document.querySelectorAll("#grid-folds .grid-fold");if(!q)return;
+${collectionChips("../")}</div>
+${cropGrid("../", c => `${c.id}/`).replace('id="grid-folds"', 'id="grid-folds" hidden')}
+<script>(function(){var q=document.getElementById("plant-q"),none=document.getElementById("plant-none"),grid=document.getElementById("grid-folds"),secs=grid.querySelectorAll(".grid-fold");if(!q)return;
 function n(t){return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim()}
 q.addEventListener("input",function(){var v=n(q.value),any=false;secs.forEach(function(d){var c=0;d.querySelectorAll(".cards li").forEach(function(li){var t=" "+n(li.querySelector(".card-t").textContent),m=!v||t.indexOf(" "+v)>=0;li.hidden=!m;if(m)c++});d.hidden=!c;d.open=!!v&&c>0;if(c)any=true});
-document.querySelector(".idx-browse").hidden=!!v;none.textContent=v&&!any?"No plant by that name yet. Try another name, or browse the groups below.":"";})})();</script>`
+document.querySelector(".idx-browse").hidden=!!v;grid.hidden=!v;none.textContent=v&&!any?"No plant by that name yet. Try another name, or clear the search to browse by group.":"";})})();</script>`,
+  scripts: ["catdrop.js"]
 }), "0.9");
 
 /* Category pages */
