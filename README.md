@@ -16,7 +16,7 @@ Plain HTML, CSS and JavaScript, with no framework and no build tools to install 
 - `assets/img/`: the crop and topic illustrations and social share image (`og.png`), all drawn for this site.
 - `assets/img/photos/`: real photos for the homepage, category pages, crop guide pages and article headers, all from Pexels or Unsplash (free licenses). The list lives in `scripts/photos.js`; after changing it run `node scripts/fetch-photos.js` (needs curl and ImageMagick) to download and resize them, then rebuild.
 - `scripts/articles.js`: the hand-written articles. Add one by copying an entry; it gets its own page, a spot on the articles page and links from related crop pages.
-- `scripts/guide.js`: growing-guide text per crop (difficulty, spacing, varieties, gear), the beginner picks and the glossary.
+- `scripts/guide.js`: growing-guide text per crop (difficulty, spacing, varieties, gear), the beginner picks and the glossary (terms, topic groups, "See also" pairs, and `glossaryLinks`: the words on other pages that link to a definition the first time they show up; `assets/nav.js` shows the definition in a small box on tap).
 - `scripts/build.js`: generates every page (home, 30 city pages, 28 crop guides, 840 crop-by-city pages, articles, beginner's guide, glossary, monthly chores, how it works, about, privacy, sitemap).
 - `data/noaa_freeze_normals.csv`: the raw NOAA 1991-2020 freeze normals used.
 
