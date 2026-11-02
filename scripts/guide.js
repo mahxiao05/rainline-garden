@@ -793,7 +793,91 @@ const glossary = [
   ["Cold frame", "cold-frame", "A bottomless box with a clear lid that works like a small greenhouse, for early spring starts and late fall greens."],
   ["Cut-and-come-again", "cut-and-come-again", "Picking the outer leaves and leaving the center to keep growing, so one planting of lettuce, chard or kale feeds you for weeks."],
   ["Inoculant", "inoculant", "A powder of helpful bacteria you coat pea and bean seeds with. The bacteria help the plants pull nitrogen from the air."],
-  ["Grafting and rootstock", "rootstock", "Most fruit trees are two plants joined together: the top (the variety) gives the fruit, and the rootstock below sets how big the tree grows."]
+  ["Grafting and rootstock", "rootstock", "Most fruit trees are two plants joined together: the top (the variety) gives the fruit, and the rootstock below sets how big the tree grows."],
+  ["Set out (plant out)", "set-out", "Moving young plants (starts) from their pots into the garden. Planting calendars give a set-out window for crops grown from starts, like tomatoes, peppers and kale."],
+  ["Hardy and tender", "hardy-tender", "A hardy plant handles frost and cold. A tender (frost-tender) plant is damaged or killed by frost. Kale and garlic are hardy; tomatoes, basil and squash are tender."],
+  ["Annual and perennial", "annual-perennial", "An annual grows, flowers, makes seed and dies in one season, like lettuce, beans and tomatoes. A perennial comes back year after year, like asparagus, rhubarb, strawberries and fruit trees. A biennial, like parsley, flowers in its second year."],
+  ["Full sun and part shade", "full-sun", "Full sun means six or more hours of direct sun a day; most vegetables need it, and tomatoes, squash and peppers want eight or more. Part shade usually means three to six hours of direct sun, or bright, filtered light all day."],
+  ["Germination", "germination", "When a seed sprouts. Seeds need moisture and warm enough soil; in cold, wet soil they sprout slowly or rot."],
+  ["Seedling and true leaves", "true-leaves", "A seedling is a young plant just up from seed. Its first leaves (seed leaves) look different from the grown plant's; the next ones, its true leaves, look like the real thing. Thin seedlings or move them to bigger pots once true leaves appear."],
+  ["Leggy", "leggy", "Seedlings or plants that grow tall, thin and floppy, usually from too little light."],
+  ["Potting mix", "potting-mix", "Light, fluffy soil made for pots and containers. Garden soil packs down too hard in a pot, so containers need potting mix and drainage holes."],
+  ["Climate normals", "climate-normals", "30-year averages of weather measured at a station, published by NOAA. Rainline Garden's frost dates come from the 1991–2020 normals, so they describe a typical year, not a forecast."],
+  ["Crop rotation", "crop-rotation", "Planting each vegetable family in a different bed each year, so soil diseases and pests that build up under one family don't keep hitting it."],
+  ["Fertilizer", "fertilizer", "Food for plants. The three numbers on the bag are nitrogen (leafy growth), phosphorus (roots and flowers) and potassium (overall health). A balanced fertilizer has about the same amount of each."],
+  ["Bush and pole beans", "bush-pole-beans", "Bush beans grow into a short plant that needs no support; they produce sooner but give most of their crop in a couple of weeks. Pole beans climb a trellis or poles and keep producing longer."],
+  ["Bulbs, tubers and corms", "bulbs-tubers", "Swollen underground parts that store food for a plant's next season. Onions, garlic and tulips grow from bulbs (a garlic bulb splits into cloves), potatoes and dahlias from tubers, and gladiolus and crocus from corms."],
+  ["Hilling", "hilling", "Piling soil or mulch up around the stems as plants grow, mostly potatoes and leeks. For potatoes it gives the tubers more room and keeps them covered so they don't turn green."],
+  ["Native plant", "native-plant", "A plant that grew wild in the region before gardens were planted here. Northwest natives are used to wet winters and dry summers, and they feed the hundreds of native bee species that live here."],
+  ["Pollinator", "pollinator", "An animal that carries pollen from flower to flower, mostly bees, but also flies, butterflies, moths and hummingbirds."],
+  ["Self-seeding", "self-seeding", "When a plant drops seed that comes up on its own the next year. Dill, calendula and tomatillos often self-seed."],
+  ["Deadheading", "deadheading", "Snipping off faded flowers so the plant keeps blooming instead of making seed. Dahlias and many other flowers bloom longer when deadheaded."],
+  ["Pruning", "pruning", "Cutting off branches or stems to shape a plant, remove dead or diseased wood and help it fruit. Many fruit trees and shrubs are pruned while dormant in late winter."],
+  ["Self-fertile and pollinizer", "self-fertile", "A self-fertile fruit tree or bush can set fruit with its own pollen. Others need a pollinizer: a second, different variety of the same fruit nearby that blooms at the same time."],
+  ["June-bearing and day-neutral strawberries", "strawberry-types", "June-bearing plants produce one big crop over a few weeks in early summer. Day-neutral plants, often sold as everbearing, produce smaller flushes from early summer into fall."],
+  ["Primocane and floricane", "primocane", "In its first year a raspberry or blackberry cane (a primocane) grows leaves; in its second year (as a floricane) it fruits and then dies. Primocane-fruiting raspberries also fruit in late summer and fall on the tips of the new canes."],
+  ["Greenhouse and hoop house", "hoop-house", "A greenhouse is a glass or plastic building that traps the sun's warmth. A hoop house is a cheaper version: plastic stretched over hoops. Either one helps heat-loving crops ripen in cool places."],
+  ["Slugs", "slugs", "Snails without shells that chew holes in leaves and seedlings, mostly at night and after rain. Check at dusk and use traps or iron phosphate bait, which is safe around pets and food crops."],
+  ["Aphids", "aphids", "Tiny soft insects, green, black or gray, that cluster on new growth and suck sap. A strong spray of water knocks them off, and ladybugs and other helpful insects eat them."],
+  ["Cabbage worms", "cabbage-worms", "Velvety green caterpillars of the white cabbage butterfly that chew holes in kale, cabbage and broccoli. Row cover keeps the butterflies from laying eggs."],
+  ["Flea beetles", "flea-beetles", "Tiny jumping beetles that chew small holes in young leaves of arugula, radishes, eggplant and other crops, worst in hot, dry weather. Row cover helps, and plants usually outgrow light damage once they have a few sets of true leaves."],
+  ["Powdery mildew", "powdery-mildew", "A white, powdery coating on leaves, common on squash, cucumbers and peas in late summer. Dry soil invites it, so keep plants watered at the roots and give them room for air to move."],
+  ["Root rot", "root-rot", "Roots that turn brown and mushy in soil that stays soggy. The plant wilts even though the soil is wet. Good drainage, like a raised bed, prevents it."]
 ];
 
-module.exports = { crops, beginner, beginnerWhy, glossary };
+// Glossary page layout: the words on every planting calendar first, then every term by topic.
+const glossaryStarter = ["last-frost", "first-frost", "direct-sow", "start-indoors", "starts", "hardening-off", "set-out"];
+const glossaryGroups = [
+  ["dates", "Frost and dates", ["last-frost", "first-frost", "hard-freeze", "frost-free-season", "days-to-harvest", "climate-normals"]],
+  ["planting", "Planting", ["direct-sow", "start-indoors", "starts", "hardening-off", "set-out", "germination", "true-leaves", "leggy", "potting-mix", "cool-season", "warm-season", "hardy-tender", "annual-perennial", "succession", "thinning", "onion-sets", "seed-potatoes", "bulbs-tubers", "bare-root"]],
+  ["yard", "Weather and your yard", ["full-sun", "rain-shadow", "microclimate", "frost-pocket", "hardiness-zone", "soil-temperature", "native-plant"]],
+  ["soil", "Soil and feeding", ["compost", "cover-crop", "crop-rotation", "fertilizer", "inoculant", "lime", "mulch", "raised-bed", "side-dressing", "soil-ph"]],
+  ["seeds", "Seeds and varieties", ["heirloom", "open-pollinated", "hybrid", "determinate", "bush-pole-beans", "hardneck-softneck", "pollination", "pollinator", "fruit-set", "self-seeding"]],
+  ["care", "Care and tools", ["bolting", "cloche", "cold-frame", "cordon", "curing", "cut-and-come-again", "deadheading", "drip-irrigation", "garlic-scape", "hilling", "hoop-house", "overwintering", "pinching", "row-cover", "trellis"]],
+  ["fruit", "Fruit, berries and trees", ["cane", "crown", "dormant", "drip-line", "primocane", "pruning", "rootstock", "runner", "self-fertile", "strawberry-types"]],
+  ["problems", "Pests and plant problems", ["aphids", "blossom-end-rot", "cabbage-worms", "clubroot", "damping-off", "flea-beetles", "late-blight", "powdery-mildew", "root-rot", "slugs"]]
+];
+// "See also" links between terms that are easy to mix up.
+const glossaryRelated = {
+  "last-frost": ["first-frost", "frost-free-season"], "first-frost": ["last-frost", "hard-freeze"], "climate-normals": ["last-frost", "first-frost"],
+  "heirloom": ["open-pollinated", "hybrid"], "hybrid": ["heirloom", "open-pollinated"], "open-pollinated": ["heirloom", "hybrid"],
+  "start-indoors": ["hardening-off", "starts"], "starts": ["start-indoors", "set-out"], "hardening-off": ["start-indoors", "set-out"], "set-out": ["hardening-off", "starts"],
+  "germination": ["soil-temperature", "damping-off"], "true-leaves": ["thinning", "leggy"], "leggy": ["true-leaves"],
+  "cool-season": ["warm-season", "hardy-tender"], "warm-season": ["cool-season", "soil-temperature"], "hardy-tender": ["cool-season", "warm-season"],
+  "soil-ph": ["lime", "clubroot"], "lime": ["soil-ph"], "clubroot": ["lime", "crop-rotation"], "crop-rotation": ["clubroot", "cover-crop"],
+  "fertilizer": ["side-dressing", "compost"], "side-dressing": ["fertilizer"],
+  "row-cover": ["cloche", "cold-frame"], "cloche": ["row-cover", "cold-frame"], "cold-frame": ["row-cover", "hoop-house"], "hoop-house": ["cold-frame", "row-cover"],
+  "garlic-scape": ["hardneck-softneck"], "hardneck-softneck": ["garlic-scape"],
+  "microclimate": ["frost-pocket"], "frost-pocket": ["microclimate"],
+  "cordon": ["pinching", "determinate"], "determinate": ["cordon", "pinching"], "pinching": ["cordon"],
+  "pollination": ["pollinator", "fruit-set"], "pollinator": ["pollination", "native-plant"], "self-fertile": ["pollination"],
+  "cane": ["primocane"], "primocane": ["cane"], "runner": ["strawberry-types"], "strawberry-types": ["runner"],
+  "cabbage-worms": ["row-cover"], "flea-beetles": ["row-cover", "true-leaves"], "root-rot": ["raised-bed"], "seed-potatoes": ["hilling"], "hilling": ["seed-potatoes"]
+};
+// Words on other pages that link to the glossary, the first time each shows up on a page (case-insensitive, whole words).
+const glossaryLinks = [
+  ["last-frost", "last (?:spring )?frost(?: date)?"], ["first-frost", "first (?:fall )?frost(?: date)?"], ["hard-freeze", "hard freeze"],
+  ["frost-free-season", "frost-free seasons?"], ["days-to-harvest", "days to (?:harvest|maturity)"], ["climate-normals", "climate normals"],
+  ["direct-sow", "direct[- ]sow(?:n|ing)?"], ["start-indoors", "start(?:ing)? seeds indoors"], ["starts", "starts(?=\\))|nursery starts|buy starts"],
+  ["hardening-off", "harden(?:ing|ed)? (?:them |it )?off"], ["set-out", "set out"], ["germination", "germinat(?:e|es|ion)"],
+  ["true-leaves", "true leaves"], ["leggy", "leggy"], ["potting-mix", "potting mix"], ["cool-season", "cool-season"], ["warm-season", "warm-season"],
+  ["hardy-tender", "frost-tender|cold-hardy|frost-hardy"], ["annual-perennial", "perennials?|biennial"], ["succession", "succession (?:planting|sowing)"],
+  ["thinning", "thin(?:ning)? (?:the )?seedlings|thin to"], ["onion-sets", "onion sets"], ["seed-potatoes", "seed potatoes"], ["bulbs-tubers", "tubers?|corms?"],
+  ["bare-root", "bare-root"], ["full-sun", "full sun|part shade|partial shade"], ["rain-shadow", "rain shadow"], ["microclimate", "microclimates?"],
+  ["frost-pocket", "frost pockets?"], ["hardiness-zone", "hardiness zones?"], ["soil-temperature", "soil temperature"], ["native-plant", "native plants?"],
+  ["compost", "compost"], ["cover-crop", "cover crops?"], ["crop-rotation", "crop rotation|rotate crops"], ["fertilizer", "fertilizer"],
+  ["inoculant", "inoculant"], ["mulch", "mulch"], ["raised-bed", "raised beds?"], ["side-dressing", "side-dress(?:ing)?"], ["soil-ph", "soil pH"],
+  ["heirloom", "heirlooms?"], ["open-pollinated", "open-pollinated"], ["hybrid", "hybrids?"], ["determinate", "(?:in)?determinate"],
+  ["bush-pole-beans", "pole beans|bush beans"], ["hardneck-softneck", "hardneck|softneck"], ["pollinator", "pollinators?"], ["fruit-set", "fruit set|set fruit"],
+  ["self-seeding", "self-seeds?|self-seeding|self-sows?"], ["bolting", "bolting|bolts?"], ["cloche", "cloches?|wall-o-waters?"], ["cold-frame", "cold frames?"],
+  ["cordon", "cordons?"], ["curing", "cur(?:e|ing)"], ["cut-and-come-again", "cut-and-come-again"], ["deadheading", "deadhead(?:ing)?"],
+  ["drip-irrigation", "drip irrigation|soaker hoses?"], ["garlic-scape", "scapes?"], ["hilling", "hilling|hill (?:soil|them|up)"], ["hoop-house", "hoop houses?"],
+  ["overwintering", "overwinter(?:s|ing|ed)?"], ["pinching", "pinch(?:ing)? (?:off|out|back)|suckers"], ["row-cover", "row covers?|floating row covers?"],
+  ["trellis", "trellis(?:es|ing)?"], ["cane", "canes"], ["dormant", "dormant"], ["drip-line", "drip line"], ["primocane", "primocanes?|floricanes?|primocane-fruiting"],
+  ["pruning", "pruning"], ["rootstock", "rootstocks?"], ["runner", "runners"], ["self-fertile", "self-fertile|pollinizers?"],
+  ["strawberry-types", "june-bearing|day-neutral"], ["aphids", "aphids"], ["blossom-end-rot", "blossom[- ]end rot"], ["cabbage-worms", "cabbage worms?"],
+  ["clubroot", "clubroot"], ["damping-off", "damping[- ]off"], ["flea-beetles", "flea beetles?"], ["late-blight", "late blight"],
+  ["powdery-mildew", "powdery mildew"], ["root-rot", "root rot"], ["slugs", "slugs"]
+].filter(([, re]) => re);
+
+module.exports = { crops, beginner, beginnerWhy, glossary, glossaryStarter, glossaryGroups, glossaryRelated, glossaryLinks };

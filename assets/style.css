@@ -461,10 +461,40 @@ table.plan { width: 100%; border-collapse: collapse; font-size: 1rem; background
 .signup .btn { background: var(--moss); color: var(--on-moss); }
 .guide h2 { display: flex; align-items: center; gap: 12px; }
 .num { flex: none; width: 36px; height: 36px; border-radius: 50%; background: var(--moss); color: var(--paper); display: grid; place-items: center; font-family: var(--sans); font-size: 1.05rem; }
-.glossary div { padding: 12px 0; border-bottom: 1px solid var(--line); scroll-margin-top: 16px; }
-.glossary div:target { background: var(--sand); }
-.glossary dt { font-family: var(--serif); font-weight: 700; font-size: 1.15rem; color: var(--fir); }
-.glossary dd { margin: 4px 0 0; }
+.glossary { margin: 0; padding: 0 4px 4px 19px; }
+.glossary div { padding: 10px 0; border-bottom: 1px solid var(--line); scroll-margin-top: 84px; }
+.glossary div:last-child { border-bottom: 0; }
+.glossary div:target { background: var(--sand); box-shadow: -12px 0 0 var(--sand), 12px 0 0 var(--sand); }
+.glossary dt { font-weight: 700; font-size: 1.05rem; color: var(--fir); }
+.glossary dd { margin: 3px 0 0; line-height: 1.55; }
+.gl-rel { display: block; margin-top: 4px; font-size: .9rem; color: var(--muted); }
+.gl-rel a { color: var(--fir); }
+.gl-count { min-height: 1.6em; margin: .5rem 0 0; color: var(--muted); }
+.gl-start { max-width: 60rem; background: var(--sky); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; margin: 0 0 .5rem; }
+.gl-start h2 { font-size: 1.15rem; margin: 0 0 6px; }
+.gl-start ul { list-style: none; padding: 0; margin: 0; }
+.gl-start li { padding: 7px 0; border-top: 1px solid var(--line); line-height: 1.45; }
+.gl-start li:first-child { border-top: 0; }
+.gl-start li a { font-weight: 700; color: var(--fir); margin-right: 4px; }
+.gl-all { font-size: 1.25rem; margin: 1.75rem 0 .6rem; }
+.gl-sum { display: flex; flex-direction: column; gap: 1px; flex: 1 1 0; min-width: 0; }
+.gl-sum .grid-fold-n { white-space: normal; }
+.gl-group[hidden], .gl-start[hidden], .gl-all[hidden] { display: none; }
+@media (min-width: 900px) {
+  .gl-start ul { columns: 2; column-gap: 28px; }
+  .gl-start li { break-inside: avoid; }
+  .gl-start li:nth-child(5) { border-top: 0; }
+}
+/* Glossary words on other pages: a dotted underline, and a small definition box on tap (assets/nav.js). */
+a.gl { color: inherit; text-decoration: underline dotted var(--moss); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+a.gl:hover, a.gl[aria-expanded="true"] { color: var(--fir); text-decoration-style: solid; }
+.gl-pop { position: absolute; z-index: 30; width: min(340px, calc(100vw - 32px)); background: var(--paper); color: var(--ink); border: 1px solid var(--line); border-left: 5px solid var(--moss); border-radius: 0 12px 12px 0; box-shadow: 0 10px 30px color-mix(in srgb, #000 18%, transparent); padding: 12px 40px 12px 14px; font-size: .98rem; line-height: 1.5; }
+.gl-pop:focus { outline: none; }
+.gl-pop p { margin: 0; }
+.gl-pop .gl-t { font-family: var(--serif); font-weight: 700; color: var(--fir); font-size: 1.08rem; margin-bottom: 2px; }
+.gl-pop .gl-more { display: inline-block; margin-top: 6px; font-weight: 700; color: var(--fir); font-size: .92rem; }
+.gl-x { position: absolute; top: 6px; right: 6px; width: 32px; height: 32px; border: 0; border-radius: 50%; background: none; color: var(--muted); font-size: 1.4rem; line-height: 1; cursor: pointer; }
+.gl-x:hover { background: var(--moss-soft); color: var(--fir); }
 .reads { margin: 2rem 0; max-width: 46rem; }
 .reads ul { list-style: none; padding: 0; margin: 0; }
 .reads li { padding: 10px 0; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; }

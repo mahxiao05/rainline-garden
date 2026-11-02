@@ -148,3 +148,56 @@
   if (more) more.parentNode.addEventListener("focusout", function (e) { if (!more.parentNode.contains(e.relatedTarget)) setMore(false); });
   addEventListener("resize", function () { if (matchMedia("(min-width: 861px)").matches) setMenu(false); });
 })();
+
+/* Glossary words on other pages: tapping one shows its definition in a small box instead of leaving the page.
+ * The definitions load the first time someone taps a word. Without JavaScript the word is a plain link to the glossary. */
+(function () {
+  var doc = document, base = doc.documentElement.getAttribute("data-base") || "";
+  var data = null, loading = null, box = null, from = null;
+  function load() {
+    if (data) return Promise.resolve();
+    if (!loading) loading = new Promise(function (ok, fail) {
+      var s = doc.createElement("script"); s.src = base + "assets/glossary-data.js";
+      s.onload = function () { data = window.RainlineGlossary || {}; ok(); }; s.onerror = fail; doc.head.appendChild(s);
+    });
+    return loading;
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function close(refocus) {
+    if (!box) return;
+    box.remove(); box = null;
+    if (from) { from.setAttribute("aria-expanded", "false"); if (refocus) from.focus(); }
+    from = null;
+  }
+  function place() {
+    if (!box || !from) return;
+    var r = from.getBoundingClientRect(), w = box.offsetWidth, vw = doc.documentElement.clientWidth;
+    var x = Math.min(Math.max(16, r.left), vw - w - 16);
+    box.style.left = (x + scrollX) + "px";
+    box.style.top = (r.bottom + scrollY + 8) + "px";
+  }
+  function open(a) {
+    var d = data[a.getAttribute("data-gl")];
+    if (!d) { location.href = a.href; return; }
+    close(false);
+    from = a; a.setAttribute("aria-expanded", "true");
+    box = doc.createElement("div");
+    box.className = "gl-pop"; box.setAttribute("role", "dialog"); box.setAttribute("aria-label", d.t); box.tabIndex = -1;
+    box.innerHTML = '<button type="button" class="gl-x" aria-label="Close">&times;</button><p class="gl-t">' + esc(d.t) + '</p><p class="gl-d">' + esc(d.d) +
+      '</p><a class="gl-more" href="' + esc(a.href) + '">More gardening words in the glossary</a>';
+    doc.body.appendChild(box);
+    place();
+    box.focus({ preventScroll: true });
+    box.querySelector(".gl-x").addEventListener("click", function () { close(true); });
+  }
+  doc.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("a.gl");
+    if (box && !box.contains(e.target) && a !== from) close(false);
+    if (!a || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || e.button) return;
+    e.preventDefault();
+    if (a === from) { close(false); return; }
+    load().then(function () { open(a); }, function () { location.href = a.href; });
+  });
+  doc.addEventListener("keydown", function (e) { if (e.key === "Escape" && box) close(true); });
+  addEventListener("resize", place);
+})();

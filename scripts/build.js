@@ -272,11 +272,64 @@ const DATE_RE = /\d{4}-\d\d-\d\d|(?:January|February|March|April|May|June|July|A
 const ver = f => require("crypto").createHash("sha1").update(fs.readFileSync(path.join(__dirname, "../assets", f))).digest("hex").slice(0, 8);
 // Only <main> counts, so a change to the shared header, menu or footer doesn't restamp every page as updated.
 const bodyOf = h => { const m = h.indexOf("<main"), e = h.lastIndexOf("</main>"); return (m >= 0 && e > m ? h.slice(m, e) : h.slice(h.indexOf("<body"))).replace(/\?v=[0-9a-f]{8}/g, ""); };
-const sameBut = (a, b) => bodyOf(a).replace(DATE_RE, "D") === bodyOf(b).replace(DATE_RE, "D");
+// Glossary links are ignored too: adding them doesn't change what a page says.
+const sameBut = (a, b) => unGlossary(bodyOf(a)).replace(DATE_RE, "D") === unGlossary(bodyOf(b)).replace(DATE_RE, "D");
 // Pages built before dates went month-and-year printed full dates; read them as the new format so they keep their date.
 const toMonthYear = s => s.replace(/(Updated|Last updated) (\d{4}-\d\d-\d\d)\./g, (m, w, d) => `${w} ${w === "Updated" ? stamp(d) : monthYear(d)}.`)
   .replace(/(<time datetime="(\d{4}-\d\d-\d\d)">)[A-Z][a-z]+ \d{1,2}, \d{4}</g, (m, t, d) => t + monthYear(d) + "<");
+/* Glossary links: the first time a glossary word shows up in a page's paragraphs or list items, it links to its definition
+ * (assets/nav.js shows the definition in a small box on tap). Never in headings, links, buttons, tables, nav or the page intro. */
+const GL_LINKS = G.glossaryLinks.map(([id, re]) => [id, new RegExp(`(^|[^\\w-])(${re})(?![\\w-])`, "i")]);
+const GL_SKIP = new Set(["a", "button", "h1", "h2", "h3", "h4", "h5", "h6", "summary", "table", "nav", "script", "style", "label", "select", "textarea", "figcaption", "dt", "svg", "form", "noscript", "template", "blockquote", "aside"]);
+// Picture-calendar tiles, legends and page intros stay plain; the words get linked in the page's sentences instead.
+const GL_SKIP_CLASS = /class="[^"]*\b(lede|eyebrow|crumbs|count|station|owner|pc-card|pc-legend|legend|author-box|byline)\b/;
+const GL_TRACK = new Set(["p", "li", "dd", "ul", "ol", "div", "section"]);
+const GL_MAX = 12;
+function glossaryLinks(html, rel) {
+  const m = html.indexOf("<main"), e = html.lastIndexOf("</main>");
+  if (m < 0 || e < m) return html;
+  const skip = {}, stack = { }, done = new Set();
+  let inText = 0, off = 0, n = 0;
+  const main = html.slice(m, e).replace(/<!--[\s\S]*?-->|<[^>]*>|[^<]+/g, tok => {
+    if (tok[0] === "<") {
+      const t = /^<(\/?)([a-zA-Z][\w-]*)([^>]*)>$/.exec(tok);
+      if (!t) return tok;
+      const [, close, name0, attrs] = t, name = name0.toLowerCase();
+      if (GL_SKIP.has(name)) skip[name] = Math.max(0, (skip[name] || 0) + (close ? -1 : /\/$/.test(attrs) ? 0 : 1));
+      else if (GL_TRACK.has(name)) {
+        const st = stack[name] || (stack[name] = []);
+        if (close) { const f = st.pop(); if (f) { if (f.text) inText--; if (f.off) off--; } }
+        else {
+          const f = { text: (name === "p" || name === "li" || name === "dd"), off: GL_SKIP_CLASS.test(attrs) };
+          st.push(f); if (f.text) inText++; if (f.off) off++;
+        }
+      }
+      return tok;
+    }
+    if (n >= GL_MAX || inText <= 0 || off > 0 || Object.values(skip).some(v => v > 0)) return tok;
+    const hits = [];
+    for (const [id, re] of GL_LINKS) {
+      if (done.has(id)) continue;
+      const r = re.exec(tok);
+      if (r) hits.push({ id, at: r.index + r[1].length, word: r[2] });
+    }
+    hits.sort((x, y) => x.at - y.at);
+    let text = "", last = 0, here = 0;
+    for (const h of hits) {
+      if (n >= GL_MAX || here >= 3 || h.at < last) continue;
+      done.add(h.id); n++; here++;
+      text += tok.slice(last, h.at) + `<a class="gl" href="${rel}glossary/#${h.id}" data-gl="${h.id}">${h.word}</a>`;
+      last = h.at + h.word.length;
+    }
+    text += tok.slice(last);
+    return text;
+  });
+  return html.slice(0, m) + main + html.slice(e);
+}
+const unGlossary = h => h.replace(/<a class="gl" href="[^"]*" data-gl="[^"]*">([^<]*)<\/a>/g, "$1");
+
 function write(rel, file, html, priority) {
+  if (file !== "glossary/index.html") html = glossaryLinks(html, rel);
   const out = path.join(ROOT, file);
   fs.mkdirSync(path.dirname(out), { recursive: true });
   const old = fs.existsSync(out) ? fs.readFileSync(out, "utf8") : null;
@@ -1290,21 +1343,27 @@ ${articleCards("../", ARTICLES.filter(a => a.topic === id))}</section>`).join("\
 <script>document.querySelectorAll(".topic-sec").forEach(function(s){var n=s.querySelectorAll(".reads-grid > li").length;if(n<=3)return;s.classList.add("is-short");var b=document.createElement("button");b.type="button";b.className="btn btn-ghost btn-sm topic-more";b.textContent="See all "+n+" "+s.querySelector("h2").textContent.toLowerCase();b.addEventListener("click",function(){s.classList.remove("is-short");b.remove()});s.appendChild(b)});</script>`
 }), "0.7");
 
-/* Glossary */
+/* Glossary: the words on every planting calendar first, then every term in topic folds with "See also" links. */
 const glb = crumbs("../", [["Glossary", null]]);
+const GL = Object.fromEntries(G.glossary.map(([t, id, d]) => [id, { t, d }]));
+const glShort = id => GL[id].t.replace(/\s*\(.*?\)/g, "");
 write("../", "glossary/index.html", layout({
   rel: "../", canonical: "glossary/", current: "glossary/",
   title: "Gardening Glossary: Vegetable Gardening Terms Explained",
   description: "Plain-language definitions of gardening terms like last frost date, hardening off, starts, bolting and row cover.",
   jsonld: [glb.ld, { "@context": "https://schema.org", "@type": "DefinedTermSet", name: "Rainline Garden glossary", hasDefinedTerm: G.glossary.map(([t, , d]) => ({ "@type": "DefinedTerm", name: t, description: d })) }],
   body: `${glb.html}
-<section class="hero"><p class="eyebrow">${G.glossary.length} terms</p><h1>Gardening terms, explained</h1>
+<section class="hero"><p class="eyebrow">${G.glossary.length} terms in ${G.glossaryGroups.length} topics</p><h1>Gardening terms, explained</h1>
 <p class="lede">The words you'll see on seed packets and planting charts, in plain language.</p>
 <form class="home-find plant-find" role="search" onsubmit="return false"><div class="home-find-box"><label class="home-find-in" for="term-q">${SEARCH_SVG}<span class="sr">Find a term</span><input id="term-q" type="search" autocomplete="off" spellcheck="false" placeholder="Find a term, like bolting"></label></div></form>
-<p id="term-none" class="msg" role="status" aria-live="polite"></p></section>
-<script>addEventListener("DOMContentLoaded",function(){var q=document.getElementById("term-q"),none=document.getElementById("term-none"),items=document.querySelectorAll(".glossary > div");
-q.addEventListener("input",function(){var v=q.value.trim().toLowerCase(),n=0;items.forEach(function(d){var m=!v||d.textContent.toLowerCase().indexOf(v)>=0;d.hidden=!m;if(m)n++});none.textContent=v&&!n?"No term matches that yet.":""})});</script>
-<dl class="glossary prose">${G.glossary.map(([t, id, d]) => `<div id="${id}"><dt>${esc(t)}</dt><dd>${esc(d)}</dd></div>`).join("")}</dl>`
+<p id="term-none" class="gl-count" role="status" aria-live="polite"></p></section>
+<div class="gl-start"><h2>Start here: the words on every planting calendar</h2><ul>${G.glossaryStarter.map(id => `<li><a href="#${id}">${esc(glShort(id))}</a> ${esc(GL[id].d.split(". ")[0].replace(/\.$/, ""))}.</li>`).join("")}</ul></div>
+<h2 class="gl-all">All terms by topic</h2>
+<div class="grid-folds gl-groups">${G.glossaryGroups.map(([k, name, ids]) => `<details class="grid-fold gl-group" id="t-${k}"><summary><span class="gl-sum"><span class="grid-fold-t">${name}</span><span class="grid-fold-n">${ids.length} terms: ${ids.slice(0, 3).map(i => esc(glShort(i))).join(", ")}\u2026</span></span></summary>
+<dl class="glossary">${ids.map(id => `<div id="${id}"><dt>${esc(GL[id].t)}</dt><dd>${esc(GL[id].d)}${G.glossaryRelated[id] ? `<span class="gl-rel">See also: ${G.glossaryRelated[id].map(r => `<a href="#${r}">${esc(glShort(r))}</a>`).join(" \u00b7 ")}</span>` : ""}</dd></div>`).join("")}</dl></details>`).join("\n")}</div>
+<script>addEventListener("DOMContentLoaded",function(){var q=document.getElementById("term-q"),out=document.getElementById("term-none"),groups=document.querySelectorAll(".gl-group"),hide=document.querySelectorAll(".gl-start,.gl-all");
+q.addEventListener("input",function(){var v=q.value.trim().toLowerCase(),n=0;groups.forEach(function(g){var k=0;g.querySelectorAll(".glossary > div").forEach(function(d){var m=!v||d.textContent.toLowerCase().indexOf(v)>=0;d.hidden=!m;if(m)k++});g.hidden=!k;g.open=!!v&&k>0;n+=k});hide.forEach(function(e){e.hidden=!!v});out.textContent=v?(n?n+(n>1?" terms match":" term matches"):"No term matches that yet."):""});
+function go(){var t=location.hash&&document.getElementById(decodeURIComponent(location.hash.slice(1)));if(!t)return;var d=t.closest("details");if(d&&!d.open){d.open=true;t.scrollIntoView()}}go();addEventListener("hashchange",go)});</script>`
 }), "0.5");
 
 /* Frost dates index */
@@ -1628,6 +1687,10 @@ const guideData = {
 };
 fs.writeFileSync(path.join(ROOT, "assets/guide-data.js"),
   `/* Generated by scripts/build.js from scripts/guide.js. Do not edit by hand. */\nwindow.RainlineGuideData = ${JSON.stringify(guideData)};\n`);
+
+/* Glossary definitions for the tap-to-read boxes on other pages (loaded by assets/nav.js on the first tap). */
+fs.writeFileSync(path.join(ROOT, "assets/glossary-data.js"),
+  `/* Generated by scripts/build.js from scripts/guide.js. Do not edit by hand. */\nwindow.RainlineGlossary = ${JSON.stringify(Object.fromEntries(G.glossary.map(([t, id, d]) => [id, { t, d }])))};\n`);
 
 /* Header search index: plants, towns, articles and pages. Loaded by assets/nav.js the first time search opens. */
 const searchIndex = [
