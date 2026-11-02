@@ -1428,3 +1428,13 @@ html.tm-lock, html.tm-lock body { overflow: hidden; }
 .mp-region.is-mine { box-shadow: none; }
 .mp-region.is-mine > summary { background: var(--teal-soft); box-shadow: inset 0 0 0 1.5px var(--moss); }
 .grid-fold-n, .mp-region-n, .gp-group-n, .area-list > summary span, .area-group > summary span { white-space: nowrap; }
+/* Long lists of folds (plant groups, garden plan groups, calendar regions, town areas) stay light:
+   white rows with a thin line and a small outlined +/-, so a page of them isn't a wall of green. The green bar is for section headers. */
+.grid-fold > summary, .gp-group > summary, .mp-region > summary, .area-list > summary {
+  background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+}
+.grid-fold > summary::after, .gp-group > summary::after, .mp-region > summary::after, .area-list > summary::after {
+  width: 26px; height: 26px; font-size: 1.1rem; color: var(--moss); background: none; border: 1.5px solid var(--moss);
+}
+.grid-fold > summary:hover, .gp-group > summary:hover, .mp-region > summary:hover, .area-list > summary:hover { background: var(--paper); border-color: var(--moss); }
+.mp-region.is-mine > summary { background: var(--moss-soft); box-shadow: none; border: 1.5px solid var(--moss); }
