@@ -20,6 +20,8 @@ const CATEGORY_GUIDES = require("./category-guides.js");
 const VARIETIES = require("./varieties.js");
 const VIDEOS = require("./videos.js");
 const AREA_TIPS = require("./area-tips.js");
+const REGIONAL = require("./regional-notes.js");
+const SEED_SAVING = require("./seed-saving.js");
 const STATION_CHECK = require("./station-check.js");
 const { SIZES, fileBase, sizesFor } = require("./photo-sizes.js");
 const ARTICLES = require("./articles-4.js").concat(require("./articles-3.js"), require("./articles-2.js"), require("./articles.js")); // newest first
@@ -305,7 +307,7 @@ function groupedRows(plans, dates) {
   return [...groups].map(([k, ps]) => `<tr><th scope="row">${ps.map(p => `<a href="../../frost-dates/${p.place.slug}/" data-slug="${p.place.slug}">${esc(placeLabel(p.place))}</a>`).join(", ")}</th>${k}</tr>`).join("");
 }
 // "Your dates": the town box under a plant page's heading fills a card with one town's dates and an
-// "Is it too late to plant?" check. It reads the dates from that town's row in the every-town tables lower down,
+// "Is it too late to plant?" check. It reads the dates from that town's row in the every-town template lower down,
 // so it needs no extra data. A town picked before (or linked with ?town=) shows straight away.
 const TOWN_PICK_JS = `<script>document.addEventListener("DOMContentLoaded",function(){var card=document.querySelector(".yd-card"),boxEl=document.getElementById("yd-box");if(!card||!boxEl||!window.RainlineTownBox)return;
 var out=card.querySelector(".town-pick-out"),nameEl=card.querySelector(".yd-town");
@@ -323,7 +325,8 @@ var next=w.filter(function(x){return x.s>t}).sort(function(a,b){return a.s-b.s})
 if(next)return (g&&g.e<t?"<b>Too late for spring.</b> Next chance: "+next.l.toLowerCase():"<b>Not yet.</b> "+next.l)+" from "+fmt(next.s)+", "+when(next.s-t)+".";
 var first=w.slice().sort(function(a,b){return a.s-b.s})[0];
 return "<b>Too late for this year</b> in "+town+". Next chance: "+first.l.toLowerCase()+" from "+fmt(first.s)+" next year."}
-function show(slug){var a=document.querySelector('.area-groups a[data-slug="'+slug+'"]');if(!a)return false;
+var tpl=document.getElementById("all-town-rows"),rows=tpl?tpl.content:document;
+function show(slug){var a=rows.querySelector('.area-groups a[data-slug="'+slug+'"]');if(!a)return false;
 var label=a.textContent,tds=[].slice.call(a.closest("tr").querySelectorAll("td")),v=verdict(tds,label.replace(/, [A-Z]{2}$/,""));
 var h=tds.map(function(td){return '<p><b>'+td.innerHTML+'</b> <span>'+td.getAttribute("data-label")+'</span></p>'}).join("");
 nameEl.textContent=label;out.innerHTML=(v?'<p class="pick-now"><span>Is it too late to plant?</span> '+v+'</p>':'')+h+'<a href="'+a.getAttribute("href")+'">Full '+label+' calendar &rarr;</a>';card.hidden=false;return true}
@@ -335,10 +338,15 @@ const yourDates = () => `<div class="your-dates" id="your-town">
 <div class="yd-card" hidden><h2>Your dates in <span class="yd-town"></span></h2><div class="town-pick-out" aria-live="polite"></div></div>
 ${townBox({ id: "yd-box", rel: "../../", button: "Show dates", lite: true })}</div>`;
 // Every town's dates, folded under one toggle and grouped by area.
+// Six main cities are shown; every town's row sits in a <template> (not shown, and not read as page text) that the
+// "Your dates" card reads, so each plant page isn't mostly one long table of town names that every plant page repeats.
+const MAIN_CITIES = ["portland-or", "seattle-wa", "spokane-wa", "boise-id", "bend-or", "astoria-or"];
 function areaTables(head, dates, plans) {
   const bySlug = slug => plans.find(p => p.place.slug === slug);
-  return `<details class="all-towns"><summary>See every town (${plans.length})</summary>
-<div class="area-groups">${P.byArea(D).map(g => `<details class="area-group"><summary>${esc(g.area.name)}, ${g.area.state} <span>${g.places.length} towns</span></summary><div class="table-wrap"><table class="plan"><thead>${head}</thead><tbody>${groupedRows(g.places.map(pl => bySlug(pl.slug)), dates)}</tbody></table></div></details>`).join("")}</div></details>
+  const lead = MAIN_CITIES.map(bySlug).filter(Boolean);
+  return `<div class="table-wrap"><table class="plan"><thead>${head}</thead><tbody>${groupedRows(lead, dates)}</tbody></table></div>
+<p class="note">Dates for six main cities. For any of the other ${plans.length - lead.length} towns, type it in the box at the top of the page or <a href="../../frost-dates/">browse all towns</a>.</p>
+<template id="all-town-rows"><div class="area-groups">${P.byArea(D).map(g => `<table class="plan"><tbody>${groupedRows(g.places.map(pl => bySlug(pl.slug)), dates)}</tbody></table>`).join("")}</div></template>
 ${TOWN_PICK_JS}`;
 }
 /* Shared pieces */
@@ -484,12 +492,15 @@ ${yearStrip(c, ex, port)}
 ${ad("crop-mid")}
 <h2 id="grow">How to grow ${lc(c.name)}</h2>
 <div class="grow-grid"><div>${stepsForHub(c, g, port)}</div>
-${sideCard(g)}</div>${videoBox(c)}
+${sideCard(g, null, true)}</div>${videoBox(c)}
+${regionalNotes(c)}
 ${cropGarden("../../", c)}${varietyCards(c)}
 ${howMany(c, ex)}
+${plantAfter(c, ex, port)}
 ${scienceParts(sci, c)}
 ${neighbors(c, ex)}
 ${pestCards(c, ex)}
+${seedSaving(c)}
 ${gearBox(g.gear)}
 <h2 id="faq">Common questions about growing ${lc(c.name)}</h2>
 ${faqHtml(sci.faq)}
@@ -497,11 +508,36 @@ ${relatedArticles("../../", c.id, 4)}
 ${plantTags(c, g, port)}
 ${PHONE_FOLD_JS}`;
 }
+// "What to plant after": annual vegetables still in their planting window (around Portland) in the month this crop's
+// first harvest ends or the month after, from a different plant family so the bed also rotates. Built from the dates.
+function plantAfter(c, ex, port) {
+  const fam = FAMILY_OF[c.id];
+  if (!fam || !ex.pick) return "";
+  const first = ex.pick.split(",")[0].split("-").map(Number), last = (first[1] || first[0]) - 1;
+  const from = MONTH_START[last] + 1, to = last >= 10 ? 365 : MONTH_START[last + 2];
+  const picks = D.crops.filter(o => o.id !== c.id && FAMILY_OF[o.id] && FAMILY_OF[o.id].name !== fam.name).map(o => {
+    const r = rowFor(port, o.id), w = r && r.windows.find(x => x.end >= from + 7 && x.start <= to);
+    return w ? [o, w] : null;
+  }).filter(Boolean).sort((a, b) => a[1].start - b[1].start).slice(0, 8);
+  if (!picks.length) return "";
+  return `<h2 id="after">What to plant after ${lc(c.name)}</h2>
+<p class="lede-sm">Around Portland, the ${singular(c.name)} harvest wraps up around ${P.MONTHS_LONG[last]}. These crops can still go into the same bed, and they come from a different plant family, which helps with rotation.</p>
+<ul class="chips">${picks.map(([o, w]) => `<li><a href="../${o.id}/">${R.icon(o.id, "../../", 24)}${esc(o.name)} <span class="chip-d">${P.fmtRange(w.start, w.end)}</span></a></li>`).join("")}</ul>
+<p class="note">Portland dates. Pick your town at the top of the page for yours.</p>`;
+}
+// "Saving seed" (scripts/seed-saving.js), for plants whose seed is easy to save at home.
+function seedSaving(c) {
+  const s = SEED_SAVING[c.id];
+  if (!s) return "";
+  return `<h2 id="seed">Saving ${singular(c.name)} seed</h2>
+<div class="sci-cards"><section class="sci-card"><h3>Will it come true?</h3><p>${esc(s[0])}</p></section>
+<section class="sci-card"><h3>How to save it</h3><p>${esc(s[1])}</p></section></div>`;
+}
 // Long sections that start closed on phones (open on wider screens); "On this page" links open them.
 const phoneFold = (id, title, body) => `<details class="fold" id="${id}" data-phone-fold open><summary><h2>${title}</h2></summary>
 ${body}</details>`;
 const PHONE_FOLD_JS = `<script>(function(){var f=document.querySelectorAll("details[data-phone-fold]");if(matchMedia("(max-width: 40rem)").matches)f.forEach(function(d){if("#"+d.id!==location.hash)d.open=false});function show(){var d=location.hash&&document.getElementById(location.hash.slice(1));if(d&&d.matches("details[data-phone-fold]"))d.open=true}addEventListener("hashchange",show)})()</script>`;
-const jump = (sci, vars) => `<nav class="jump" aria-label="On this page"><span>On this page:</span><a href="#dates">Planting dates</a><a href="#grow">How to grow</a>${vars ? '<a href="#varieties">Varieties</a>' : ""}<a href="#how-many">How much to grow</a><a href="#numbers">Key numbers</a><a href="#science">${sci.notes ? "Growing notes" : "The science"}</a><a href="#neighbors">Neighbors</a><a href="#pests">Pests</a><a href="#faq">Questions</a></nav>`;
+const jump = (sci, vars) => `<nav class="jump" aria-label="On this page"><span>On this page:</span><a href="#dates">Planting dates</a><a href="#grow">How to grow</a><a href="#regions">By region</a>${vars ? '<a href="#varieties">Varieties</a>' : ""}<a href="#how-many">How much to grow</a><a href="#numbers">Key numbers</a><a href="#science">${sci.notes ? "Growing notes" : "The science"}</a><a href="#neighbors">Neighbors</a><a href="#pests">Pests</a><a href="#faq">Questions</a></nav>`;
 
 /* Plant-page extras from scripts/plant-extras.js and scripts/collections.js */
 // Tags linking to the "Plants for..." pages this plant appears on.
@@ -569,13 +605,23 @@ function pestCards(c, ex) {
 <div class="sci-cards">${ex.pests.map(([h, signs, fix]) => `<section class="sci-card pest-card"><h3>${esc(h)}</h3><p><strong>Signs:</strong> ${esc(signs)}</p><p><strong>What to do:</strong> ${esc(fix)}</p></section>`).join("\n")}</div>`);
 }
 const faqHtml = qas => `<div class="faq">${qas.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("")}</div>`;
-const sideCard = (g, note) => `<aside class="side-card"><h3>Top picks for here</h3><ul class="vars">${g.varieties.map(v => `<li>${esc(v)}</li>`).join("")}</ul>
-<h3>Watch out for</h3><p>${esc(g.problem)}</p>${note ? `<p class="note">${esc(note)}</p>` : ""}</aside>`;
+// On plant pages with a "Pests and problems" section (noPests), the problem is covered there, so the card leaves it out.
+const sideCard = (g, note, noPests) => `<aside class="side-card"><h3>Top picks for here</h3><ul class="vars">${g.varieties.map(v => `<li>${esc(v)}</li>`).join("")}</ul>
+${noPests ? "" : `<h3>Watch out for</h3><p>${esc(g.problem)}</p>`}${note ? `<p class="note">${esc(note)}</p>` : ""}</aside>`;
+// How the plant does in each part of the Northwest (scripts/regional-notes.js).
+const REGION_LABELS = [["west", "West-side valleys", "Willamette Valley, Puget Sound, southern Oregon"], ["coast", "Coast", "Oregon and Washington coast"], ["east", "East of the Cascades", "Columbia Basin, Yakima, Boise, Spokane, north Idaho"], ["high", "High desert and mountain towns", "Central Oregon, high eastern Oregon valleys, McCall, Salmon"]];
+function regionalNotes(c) {
+  const r = REGIONAL[c.id];
+  if (!r) throw new Error(`scripts/regional-notes.js has no entry for ${c.id}`);
+  const parts = REGION_LABELS.filter(([k]) => r[k]);
+  return phoneFold("regions", `Growing ${lc(c.name)} in your part of the Northwest`, `<p class="lede-sm">The same plant behaves differently on the wet west side, the foggy coast and the dry, colder east side.</p>
+<div class="sci-cards region-cards">${parts.map(([k, h, where]) => `<section class="sci-card region-card region-${k}"><h3>${h}</h3><p class="region-where">${where}</p><p>${esc(r[k])}</p></section>`).join("\n")}</div>`);
+}
 // Popular variety cards from scripts/varieties.js, shown on each plant's main page.
 function varietyCards(c) {
   const vs = VARIETIES[c.id];
   if (!vs) return "";
-  return phoneFold("varieties", `More ${singular(c.name)} varieties`, `<p class="lede-sm">More widely sold picks that do well somewhere in the Northwest. The tag says which side of the mountains suits each one best.</p>
+  return phoneFold("varieties", `More ${singular(c.name)} varieties`, `<p class="lede-sm">More widely sold picks that do well somewhere in the Northwest. The tag says which part of the Northwest suits each one best.</p>
 <div class="var-cards">${vs.map(v => `<section class="var-card"><h3>${esc(v.name)}</h3><p class="var-meta">${esc(v.type)}${v.days ? ` <span>&middot; ${esc(v.days)}</span>` : ""}</p><p>${esc(v.note)}</p><p class="var-where">${esc(v.where)}</p></section>`).join("")}</div>`);
 }
 // Click-to-load how-to video from scripts/videos.js: shows the plant's own photo until clicked, then YouTube's official player.

@@ -436,6 +436,7 @@ table.plan { width: 100%; border-collapse: collapse; font-size: 1rem; background
 .sci-card { break-inside: avoid; background: var(--paper); border: 1px solid var(--line); border-left: 4px solid var(--moss); border-radius: 10px; padding: 16px 20px 4px; margin-bottom: 20px; }
 .sci-card h3 { font-size: 1.1rem; }
 .sci-card p { font-size: 1rem; line-height: 1.6; }
+.region-card .region-where { font-size: .85rem; color: var(--muted); margin: -0.4rem 0 0.5rem; line-height: 1.4; }
 .var-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 16px; margin-bottom: 1.5rem; }
 .var-card { display: flex; flex-direction: column; background: var(--paper); border: 1px solid var(--line); border-top: 4px solid var(--moss); border-radius: 10px; padding: 14px 18px; }
 .var-card h3 { font-size: 1.15rem; margin-bottom: .15rem; }
@@ -1376,3 +1377,4 @@ html.tm-lock, html.tm-lock body { overflow: hidden; }
 .tm-r1 { stroke-width: 2.4; } .tm-r2 { stroke-width: 1.6; } .tm-r3 { stroke-width: 1; opacity: .85; }
 .tm-names .tm-pn { font: italic 700 12px var(--sans); paint-order: stroke; stroke: var(--sand); stroke-width: 3px; letter-spacing: .04em; text-transform: none; opacity: .9; fill: var(--tm-peak); }
 .tm-names .tm-rn { fill: var(--tm-water); }
+.chip-d { color: var(--muted); font-size: .85em; margin-left: .35em; }
