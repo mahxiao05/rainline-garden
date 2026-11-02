@@ -57,7 +57,8 @@
   function fresh(s) {
     s = s || {};
     s.crops = (s.crops || []).filter(cropOf); s.done = s.done || {}; s.cropNotes = s.cropNotes || {}; s.notes = s.notes || "";
-    s.repeat = s.repeat || {}; s.beds = s.beds && s.beds.length ? s.beds : [{ w: 4, l: 8 }]; s.space = s.space || {};
+    s.repeat = s.repeat || {}; s.beds = s.beds && s.beds.length ? s.beds : [{ w: 4, l: 8 }]; s.count = s.count || {}; s.bedOf = s.bedOf || {};
+    if (s.space) { Object.keys(s.space).forEach(function (id) { if (s.space[id] > 0 && !(s.count[id] > 0) && SPACE[id]) s.count[id] = Math.max(1, Math.floor(s.space[id] * 144 / (SPACE[id] * SPACE[id]) + 1e-9)); }); delete s.space; }
     s.harvests = s.harvests || []; s.rating = s.rating || {};
     return s;
   }
@@ -174,71 +175,87 @@
     return h + '</section>';
   }
 
-  /* Bed planner */
+  /* Bed planner: one card per bed. A picture of the bed on top, that bed's plants under it with matching colours.
+     People set how many of each plant they want; the room each needs comes from its spacing (SPACE). */
+  var TINTS = 8;
+  function r1(n) { return Math.round(n * 10) / 10; }
   function bedArea() { return state.beds.reduce(function (s, b) { return s + (+b.w || 0) * (+b.l || 0); }, 0); }
+  function per(id) { var s = SPACE[id] || 12; return s * s / 144; } // square feet one plant needs
+  function spTxt(id) { var s = SPACE[id] || 12; return s >= 12 && s % 12 === 0 ? s / 12 + " ft" : s + " in"; }
   // A sensible starting amount of room: a 2 × 2 ft patch of small crops, or a few plants of big ones.
-  function typical(id) { var s = SPACE[id] || 12, per = s * s / 144; return Math.max(4, Math.ceil(per * (s >= 24 ? 2 : 4))); }
-  // Suggested room for each plant you haven't sized yourself: the leftover space shared evenly, but never more than typical.
-  function autoSpace(chosen) {
-    var set = chosen.filter(function (c) { return !(state.space[c.id] > 0); });
-    var used = chosen.reduce(function (s, c) { return s + (state.space[c.id] > 0 ? +state.space[c.id] : 0); }, 0);
-    var share = set.length ? Math.floor(Math.max(0, bedArea() - used) / set.length * 2) / 2 : 0, out = {};
-    set.forEach(function (c) { out[c.id] = Math.min(share, typical(c.id)); });
+  function typical(id) { var s = SPACE[id] || 12; return Math.max(4, Math.ceil(per(id) * (s >= 24 ? 2 : 4))); }
+  // Suggested counts for plants you haven't set yourself: the free room shared evenly (never more than typical), and never fewer than one plant.
+  function autoCount(chosen) {
+    var set = chosen.filter(function (c) { return !(state.count[c.id] > 0); });
+    var used = chosen.reduce(function (s, c) { return s + (state.count[c.id] > 0 ? state.count[c.id] * per(c.id) : 0); }, 0);
+    var share = set.length ? Math.max(0, bedArea() - used) / set.length : 0, out = {};
+    set.forEach(function (c) { out[c.id] = Math.max(1, Math.floor(Math.min(share, typical(c.id)) / per(c.id) + 1e-9)); });
     return out;
   }
-  function spaceFor(c, auto) { return state.space[c.id] > 0 ? +state.space[c.id] : auto[c.id] || 0; }
-  function fitHtml(id, sq) {
-    var f = fit(id, sq);
-    return f.n ? "about <strong>" + f.n + "</strong> " + (f.n === 1 ? "plant" : "plants") : '<span class="gp-warn">needs ' + (Math.round(f.per * 10) / 10) + ' sq ft for one</span>';
+  function cnt(c, auto) { return state.count[c.id] > 0 ? +state.count[c.id] : auto[c.id] || 1; }
+  // Which bed each plant sits in. A plant you've placed (or that was placed for you once) stays put;
+  // a new plant goes to the bed with the most room left.
+  function assign(chosen, auto) {
+    var nb = state.beds.length, left = state.beds.map(function (b) { return (+b.w || 0) * (+b.l || 0); }), groups = state.beds.map(function () { return []; });
+    var items = chosen.map(function (c) { return { c: c, sq: cnt(c, auto) * per(c.id) }; });
+    var moved = false, placed = function (it) { var i = state.bedOf[it.c.id]; return i >= 0 && i < nb; };
+    items.filter(placed).forEach(function (it) { it.bed = state.bedOf[it.c.id]; left[it.bed] -= it.sq; });
+    items.filter(function (it) { return !placed(it); }).sort(function (a, b) { return b.sq - a.sq; }).forEach(function (it) {
+      var i = 0; left.forEach(function (v, j) { if (v > left[i]) i = j; });
+      it.bed = i; left[i] -= it.sq;
+      if (!preview) { state.bedOf[it.c.id] = i; moved = true; }
+    });
+    if (moved) save();
+    items.sort(function (a, b) { return b.sq - a.sq; }).forEach(function (it) { groups[it.bed].push(it); });
+    return groups;
   }
-  function fit(id, sqft) {
-    var s = SPACE[id] || 12, n = Math.floor(sqft * 144 / (s * s) + 1e-9);
-    return { n: n, per: s * s / 144 };
+  function bedTotal(chosen, auto) {
+    var area = bedArea(), used = chosen.reduce(function (s, c) { return s + cnt(c, auto) * per(c.id); }, 0);
+    return used > area + 1e-9 ? '<span class="is-over">' + r1(used - area) + ' sq ft over</span>' : '<strong>' + r1(area - used) + ' sq ft</strong> free of ' + r1(area);
   }
-  function bedRows(chosen) {
-    var auto = autoSpace(chosen);
-    return chosen.map(function (c) {
-      var mineSq = state.space[c.id] > 0 ? +state.space[c.id] : 0, g = H.crops[c.id] || {};
-      return '<tr><th scope="row">' + R.icon(c.id, base, 24) + '<span>' + esc(c.name) + '</span></th>' +
-        '<td class="gp-sp">' + (SPACE[c.id] >= 12 && SPACE[c.id] % 12 === 0 ? SPACE[c.id] / 12 + ' ft' : SPACE[c.id] + ' in') + (/trellis/.test(g.spacing || "") ? ' <span class="gp-tag">trellis</span>' : '') + '</td>' +
-        '<td><label class="sr-only" for="gp-sq-' + c.id + '">Square feet for ' + esc(c.name) + '</label><input id="gp-sq-' + c.id + '" class="gp-num" type="number" inputmode="decimal" min="0" step="0.5" data-space="' + c.id + '" value="' + (mineSq || "") + '" placeholder="' + (auto[c.id] || 0) + '"' + (preview ? " disabled" : "") + '></td>' +
-        '<td class="gp-fit" data-fit="' + c.id + '">' + fitHtml(c.id, spaceFor(c, auto)) + '</td></tr>';
+  function bedCards(chosen, auto) {
+    var groups = assign(chosen, auto), nb = state.beds.length;
+    return state.beds.map(function (b, i) {
+      var area = (+b.w || 0) * (+b.l || 0), items = groups[i], used = items.reduce(function (s, it) { return s + it.sq; }, 0);
+      var tot = Math.max(area, used), over = used > area + 1e-9, long = Math.max(+b.w, +b.l), short = Math.min(+b.w, +b.l);
+      var num = function (dim, label) {
+        return '<input class="bd-num" type="number" inputmode="decimal" min="1" max="100" step="0.5" data-bed="' + i + '" data-dim="' + dim + '" value="' + esc(b[dim]) + '" aria-label="Bed ' + (i + 1) + ' ' + label + ' in feet"' + (preview ? ' disabled' : '') + '>';
+      };
+      return '<article class="bd-card' + (over ? ' is-over' : '') + '">' +
+        '<header class="bd-head"><h3>Bed ' + (i + 1) + '</h3><span class="bd-size">' + num("w", "width") + '<span aria-hidden="true">×</span>' + num("l", "length") + '<span>ft</span></span>' +
+          (nb > 1 && !preview ? '<button type="button" class="bd-rm" data-act="rmbed" data-i="' + i + '" aria-label="Remove bed ' + (i + 1) + '">×</button>' : '') + '</header>' +
+        '<div class="bd-plot" style="aspect-ratio:' + long + ' / ' + short + '" aria-hidden="true">' +
+          items.map(function (it, k) { return '<div class="bd-strip bd-t' + (k % TINTS) + '" style="flex-basis:' + (it.sq / tot * 100).toFixed(2) + '%">' + R.icon(it.c.id, base, 26) + '</div>'; }).join("") +
+          (area - used >= 0.5 ? '<div class="bd-free" style="flex-basis:' + ((area - used) / tot * 100).toFixed(2) + '%"></div>' : '') + '</div>' +
+        '<p class="bd-use">' + (over ? 'Over by ' + r1(used - area) + ' sq ft. Use fewer plants or move one.'
+          : r1(used) + ' of ' + r1(area) + ' sq ft used' + (area - used >= 0.5 ? ' · ' + r1(area - used) + ' free' : '')) + '</p>' +
+        (items.length ? '<ul class="bd-list">' + items.map(function (it, k) {
+          var c = it.c, n = cnt(c, auto), g = H.crops[c.id] || {};
+          return '<li><i class="bd-dot bd-t' + (k % TINTS) + '" aria-hidden="true"></i>' +
+            '<span class="bd-pn"><strong>' + esc(c.name) + '</strong><span>' + spTxt(c.id) + ' apart' + (/trellis/.test(g.spacing || "") ? ' (trellis)' : '') + ' · ' + r1(it.sq) + ' sq ft' +
+            (nb > 1 && !preview ? ' · <label><span class="sr-only">Move ' + esc(lc(c.name)) + ' to another bed</span><select class="bd-move" data-bedof="' + c.id + '">' +
+              state.beds.map(function (x, j) { return j === i ? '<option value="' + j + '" selected hidden>Move</option>' : '<option value="' + j + '">to Bed ' + (j + 1) + '</option>'; }).join("") + '</select></label>' : '') + '</span></span>' +
+            '<span class="bd-step' + (state.count[c.id] > 0 ? '' : ' is-auto') + '"><button type="button" data-act="cnt" data-id="' + c.id + '" data-d="-1" aria-label="One fewer ' + esc(lc(c.name)) + '"' + (n <= 1 || preview ? ' disabled' : '') + '>−</button>' +
+            '<output aria-label="' + esc(c.name) + ' plants">' + n + '</output><button type="button" data-act="cnt" data-id="' + c.id + '" data-d="1" aria-label="One more ' + esc(lc(c.name)) + '"' + (preview ? ' disabled' : '') + '>+</button></span></li>';
+        }).join("") + '</ul>' : '<p class="bd-empty">Nothing in this bed yet.</p>') +
+        '</article>';
     }).join("");
-  }
-  function bedSummary(chosen) {
-    var area = bedArea(), auto = autoSpace(chosen);
-    var used = chosen.reduce(function (s, c) { return s + spaceFor(c, auto); }, 0);
-    var pct = area ? Math.min(100, used / area * 100) : 100, over = used > area + 1e-9, r1 = function (n) { return Math.round(n * 10) / 10; };
-    return '<div class="gp-meter' + (over ? " is-over" : "") + '"><div class="gp-meter-bar"><i style="width:' + pct.toFixed(1) + '%"></i></div>' +
-      '<p>' + (over ? "Over by <strong>" + r1(used - area) + " sq ft</strong>. Give some plants less room or add a bed."
-        : "Using <strong>" + r1(used) + "</strong> of " + r1(area) + " sq ft" + (area - used >= 1 ? " · " + r1(area - used) + " sq ft free" : "")) + '</p></div>';
   }
   function beds(chosen) {
-    var bedsHtml = state.beds.map(function (b, i) {
-      return '<div class="gp-bed"><span class="gp-bed-n">Bed ' + (i + 1) + '</span>' +
-        '<label><span class="sr-only">Bed ' + (i + 1) + ' width in feet</span><input class="gp-num" type="number" inputmode="decimal" min="1" max="100" step="0.5" data-bed="' + i + '" data-dim="w" value="' + esc(b.w) + '"' + (preview ? " disabled" : "") + '></label>' +
-        '<span aria-hidden="true">×</span>' +
-        '<label><span class="sr-only">Bed ' + (i + 1) + ' length in feet</span><input class="gp-num" type="number" inputmode="decimal" min="1" max="100" step="0.5" data-bed="' + i + '" data-dim="l" value="' + esc(b.l) + '"' + (preview ? " disabled" : "") + '></label>' +
-        '<span class="gp-unit">ft</span>' +
-        (state.beds.length > 1 && !preview ? '<button type="button" class="gp-x" data-act="rmbed" data-i="' + i + '" aria-label="Remove bed ' + (i + 1) + '">×</button>' : '') + '</div>';
-    }).join("");
-    return '<section class="gp-sec" id="gp-beds-sec" aria-labelledby="gp-beds-h"><h2 id="gp-beds-h">Bed planner</h2>' +
-      '<p class="station">Enter your beds and how much room to give each plant. Spacing comes from each plant\'s guide. Grey numbers are suggestions; type your own to change them.</p>' +
-      '<div class="gp-beds">' + bedsHtml + (preview ? '' : '<button type="button" class="btn btn-ghost btn-sm" data-act="addbed">+ Add a bed</button>') + '</div>' +
-      '<div id="gp-meter">' + bedSummary(chosen) + '</div>' +
-      '<div class="gp-table-wrap"><table class="gp-bedtable"><thead><tr><th scope="col">Plant</th><th scope="col">Spacing</th><th scope="col">Sq ft</th><th scope="col">Fits</th></tr></thead>' +
-      '<tbody id="gp-bedrows">' + bedRows(chosen) + '</tbody></table></div></section>';
+    var auto = autoCount(chosen);
+    return '<section class="gp-sec" id="gp-beds-sec" aria-labelledby="gp-beds-h"><div class="bd-top"><h2 id="gp-beds-h">Bed planner</h2>' +
+      '<p class="bd-total" id="bd-total">' + bedTotal(chosen, auto) + '</p></div>' +
+      '<p class="station">Set your bed sizes and how many of each plant you want. Spacing comes from each plant\'s guide; grey numbers are suggestions.</p>' +
+      '<div class="bd-grid" id="bd-grid">' + bedCards(chosen, auto) + '</div>' +
+      (preview ? '' : '<button type="button" class="bd-add" data-act="addbed"><span aria-hidden="true">+</span> Add a bed</button>') + '</section>';
   }
-  // Updates the bed numbers in place while someone types, so the box they're in keeps focus.
+  // Redraws the bed cards in place while someone types a bed size, keeping their cursor in the box.
   function refreshBeds() {
-    var chosen = chosenCrops(), auto = autoSpace(chosen);
-    var m = document.getElementById("gp-meter"); if (m) m.innerHTML = bedSummary(chosen);
-    chosen.forEach(function (c) {
-      var inp = out.querySelector('[data-space="' + c.id + '"]'), cell = out.querySelector('[data-fit="' + c.id + '"]');
-      if (!inp || !cell) return;
-      inp.placeholder = auto[c.id] || 0;
-      cell.innerHTML = fitHtml(c.id, spaceFor(c, auto));
-    });
+    var chosen = chosenCrops(), auto = autoCount(chosen), g = document.getElementById("bd-grid"), t = document.getElementById("bd-total");
+    var ae = document.activeElement, keep = ae && ae.dataset && ae.dataset.bed ? [ae.dataset.bed, ae.dataset.dim] : null;
+    if (t) t.innerHTML = bedTotal(chosen, auto);
+    if (g) g.innerHTML = bedCards(chosen, auto);
+    if (keep) { var el = out.querySelector('[data-bed="' + keep[0] + '"][data-dim="' + keep[1] + '"]'); if (el) el.focus(); }
   }
 
   /* Cheat sheet, ratings and harvest log */
@@ -530,7 +547,7 @@
       var b = e.target.closest("[data-starter]"); if (!b) return;
       var st = STARTERS.filter(function (x) { return x.id === b.dataset.starter; })[0];
       if (state.crops.length && !confirm("Swap your " + state.crops.length + " plants for the " + st.name + " plan? Your harvest log and notes stay.")) return;
-      state.crops = st.crops.slice(); state.beds = st.beds.map(function (x) { return { w: x.w, l: x.l }; }); state.space = {}; state.done = {};
+      state.crops = st.crops.slice(); state.beds = st.beds.map(function (x) { return { w: x.w, l: x.l }; }); state.count = {}; state.bedOf = {}; state.done = {};
       save(); render();
       if (pickNote) pickNote.hidden = true;
       if (state.place) { pick.open = false; out.scrollIntoView({ behavior: "smooth", block: "start" }); }
@@ -549,6 +566,10 @@
       save(); render();
       var s = out.querySelector('[data-repeat="' + t.dataset.repeat + '"]'); if (s) s.focus();
       flash("Sowing dates added to your to-do list");
+    } else if (t.dataset.bedof) {
+      state.bedOf[t.dataset.bedof] = +t.value; save(); refreshBeds();
+      var mv = out.querySelector('[data-bedof="' + t.dataset.bedof + '"]'); if (mv) mv.focus();
+      flash("Moved to Bed " + (+t.value + 1));
     } else if (t.dataset.bed && !(parseFloat(t.value) > 0)) {
       t.value = state.beds[+t.dataset.bed][t.dataset.dim]; // an emptied size box goes back to the saved size
     }
@@ -558,7 +579,6 @@
     if (t.dataset.crop && t.type === "text") state.cropNotes[t.dataset.crop] = t.value;
     else if (t.id === "gp-notes") state.notes = t.value;
     else if (t.dataset.bed) { var v = parseFloat(t.value); if (v > 0) { state.beds[+t.dataset.bed][t.dataset.dim] = Math.min(v, 100); refreshBeds(); } }
-    else if (t.dataset.space) { var n = parseFloat(t.value); if (n > 0) state.space[t.dataset.space] = n; else delete state.space[t.dataset.space]; refreshBeds(); }
     else return;
     save();
   });
@@ -577,7 +597,7 @@
     var b = e.target.closest("[data-act]"); if (!b) return;
     if (b.dataset.act === "adopt") {
       if (mine.crops.length && !confirm("Replace your plan (" + mine.crops.length + " plants) with this one? Your harvest log stays.")) return;
-      mine.place = state.place || mine.place; mine.crops = state.crops; mine.done = {}; mine.repeat = {}; mine.space = {};
+      mine.place = state.place || mine.place; mine.crops = state.crops; mine.done = {}; mine.repeat = {}; mine.count = {}; mine.bedOf = {};
     }
     state = mine; preview = false; clearQuery(); save(); render();
     pick.open = !state.crops.length;
@@ -595,7 +615,18 @@
       else prompt("Copy this link:", url);
     }
     else if (act === "addbed") { state.beds.push({ w: 4, l: 8 }); save(); render(); var ins = out.querySelectorAll("[data-bed]"); if (ins.length) ins[ins.length - 2].focus(); }
-    else if (act === "rmbed") { state.beds.splice(+b.dataset.i, 1); save(); render(); }
+    else if (act === "rmbed") {
+      // Plants in the removed bed get placed again; plants in later beds keep their bed as its number shifts down.
+      var gone = +b.dataset.i; state.beds.splice(gone, 1);
+      Object.keys(state.bedOf).forEach(function (id) { var j = state.bedOf[id]; if (j === gone) delete state.bedOf[id]; else if (j > gone) state.bedOf[id] = j - 1; });
+      save(); render();
+    }
+    else if (act === "cnt") {
+      var cc = cropOf(b.dataset.id), n0 = cnt(cc, autoCount(chosenCrops()));
+      state.count[cc.id] = Math.max(1, n0 + +b.dataset.d); save(); refreshBeds();
+      var again = out.querySelector('[data-act="cnt"][data-id="' + cc.id + '"][data-d="' + b.dataset.d + '"]');
+      if (again && !again.disabled) again.focus(); else { var other = out.querySelector('[data-act="cnt"][data-id="' + cc.id + '"]:not([disabled])'); if (other) other.focus(); }
+    }
     else if (act === "rate") {
       var r = state.rating[b.dataset.crop] = state.rating[b.dataset.crop] || {};
       if (r[YEAR] === b.dataset.v) delete r[YEAR]; else r[YEAR] = b.dataset.v;
