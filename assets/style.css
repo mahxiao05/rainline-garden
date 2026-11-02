@@ -224,15 +224,17 @@ img.avatar.avatar-site { background: var(--paper); border: 1px solid var(--line)
 .fact-s { font-size: .95rem; color: var(--muted); line-height: 1.4; }
 .region { margin-top: 1.25rem; max-width: 46rem; }
 .station { font-size: .95rem; color: var(--muted); max-width: 46rem; }
-.fold > summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: 2.5rem 0 .75rem; min-height: 48px; border-bottom: 1px solid var(--line); }
+/* Fold headers: a soft green row with a dark green left edge and a round +/- button, so they read as something to tap. */
+.fold > summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: 2rem 0 .75rem; min-height: 48px; padding: 10px 14px 10px 16px; background: var(--moss-soft); border-left: 5px solid var(--moss); border-radius: 0 12px 12px 0; }
 .fold > summary::-webkit-details-marker { display: none; }
-.fold > summary h2 { margin: 0; }
+.fold > summary h2 { margin: 0; font-size: 1.55rem; }
+@media (max-width: 40rem) { .fold > summary h2 { font-size: 1.35rem; } }
 .fold:not([open]) > summary { margin-bottom: 0; }
-.fold + .fold > summary { margin-top: 1.75rem; }
-.fold > summary::after { content: "Show \25BE"; flex: none; font-weight: 700; font-size: .95rem; color: var(--moss); padding: 6px 14px; border: 1.5px solid var(--line); border-radius: 999px; white-space: nowrap; }
-.fold[open] > summary::after { content: "Hide \25B4"; }
-.fold > summary:hover::after { border-color: var(--moss); }
-.fold > summary:focus-visible { outline: 2px solid var(--moss); outline-offset: 4px; border-radius: 4px; }
+.fold + .fold > summary { margin-top: 10px; }
+.fold > summary::after { content: "+"; flex: none; width: 32px; height: 32px; display: grid; place-items: center; font-size: 1.4rem; font-weight: 700; line-height: 1; color: var(--on-moss); background: var(--moss); border-radius: 50%; }
+.fold[open] > summary::after { content: "\2212"; }
+.fold > summary:hover { background: var(--teal-soft); }
+.fold > summary:focus-visible { outline: 2px solid var(--moss); outline-offset: 3px; }
 
 .now { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 1rem 0 0; }
 .now ul { list-style: none; padding: 0; margin: 0; }
