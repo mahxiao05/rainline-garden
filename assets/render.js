@@ -179,18 +179,20 @@
       return '<p class="empty now-none">Nothing to plant or start indoors in ' + p.place.city + ' for the next three weeks.' +
         (next ? ' Next up: ' + next + '.' : '') + ' It\'s a good time to plan, order seeds and tend your beds.</p>';
     }
+    // On the home page on phones, each list is a sideways swipe row of plant cards (style.css).
     var item = function (x, verb) {
       return '<li>' + icon(x.r.crop.id, base) + '<div><a href="' + cropUrl(x.r.crop.id, p.place.slug, base) + '"><strong>' + x.r.crop.name + '</strong></a> <span>' + verb + ' through ' + P.fmt(x.w.end) + '</span></div></li>';
     };
+    var count = function (len) { return len > 2 ? '<p class="now-count">' + len + ' plants. Swipe to see them all.</p>' : ''; };
     var h = '<div class="now">';
     h += '<div class="now-col"><h3>Plant in the garden now</h3>';
-    h += n.sow.length ? '<ul>' + n.sow.map(function (x) { return item(x, x.r.crop.how); }).join("") + '</ul>'
+    h += n.sow.length ? count(n.sow.length) + '<ul>' + n.sow.map(function (x) { return item(x, x.r.crop.how); }).join("") + '</ul>'
       : '<p class="empty">Nothing goes in the ground right now. ' + (n.soon.length ? 'Next up: ' + n.soon[0].r.crop.name + ' on ' + P.fmt(n.soon[0].w.start) + '.' : 'Use the time to plan, order seeds and tend beds.') + '</p>';
     h += '</div><div class="now-col"><h3>Start seeds indoors now</h3>';
-    h += n.indoor.length ? '<ul>' + n.indoor.map(function (x) { return item(x, "Sow in trays"); }).join("") + '</ul>'
+    h += n.indoor.length ? count(n.indoor.length) + '<ul>' + n.indoor.map(function (x) { return item(x, "Sow in trays"); }).join("") + '</ul>'
       : '<p class="empty">No seeds to start indoors right now.</p>';
     h += '</div><div class="now-col"><h3>Coming up in the next 3 weeks</h3>';
-    h += n.soon.length ? '<ul>' + n.soon.slice(0, 6).map(function (x) {
+    h += n.soon.length ? count(Math.min(n.soon.length, 6)) + '<ul>' + n.soon.slice(0, 6).map(function (x) {
       return '<li>' + icon(x.r.crop.id, base) + '<div><a href="' + cropUrl(x.r.crop.id, p.place.slug, base) + '"><strong>' + x.r.crop.name + '</strong></a> <span>' + (x.w.kind === "fall" ? "plant for fall" : "plant in the garden") + ' from ' + P.fmt(x.w.start) + '</span></div></li>';
     }).join("") + '</ul>' : '<p class="empty">Nothing new starts in the next three weeks.</p>';
     h += '</div></div>';

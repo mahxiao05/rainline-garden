@@ -224,15 +224,17 @@ img.avatar.avatar-site { background: var(--paper); border: 1px solid var(--line)
 .fact-s { font-size: .95rem; color: var(--muted); line-height: 1.4; }
 .region { margin-top: 1.25rem; max-width: 46rem; }
 .station { font-size: .95rem; color: var(--muted); max-width: 46rem; }
-.fold > summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: 2.5rem 0 .75rem; min-height: 48px; border-bottom: 1px solid var(--line); }
+/* Fold headers: a soft green row with a dark green left edge and a round +/- button, so they read as something to tap. */
+.fold > summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: 2rem 0 .75rem; min-height: 48px; padding: 10px 14px 10px 16px; background: var(--moss-soft); border-left: 5px solid var(--moss); border-radius: 0 12px 12px 0; }
 .fold > summary::-webkit-details-marker { display: none; }
-.fold > summary h2 { margin: 0; }
+.fold > summary h2 { margin: 0; font-size: 1.55rem; }
+@media (max-width: 40rem) { .fold > summary h2 { font-size: 1.35rem; } }
 .fold:not([open]) > summary { margin-bottom: 0; }
-.fold + .fold > summary { margin-top: 1.75rem; }
-.fold > summary::after { content: "Show \25BE"; flex: none; font-weight: 700; font-size: .95rem; color: var(--moss); padding: 6px 14px; border: 1.5px solid var(--line); border-radius: 999px; white-space: nowrap; }
-.fold[open] > summary::after { content: "Hide \25B4"; }
-.fold > summary:hover::after { border-color: var(--moss); }
-.fold > summary:focus-visible { outline: 2px solid var(--moss); outline-offset: 4px; border-radius: 4px; }
+.fold + .fold > summary { margin-top: 10px; }
+.fold > summary::after { content: "+"; flex: none; width: 32px; height: 32px; display: grid; place-items: center; font-size: 1.4rem; font-weight: 700; line-height: 1; color: var(--on-moss); background: var(--moss); border-radius: 50%; }
+.fold[open] > summary::after { content: "\2212"; }
+.fold > summary:hover { background: var(--teal-soft); }
+.fold > summary:focus-visible { outline: 2px solid var(--moss); outline-offset: 3px; }
 
 .now { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 1rem 0 0; }
 .now ul { list-style: none; padding: 0; margin: 0; }
@@ -539,7 +541,7 @@ table.plan { width: 100%; border-collapse: collapse; font-size: 1rem; background
   .author-box { padding: 16px; gap: 14px; }
   .profile-body { padding: 0 18px 18px; }
   .profile-cover { height: 110px; }
-  .results-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; margin: 0 -18px; padding: 0 18px 6px; scroll-padding: 0 18px; -webkit-overflow-scrolling: touch; }
+  .results-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; margin: 0 -16px; padding: 0 16px 6px; scroll-padding: 0 16px; -webkit-overflow-scrolling: touch; }
   .results-grid li { flex: 0 0 72%; scroll-snap-align: start; }
   .garden-single li { flex-basis: 100%; }
   .results-note::after { content: " Swipe to see more."; }
@@ -590,7 +592,7 @@ a.btn { display: inline-flex; align-items: center; text-decoration: none; }
 .plan-cta p { margin: 0; max-width: 34rem; }
 .plan-link { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; color: var(--muted); font-size: 1rem; }
 .gp-pick { margin: 1.5rem 0; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 6px 20px 14px; }
-.gp-pick summary { cursor: pointer; font-family: var(--serif); font-weight: 800; font-size: 1.35rem; padding: 10px 0; }
+.gp-pick > summary { cursor: pointer; font-family: var(--serif); font-weight: 800; font-size: 1.35rem; padding: 10px 0; }
 .gp-count { font-family: var(--sans); font-weight: 400; font-size: 1rem; color: var(--muted); margin-left: 6px; }
 .gp-pick fieldset { border: 0; padding: 0; margin: 0 0 1rem; }
 .gp-pick legend { font-weight: 700; color: var(--fir); padding: 0; margin-bottom: 6px; }
@@ -1012,11 +1014,11 @@ h2.gp-step { font-size: 1.35rem; margin: 2rem 0 0; }
 .gp-finder { margin-top: .75rem; }
 .gp-title h2.gp-step { align-items: flex-start; }
 .gp-title h2.gp-step .gp-step-n { margin-top: .15em; font-size: .62em; }
-.gp-pick summary { display: flex; align-items: center; gap: 10px; list-style: none; }
-.gp-pick summary::-webkit-details-marker { display: none; }
-.gp-pick summary .gp-step-n { font-size: .62em; }
-.gp-pick summary::after { content: ""; margin-left: auto; flex: none; width: 9px; height: 9px; border-right: 2.5px solid var(--muted); border-bottom: 2.5px solid var(--muted); transform: rotate(45deg); transition: transform .15s; }
-.gp-pick[open] summary::after { transform: rotate(-135deg); }
+.gp-pick > summary { display: flex; align-items: center; gap: 10px; list-style: none; }
+.gp-pick > summary::-webkit-details-marker { display: none; }
+.gp-pick > summary .gp-step-n { font-size: .62em; }
+.gp-pick > summary::after { content: ""; margin-left: auto; flex: none; width: 9px; height: 9px; border-right: 2.5px solid var(--muted); border-bottom: 2.5px solid var(--muted); transform: rotate(45deg); transition: transform .15s; }
+.gp-pick[open] > summary::after { transform: rotate(-135deg); }
 .gp-find { position: relative; max-width: 24rem; margin: 0 0 1rem; }
 .gp-find svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
 .gp-find input { width: 100%; font: inherit; font-size: 1.05rem; padding: 9px 12px 9px 38px; min-height: 44px; border: 1.5px solid var(--line); border-radius: 999px; background: var(--bg); color: var(--ink); }
@@ -1378,3 +1380,61 @@ html.tm-lock, html.tm-lock body { overflow: hidden; }
 .tm-names .tm-pn { font: italic 700 12px var(--sans); paint-order: stroke; stroke: var(--sand); stroke-width: 3px; letter-spacing: .04em; text-transform: none; opacity: .9; fill: var(--tm-peak); }
 .tm-names .tm-rn { fill: var(--tm-water); }
 .chip-d { color: var(--muted); font-size: .85em; margin-left: .35em; }
+
+/* Home page on phones: each "What to plant now" list is a sideways swipe row of plant cards */
+.now-count { display: none; }
+@media (max-width: 40rem) {
+  #result .now { grid-template-columns: minmax(0, 1fr); }
+  #result .now ul { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 0 -16px; padding: 2px 16px 8px; scroll-padding: 0 16px; }
+  #result .now li { flex: 0 0 40%; scroll-snap-align: start; flex-direction: column; align-items: flex-start; gap: 4px; padding: 8px 10px 10px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); }
+  #result .now li span { font-size: .85rem; line-height: 1.3; }
+  #result .now-col h3 { margin-bottom: 2px; }
+  #result .now-count { display: block; margin: 0 0 8px; font-size: .9rem; color: var(--muted); }
+}
+/* Home page on phones: the town's frost dates in one row, and plant types as a swipe row */
+@media (max-width: 40rem) {
+  #result .facts { grid-template-columns: repeat(3, 1fr); }
+  #result .fact { padding: 10px 6px 12px 0; }
+  #result .fact + .fact { padding-left: 10px; border-top: 0; border-left: 1px solid var(--line); }
+  #result .fact-s { font-size: .78rem; line-height: 1.3; }
+  #result .fact-v { font-size: 1.15rem; }
+  #result .fact-k { font-size: .8rem; }
+  .home-sec .cat-tiles { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 6px; }
+  .home-sec .cat-tiles > li { flex: 0 0 38%; scroll-snap-align: start; }
+}
+/* The green-bar fold header used everywhere else a section folds open: garden calendar regions, plant index groups,
+   garden plan groups, "Read more" intros, the town list areas and the How it works station list. */
+.more-fold, .grid-fold, .gp-group, .mp-region, .area-group { border: 0; background: none; }
+.area-groups { border-top: 0; display: grid; gap: 8px; }
+.more-fold > summary, .grid-fold > summary, .gp-group > summary, .mp-region > summary, .area-list > summary, .area-group > summary {
+  list-style: none; cursor: pointer; display: flex; flex-wrap: nowrap; align-items: center; justify-content: flex-start; gap: 4px 10px;
+  min-height: 48px; margin: 0; padding: 10px 12px 10px 14px; background: var(--moss-soft); border: 0; border-left: 5px solid var(--moss); border-radius: 0 12px 12px 0;
+}
+.more-fold > summary::-webkit-details-marker, .grid-fold > summary::-webkit-details-marker, .gp-group > summary::-webkit-details-marker,
+.mp-region > summary::-webkit-details-marker, .area-list > summary::-webkit-details-marker, .area-group > summary::-webkit-details-marker { display: none; }
+.area-list > summary::before { content: none; }
+.more-fold > summary::after, .grid-fold > summary::after, .gp-group > summary::after, .mp-region > summary::after, .area-list > summary::after, .area-group > summary::after {
+  content: "+"; flex: none; margin-left: auto; width: 28px; height: 28px; display: grid; place-items: center; font-size: 1.25rem; font-weight: 700; line-height: 1; color: var(--on-moss); background: var(--moss); border-radius: 50%;
+}
+.more-fold[open] > summary::after, .grid-fold[open] > summary::after, .gp-group[open] > summary::after, .mp-region[open] > summary::after, .area-list[open] > summary::after, .area-group[open] > summary::after { content: "\2212"; }
+.more-fold > summary:hover, .grid-fold > summary:hover, .gp-group > summary:hover, .mp-region > summary:hover, .area-list > summary:hover, .area-group > summary:hover { background: var(--teal-soft); }
+.mp-region > summary { flex-wrap: wrap; }
+.mp-region > summary .mp-region-n { flex: 1 1 auto; }
+.area-list { margin: 8px 0 0; }
+.area-list > summary span, .area-group > summary span { margin-left: 0; }
+.more-fold[open] > summary, .grid-fold[open] > summary, .gp-group[open] > summary, .mp-region[open] > summary, .area-list[open] > summary, .area-group[open] > summary { margin-bottom: 10px; }
+.more-fold > .prose, .mp-region-body, .grid-fold > .grid-d { padding-left: 4px; padding-right: 4px; }
+.grid-fold > .cards, .gp-group .gp-opts { padding-left: 0; padding-right: 0; }
+.mp-region.is-mine { box-shadow: none; }
+.mp-region.is-mine > summary { background: var(--teal-soft); box-shadow: inset 0 0 0 1.5px var(--moss); }
+.grid-fold-n, .mp-region-n, .gp-group-n, .area-list > summary span, .area-group > summary span { white-space: nowrap; }
+/* Long lists of folds (plant groups, garden plan groups, calendar regions, town areas) stay light:
+   white rows with a thin line and a small outlined +/-, so a page of them isn't a wall of green. The green bar is for section headers. */
+.grid-fold > summary, .gp-group > summary, .mp-region > summary, .area-list > summary {
+  background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+}
+.grid-fold > summary::after, .gp-group > summary::after, .mp-region > summary::after, .area-list > summary::after {
+  width: 26px; height: 26px; font-size: 1.1rem; color: var(--moss); background: none; border: 1.5px solid var(--moss);
+}
+.grid-fold > summary:hover, .gp-group > summary:hover, .mp-region > summary:hover, .area-list > summary:hover { background: var(--paper); border-color: var(--moss); }
+.mp-region.is-mine > summary { background: var(--moss-soft); box-shadow: none; border: 1.5px solid var(--moss); }
