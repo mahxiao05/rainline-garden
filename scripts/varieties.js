@@ -1,11 +1,11 @@
 // Popular varieties for each plant page, shown as cards under "Popular ... varieties".
-// where: Both sides | West side | East side | Coast and west side | Short seasons
+// where: Both sides | West side | East side | Coast and west side | Short seasons | Cold winters (only where the note gives the reason)
 module.exports = {
   "peas": [
     {"name":"Oregon Sugar Pod II","type":"Snow pea, climbing","days":"68 days","where":"Both sides","note":"Flat, sweet snow peas on vines about 30 inches tall. It resists powdery mildew and pea enation virus, two common Northwest pea problems, and keeps producing well."},
     {"name":"Sugar Snap","type":"Snap pea, tall vine","days":"70 days","where":"Both sides","note":"The classic edible-pod snap pea with thick, juicy, very sweet pods. Vines reach 5 to 6 feet, so give it a sturdy trellis and sow early to beat summer heat."},
     {"name":"Green Arrow","type":"Shelling pea, bush","days":"68 days","where":"Both sides","note":"Long pods packed with 9 to 11 sweet peas, usually borne in pairs. It resists fusarium wilt and powdery mildew and needs only a short support."},
-    {"name":"Cascadia","type":"Snap pea, short vine","days":"60 days","where":"Both sides","note":"A compact snap pea on vines about 30 inches tall with crisp, sweet pods. It resists powdery mildew and pea enation virus, which makes it a dependable choice west of the Cascades."},
+    {"name":"Cascadia","type":"Snap pea, short vine","days":"60 days","where":"West side","note":"A compact snap pea on vines about 30 inches tall with crisp, sweet pods. It resists powdery mildew and pea enation virus, which makes it a dependable choice west of the Cascades."},
     {"name":"Sugar Ann","type":"Snap pea, dwarf","days":"56 days","where":"Short seasons","note":"One of the earliest snap peas, on short vines that need little or no support. Good for containers, small beds and places where summer heat or a short season cuts the pea window."}
   ],
   "radishes": [
@@ -110,7 +110,7 @@ module.exports = {
   "cucumbers": [
     {"name":"Marketmore 76","type":"Slicer, dark green","days":"68 days","where":"Both sides","note":"Straight, dark green slicers about 8 inches long. It resists several cucumber diseases, including powdery mildew and scab, and keeps producing over a long season."},
     {"name":"Lemon","type":"Round yellow heirloom","days":"65 days","where":"Both sides","note":"Round, pale yellow fruits the size of a lemon with mild, sweet flesh. Pick them while still light yellow for the best texture."},
-    {"name":"Diva","type":"Seedless slicer, thin-skinned","days":"58 days","where":"Both sides","note":"Smooth, thin-skinned cucumbers that are seedless and never bitter. Plants set fruit without pollination, which helps in cool, cloudy spells when bees are scarce."},
+    {"name":"Diva","type":"Seedless slicer, thin-skinned","days":"58 days","where":"Coast and west side","note":"Smooth, thin-skinned cucumbers that are seedless and never bitter. Plants set fruit without pollination, which helps in cool, cloudy spells when bees are scarce."},
     {"name":"Straight Eight","type":"Slicer heirloom","days":"58 days","where":"Both sides","note":"A classic open-pollinated slicer with straight, uniform fruit about 8 inches long. Early, productive and easy to save seed from."},
     {"name":"Boston Pickling","type":"Pickling heirloom","days":"55 days","where":"Both sides","note":"Short, blocky, bumpy fruits that are ideal for pickles. Vines produce heavily over a few weeks, which suits canning batches."},
     {"name":"Suyo Long","type":"Asian long slicer","days":"61 days","where":"Both sides","note":"Long, ribbed, sweet and mild fruits that grow straight when trellised. It tolerates heat and some disease and is rarely bitter."}
@@ -125,11 +125,11 @@ module.exports = {
   ],
   "winter-squash": [
     {"name":"Delicata","type":"Small cream-and-green striped","days":"100 days","where":"Both sides","note":"Oblong squash with sweet, creamy flesh and thin skin you can eat. It ripens faster than big squash and stores for a few months."},
-    {"name":"Sugar Pie pumpkin","type":"Small baking pumpkin","days":"100 days","where":"Both sides","note":"Small, round orange pumpkins with sweet, smooth flesh for pies and baking. Their size helps them ripen more reliably than large pumpkins in cool summers."},
+    {"name":"Sugar Pie pumpkin","type":"Small baking pumpkin","days":"100 days","where":"Coast and west side","note":"Small, round orange pumpkins with sweet, smooth flesh for pies and baking. Their size helps them ripen more reliably than large pumpkins in cool summers."},
     {"name":"Sweet Meat","type":"Large blue-gray heirloom","days":"105 days","where":"Coast and west side","note":"A large, flattened, slate-gray squash with thick, sweet orange flesh. A Northwest heirloom that stores very well and often tastes better after a few months."},
     {"name":"Waltham Butternut","type":"Classic butternut","days":"105 days","where":"Both sides","note":"Tan, bell-shaped squash with smooth, sweet orange flesh and a small seed cavity. It stores for months and does best in the warmest spot you have."},
-    {"name":"Red Kuri","type":"Orange Hokkaido type","days":"92 days","where":"Both sides","note":"Teardrop-shaped, red-orange squash with dense, chestnut-like flesh. Earlier than many winter squash, it is a good choice for cooler gardens."},
-    {"name":"Spaghetti squash","type":"Stringy-flesh yellow squash","days":"90 days","where":"Both sides","note":"Oblong yellow squash whose cooked flesh pulls apart into noodle-like strands. Fairly quick to mature and very productive, it is a good choice where summers are cool."},
+    {"name":"Red Kuri","type":"Orange Hokkaido type","days":"92 days","where":"Coast and west side","note":"Teardrop-shaped, red-orange squash with dense, chestnut-like flesh. Earlier than many winter squash, it is a good choice for cooler gardens."},
+    {"name":"Spaghetti squash","type":"Stringy-flesh yellow squash","days":"90 days","where":"Coast and west side","note":"Oblong yellow squash whose cooked flesh pulls apart into noodle-like strands. Fairly quick to mature and very productive, it is a good choice where summers are cool."},
     {"name":"Sunshine","type":"Orange kabocha hybrid","days":"95 days","where":"Both sides","note":"Bright orange, flattened kabocha with sweet, dry, deep orange flesh. Good flavor and a manageable size make it a popular baking squash."}
   ],
   "tomatoes": [
@@ -142,9 +142,9 @@ module.exports = {
     {"name":"Legend","type":"Early red, determinate","days":"68 days","where":"Coast and west side","note":"Large, round red slicers on compact plants. It has good resistance to some strains of late blight, which helps where fall rains arrive early."}
   ],
   "peppers": [
-    {"name":"Gypsy","type":"Sweet Italian frying hybrid","days":"65 days","where":"Both sides","note":"Tapered, thin-walled sweet peppers that ripen from pale yellow to orange-red. Early and productive, it is one of the most reliable sweet peppers in cool summers."},
+    {"name":"Gypsy","type":"Sweet Italian frying hybrid","days":"65 days","where":"Coast and west side","note":"Tapered, thin-walled sweet peppers that ripen from pale yellow to orange-red. Early and productive, it is one of the most reliable sweet peppers in cool summers."},
     {"name":"Ace","type":"Early green bell hybrid","days":"50 days","where":"Short seasons","note":"Medium bell peppers on compact plants that set fruit well even in cool weather. One of the best bets for a bell pepper crop where summers are short."},
-    {"name":"Early Jalapeño","type":"Hot jalapeño, early","days":"63 days","where":"Both sides","note":"Classic thick-walled jalapeños on plants that set fruit in cooler conditions than standard jalapeños. Pick green or let them ripen red."},
+    {"name":"Early Jalapeño","type":"Hot jalapeño, early","days":"63 days","where":"Short seasons","note":"Classic thick-walled jalapeños on plants that set fruit in cooler conditions than standard jalapeños. Pick green or let them ripen red."},
     {"name":"Lunchbox snacking peppers","type":"Mini sweet, mixed colors","days":"75 days to ripe","where":"Both sides","note":"Small, very sweet peppers in red, orange and yellow, eaten whole like snacks. Plants are productive and the small fruits ripen to full color more easily than big bells."},
     {"name":"Shishito","type":"Mild Japanese frying pepper","days":"60 days","where":"Both sides","note":"Thin-walled, wrinkled green peppers, best blistered in a hot pan. Plants are heavy producers and set fruit reliably; only an occasional pepper is hot."},
     {"name":"Carmen","type":"Sweet Italian bull's horn","days":"75 days to ripe","where":"Both sides","note":"Long, tapered peppers that ripen early to a deep red with sweet, fruity flavor. Great for roasting, grilling and fresh eating."}
@@ -153,7 +153,7 @@ module.exports = {
     {"name":"Genovese","type":"Sweet Italian basil","days":"","where":"Both sides","note":"The classic large-leaf sweet basil for pesto and tomato dishes. It needs the warmest, sunniest spot you have and should go out only after nights stay warm."},
     {"name":"Thai","type":"Anise-flavored, purple stems","days":"","where":"Both sides","note":"Smaller green leaves with purple stems and flowers and a spicy anise flavor. It holds up to heat in cooking and is essential for many Southeast Asian dishes."},
     {"name":"Spicy Globe","type":"Compact mounding basil","days":"","where":"Both sides","note":"Forms a neat, round mound of tiny, flavorful leaves. Great in pots and along bed edges, and easy to bring indoors when nights turn cold."},
-    {"name":"Prospera","type":"Downy mildew resistant Genovese","days":"","where":"Both sides","note":"A Genovese-type sweet basil with high resistance to basil downy mildew, a disease that can wipe out plants in humid or damp weather. Same flavor, fewer losses."},
+    {"name":"Prospera","type":"Downy mildew resistant Genovese","days":"","where":"West side","note":"A Genovese-type sweet basil with high resistance to basil downy mildew, a disease that can wipe out plants in humid or damp weather. Same flavor, fewer losses."},
     {"name":"Dark Opal","type":"Purple-leaf sweet basil","days":"","where":"Both sides","note":"Glossy, deep purple leaves with a sweet, spicy flavor. It is slower growing than green basil but beautiful in containers, salads and herb vinegars."},
     {"name":"Lemon","type":"Citrus-scented basil","days":"","where":"Both sides","note":"Narrow green leaves with a strong lemon scent and flavor. Good with fish, salads and tea; sow it every few weeks since it flowers quickly."}
   ],
@@ -188,7 +188,7 @@ module.exports = {
   ],
   "strawberries": [
     {"name":"Hood","type":"June-bearing, early","days":"Ripens early June","where":"West side","note":"A Northwest classic with bright red, very sweet, juicy berries that are ideal for jam and freezing. It gives one big early crop, so pick often in wet weather to stay ahead of gray mold."},
-    {"name":"Shuksan","type":"June-bearing, midseason","days":"Ripens mid June","where":"Both sides","note":"Developed in Washington and known for cold hardiness and tolerance of heavy soils. Large, glossy, well-flavored berries hold up well for freezing, and plants come through hard winters better than most."},
+    {"name":"Shuksan","type":"June-bearing, midseason","days":"Ripens mid June","where":"Cold winters","note":"Developed in Washington and known for cold hardiness and tolerance of heavy soils. Large, glossy, well-flavored berries hold up well for freezing, and plants come through hard winters better than most."},
     {"name":"Totem","type":"June-bearing, midseason","days":"Ripens mid June","where":"West side","note":"A longtime Northwest standard bred in British Columbia. Firm, deep red berries keep their color and shape when frozen, and plants resist red stele root rot, which matters in wet clay soils."},
     {"name":"Seascape","type":"Everbearing, repeat crops","days":"June to fall","where":"Both sides","note":"Produces large, firm, flavorful berries from early summer into fall instead of one big flush. A good pick for small beds and containers where you want a steady handful of berries for months."},
     {"name":"Albion","type":"Day-neutral, large berries","days":"June to frost","where":"Both sides","note":"Big, firm, conical berries with excellent sweetness that fruit in waves all season. Plants resist verticillium wilt and crown rot, two common problems in damp Northwest gardens."},
@@ -198,7 +198,7 @@ module.exports = {
     {"name":"Duke","type":"Northern highbush, early","days":"Ripens early July","where":"Both sides","note":"One of the earliest and most dependable blueberries, with mild, firm, medium-large berries. It blooms late, so spring frosts rarely catch it, and it is a heavy, reliable cropper."},
     {"name":"Bluecrop","type":"Northern highbush, midseason","days":"Ripens mid July","where":"Both sides","note":"The most widely planted blueberry for good reason: steady heavy crops of light blue, tangy-sweet berries on a hardy, upright bush. A safe first choice for almost any Northwest yard."},
     {"name":"Chandler","type":"Northern highbush, late","days":"Ripens late July","where":"Both sides","note":"Famous for some of the largest berries of any blueberry, often the size of a nickel or bigger. It ripens over a long stretch, extending the harvest well into August."},
-    {"name":"Top Hat","type":"Dwarf half-high","days":"Ripens midsummer","where":"Both sides","note":"A compact bush about 2 feet tall that is made for patio pots. It is very cold hardy and bears small, flavorful berries, with white spring flowers and red fall leaves as a bonus."},
+    {"name":"Top Hat","type":"Dwarf half-high","days":"Ripens midsummer","where":"Cold winters","note":"A compact bush about 2 feet tall that is made for patio pots. It is very cold hardy and bears small, flavorful berries, with white spring flowers and red fall leaves as a bonus."},
     {"name":"Patriot","type":"Northern highbush, early","days":"Ripens early July","where":"Both sides","note":"Very cold hardy and more tolerant of heavy, wet soil than most blueberries. Large, flavorful berries come early, and the bush puts on bright orange-red color in fall."},
     {"name":"Legacy","type":"Highbush, late midseason","days":"Ripens late July","where":"West side","note":"Prized for its outstanding sweet flavor and high yields. The bush holds some leaves through mild winters, and it does best in the gentler winters west of the Cascades."},
     {"name":"Reka","type":"Northern highbush, early","days":"Ripens early July","where":"West side","note":"A vigorous bush that tolerates wetter soils better than many varieties. Dark blue, medium berries with good flavor come early, and the plant grows quickly to full production."}
@@ -217,7 +217,7 @@ module.exports = {
     {"name":"Inchelium Red","type":"Softneck, Artichoke","days":"Plant fall, harvest summer","where":"Both sides","note":"Found on the Colville reservation in Inchelium, Washington. Large bulbs with mild, well-rounded flavor store for six months or more, and the soft necks are easy to braid."},
     {"name":"Chesnok Red","type":"Hardneck, Purple Stripe","days":"Plant fall, harvest summer","where":"Both sides","note":"Striking purple-striped bulbs from the Republic of Georgia. It is known for keeping its full flavor when roasted or baked, making it a cook's favorite."},
     {"name":"German Extra Hardy","type":"Hardneck, Porcelain","days":"Plant fall, harvest summer","where":"Both sides","note":"As the name says, very cold hardy, with large cloves and a strong, hot flavor. A good choice for cold eastern winters and a reliable producer in wet west-side soils too."},
-    {"name":"Spanish Roja","type":"Hardneck, Rocambole","days":"Plant fall, harvest summer","where":"Both sides","note":"A gourmet favorite with rich, true garlic flavor and loose skins that peel easily. It likes cold winters but stores only four to six months, so use it first."},
+    {"name":"Spanish Roja","type":"Hardneck, Rocambole","days":"Plant fall, harvest summer","where":"Cold winters","note":"A gourmet favorite with rich, true garlic flavor and loose skins that peel easily. It likes cold winters but stores only four to six months, so use it first."},
     {"name":"California Early","type":"Softneck, Artichoke","days":"Plant fall, harvest summer","where":"West side","note":"The mild, familiar supermarket type with large bulbs that store well and braid easily. It handles mild, wet winters well and is a dependable, low-fuss choice for beginners."}
   ],
   "cauliflower": [
@@ -242,7 +242,7 @@ module.exports = {
     {"name":"American Flag","type":"Heirloom, overwintering","days":"120 days","where":"Both sides","note":"A dependable old variety, also sold as Broad London, with thick white stems and mild flavor. It is hardy and an inexpensive way to grow winter leeks from seed."},
     {"name":"Giant Musselburgh","type":"Heirloom, overwintering","days":"105 days","where":"West side","note":"A Scottish heirloom bred for wet, cold winters, with very thick stems and mild flavor. A natural fit for the rainy west-side winter garden."},
     {"name":"Tadorna","type":"Late, fall and winter","days":"100 days","where":"Both sides","note":"Dark blue-green leaves and medium-long white shanks with good cold tolerance. It holds well in the garden from fall into winter."},
-    {"name":"Blue Solaise","type":"French heirloom, overwintering","days":"105 days","where":"Both sides","note":"Very cold hardy, with short, thick stems and leaves that turn violet-blue in cold weather. A beautiful and tough leek for winter harvests."}
+    {"name":"Blue Solaise","type":"French heirloom, overwintering","days":"105 days","where":"Cold winters","note":"Very cold hardy, with short, thick stems and leaves that turn violet-blue in cold weather. A beautiful and tough leek for winter harvests."}
   ],
   "arugula": [
     {"name":"Astro","type":"Cultivated, mild","days":"35 days","where":"Both sides","note":"Fast-growing with slightly milder, less peppery leaves than common arugula. It tolerates warm weather a bit better, so it is a good choice for late spring sowings."},
@@ -262,7 +262,7 @@ module.exports = {
     {"name":"Scarlet Queen","type":"Hybrid, red","days":"43 days","where":"Both sides","note":"Flattened, bright red roots with crisp white flesh and red-stemmed greens. Mild and tender, and resistant to downy mildew in damp weather."},
     {"name":"Golden Ball","type":"Heirloom, yellow","days":"60 days","where":"Both sides","note":"Also called Orange Jelly, with golden yellow, fine-grained flesh and a sweet, mild flavor. A good keeper and a colorful change from white turnips."},
     {"name":"Tokyo Cross","type":"Hybrid, white","days":"35 days","where":"Both sides","note":"Small, smooth, pure white roots that stay tender even when left a bit large. Quick and uniform, it is good for fast spring and fall plantings."},
-    {"name":"Seven Top","type":"Greens only","days":"45 days","where":"Both sides","note":"Grown for its leafy tops rather than its roots. Very cold hardy, it supplies cooking greens late into fall and through mild west-side winters."}
+    {"name":"Seven Top","type":"Greens only","days":"45 days","where":"West side","note":"Grown for its leafy tops rather than its roots. Very cold hardy, it supplies cooking greens late into fall and through mild west-side winters."}
   ],
   "kohlrabi": [
     {"name":"Kolibri","type":"Hybrid, purple","days":"45 days","where":"Both sides","note":"Deep purple bulbs with crisp, sweet white flesh. Quick and uniform, it stays tender when picked at the right size."},
@@ -272,9 +272,9 @@ module.exports = {
     {"name":"Early Purple Vienna","type":"Heirloom, purple","days":"60 days","where":"Both sides","note":"Purple skin over white, sweet flesh, a little slower than its white counterpart. A colorful, reliable open-pollinated option. It is a good choice for fall crops too."}
   ],
   "eggplant": [
-    {"name":"Hansel","type":"Hybrid, small Italian","days":"55 days","where":"Both sides","note":"Clusters of slender purple fruit that are tender and seedless at 3 inches. Early and compact, it is one of the surest bets for cooler west-side summers and containers."},
-    {"name":"Fairy Tale","type":"Hybrid, mini striped","days":"50 days","where":"Both sides","note":"Small purple-and-white striped fruit on compact plants, with mild, non-bitter flesh. Early and productive, it suits pots and short Northwest summers."},
-    {"name":"Orient Express","type":"Hybrid, Asian","days":"58 days","where":"Both sides","note":"Long, slender, glossy black fruit with thin skin and tender flesh. It sets fruit even in cooler weather, which helps west of the Cascades."},
+    {"name":"Hansel","type":"Hybrid, small Italian","days":"55 days","where":"West side","note":"Clusters of slender purple fruit that are tender and seedless at 3 inches. Early and compact, it is one of the surest bets for cooler west-side summers and containers."},
+    {"name":"Fairy Tale","type":"Hybrid, mini striped","days":"50 days","where":"Short seasons","note":"Small purple-and-white striped fruit on compact plants, with mild, non-bitter flesh. Early and productive, it suits pots and short Northwest summers."},
+    {"name":"Orient Express","type":"Hybrid, Asian","days":"58 days","where":"West side","note":"Long, slender, glossy black fruit with thin skin and tender flesh. It sets fruit even in cooler weather, which helps west of the Cascades."},
     {"name":"Gretel","type":"Hybrid, small white","days":"55 days","where":"Both sides","note":"The white-skinned sister of Hansel, with clusters of small, sweet, tender fruit. Early and compact, it does well in pots on a warm patio."},
     {"name":"Ichiban","type":"Hybrid, Asian","days":"61 days","where":"Both sides","note":"A long-time favorite Japanese type with long, dark purple fruit and mild flavor. Productive and fairly early for its size."},
     {"name":"Black Beauty","type":"Heirloom, globe","days":"80 days","where":"East side","note":"The classic large, glossy, oval eggplant. It needs a long, hot summer, so it does best in warm eastern valleys rather than cool west-side gardens."}
@@ -282,7 +282,7 @@ module.exports = {
   "melons": [
     {"name":"Sugar Baby","type":"Icebox watermelon","days":"75 days","where":"Both sides","note":"Round, dark green melons of about 8 to 10 pounds with sweet red flesh. Its size and speed make it the most reliable watermelon for many Northwest gardens."},
     {"name":"Minnesota Midget","type":"Mini cantaloupe","days":"65 days","where":"Short seasons","note":"Softball-sized melons on short vines that ripen quickly. A good choice for cool, short summers and small spaces, with sweet orange flesh."},
-    {"name":"Halona","type":"Hybrid cantaloupe","days":"73 days","where":"Both sides","note":"An early, sweet, fragrant orange-fleshed cantaloupe with some disease resistance. One of the best full-size melons for west-side gardeners using black plastic."},
+    {"name":"Halona","type":"Hybrid cantaloupe","days":"73 days","where":"West side","note":"An early, sweet, fragrant orange-fleshed cantaloupe with some disease resistance. One of the best full-size melons for west-side gardeners using black plastic."},
     {"name":"Blacktail Mountain","type":"Icebox watermelon","days":"70 days","where":"Short seasons","note":"Developed in northern Idaho for cool nights and short seasons. Dark green melons of about 6 to 12 pounds with sweet red flesh ripen where others fail."},
     {"name":"Crimson Sweet","type":"Picnic watermelon","days":"85 days","where":"East side","note":"Large, striped melons of 20 pounds or more with very sweet, crisp red flesh. It needs real summer heat, which eastern valleys deliver."},
     {"name":"Hale's Best","type":"Heirloom cantaloupe","days":"85 days","where":"East side","note":"A classic netted cantaloupe with thick, sweet, salmon-orange flesh. It thrives in hot, dry eastern summers and tolerates drought fairly well."}
@@ -309,10 +309,10 @@ module.exports = {
     {"name":"Zebrune","type":"Banana shallot, from seed","days":"","where":"Both sides","note":"A long, torpedo-shaped French shallot with coppery skin and mild, sweet flesh. Grown from seed, it is easy to peel and slice."}
   ],
   "asparagus": [
-    {"name":"Jersey Knight","type":"All-male hybrid","days":"","where":"Both sides","note":"Thick, tender spears and strong resistance to fusarium, rust and crown rot. It tolerates heavier soils, a plus in many west-side yards."},
+    {"name":"Jersey Knight","type":"All-male hybrid","days":"","where":"West side","note":"Thick, tender spears and strong resistance to fusarium, rust and crown rot. It tolerates heavier soils, a plus in many west-side yards."},
     {"name":"Jersey Giant","type":"All-male hybrid","days":"","where":"Both sides","note":"Large, green spears with purple tips and heavy yields. Cold hardy and resistant to rust and fusarium, it is one of the most widely planted home varieties."},
     {"name":"Jersey Supreme","type":"All-male hybrid","days":"","where":"Both sides","note":"Comes up a little earlier in spring than other Jersey types and produces many slender to medium spears. Good disease resistance and high yields."},
-    {"name":"Millennium","type":"All-male hybrid","days":"","where":"Both sides","note":"Very cold hardy and long-lived, with high yields over many years. It emerges later in spring, so spears often dodge late frosts."},
+    {"name":"Millennium","type":"All-male hybrid","days":"","where":"Cold winters","note":"Very cold hardy and long-lived, with high yields over many years. It emerges later in spring, so spears often dodge late frosts."},
     {"name":"Purple Passion","type":"Purple, open-pollinated","days":"","where":"Both sides","note":"Thick, purple spears that are sweeter and more tender than most greens, and turn green when cooked. A mix of male and female plants, so yields are a bit lower."},
     {"name":"Mary Washington","type":"Heirloom, open-pollinated","days":"","where":"Both sides","note":"The old standard with long, dark green spears and rust resistance. Yields are lower than all-male hybrids, but it is inexpensive and long-lived."}
   ],
@@ -321,7 +321,7 @@ module.exports = {
     {"name":"Canada Red","type":"Red stalks","days":"","where":"Both sides","note":"Red stalks inside and out with a sweeter, less tart flavor than green types. Very cold hardy and slow to send up flower stalks."},
     {"name":"Crimson Red","type":"Red stalks","days":"","where":"Both sides","note":"Bright red, tender stalks with rich, tangy flavor. Hardy and productive, it makes rosy-colored sauces and jams. Pull stalks in spring and stop by early summer."},
     {"name":"Valentine","type":"Red stalks","days":"","where":"Both sides","note":"Deep red stalks that keep their color when cooked, with a sweet-tart flavor. It sends up fewer flower stalks than many varieties."},
-    {"name":"MacDonald","type":"Red stalks","days":"","where":"Both sides","note":"A vigorous variety with tall, bright red stalks and good resistance to root rot, a plus in wet soils. It is cold hardy and long-lived."},
+    {"name":"MacDonald","type":"Red stalks","days":"","where":"West side","note":"A vigorous variety with tall, bright red stalks and good resistance to root rot, a plus in wet soils. It is cold hardy and long-lived."},
     {"name":"Glaskin's Perpetual","type":"Green and red, from seed","days":"","where":"Both sides","note":"One of the few rhubarbs commonly grown from seed. It is known for staying pickable later into summer than most varieties."}
   ],
   "chives": [
@@ -395,12 +395,12 @@ module.exports = {
     {"name":"February Gold","type":"Cyclamineus, early yellow","days":"Blooms late February to March","where":"Both sides","note":"A dependable early daffodil with slightly swept-back golden petals. It naturalizes freely under deciduous trees and in lawns, often blooming with the first crocuses."}
   ],
   "apples": [
-    {"name":"Liberty","type":"Scab-resistant, semi-dwarf available","days":"Ripens late September","where":"Both sides","note":"Highly resistant to apple scab, so it stays clean through wet Northwest springs without spraying. Crisp, juicy, tart-sweet red apples that keep for a couple of months."},
+    {"name":"Liberty","type":"Scab-resistant, semi-dwarf available","days":"Ripens late September","where":"Coast and west side","note":"Highly resistant to apple scab, so it stays clean through wet Northwest springs without spraying. Crisp, juicy, tart-sweet red apples that keep for a couple of months."},
     {"name":"Akane","type":"Early red dessert apple","days":"Ripens late August","where":"West side","note":"A small to medium bright red apple with tangy, sprightly flavor. It ripens early, shrugs off scab and mildew better than most, and is a long-time favorite for rainy-side gardens."},
-    {"name":"Honeycrisp","type":"Popular crisp dessert apple","days":"Ripens September","where":"Both sides","note":"Explosively crisp, very juicy and sweet with a little tartness, and it stores for months. Trees are cold-hardy but somewhat prone to scab, so give it good airflow on the west side."},
+    {"name":"Honeycrisp","type":"Popular crisp dessert apple","days":"Ripens September","where":"East side","note":"Explosively crisp, very juicy and sweet with a little tartness, and it stores for months. Trees are cold-hardy but somewhat prone to scab, so give it good airflow on the west side."},
     {"name":"Gravenstein","type":"Heirloom, needs two pollinators","days":"Ripens August","where":"West side","note":"An old favorite for applesauce, pie and cider, with tart, aromatic flavor. Its pollen is sterile, so it needs two other apple varieties nearby, and the fruit does not store long."},
     {"name":"Jonagold","type":"Large dessert apple, needs partner","days":"Ripens late September to October","where":"Both sides","note":"Big, honey-sweet apples with a crisp bite, great fresh or baked. Its pollen is sterile, so plant it with two other varieties that bloom at the same time."},
-    {"name":"Gala","type":"Sweet dessert apple","days":"Ripens late August to September","where":"Both sides","note":"Mild, sweet and crunchy, and a hit with kids. It is a good pollinator for other apples, though it is susceptible to scab in wet west-side springs."}
+    {"name":"Gala","type":"Sweet dessert apple","days":"Ripens late August to September","where":"East side","note":"Mild, sweet and crunchy, and a hit with kids. It is a good pollinator for other apples, though it is susceptible to scab in wet west-side springs."}
   ],
   "pears": [
     {"name":"Bartlett","type":"European, best with partner","days":"Ripens late August","where":"Both sides","note":"The classic juicy, buttery yellow pear for eating fresh and canning. Pick it full size but firm and ripen indoors; it sets better crops with another pear variety nearby."},
@@ -420,7 +420,7 @@ module.exports = {
     {"name":"Green Gage","type":"European plum, self-fertile","days":"Ripens August","where":"Both sides","note":"A classic small green plum known for its exceptionally rich, honeyed flavor. Self-fertile and relatively compact, it is a treat fresh off the tree and for jam."}
   ],
   "cherries": [
-    {"name":"Lapins","type":"Sweet cherry, self-fertile","days":"Ripens July","where":"Both sides","note":"Large, dark red, firm cherries similar to Bing in flavor. Self-fertile and resistant to cracking in rain, it is one of the best choices for wet west-side summers."},
+    {"name":"Lapins","type":"Sweet cherry, self-fertile","days":"Ripens July","where":"West side","note":"Large, dark red, firm cherries similar to Bing in flavor. Self-fertile and resistant to cracking in rain, it is one of the best choices for wet west-side summers."},
     {"name":"Stella","type":"Sweet cherry, self-fertile","days":"Ripens early July","where":"Both sides","note":"A dark red, heart-shaped sweet cherry that sets fruit without a partner and pollinates many others. A reliable, easy choice for a single backyard tree."},
     {"name":"Rainier","type":"Sweet cherry, needs partner","days":"Ripens late June to July","where":"East side","note":"Large yellow cherries with a red blush and very sweet, mild flesh. It needs a pollinator such as Bing or Lapins and does best in drier east-side summers where rain cracking is less of a risk."},
     {"name":"Montmorency","type":"Sour pie cherry, self-fertile","days":"Ripens July","where":"Both sides","note":"The classic bright red tart cherry for pies, jam and freezing. Self-fertile, cold-hardy and less attractive to birds than sweet cherries, with a smaller, easy-to-net tree."},
@@ -432,7 +432,7 @@ module.exports = {
     {"name":"Desert King","type":"Green fig, breba crop","days":"Brebas ripen late July to August","where":"Coast and west side","note":"Bears a large, sweet breba crop on last year's wood, so it ripens fruit even in cool Northwest summers. Green skin and strawberry-red flesh; one of the most reliable figs west of the Cascades."},
     {"name":"Lattarula","type":"Italian honey fig","days":"Ripens August to September","where":"West side","note":"Light green figs with amber, honey-sweet flesh. It is productive in cool summers and is one of the most widely grown figs in west-side gardens."},
     {"name":"Brown Turkey","type":"Brown fig, widely sold","days":"Ripens August to September","where":"Both sides","note":"The most common fig in garden centers, with medium brown-purple fruit and mild, sweet pink flesh. Fairly cold-hardy, it often regrows and fruits even after freezing back."},
-    {"name":"Chicago Hardy","type":"Cold-hardy brown fig","days":"Ripens August to September","where":"Both sides","note":"One of the hardiest figs, it can die to the ground in a hard freeze and still fruit on new growth the same summer. Good for colder east-side or higher-elevation gardens."},
+    {"name":"Chicago Hardy","type":"Cold-hardy brown fig","days":"Ripens August to September","where":"East side","note":"One of the hardiest figs, it can die to the ground in a hard freeze and still fruit on new growth the same summer. Good for colder east-side or higher-elevation gardens."},
     {"name":"Olympian","type":"Cold-hardy purple fig","days":"Ripens late August to September","where":"West side","note":"A large, purple-brown, sweet fig found growing in Olympia, Washington. It is known for good cold hardiness and for ripening a main crop in cool maritime summers."},
     {"name":"Violette de Bordeaux","type":"Compact dark purple fig","days":"Ripens August to September","where":"West side","note":"Small, nearly black figs with rich, berry-like red flesh. The plant stays compact, making it a good fig for large pots that can be moved to shelter in cold snaps."}
   ],
@@ -456,17 +456,17 @@ module.exports = {
     {"name":"Marion","type":"Trailing, thorny","days":"Ripens July","where":"West side","note":"The famous Northwest blackberry, with complex, sweet-tart flavor that is hard to beat for pies and jam. The thorny trailing canes are vigorous and need a trellis."},
     {"name":"Black Diamond","type":"Thornless trailing","days":"Ripens July","where":"West side","note":"A thornless trailing blackberry with large, firm, sweet berries and heavy yields. It gives much of the Marion experience without the scratches."},
     {"name":"Triple Crown","type":"Thornless semi-erect","days":"Ripens late July to August","where":"Both sides","note":"Very large, sweet, glossy berries on vigorous thornless canes. It is productive and flavorful, and the semi-erect canes are easy to manage on a simple trellis."},
-    {"name":"Chester","type":"Cold-hardy thornless","days":"Ripens August","where":"Both sides","note":"One of the most cold-hardy thornless blackberries, with sweet, firm berries that ripen late. A good choice for colder east-side gardens."},
+    {"name":"Chester","type":"Cold-hardy thornless","days":"Ripens August","where":"East side","note":"One of the most cold-hardy thornless blackberries, with sweet, firm berries that ripen late. A good choice for colder east-side gardens."},
     {"name":"Navaho","type":"Thornless erect","days":"Ripens July to August","where":"Both sides","note":"Upright, thornless canes that need little or no trellising, with firm, very sweet berries that hold well after picking. A tidy, easy choice for small gardens."},
     {"name":"Prime-Ark Freedom","type":"Thornless primocane-fruiting","days":"Fruits early summer and fall","where":"Both sides","note":"A thornless blackberry that fruits on new canes as well as old, so you can get a fall crop the first year. Large, sweet berries on upright canes."}
   ],
   "grapes": [
-    {"name":"Interlaken","type":"Seedless green table grape","days":"Ripens late August","where":"Both sides","note":"One of the earliest seedless grapes, with small, sweet, crisp golden-green berries. It ripens reliably even in cool west-side summers."},
+    {"name":"Interlaken","type":"Seedless green table grape","days":"Ripens late August","where":"West side","note":"One of the earliest seedless grapes, with small, sweet, crisp golden-green berries. It ripens reliably even in cool west-side summers."},
     {"name":"Himrod","type":"Seedless green table grape","days":"Ripens early September","where":"Both sides","note":"Sweet, honey-flavored seedless green grapes in loose clusters. Vigorous, productive and cold-hardy, it is a long-time favorite for fresh eating and raisins."},
     {"name":"Canadice","type":"Seedless red table grape","days":"Ripens early September","where":"Both sides","note":"Tight clusters of sweet, spicy, red seedless grapes. It is cold-hardy and ripens early enough for most Northwest gardens, though the clusters can crack in late rain."},
     {"name":"Concord","type":"Seeded blue juice grape","days":"Ripens late September","where":"East side","note":"The classic grape for juice and jelly, with bold, foxy flavor. It needs a long, warm season to fully ripen and is a staple of east-side vineyards."},
-    {"name":"Glenora","type":"Seedless blue table grape","days":"Ripens early September","where":"Both sides","note":"Sweet, blue-black seedless grapes with a mild, slightly spicy flavor. Vigorous and productive, it ripens well in many west-side gardens."},
-    {"name":"Reliance","type":"Seedless red table grape","days":"Ripens late August to September","where":"Both sides","note":"Pink-red seedless grapes with very sweet, fruity flavor. It is among the most cold-hardy seedless grapes and has good disease resistance."}
+    {"name":"Glenora","type":"Seedless blue table grape","days":"Ripens early September","where":"West side","note":"Sweet, blue-black seedless grapes with a mild, slightly spicy flavor. Vigorous and productive, it ripens well in many west-side gardens."},
+    {"name":"Reliance","type":"Seedless red table grape","days":"Ripens late August to September","where":"Cold winters","note":"Pink-red seedless grapes with very sweet, fruity flavor. It is among the most cold-hardy seedless grapes and has good disease resistance."}
   ],
   "hardy-kiwi": [
     {"name":"Ananasnaya","type":"Female arguta vine","days":"Ripens September","where":"Both sides","note":"Often sold as Anna, it bears sweet, aromatic green fruit with a hint of pineapple. One of the most popular hardy kiwis; it needs a male vine such as Meader nearby."},
@@ -530,9 +530,9 @@ module.exports = {
   "zinnias": [
     {"name":"Benary's Giant","type":"Tall cut-flower zinnia","days":"Blooms midsummer to frost","where":"Both sides","note":"Big, fully double flowers on long, strong stems in many colors. It is the standard zinnia for cut-flower gardens and holds up well in the vase."},
     {"name":"Queen Lime","type":"Chartreuse cut-flower zinnia","days":"Blooms midsummer to frost","where":"Both sides","note":"Unusual lime-green to soft pink blooms that florists love. Long stems and a long vase life make it a popular cut flower."},
-    {"name":"Zahara","type":"Compact, mildew-resistant","days":"Blooms early summer to frost","where":"Both sides","note":"A compact, low zinnia with strong resistance to powdery mildew and leaf spot. A good choice for west-side beds, borders and pots."},
+    {"name":"Zahara","type":"Compact, mildew-resistant","days":"Blooms early summer to frost","where":"West side","note":"A compact, low zinnia with strong resistance to powdery mildew and leaf spot. A good choice for west-side beds, borders and pots."},
     {"name":"State Fair","type":"Large-flowered heirloom","days":"Blooms midsummer to frost","where":"Both sides","note":"Large, bright flowers on tall plants with good disease tolerance for an heirloom. A cheerful, old-fashioned choice for the back of the border."},
-    {"name":"Profusion","type":"Compact, mildew-resistant","days":"Blooms early summer to frost","where":"Both sides","note":"A low, spreading zinnia that blooms nonstop with little care. Strong resistance to powdery mildew makes it ideal for west-side gardens."},
+    {"name":"Profusion","type":"Compact, mildew-resistant","days":"Blooms early summer to frost","where":"West side","note":"A low, spreading zinnia that blooms nonstop with little care. Strong resistance to powdery mildew makes it ideal for west-side gardens."},
     {"name":"Oklahoma","type":"Small-flowered cut zinnia","days":"Blooms midsummer to frost","where":"Both sides","note":"Small, double flowers in bright colors on tall stems. It has better mildew tolerance than many tall zinnias and is popular for bouquets."}
   ],
   "collards": [
@@ -550,7 +550,7 @@ module.exports = {
   "celery": [
     {"name":"Tango","type":"Green, smooth stalks","days":"85 days from transplant","where":"Both sides","note":"Tender, smooth, light-green stalks with little stringiness and good bolt resistance. One of the easiest celeries for home gardens."},
     {"name":"Utah 52-70","type":"Classic tall green","days":"100 days from transplant","where":"Both sides","note":"The standard dark-green celery with thick, crisp stalks. It needs steady water all summer but rewards you with full-sized heads."},
-    {"name":"Ventura","type":"Tall green, vigorous","days":"80 days from transplant","where":"Both sides","note":"Tall, upright plants with smooth, crisp stalks and good tolerance of cool weather, which suits west-side gardens."},
+    {"name":"Ventura","type":"Tall green, vigorous","days":"80 days from transplant","where":"West side","note":"Tall, upright plants with smooth, crisp stalks and good tolerance of cool weather, which suits west-side gardens."},
     {"name":"Golden Self-Blanching","type":"Pale yellow-green","days":"85 days from transplant","where":"West side","note":"Naturally pale, mild stalks with no wrapping needed. Plants are shorter and earlier than green types, which helps in shorter seasons."}
   ],
   "ground-cherries": [
@@ -559,7 +559,7 @@ module.exports = {
     {"name":"Cossack Pineapple","type":"Heirloom, pineapple flavor","days":"65 days","where":"Short seasons","note":"An early heirloom with a pronounced pineapple flavor. Its quick ripening makes it a good pick for the coast and short-season gardens."}
   ],
   "sweet-potatoes": [
-    {"name":"Georgia Jet","type":"Red skin, orange flesh","days":"90 days","where":"Both sides","note":"One of the fastest sweet potatoes, producing big, moist orange roots in a short, cool season. The best bet for west-side gardens."},
+    {"name":"Georgia Jet","type":"Red skin, orange flesh","days":"90 days","where":"West side","note":"One of the fastest sweet potatoes, producing big, moist orange roots in a short, cool season. The best bet for west-side gardens."},
     {"name":"Covington","type":"Rose skin, orange flesh","days":"100 days","where":"East side","note":"Smooth, uniform roots with sweet orange flesh that bakes beautifully. It yields well in hot summers and stores for months after curing."},
     {"name":"Beauregard","type":"Red-purple skin, orange flesh","days":"100 days","where":"East side","note":"The most widely grown sweet potato in the U.S., with heavy yields of sweet, moist roots. Best where summers are reliably hot."},
     {"name":"Murasaki","type":"Purple skin, white flesh","days":"105 days","where":"East side","note":"A Japanese-type sweet potato with purple skin and dry, nutty, chestnut-sweet white flesh. It needs a warm, long summer to size up."}
@@ -617,7 +617,7 @@ module.exports = {
     {"name":"Large Seeded Dutch","type":"Large-leaved mâche","days":"About 45 days","where":"Both sides","note":"Bigger, lighter green leaves that size up faster than small-leaved types. Good for early spring sowings."}
   ],
   "radicchio": [
-    {"name":"Palla Rossa","type":"Round-headed (Chioggia type)","days":"About 85 days","where":"Both sides","note":"Tight, round red-and-white heads. Sown in midsummer, it heads up reliably in the cool fall weather west of the Cascades."},
+    {"name":"Palla Rossa","type":"Round-headed (Chioggia type)","days":"About 85 days","where":"West side","note":"Tight, round red-and-white heads. Sown in midsummer, it heads up reliably in the cool fall weather west of the Cascades."},
     {"name":"Rossa di Treviso","type":"Long-headed","days":"About 85 days","where":"Both sides","note":"Elongated heads like a red romaine. The color deepens after cold nights; good for grilling."},
     {"name":"Indigo","type":"Hybrid round-headed","days":"About 65 days","where":"Both sides","note":"A modern hybrid that forms dense, deep red heads more reliably than older types, and it's slow to bolt."},
     {"name":"Castelfranco","type":"Speckled, loose head","days":"About 85 days","where":"West side","note":"Creamy leaves speckled with red, milder than most radicchio. Beautiful in salads, and best from late-summer sowings."}
@@ -652,7 +652,7 @@ module.exports = {
     {"name":"Sensation Mix","type":"Tall, single flowers","days":"About 75 days","where":"Both sides","note":"The classic cut-flower cosmos in pink, white and crimson on 4- to 5-foot plants. Stake or net it in windy spots."},
     {"name":"Double Click","type":"Semi-double to double flowers","days":"About 75 days","where":"Both sides","note":"Ruffled, layered flowers that look like small dahlias. Excellent in bouquets."},
     {"name":"Sonata","type":"Dwarf","days":"About 70 days","where":"Both sides","note":"Compact plants about 2 feet tall for borders and containers, with full-size flowers."},
-    {"name":"Bright Lights","type":"Orange and yellow (C. sulphureus)","days":"About 70 days","where":"Both sides","note":"Fiery orange, gold and yellow flowers that handle heat and dry soil, good for hot eastern gardens."}
+    {"name":"Bright Lights","type":"Orange and yellow (C. sulphureus)","days":"About 70 days","where":"East side","note":"Fiery orange, gold and yellow flowers that handle heat and dry soil, good for hot eastern gardens."}
   ],
   "nasturtiums": [
     {"name":"Alaska","type":"Bush, variegated leaves","days":"About 55 days","where":"Both sides","note":"Leaves marbled with cream and flowers in mixed warm colors. Compact and pretty in pots and edges."},
@@ -688,7 +688,7 @@ module.exports = {
     {"name":"Jiro","type":"Asian, non-astringent","days":"Ripens October to November","where":"West side","note":"Similar to Fuyu, with squat, flat-bottomed fruit. Sweet and crisp, and self-fertile."},
     {"name":"Saijo","type":"Asian, astringent","days":"Ripens October","where":"Both sides","note":"Small, very sweet fruit once soft, and one of the most cold-hardy Asian persimmons."},
     {"name":"Hachiya","type":"Asian, astringent","days":"Ripens November","where":"West side","note":"Large, acorn-shaped fruit that must soften completely before eating. Excellent for baking."},
-    {"name":"Meader","type":"American persimmon","days":"Ripens October","where":"Both sides","note":"A hardy American persimmon that sets fruit without a second tree. Small, rich fruit once soft."}
+    {"name":"Meader","type":"American persimmon","days":"Ripens October","where":"Cold winters","note":"A hardy American persimmon that sets fruit without a second tree. Small, rich fruit once soft."}
   ],
   "asian-pears": [
     {"name":"Shinseiki","type":"Yellow skin","days":"Ripens August","where":"Both sides","note":"Crisp, mild and juicy, and partly self-fertile. One of the most reliable Asian pears in home gardens."},
