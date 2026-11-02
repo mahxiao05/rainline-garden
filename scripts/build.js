@@ -525,6 +525,15 @@ function windowMonths(ws) {
   ws.forEach(w => { for (let d = w.start; d <= w.end; d += 7) out.add(monthOf(d)); out.add(monthOf(w.end)); });
   return out;
 }
+// Links from a plant page to the month pages for the months it goes in (start indoors or plant, around Portland),
+// so each "What to plant in {month}" page is reachable from the plants that belong on it.
+function plantMonthLinks(c, port) {
+  const r = rowFor(port, c.id);
+  const months = [...new Set([...(r.indoor ? windowMonths([r.indoor]) : []), ...windowMonths(r.windows)])].sort((a, b) => a - b);
+  if (!months.length) return "";
+  const names = months.map(i => `<a href="../../garden-calendar/${P.MONTHS_LONG[i].toLowerCase()}/">${P.MONTHS_LONG[i]}</a>`);
+  return `<p class="month-links">See what else to plant in ${names.length < 2 ? names[0] : `${names.slice(0, -1).join(", ")} or ${names[names.length - 1]}`}.</p>`;
+}
 // Month-by-month strip: start indoors, plant, harvest and bloom, around Portland.
 function yearStrip(c, ex, port) {
   const r = rowFor(port, c.id);
@@ -928,6 +937,7 @@ ${stepsForHub(c, g, port)}
 ${cropGarden("../../", c)}${gearBox(g.gear)}
 ${relatedArticles("../../", c.id)}`}
 ${newsletter()}
+${plantMonthLinks(c, port)}
 <h2>More ${catById(c.cat).name.toLowerCase()}</h2>
 <ul class="chips">${catById(c.cat).crops.filter(id => id !== c.id).map(id => `<li><a href="../${id}/">${R.icon(id, "../../", 24)}${cropById(id).name}</a></li>`).join("")}</ul>
 <p><a href="../">See all ${D.crops.length} plants</a></p>`,
@@ -1003,6 +1013,9 @@ ${plantingOrder(list, refs[0], rel)}
 <h2>Growing ${k.name.toLowerCase()} in the Northwest</h2>
 <div class="prose">${CATEGORY_GUIDES[k.id].map(t => `<p>${esc(t)}</p>`).join("\n")}</div>
 ${x.faq ? `<h2>Common questions</h2>\n${faqHtml(x.faq)}` : ""}
+${(() => { const reads = ARTICLES.filter(a => (a.topic === "crops" || a.topic === "flowers") && k.crops.includes(a.crops[0]))
+      .sort((a, b) => k.crops.indexOf(a.crops[0]) - k.crops.indexOf(b.crops[0])).slice(0, 4);
+    return reads.length ? `<h2>Guides for these plants</h2>\n${articleCards(rel, reads)}` : ""; })()}
 ${ad("category-bottom")}
 <h2>Other plant types</h2>
 <ul class="chips">${D.categories.filter(o => o.id !== k.id).map(o => `<li><a href="../${o.id}/">${R.icon(o.crops[0], rel, 24)}${o.name}</a></li>`).join("")}</ul>
