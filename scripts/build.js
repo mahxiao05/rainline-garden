@@ -20,6 +20,7 @@ const CATEGORY_GUIDES = require("./category-guides.js");
 const VARIETIES = require("./varieties.js");
 const VIDEOS = require("./videos.js");
 const AREA_TIPS = require("./area-tips.js");
+const REGIONAL = require("./regional-notes.js");
 const STATION_CHECK = require("./station-check.js");
 const { SIZES, fileBase, sizesFor } = require("./photo-sizes.js");
 const ARTICLES = require("./articles-4.js").concat(require("./articles-3.js"), require("./articles-2.js"), require("./articles.js")); // newest first
@@ -484,7 +485,8 @@ ${yearStrip(c, ex, port)}
 ${ad("crop-mid")}
 <h2 id="grow">How to grow ${lc(c.name)}</h2>
 <div class="grow-grid"><div>${stepsForHub(c, g, port)}</div>
-${sideCard(g)}</div>${videoBox(c)}
+${sideCard(g, null, true)}</div>${videoBox(c)}
+${regionalNotes(c)}
 ${cropGarden("../../", c)}${varietyCards(c)}
 ${howMany(c, ex)}
 ${scienceParts(sci, c)}
@@ -501,7 +503,7 @@ ${PHONE_FOLD_JS}`;
 const phoneFold = (id, title, body) => `<details class="fold" id="${id}" data-phone-fold open><summary><h2>${title}</h2></summary>
 ${body}</details>`;
 const PHONE_FOLD_JS = `<script>(function(){var f=document.querySelectorAll("details[data-phone-fold]");if(matchMedia("(max-width: 40rem)").matches)f.forEach(function(d){if("#"+d.id!==location.hash)d.open=false});function show(){var d=location.hash&&document.getElementById(location.hash.slice(1));if(d&&d.matches("details[data-phone-fold]"))d.open=true}addEventListener("hashchange",show)})()</script>`;
-const jump = (sci, vars) => `<nav class="jump" aria-label="On this page"><span>On this page:</span><a href="#dates">Planting dates</a><a href="#grow">How to grow</a>${vars ? '<a href="#varieties">Varieties</a>' : ""}<a href="#how-many">How much to grow</a><a href="#numbers">Key numbers</a><a href="#science">${sci.notes ? "Growing notes" : "The science"}</a><a href="#neighbors">Neighbors</a><a href="#pests">Pests</a><a href="#faq">Questions</a></nav>`;
+const jump = (sci, vars) => `<nav class="jump" aria-label="On this page"><span>On this page:</span><a href="#dates">Planting dates</a><a href="#grow">How to grow</a><a href="#regions">By region</a>${vars ? '<a href="#varieties">Varieties</a>' : ""}<a href="#how-many">How much to grow</a><a href="#numbers">Key numbers</a><a href="#science">${sci.notes ? "Growing notes" : "The science"}</a><a href="#neighbors">Neighbors</a><a href="#pests">Pests</a><a href="#faq">Questions</a></nav>`;
 
 /* Plant-page extras from scripts/plant-extras.js and scripts/collections.js */
 // Tags linking to the "Plants for..." pages this plant appears on.
@@ -569,8 +571,18 @@ function pestCards(c, ex) {
 <div class="sci-cards">${ex.pests.map(([h, signs, fix]) => `<section class="sci-card pest-card"><h3>${esc(h)}</h3><p><strong>Signs:</strong> ${esc(signs)}</p><p><strong>What to do:</strong> ${esc(fix)}</p></section>`).join("\n")}</div>`);
 }
 const faqHtml = qas => `<div class="faq">${qas.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("")}</div>`;
-const sideCard = (g, note) => `<aside class="side-card"><h3>Top picks for here</h3><ul class="vars">${g.varieties.map(v => `<li>${esc(v)}</li>`).join("")}</ul>
-<h3>Watch out for</h3><p>${esc(g.problem)}</p>${note ? `<p class="note">${esc(note)}</p>` : ""}</aside>`;
+// On plant pages with a "Pests and problems" section (noPests), the problem is covered there, so the card leaves it out.
+const sideCard = (g, note, noPests) => `<aside class="side-card"><h3>Top picks for here</h3><ul class="vars">${g.varieties.map(v => `<li>${esc(v)}</li>`).join("")}</ul>
+${noPests ? "" : `<h3>Watch out for</h3><p>${esc(g.problem)}</p>`}${note ? `<p class="note">${esc(note)}</p>` : ""}</aside>`;
+// How the plant does in each part of the Northwest (scripts/regional-notes.js).
+const REGION_LABELS = [["west", "West-side valleys", "Willamette Valley, Puget Sound, southern Oregon"], ["coast", "Coast", "Oregon and Washington coast"], ["east", "East of the Cascades", "Columbia Basin, Yakima, Boise, Spokane, north Idaho"], ["high", "High desert and mountain towns", "Central Oregon, high eastern Oregon valleys, McCall, Salmon"]];
+function regionalNotes(c) {
+  const r = REGIONAL[c.id];
+  if (!r) throw new Error(`scripts/regional-notes.js has no entry for ${c.id}`);
+  const parts = REGION_LABELS.filter(([k]) => r[k]);
+  return phoneFold("regions", `Growing ${lc(c.name)} in your part of the Northwest`, `<p class="lede-sm">The same plant behaves differently on the wet west side, the foggy coast and the dry, colder east side.</p>
+<div class="sci-cards region-cards">${parts.map(([k, h, where]) => `<section class="sci-card region-card region-${k}"><h3>${h}</h3><p class="region-where">${where}</p><p>${esc(r[k])}</p></section>`).join("\n")}</div>`);
+}
 // Popular variety cards from scripts/varieties.js, shown on each plant's main page.
 function varietyCards(c) {
   const vs = VARIETIES[c.id];
