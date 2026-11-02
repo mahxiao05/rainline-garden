@@ -539,7 +539,7 @@ table.plan { width: 100%; border-collapse: collapse; font-size: 1rem; background
   .author-box { padding: 16px; gap: 14px; }
   .profile-body { padding: 0 18px 18px; }
   .profile-cover { height: 110px; }
-  .results-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; margin: 0 -18px; padding: 0 18px 6px; scroll-padding: 0 18px; -webkit-overflow-scrolling: touch; }
+  .results-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; margin: 0 -16px; padding: 0 16px 6px; scroll-padding: 0 16px; -webkit-overflow-scrolling: touch; }
   .results-grid li { flex: 0 0 72%; scroll-snap-align: start; }
   .garden-single li { flex-basis: 100%; }
   .results-note::after { content: " Swipe to see more."; }
@@ -1378,3 +1378,23 @@ html.tm-lock, html.tm-lock body { overflow: hidden; }
 .tm-names .tm-pn { font: italic 700 12px var(--sans); paint-order: stroke; stroke: var(--sand); stroke-width: 3px; letter-spacing: .04em; text-transform: none; opacity: .9; fill: var(--tm-peak); }
 .tm-names .tm-rn { fill: var(--tm-water); }
 .chip-d { color: var(--muted); font-size: .85em; margin-left: .35em; }
+
+/* Home page on phones: "What to plant now" lists show 3 plants, then a "Show N more" button */
+.now-more { display: none; }
+@media (max-width: 40rem) {
+  #result .now li.now-extra { display: none; }
+  #result .now ul.show-all li.now-extra { display: flex; }
+  #result .now-more { display: inline-block; margin: 8px 0 4px; padding: 6px 14px; font: inherit; font-weight: 700; font-size: .95rem; color: var(--moss); background: none; border: 1.5px solid var(--line); border-radius: 999px; cursor: pointer; }
+}
+
+/* Home page on phones: the town's frost dates in one row, and plant types as a swipe row */
+@media (max-width: 40rem) {
+  #result .facts { grid-template-columns: repeat(3, 1fr); }
+  #result .fact { padding: 10px 6px 12px 0; }
+  #result .fact + .fact { padding-left: 10px; border-top: 0; border-left: 1px solid var(--line); }
+  #result .fact-s { font-size: .78rem; line-height: 1.3; }
+  #result .fact-v { font-size: 1.15rem; }
+  #result .fact-k { font-size: .8rem; }
+  .home-sec .cat-tiles { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 6px; }
+  .home-sec .cat-tiles > li { flex: 0 0 38%; scroll-snap-align: start; }
+}

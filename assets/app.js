@@ -77,7 +77,7 @@
     n.sow.concat(n.indoor).forEach(function (x) { ids[x.r.crop.id] = 1; });
     var rows = p.crops.filter(function (r) { return ids[r.crop.id]; });
     var where = place.city + ', ' + place.state;
-    var h = '<div class="sec-head"><h2>In season now</h2><a href="' + base + 'frost-dates/' + place.slug + '/">Full ' + place.city + ' calendar</a></div>';
+    var head = '<div class="sec-head"><h2>In season now</h2><a href="' + base + 'frost-dates/' + place.slug + '/">Full ' + place.city + ' calendar</a></div>', h = '';
     if (!rows.length) {
       h += '<p class="season-empty">Nothing is in season to plant in ' + where + ' right now. ' +
         (n.soon.length ? 'Next up: ' + n.soon[0].r.crop.name + ' from ' + P.fmt(n.soon[0].w.start) + '.' : 'It\'s a good time to plan, order seeds and tend your beds.') + '</p>';
@@ -88,7 +88,8 @@
         '<div class="reveal">' + R.chart({ place: p.place, station: p.station, zone: p.zone, frost: p.frost, crops: shown }, today) + '</div>' +
         (rows.length > shown.length ? '<button type="button" class="btn btn-ghost btn-sm season-more">Show all ' + rows.length + ' in season</button>' : '');
     }
-    seasonEl.innerHTML = h;
+    // With a town's result above, "What to plant now" already lists these plants, so on phones the chart starts folded.
+    seasonEl.innerHTML = out.innerHTML && matchMedia("(max-width: 720px)").matches ? fold("season", "In season now", h) : head + h;
     seasonEl.hidden = false;
     var more = seasonEl.querySelector(".season-more");
     if (more) more.addEventListener("click", function () { seasonNow(place, true); });
@@ -110,7 +111,7 @@
       '<div class="result-head"><h2>' + place.city + ', ' + place.state + '</h2>' +
       '<a href="' + base + 'frost-dates/' + place.slug + '/">Full ' + place.city + ' calendar</a></div>' +
       (viaZip ? '<p class="station">Using the nearest NOAA station we have for that ZIP. If another town on the list is closer to you, pick it instead.</p>' : '') +
-      R.frostFacts(p) + R.regionNote(p) +
+      R.frostFacts(p) + fold("about", "About these dates", R.regionNote(p)) +
       '<h2>What to plant now</h2>' + R.nowBlock(p, today, base) +
       fold("year", "Your year at a glance", '<div class="reveal">' + R.chart(p, today) + '</div>') +
       fold("dates", "Planting dates", R.table(p, base));
