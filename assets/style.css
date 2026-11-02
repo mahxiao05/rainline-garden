@@ -1483,3 +1483,24 @@ html.tm-lock, html.tm-lock body { overflow: hidden; }
 }
 .grid-fold > summary:hover, .gp-group > summary:hover, .mp-region > summary:hover, .area-list > summary:hover { background: var(--paper); border-color: var(--moss); }
 .mp-region.is-mine > summary { background: var(--moss-soft); box-shadow: none; border: 1.5px solid var(--moss); }
+
+/* When to plant: plant-type tiles open a plant list under their row */
+.cat-tiles-drop .cat-tile { position: relative; }
+.cat-tiles-drop .cat-tile .card-s::after { content: " \25BE"; color: var(--moss); }
+.cat-tiles-drop .cat-tile[aria-expanded="true"] { border-color: var(--moss); background: var(--teal-soft); transform: none; box-shadow: 0 0 0 1px var(--moss); }
+.cat-tiles-drop .cat-tile[aria-expanded="true"] .card-s::after { content: " \25B4"; }
+.cat-drop { grid-column: 1 / -1; background: var(--paper); border: 1px solid var(--moss); border-radius: 14px; padding: 14px 16px 10px; }
+.cat-drop[hidden], .grid-folds[hidden] { display: none; }
+.cat-drop-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 16px; margin-bottom: 8px; }
+.cat-drop-t { font-family: var(--serif, inherit); font-weight: 700; font-size: 1.1rem; color: var(--fir); }
+.cat-drop-head a { font-weight: 700; font-size: .95rem; }
+.drop-rows { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); column-gap: 20px; }
+.drop-rows a { display: flex; align-items: center; gap: 10px; padding: 7px 4px; border-bottom: 1px solid var(--line); text-decoration: none; color: var(--ink); border-radius: 6px; }
+.drop-rows a:hover { background: var(--teal-soft); }
+.drop-rows .ico { width: 32px; height: 32px; border-radius: 50%; flex: none; }
+.drop-n { flex: 1; font-weight: 600; }
+.drop-rows .badge { font-size: .72rem; padding: 1px 8px; }
+@media (max-width: 600px) {
+  .cat-drop { padding: 12px 12px 6px; }
+  .drop-rows { grid-template-columns: 1fr; }
+}
