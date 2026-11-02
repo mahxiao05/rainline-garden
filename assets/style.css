@@ -1379,14 +1379,16 @@ html.tm-lock, html.tm-lock body { overflow: hidden; }
 .tm-names .tm-rn { fill: var(--tm-water); }
 .chip-d { color: var(--muted); font-size: .85em; margin-left: .35em; }
 
-/* Home page on phones: "What to plant now" lists show 3 plants, then a "Show N more" button */
-.now-more { display: none; }
+/* Home page on phones: each "What to plant now" list is a sideways swipe row of plant cards */
+.now-count { display: none; }
 @media (max-width: 40rem) {
-  #result .now li.now-extra { display: none; }
-  #result .now ul.show-all li.now-extra { display: flex; }
-  #result .now-more { display: inline-block; margin: 8px 0 4px; padding: 6px 14px; font: inherit; font-weight: 700; font-size: .95rem; color: var(--moss); background: none; border: 1.5px solid var(--line); border-radius: 999px; cursor: pointer; }
+  #result .now { grid-template-columns: minmax(0, 1fr); }
+  #result .now ul { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 0 -16px; padding: 2px 16px 8px; scroll-padding: 0 16px; }
+  #result .now li { flex: 0 0 40%; scroll-snap-align: start; flex-direction: column; align-items: flex-start; gap: 4px; padding: 8px 10px 10px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); }
+  #result .now li span { font-size: .85rem; line-height: 1.3; }
+  #result .now-col h3 { margin-bottom: 2px; }
+  #result .now-count { display: block; margin: 0 0 8px; font-size: .9rem; color: var(--muted); }
 }
-
 /* Home page on phones: the town's frost dates in one row, and plant types as a swipe row */
 @media (max-width: 40rem) {
   #result .facts { grid-template-columns: repeat(3, 1fr); }
