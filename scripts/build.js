@@ -1173,7 +1173,7 @@ write("../", "my-garden/index.html", layout({
   description: "Free garden planner for Oregon, Washington and Idaho. Pick your town and plants to get a dated 12-month to-do list you can print or add to your calendar.",
   jsonld: [gpb.ld],
   body: `${gpb.html}
-<section class="hero"><p class="eyebrow">Free planner · saves on this device</p><h1>My garden plan</h1>
+<section class="hero"><p class="eyebrow">Free planner</p><h1>My garden plan</h1>
 <p class="lede">Pick your town and your plants. You get a dated to-do list for the year that saves as you go and prints on one page.</p>
 <details class="gp-privacy"><summary>Your plan is saved in this browser. How does that work?</summary>
 <p>Your town, the plants you pick, the boxes you tick and your notes are kept in your browser's local storage, right on this device. That's why they're still here when you close the site and come back. There's no account and nothing is sent to us, so your plan stays private.</p>
@@ -1190,10 +1190,10 @@ ${townBox({ id: "gp-box", rel: "../", button: "Use this town" })}
 <p id="gp-find-none" class="gp-find-none" role="status" hidden>No plants match that. Try another name, or <a href="../what-to-grow/">take the plant quiz</a>.</p>
 <p class="gp-groups-h">Or browse by group</p>
 ${D.categories.map(k => `<details class="gp-group"><summary>${k.name} <span class="gp-group-n">${k.crops.length} plants</span></summary><div class="gp-opts" role="group" aria-label="${esc(k.name)}">${k.crops.map(id => `<label class="gp-opt"><input type="checkbox" value="${id}">${R.icon(id, "../", 28)}<span>${cropById(id).name}</span></label>`).join("")}</div></details>`).join("")}
-<p class="gp-pick-foot"><button type="button" class="linkish" id="gp-clear">Clear my plan</button> · Your plan stays in this browser. Nothing is sent to us.</p>
+<p class="gp-pick-foot"><button type="button" class="linkish" id="gp-clear">Reset plan</button></p>
 </details>
 <section id="gp-out" class="gp-out" aria-live="polite"><div class="gp-empty-wrap">${PLAN_EMPTY_ART}<p class="empty gp-empty">Choose your town and pick some plants to see your plan.</p></div></section>
-<div class="guide prose">
+<div class="guide prose" id="gp-guide">
 <h2>What's in your plan</h2>
 <p><strong>A dated to-do list.</strong> Every job for the next 12 months, in order: when to start seeds indoors, when to plant in the garden, when to sow again for fall, and when frost is still a risk. The dates come from your town's frost records and the same planting windows as the <a href="../frost-dates/">town calendars</a>, so a Spokane plan and a Seattle plan can be weeks apart.</p>
 <p><strong>A cheat sheet for each plant.</strong> Sun, spacing, planting depth, when and how to harvest, and the main problem to watch for, taken from each plant's growing guide, so you don't have to keep a dozen tabs open.</p>
