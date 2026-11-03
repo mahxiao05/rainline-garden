@@ -163,21 +163,6 @@
       '<span class="gp-text">' + (t.crop ? R.icon(t.crop.id, base, 22) : "") + esc(t.text) + '</span></label></li>';
   }
 
-  // The few jobs that matter right now: due in the next 7 days, or open and not done yet.
-  function thisWeek(list) {
-    var due = list.filter(function (t) { return isSoon(t, 7) && !state.done[t.key]; });
-    var next = list.filter(function (t) { return t.date > now && !state.done[t.key] && due.indexOf(t) < 0; })[0];
-    var h = '<section class="gp-week" id="gp-week" aria-labelledby="gp-week-h"><div class="gp-week-head"><h2 id="gp-week-h">This week</h2>' +
-      '<span>' + short(now) + ' – ' + short(new Date(+now + 6 * DAY)) + '</span></div>';
-    if (due.length) h += '<ul class="gp-tasks gp-week-list">' + due.map(taskLi).join("") + '</ul>';
-    else {
-      h += '<p class="gp-week-empty">Nothing due this week.' + (next ? ' Your next job:' : '') + '</p>';
-      if (next) h += '<p class="gp-next"><span class="gp-date">' + short(next.date) + '</span><span class="gp-text">' + (next.crop ? R.icon(next.crop.id, base, 22) : "") +
-        '<span>' + esc(next.text) + ' <span class="gp-away">' + away(Math.round((next.date - now) / DAY)) + '</span></span></span></p>';
-    }
-    return h + '</section>';
-  }
-
   /* Bed planner helpers */
   function spTxt(id) { var s = SPACE[id] || 12; return s >= 12 && s % 12 === 0 ? s / 12 + " ft" : s + " in"; }
   // A typical patch to start with: a 2 × 2 ft patch of small crops, or a couple of big plants.
@@ -192,7 +177,14 @@
   function spot(id) { return sp(id) <= 17 ? 1 : Math.round(sp(id) / 12); }
   function sqPer(id) { return spot(id) * spot(id); }
   function bedSq(b) { return Math.round(+b.w || 0) * Math.round(+b.l || 0); }
-  function capOf(id) { return perSq(id) ? 4 : Math.max(1, Math.round(typical(id) / sqPer(id))); }
+  // A good first amount: one square of crops that pack in 9 or more, two of mid-size ones, four of one-per-square plants, a couple of big ones.
+  // The rest of the bed stays free for sowing again later; + or Optimize fills it.
+  function capOf(id) { var n = perSq(id); return n ? (n >= 9 ? 1 : n >= 4 ? 2 : 4) : Math.max(1, Math.round(typical(id) / sqPer(id))); }
+  // How a plant sits in a bed, said the same way in the beds and the cheat sheet.
+  function bedTxt(id) { var n = perSq(id), k = spot(id); return n > 1 ? n + " per 1 ft square (" + sp(id) + " in apart each way)" : n === 1 ? "one per 1 ft square" : "one per " + k + " × " + k + " ft spot"; }
+  // Each plant in the beds gets its own colour, so the squares match the list.
+  var PCOLS = 8;
+  function colorMap(list) { var m = {}; list.forEach(function (c, i) { m[c.id] = i % PCOLS; }); return m; }
   // Suggestions: everyone starts with one square or one plant, then each gets one more in turn while it still fits, up to a typical patch.
   function sqAuto(list) {
     var out = {}, done = {};
@@ -249,20 +241,20 @@
   }
   function eico(id, size) { return R.icon(id, base, size).replace(' loading="lazy"', ''); }
   function sqBody(chosen) {
-    var list = chosen.filter(function (c) { return !inGround(c); }), ground = chosen.filter(inGround), auto = sqAuto(list), L = sqLayout(list, auto);
+    var list = chosen.filter(function (c) { return !inGround(c); }), ground = chosen.filter(inGround), auto = sqAuto(list), L = sqLayout(list, auto), col = colorMap(list);
     var total = state.beds.reduce(function (s, b) { return s + bedSq(b); }, 0), used = 0;
     L.groups.forEach(function (g) { g.forEach(function (it) { used += it.sq; }); });
     var head = '<p class="sq-sum">' + (L.loose.length ? '<span class="sq-warn">' + L.loose.length + (L.loose.length === 1 ? ' plant doesn\'t' : ' plants don\'t') + ' fit yet</span>'
-      : (total - used ? '<strong>' + (total - used) + '</strong> of ' + total + ' squares free' : 'Your beds are full: <strong>' + total + '</strong> squares planted')) +
-      (preview ? '' : '<span class="sq-hint"> · Drag a plant to move it</span>') + '</p>';
+      : (total - used ? '<strong>' + used + '</strong> of ' + total + ' squares used · ' + (total - used) + ' free' + (preview ? '' : '<span class="sq-hint">. Tap + to give a plant more room, or save squares to sow again later</span>') : 'Your beds are full: <strong>' + total + '</strong> squares planted')) +
+      '</p>';
     var cards = state.beds.map(function (b, i) {
       var W = L.grids[i].rows, Lg = L.grids[i].cols, cellsH = [], items = L.groups[i], G = L.grids[i];
       for (var ci = 0; ci < W * Lg; ci++) if (!G.g[ci]) cellsH.push('<div class="sq sq-free" style="grid-area:' + (Math.floor(ci / Lg) + 1) + ' / ' + (ci % Lg + 1) + '"></div>');
       items.forEach(function (it) {
         it.cells.forEach(function (x) {
-          cellsH.push('<div class="sq sq-plant' + (x.k > 1 ? ' sq-big' : '') + '" style="grid-area:' + (x.r + 1) + ' / ' + (x.c + 1) + ' / span ' + x.k + ' / span ' + x.k + '"' +
+          cellsH.push('<div class="sq sq-plant pc' + col[it.c.id] + (x.k > 1 ? ' sq-big' : '') + '" data-pid="' + it.c.id + '" style="grid-area:' + (x.r + 1) + ' / ' + (x.c + 1) + ' / span ' + x.k + ' / span ' + x.k + '"' +
             (preview ? '' : ' data-drag="' + it.c.id + '" data-b="' + i + '" data-r="' + x.r + '" data-c="' + x.c + '"') + ' title="' + esc(it.c.name) + '">' +
-            eico(it.c.id, x.k > 1 ? 40 : 24) + (perSq(it.c.id) > 1 ? '<b>' + perSq(it.c.id) + '</b>' : '') + '</div>');
+            eico(it.c.id, x.k > 1 ? 40 : 24) + (x.k > 1 ? '<em>' + esc(it.c.name) + '</em>' : '') + (perSq(it.c.id) > 1 ? '<b>' + perSq(it.c.id) + '</b>' : '') + '</div>');
         });
       });
       var sizeChips = SIZES.map(function (z) { var on = W === z[0] && Lg === z[1]; return '<button type="button" class="sq-size' + (on ? ' is-on' : '') + '" data-act="size" data-i="' + i + '" data-w="' + z[0] + '" data-l="' + z[1] + '" aria-pressed="' + on + '"' + (preview ? ' disabled' : '') + '>' + z[0] + '×' + z[1] + '</button>'; }).join("");
@@ -273,15 +265,15 @@
         '<div class="sq-main"><div class="sq-left"><div class="sq-sizes" role="group" aria-label="Bed ' + (i + 1) + ' size in feet">' + sizeChips +
         '<span class="sq-own' + (custom ? ' is-on' : '') + '"><input type="number" min="1" max="30" inputmode="numeric" data-bed="' + i + '" data-dim="w" value="' + W + '" aria-label="Width in feet"' + (preview ? ' disabled' : '') + '><span aria-hidden="true">×</span><input type="number" min="1" max="30" inputmode="numeric" data-bed="' + i + '" data-dim="l" value="' + Lg + '" aria-label="Length in feet"' + (preview ? ' disabled' : '') + '></span></div>' +
         '<div class="sq-grid" data-bed-grid="' + i + '" style="grid-template-columns:repeat(' + Lg + ',1fr);grid-template-rows:repeat(' + W + ',auto)" aria-hidden="true">' + cellsH.join("") + '</div>' +
-        '<p class="sq-cap">Each square is 1 × 1 ft. A number means that many plants share the square.</p></div><div class="sq-right">' +
+        '<p class="sq-cap">Each square is 1 × 1 ft. Colours match the list; a number means that many plants share the square.</p></div><div class="sq-right">' +
         (items.length ? '<ul class="sq-list">' + items.map(function (it) {
           var c = it.c, ps = perSq(c.id), tot = units(c, auto);
-          var how = ps > 1 ? sqs(it.n) + ' · ' + ps + ' plants in each' : ps === 1 ? sqs(it.n) + ' · one plant in each' : 'each plant needs a ' + spot(c.id) + ' × ' + spot(c.id) + ' ft spot';
-          return '<li>' + eico(c.id, 32) + '<span class="bd-pn"><strong>' + esc(c.name) + '</strong><span>' + how + '</span></span>' +
-            (preview ? '<span class="sq-n">' + pl(it.n * (ps || 1)) + '</span>' :
+          var how = ps > 1 ? pl(it.n * ps) + ' · ' + ps + ' per square' : ps === 1 ? pl(it.n) + ' · one per square' : 'each needs a ' + spot(c.id) + ' × ' + spot(c.id) + ' ft spot';
+          return '<li class="pc' + col[c.id] + '" data-pid="' + c.id + '"><span class="sq-sw" aria-hidden="true"></span>' + eico(c.id, 32) + '<span class="bd-pn"><strong>' + esc(c.name) + '</strong><span>' + how + '</span></span>' +
+            (preview ? '<span class="sq-n">' + (ps ? sqs(it.n) : pl(it.n)) + '</span>' :
             '<span class="bd-step"><button type="button" data-act="sq" data-id="' + c.id + '" data-b="' + i + '" data-d="-1" aria-label="Less ' + esc(lc(c.name)) + ' in bed ' + (i + 1) + '"' + (tot <= 1 ? ' disabled' : '') + '>−</button>' +
-            '<output>' + it.n * (ps || 1) + '</output><button type="button" data-act="sq" data-id="' + c.id + '" data-b="' + i + '" data-d="1" aria-label="More ' + esc(lc(c.name)) + ' in bed ' + (i + 1) + '">+</button></span>' +
-            '<button type="button" class="gp-x" data-act="sqrm" data-crop="' + c.id + '" aria-label="Remove ' + esc(lc(c.name)) + ' from my plan" title="Remove from my plan">×</button>') + '</li>';
+            '<output>' + it.n + '<small>' + (ps ? (it.n === 1 ? 'square' : 'squares') : (it.n === 1 ? 'plant' : 'plants')) + '</small></output><button type="button" data-act="sq" data-id="' + c.id + '" data-b="' + i + '" data-d="1" aria-label="More ' + esc(lc(c.name)) + ' in bed ' + (i + 1) + '">+</button></span>' +
+            '<button type="button" class="gp-x" data-act="sqrm" data-crop="' + c.id + '" aria-label="Take ' + esc(lc(c.name)) + ' out of my plan" title="Take out of my plan">×</button>') + '</li>';
         }).join("") + '</ul>' : '<p class="bd-empty">Nothing in this bed yet. Drag a plant here, or tap “Optimize my beds”.</p>') + '</div></div></article>';
     }).join("");
     var loose = L.loose.length ? '<div class="sq-loose"><h3>Doesn\'t fit yet</h3><ul>' + L.loose.map(function (it) {
@@ -308,7 +300,9 @@
     var bal = withState({ sq: {}, manual: {} }, function () { return sqAuto(list); });
     var cands = [];
     var L1 = withState({ sq: bal, manual: {} }, function () { return sqLayout(list, {}, true); });
-    cands.push({ key: "even", title: "Even mix", why: "A fair share of room for every plant.", sq: bal, manual: manualOf(L1), L: L1 });
+    var names = function (pick) { var n = list.filter(pick).map(function (c) { return lc(c.name); }); return n.length > 3 ? n.slice(0, 3).join(", ") + " and more" : n.length > 1 ? n.slice(0, -1).join(", ") + " and " + n[n.length - 1] : n[0]; };
+    var isBig = function (c) { return !perSq(c.id); }, isSmall = function (c) { return !!perSq(c.id); };
+    cands.push({ key: "even", title: "Room to spare", why: "A good first amount of each plant, with free squares to sow again later.", sq: bal, manual: manualOf(L1), L: L1 });
     // Grow one group as far as it fits (everyone keeps at least one), then top up the rest.
     var grow = function (first) {
       var sq = {}; list.forEach(function (c) { sq[c.id] = 1; });
@@ -326,9 +320,10 @@
       pass(first); pass(function () { return true; });
       return sq;
     };
-    [["big", "More big plants", "More tomatoes, squash and other big plants; small crops fill the gaps.", function (c) { return !perSq(c.id); }],
-     ["small", "More small crops", "One of each big plant, and the rest of the room for small crops like carrots and lettuce.", function (c) { return !!perSq(c.id); }]].forEach(function (o) {
-      if (!list.some(o[3])) return;
+    var both = list.some(isBig) && list.some(isSmall);
+    [["fill", "Fill every square", "Every square planted, shared out evenly.", function () { return true; }]].concat(both ? [
+     ["big", "More " + names(isBig), "As many " + names(isBig) + " as fits; small crops fill the gaps.", isBig],
+     ["small", "More " + names(isSmall), "One of each big plant, and the rest of the room for " + names(isSmall) + ".", isSmall]] : []).forEach(function (o) {
       var sq = grow(o[3]), L = withState({ sq: sq, manual: {} }, function () { return sqLayout(list, {}, true); });
       if (cands.some(function (x) { return JSON.stringify(x.sq) === JSON.stringify(sq); })) return;
       cands.push({ key: o[0], title: o[1], why: o[2], sq: sq, manual: manualOf(L), L: L });
@@ -348,36 +343,36 @@
     var months = [];
     byDate.forEach(function (c) { if (!when[c.id]) return; var m = P.fmt(when[c.id]).split(" ")[0], last = months[months.length - 1];
       if (last && last.m === m) last.n.push(lc(c.name.replace(/ and summer squash/, ""))); else months.push({ m: m, n: [lc(c.name.replace(/ and summer squash/, ""))] }); });
-    cands.push({ key: "time", title: "Plant together", why: "Plants that go in the same month sit side by side, left to right. " + months.map(function (x) { return x.m + ": " + x.n.join(", "); }).join(" · "), sq: bal, manual: man, L: L3 });
+    if (months.length > 1 && list.length > 2) cands.push({ key: "time", title: "Plant together", why: "Plants that go in the same month sit side by side, left to right. " + months.map(function (x) { return x.m + ": " + x.n.join(", "); }).join(" · "), sq: bal, manual: man, L: L3 });
     return cands;
   }
-  function miniGrids(L) {
+  function miniGrids(L, col) {
     return L.groups.map(function (items, b) {
       var G = L.grids[b], h = [];
       for (var ci = 0; ci < G.rows * G.cols; ci++) if (!G.g[ci]) h.push('<i class="sq-free" style="grid-area:' + (Math.floor(ci / G.cols) + 1) + ' / ' + (ci % G.cols + 1) + '"></i>');
-      items.forEach(function (it) { it.cells.forEach(function (x) { h.push('<i class="sq-plant" style="grid-area:' + (x.r + 1) + ' / ' + (x.c + 1) + ' / span ' + x.k + ' / span ' + x.k + '">' + eico(it.c.id, x.k > 1 ? 22 : 14) + '</i>'); }); });
+      items.forEach(function (it) { it.cells.forEach(function (x) { h.push('<i class="sq-plant pc' + col[it.c.id] + '" style="grid-area:' + (x.r + 1) + ' / ' + (x.c + 1) + ' / span ' + x.k + ' / span ' + x.k + '">' + eico(it.c.id, x.k > 1 ? 22 : 14) + '</i>'); }); });
       return '<div class="sq-mini" style="grid-template-columns:repeat(' + G.cols + ',1fr)">' + h.join("") + '</div>';
     }).join("");
   }
   function optPanel(chosen, place) {
     var list = chosen.filter(function (c) { return !inGround(c); });
     if (!list.length) return '';
-    var cands = optCandidates(list, place);
+    var cands = optCandidates(list, place), col = colorMap(list);
     optPanel.cands = cands;
     return '<div class="sq-opt" id="sq-opt"><div class="sq-opt-head"><h3>Pick a layout</h3><button type="button" class="gp-x" data-act="optclose" aria-label="Close layouts">×</button></div>' +
       '<div class="sq-opt-list">' + cands.map(function (c, i) {
-        var used = 0, plants = 0, total = state.beds.reduce(function (s, b) { return s + bedSq(b); }, 0);
-        c.L.groups.forEach(function (g) { g.forEach(function (it) { used += it.sq; plants += it.n * (perSq(it.c.id) || 1); }); });
-        return '<article class="sq-opt-card"><h4>' + c.title + '</h4><p>' + esc(c.why) + '</p>' + miniGrids(c.L) +
-          '<p class="sq-opt-stat">' + used + ' of ' + total + ' squares · about ' + plants + ' plants' + (c.L.loose.length ? ' · ' + c.L.loose.length + ' don\'t fit' : '') + '</p>' +
+        var used = 0, total = state.beds.reduce(function (s, b) { return s + bedSq(b); }, 0);
+        c.L.groups.forEach(function (g) { g.forEach(function (it) { used += it.sq; }); });
+        return '<article class="sq-opt-card"><h4>' + esc(c.title) + '</h4><p>' + esc(c.why) + '</p>' + miniGrids(c.L, col) +
+          '<p class="sq-opt-stat">' + used + ' of ' + total + ' squares used' + (total - used ? ' · ' + (total - used) + ' free' : '') + (c.L.loose.length ? ' · ' + c.L.loose.length + ' don\'t fit' : '') + '</p>' +
           '<button type="button" class="btn btn-sm" data-act="optuse" data-i="' + i + '">Use this</button></article>';
       }).join("") + '</div></div>';
   }
   function sqBeds(chosen) {
     return '<section class="gp-sec gp-beds2" id="gp-beds-sec" aria-labelledby="gp-beds-h"><h2 id="gp-beds-h">Your beds</h2>' +
-      '<p class="station">' + (preview ? 'How these plants fit in the beds, using each plant\'s spacing.' : 'Pick a bed size and we\'ll fill it for you, using each plant\'s spacing. Drag plants to move them; tap × to take one out.') + '</p>' +
+      '<p class="station">' + (preview ? 'How these plants fit in the beds, using each plant\'s spacing.' : 'Pick a bed size and we\'ll plant a good first amount of each, using its spacing. Drag a plant to move it; tap × to take it out of your plan.') + '</p>' +
       '<div id="sq-optwrap"></div><div id="sq-wrap">' + sqBody(chosen) + '</div>' +
-      (preview ? '' : '<div class="sq-actions"><button type="button" class="btn btn-sm" data-act="optimize">Optimize my beds</button><button type="button" class="btn btn-ghost btn-sm" data-act="addbed">+ Add a bed</button></div>') +
+      (preview ? '' : '<div class="sq-actions"><button type="button" class="btn btn-sm" data-act="optimize">Optimize my beds</button><button type="button" class="btn btn-ghost btn-sm" data-act="addbed">+ Add a bed</button><button type="button" class="btn btn-ghost btn-sm" data-act="addplants">+ Add plants</button></div>') +
       '<div class="sq-trash" id="sq-trash" hidden><span aria-hidden="true">×</span> Drop here to take it out</div></section>';
   }
   function beds(chosen) { return sqBeds(chosen); }
@@ -391,7 +386,7 @@
   /* Cheat sheet, ratings and harvest log */
   function harvestsOf(id) { return state.harvests.filter(function (h) { return h.crop === id; }); }
   function cheat(c) {
-    var g = H.crops[c.id] || {}, rows = [["Sun", g.sun], ["Spacing", g.spacing], ["Depth", g.depth], ["Harvest", g.harvest], ["Watch for", g.problem]];
+    var g = H.crops[c.id] || {}, rows = [["Sun", g.sun], ["Spacing", g.spacing ? g.spacing.replace(/\.$/, "") + (SPACE[c.id] ? (inGround(c) ? "" : ". In a bed: " + bedTxt(c.id)) : "") : ""], ["Depth", g.depth], ["Harvest", g.harvest], ["Watch for", g.problem]];
     var rate = state.rating[c.id] || {}, past = Object.keys(rate).filter(function (y) { return +y < YEAR; }).sort().reverse()[0];
     var hs = harvestsOf(c.id).filter(function (h) { return h.date.slice(0, 4) === String(YEAR); });
     var label = { good: "did well", ok: "was OK", poor: "struggled" };
@@ -405,7 +400,7 @@
     if (hs.length) mineBits.push(hs.length + (hs.length === 1 ? " harvest" : " harvests"));
     if (!mineBits.length && state.cropNotes[c.id]) mineBits.push("variety noted");
     var hasMine = REPEAT.indexOf(c.id) >= 0 || !preview;
-    if (hasMine) h += '<details class="gp-mine" data-mine="' + c.id + '"' + (openNotes[c.id] ? " open" : "") + '><summary>' + (preview ? "Sowing" : "My notes") +
+    if (hasMine) h += '<details class="gp-mine" data-mine="' + c.id + '"' + (openNotes[c.id] ? " open" : "") + '><summary>' + (preview ? "Sowing" : "Notes on " + esc(lc(c.name))) +
       '<span>' + esc(mineBits.length ? mineBits.join(" · ") : preview ? "" : "variety, rating, harvests") + '</span></summary>';
     if (REPEAT.indexOf(c.id) >= 0) {
       h += '<label class="gp-mini">Sowing<select data-repeat="' + c.id + '"' + (preview ? " disabled" : "") + '>' +
@@ -478,42 +473,50 @@
     else if (r.season === "tight") t += " The season here is tight for " + name + ", so pick a fast variety.";
     return t;
   }
-  // One short line per plant for the season check; the full sentence (seasonText) is for the picker.
-  function shortWhen(r, s) {
-    if (s.k === "now") return "Plant any time until " + P.fmt(s.w.end);
-    if (s.k === "last") return "Last chance: plant by " + P.fmt(s.w.end);
-    if (s.k === "indoor") return "Start seeds indoors now, until " + P.fmt(s.w.end);
-    var n = s.next, step = n.kind === "indoor" ? "Start seeds indoors" : n.kind === "fall" && r.crop.anchor !== "garlic" ? "Plant again for fall" : "Plant";
-    return (s.missed ? "Missed it (closed " + P.fmt(s.missed.w.end) + "). Next: " + step.toLowerCase() : step) + " from " + P.fmt(n.w.start) + ", " + away(n.d);
-  }
   function shortSeasonNote(r, place) {
     if (r.season === "short") return "The frost-free season in " + place.city + " is usually too short for it. Pick the fastest variety and cover plants on cold nights.";
     if (r.season === "tight") return "The season here is tight for it, so pick a fast variety.";
     return "";
   }
-  function seasonCheck(p, place) {
+  // "Right now": this week's jobs, what can go in now, and when the rest start, in one short card.
+  function rightNow(list, p, place) {
     var t = today(), rows = p.crops.filter(function (r) { return state.crops.indexOf(r.crop.id) >= 0; }).map(function (r) { return { r: r, s: P.season(r, t) }; });
-    var order = { last: 0, now: 1, indoor: 2, soon: 3, later: 4 };
+    var due = list.filter(function (x) { return isSoon(x, 7) && !state.done[x.key]; });
+    var next = list.filter(function (x) { return x.date > now && !state.done[x.key] && due.indexOf(x) < 0; })[0];
+    var h = '<section class="gp-week" id="gp-week" aria-labelledby="gp-week-h"><div class="gp-week-head"><h2 id="gp-week-h">Right now</h2>' +
+      '<span>' + short(now) + ' – ' + short(new Date(+now + 6 * DAY)) + '</span></div>';
+    if (due.length) h += '<p class="gp-rn-h">Due this week</p><ul class="gp-tasks gp-week-list">' + due.map(taskLi).join("") + '</ul>';
+    else {
+      h += '<p class="gp-week-empty">Nothing due this week.' + (next ? ' Next job ' + away(Math.round((next.date - now) / DAY)) + ', on ' + short(next.date) + '.' : '') + '</p>';
+    }
+    var hard = rows.filter(function (x) { return x.r.season === "short" || x.r.season === "tight"; });
     var ready = rows.filter(function (x) { return (x.s.k === "now" || x.s.k === "last") && x.r.season !== "short"; });
-    var warn = rows.filter(function (x) { return ready.indexOf(x) < 0; })
-      .sort(function (a, b) { return order[a.s.k] - order[b.s.k] || (a.s.next ? a.s.next.d : 0) - (b.s.next ? b.s.next.d : 0); });
-    var lastOnes = ready.filter(function (x) { return x.s.k === "last"; });
-    var swaps = p.crops.filter(function (r) { return state.crops.indexOf(r.crop.id) < 0 && P.season(r, t).k === "now" && !r.season; })
-      .sort(function (a, b) { return ((H.crops[a.crop.id] || {}).difficulty || 2) - ((H.crops[b.crop.id] || {}).difficulty || 2) || a.crop.name.localeCompare(b.crop.name); }).slice(0, 6);
-    var h = '<section class="gp-sec gp-season" id="gp-season-sec" aria-labelledby="gp-season-h"><h2 id="gp-season-h">Season check</h2>' +
-      '<p>It\'s ' + MONTHS[now.getMonth()] + ' in ' + esc(place.city) + '. ' + (ready.length ? '<strong>' + ready.length + ' of your ' + rows.length + ' plants</strong> can go in now' +
-      (warn.length ? '; here\'s when the ' + (warn.length === 1 ? 'other one starts' : 'other ' + warn.length + ' start') + '.' : '. Everything you picked is in season.')
-      : '<strong>None of your ' + (rows.length === 1 ? 'plants' : rows.length + ' plants') + '</strong> go in right now. Here\'s when each one starts.') + '</p>';
-    if (ready.length) h += '<p class="gp-ready"><span class="gp-st gp-st-now">' + TAG.now + '</span> ' + ready.map(function (x) { return esc(x.r.crop.name) + (x.s.k === "last" ? ' <span class="gp-st gp-st-last">closes ' + P.fmt(x.s.w.end) + '</span>' : ''); }).join(", ") + '</p>';
-    if (lastOnes.length || warn.length) h += '<ul class="gp-warns">' + lastOnes.concat(warn).map(function (x) {
-      var k = x.r.season === "short" && (x.s.k === "now" || x.s.k === "last") ? "later" : x.s.k;
-      var note = shortSeasonNote(x.r, place);
-      return '<li class="gp-warn-' + k + '">' + R.icon(x.r.crop.id, base, 28) + '<div><p><strong>' + esc(x.r.crop.name) + '</strong> <span class="gp-st gp-st-' + k + '">' + (x.r.season === "short" ? "Hard here" : TAG[x.s.k]) + '</span></p>' +
-        '<p class="gp-when">' + esc(shortWhen(x.r, x.s)) + '</p>' + (note ? '<p class="gp-when-note">' + esc(note) + '</p>' : '') + '</div>' +
-        (k === "later" && !preview ? '<button type="button" class="gp-x" data-act="rmcrop" data-crop="' + x.r.crop.id + '" aria-label="Remove ' + esc(lc(x.r.crop.name)) + ' from my plan" title="Remove from my plan">×</button>' : '') + '</li>';
-    }).join("") + '</ul>' +
-      (warn.some(function (x) { return x.s.k === "later"; }) && !preview ? '<p class="gp-warn-act">Plants that aren\'t in season keep their dates in your to-do list. Tap × to take one out.</p>' : '');
-    if (swaps.length && !preview) h += '<div class="gp-swaps"><p>In season now in ' + esc(place.city) + ':</p><div>' + swaps.map(function (r) {
+    var indoor = rows.filter(function (x) { return x.s.k === "indoor" && x.r.season !== "short"; });
+    var rest = rows.filter(function (x) { return ready.indexOf(x) < 0 && indoor.indexOf(x) < 0 && x.s.next; });
+    var nm = function (x) { return esc(x.r.crop.name); };
+    var lines = [];
+    if (ready.length) lines.push('<li><span class="gp-st gp-st-now">Plant now</span> ' + ready.map(function (x) { return nm(x) + (x.s.k === "last" ? ' <span class="gp-st gp-st-last">by ' + P.fmt(x.s.w.end) + '</span>' : ''); }).join(", ") + '</li>');
+    if (indoor.length) lines.push('<li><span class="gp-st gp-st-indoor">Start indoors now</span> ' + indoor.map(nm).join(", ") + '</li>');
+    // The rest, grouped by the day their next step starts.
+    var byDay = [];
+    rest.sort(function (a, b) { return a.s.next.d - b.s.next.d; }).forEach(function (x) {
+      var n = x.s.next, step = n.kind === "indoor" ? "start indoors" : n.kind === "fall" && x.r.crop.anchor !== "garlic" ? "plant again for fall" : "plant", key = n.w.start + step, last = byDay[byDay.length - 1];
+      if (last && last.key === key) last.n.push(lc(x.r.crop.name)); else byDay.push({ key: key, d: P.fmt(n.w.start), step: step, n: [x.r.crop.name] });
+    });
+    var shown = byDay.slice(0, 4);
+    shown.forEach(function (g) {
+      var who = g.n.map(function (n, i) { return i ? n : lc(n); }), names = who.length > 1 ? who.slice(0, -1).join(", ") + " and " + who[who.length - 1] : who[0];
+      var txt = g.step === "start indoors" ? "Start " + names + " indoors" : g.step === "plant again for fall" ? "Plant " + names + " again for fall" : "Plant " + names;
+      lines.push('<li><span class="gp-date">' + g.d + '</span> ' + esc(txt) + '</li>'); });
+    if (byDay.length > shown.length) lines.push('<li class="gp-rn-more"><a href="#gp-todo-h">The rest are in your to-do list</a></li>');
+    h += '<p class="gp-rn-h">' + (ready.length || indoor.length ? 'Your plants' : 'None of your plants go in yet. Coming up') + '</p><ul class="gp-rn">' + lines.join("") + '</ul>';
+    if (hard.length) h += hard.map(function (x) { return '<p class="gp-when-note"><strong>' + nm(x) + ':</strong> ' + esc(shortSeasonNote(x.r, place)) + '</p>'; }).join("");
+    // Ideas to add: only from the groups people already picked from, so a salad bed doesn't get tulips.
+    var cats = {};
+    (D.categories || []).forEach(function (k) { if (k.crops.some(function (id) { return state.crops.indexOf(id) >= 0; })) k.crops.forEach(function (id) { cats[id] = 1; }); });
+    var swaps = p.crops.filter(function (r) { return cats[r.crop.id] && state.crops.indexOf(r.crop.id) < 0 && P.season(r, t).k === "now" && !r.season; })
+      .sort(function (a, b) { return ((H.crops[a.crop.id] || {}).difficulty || 2) - ((H.crops[b.crop.id] || {}).difficulty || 2) || a.crop.name.localeCompare(b.crop.name); }).slice(0, 4);
+    if (swaps.length && !preview) h += '<div class="gp-swaps"><p>Goes in now, if you want more:</p><div>' + swaps.map(function (r) {
       return '<button type="button" class="gp-swap" data-act="addcrop" data-crop="' + r.crop.id + '">' + R.icon(r.crop.id, base, 24) + '<span>+ ' + esc(r.crop.name) + '</span></button>';
     }).join("") + '</div></div>';
     return h + '</section>';
@@ -563,10 +566,13 @@
     var count = document.getElementById("gp-count");
     if (count) count.textContent = state.crops.length ? state.crops.length + " picked" : "";
     tagPicker(place ? P.plan(D, place) : null);
+    var guide = document.getElementById("gp-guide");
     if (!place || !state.crops.length) {
+      if (guide) guide.hidden = false;
       out.innerHTML = '<h2 class="gp-step">' + STEP3 + 'Your plan</h2><div class="gp-empty-wrap">' + emptyArt + '<p class="empty gp-empty">' + (!place ? "Choose your town" : "Pick at least one plant") + ' to see your plan.</p></div>';
       return;
     }
+    if (guide) guide.hidden = true;
     var p = P.plan(D, place), list = tasks(p), chosen = chosenCrops();
     var sub = { place: p.place, station: p.station, zone: p.zone, frost: p.frost, crops: p.crops.filter(function (r) { return state.crops.indexOf(r.crop.id) >= 0; }) };
     var groups = [], cur = null;
@@ -579,19 +585,19 @@
     var side = place.zone === "coast" ? "On the coast, west of the rain line: mild, wet winters and cool, foggy summers."
       : place.zone === "west" ? "West of the rain line: wet winters, dry summers and a long, mild season."
       : "East of the rain line: little rain, hot summers and colder winters, so watering matters most.";
-    var jump = [["gp-week", "This week"], ["gp-season-sec", "Season check"], ["gp-beds-sec", "Beds"], ["gp-todo-h", "To-do list"], ["gp-chart-h", "Chart"], ["gp-cards-h", "Plants"]].concat(preview ? [] : [["gp-more", "More tools"]]);
+    var jump = [["gp-week", "Right now"], ["gp-beds-sec", "Beds"], ["gp-todo-h", "To-do list"], ["gp-chart-h", "Chart"], ["gp-cards-h", "Plants"]].concat(preview ? [] : [["gp-more", "More tools"]]);
     out.innerHTML =
-      (preview ? '' : '<div class="gp-bar"><button type="button" class="btn" data-act="print">Print or save as PDF</button>' +
-      '<button type="button" class="btn btn-ghost" data-act="ics">Add dates to my calendar</button>' +
-      '<button type="button" class="btn btn-ghost" data-act="link">Copy link to this plan</button>' +
-      '<button type="button" class="btn btn-ghost gp-reset" data-act="reset">Reset plan</button>' +
-      '<span class="gp-saved" role="status">Saved on this device</span></div>') +
       '<header class="gp-title"><h2 class="gp-step">' + (preview ? '' : STEP3) + 'Garden plan for ' + esc(place.city) + ', ' + place.state + '</h2>' +
-      '<p>' + chosen.length + ' plants · ' + doneCount + ' of ' + list.length + ' jobs done · made ' + short(now) + ', ' + YEAR + ' at rainlinegarden.org</p>' +
+      '<p>' + chosen.length + ' plants · ' + doneCount + ' of ' + list.length + ' jobs done<span class="gp-print-only"> · made ' + short(now) + ', ' + YEAR + ' at rainlinegarden.org</span></p>' +
       '<p class="gp-rain"><a href="' + base + 'how-it-works/#rain-line">' + side + '</a></p></header>' +
+      (preview ? '' : '<div class="gp-bar"><button type="button" class="btn btn-sm" data-act="print">Print or save as PDF</button>' +
+      '<button type="button" class="btn btn-ghost btn-sm" data-act="ics">Add dates to my calendar</button>' +
+      '<button type="button" class="btn btn-ghost btn-sm" data-act="link">Copy link to this plan</button>' +
+      '<button type="button" class="btn btn-ghost btn-sm gp-reset" data-act="reset">Reset plan</button>' +
+      '<span class="gp-saved" role="status">Saved on this device</span></div>') +
+
       '<nav class="gp-jump" aria-label="Plan sections">' + jump.map(function (j) { return '<a href="#' + j[0] + '">' + j[1] + '</a>'; }).join("") + '</nav>' +
-      thisWeek(list) +
-      seasonCheck(p, place) +
+      rightNow(list, p, place) +
       beds(chosen) +
       '<h2 id="gp-todo-h">Your to-do list</h2><p class="station">Tick jobs off as you go. Jobs due in the next two weeks are highlighted. Dates are a guide: check the soil and the forecast too.</p>' +
       groups.map(function (g) { return '<h3 class="gp-month">' + g.label + '</h3><ul class="gp-tasks">' + g.items.map(taskLi).join("") + '</ul>'; }).join("") +
@@ -600,9 +606,9 @@
       '<h2 id="gp-cards-h">Plant cheat sheet</h2><div class="gp-cards">' + chosen.map(cheat).join("") + '</div>' +
       // A shared plan you're only previewing has nothing under More tools, so it's left out.
       (preview ? '' : '<details class="gp-more" id="gp-more"' + (state.moreOpen ? " open" : "") + '><summary><span class="gp-more-t">More tools</span><span class="gp-more-s">' +
-        'Harvest log, frost alerts and notes</span></summary>' +
+        'Harvest log, frost alerts and garden notes</span></summary>' +
       harvestLog(chosen) + frostAlerts(place, p) +
-      '<section class="gp-sec" aria-labelledby="gp-notes-h"><h2 id="gp-notes-h">Notes</h2><label class="sr-only" for="gp-notes">Garden notes</label><textarea id="gp-notes" class="gp-notes" rows="6" placeholder="What did well, what to change next year, where the sun hits...">' + esc(state.notes) + '</textarea></section>' +
+      '<section class="gp-sec" aria-labelledby="gp-notes-h"><h2 id="gp-notes-h">Garden notes</h2><p class="station">For the whole garden. Notes on one plant go in its card in the plant cheat sheet.</p><label class="sr" for="gp-notes">Garden notes</label><textarea id="gp-notes" class="gp-notes" rows="6" placeholder="What did well, what to change next year, where the sun hits...">' + esc(state.notes) + '</textarea></section>' +
       '</details>');
   }
 
@@ -892,9 +898,10 @@
       state.crops = state.crops.filter(function (x) { return x !== id; });
       if (act === "addcrop") state.crops.push(id);
       save(); render();
-      var sec = document.getElementById("gp-season-sec"); if (sec) sec.scrollIntoView({ block: "nearest" });
+      var sec = document.getElementById("gp-week"); if (sec) sec.scrollIntoView({ block: "nearest" });
       flash(c.name + (act === "addcrop" ? " added to your plan" : " removed from your plan"));
     }
+    else if (act === "addplants") { pick.open = true; pick.scrollIntoView({ behavior: "smooth", block: "start" }); var f = document.getElementById("gp-find"); if (f) setTimeout(function () { f.focus({ preventScroll: true }); }, 400); }
     else if (act === "reset") {
       if (!confirm("Reset your garden plan? This clears your town, plants, ticks, beds, notes and harvest log on this device. It can't be undone.")) return;
       state = mine = fresh({});
@@ -908,10 +915,13 @@
     }
     else if (act === "rmlog") { state.harvests = state.harvests.filter(function (h) { return h.id !== b.dataset.id; }); save(); render(); flash("Harvest removed"); }
   });
-  document.getElementById("gp-clear").addEventListener("click", function () {
-    if (!confirm("Clear your plants, ticks, notes and bed sizes? Your harvest log stays.")) return;
-    state = mine = fresh({ place: state.place, harvests: state.harvests, rating: state.rating });
-    save(); render();
+  // "Reset plan" at the foot of step 2 does the same as the button by the plan.
+  document.getElementById("gp-clear").addEventListener("click", function () { var r = out.querySelector('[data-act="reset"]'); if (r) r.click(); else { state = mine = fresh({}); save(); render(); } });
+  // Pointing at a plant in the bed list lights up its squares.
+  out.addEventListener("mouseover", function (e) {
+    var li = e.target.closest && e.target.closest(".sq-list li[data-pid]"), card = li && li.closest(".sq-card");
+    Array.prototype.forEach.call(out.querySelectorAll(".sq-plant.is-hl"), function (x) { x.classList.remove("is-hl"); });
+    if (li && card) Array.prototype.forEach.call(card.querySelectorAll('.sq-plant[data-pid="' + li.dataset.pid + '"]'), function (x) { x.classList.add("is-hl"); });
   });
 
   function openMore() { var m = document.getElementById("gp-more"); if (m && !m.open) m.open = true; }
