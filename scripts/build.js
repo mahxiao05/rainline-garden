@@ -175,7 +175,6 @@ function layout({ rel, title, description, canonical, current, body, scripts, js
   const cur = href => current === href ? ' aria-current="page"' : "";
   const LEARN = [["beginners-guide/", "Beginner's guide", "Start your first Northwest garden"], ["garden-calendar/", "Monthly chores", "What to do in the garden each month"],
     ["articles/", "Articles", "Growing guides for Northwest weather"], ["glossary/", "Glossary", "Gardening words in plain language"], ["what-to-grow/", "Plant quiz", "Find the plants that suit you"], ["how-it-works/", "How it works", "Where our dates come from"]];
-  const learnOn = LEARN.some(([href]) => href === current);
   const ICON = {
     search: '<svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
     chev: '<svg class="chev" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
@@ -187,9 +186,9 @@ function layout({ rel, title, description, canonical, current, body, scripts, js
   };
   // The logo is the way home, so Home isn't repeated in the menus.
   const MAIN = [["when-to-plant/", "When to plant"], ["frost-dates/", "Town calendars"]];
-  const nav = MAIN.map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("") +
-    `<div class="nav-more"><button type="button" class="nav-more-btn${learnOn ? " is-current" : ""}" aria-expanded="false" aria-controls="nav-learn">Learn${ICON.chev}</button>` +
-    `<div class="nav-menu" id="nav-learn" hidden>${LEARN.map(([href, label, sub]) => `<a href="${base}${href}"${cur(href)}><strong>${label}</strong><span>${sub}</span></a>`).join("")}</div></div>`;
+  // Section links: one row under the header bar, scrolling sideways on phones.
+  const STRIP = MAIN.concat([["fall-planting/", "Fall planting"]], LEARN.filter(([href]) => href !== "how-it-works/").map(([href, label]) => [href, label]));
+  const nav = STRIP.map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("");
   const menu = `<div class="site-menu" id="site-menu" hidden><div class="wrap">
 <p class="menu-town" hidden></p>
 <div class="menu-cols"><div><p class="menu-h">Plan</p>${MAIN.concat([["my-garden/", "My garden plan"], ["what-to-grow/", "Plant quiz"]]).map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("")}</div>
@@ -220,13 +219,13 @@ ${noindex ? '<meta name="robots" content="noindex, follow">\n' : ""}<link rel="c
 <meta property="og:image" content="${CONFIG.siteUrl}${image || "assets/img/og.png"}">
 <meta property="og:site_name" content="Rainline Garden">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#FAF7F0">
+<meta name="theme-color" content="#0B1A15">
 <script>try{var t=localStorage.getItem("rainline-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="icon" href="${base}favicon.ico" sizes="48x48">
 <link rel="icon" href="${base}assets/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="${base}apple-touch-icon.png">
 <link rel="manifest" href="${base}site.webmanifest">
-<link rel="stylesheet" href="${base}assets/fonts/fonts.css">
+<link rel="stylesheet" href="${base}assets/fonts/fonts.css?v=${ver("fonts/fonts.css")}">
 <link rel="stylesheet" href="${base}assets/style.css?v=${ver("style.css")}">
 ${ads}
 ${CONFIG.goatcounterCode ? `<script data-goatcounter="https://${CONFIG.goatcounterCode}.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>` : ""}
@@ -235,16 +234,16 @@ ${ld}
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-head"><div class="wrap">
-<a class="brand" href="${base}"><img src="${base}assets/icon.svg" width="30" height="30" alt="Rainline Garden logo" aria-hidden="true">Rainline Garden</a>
+<a class="brand" href="${base}"><img src="${base}assets/icon.svg" width="30" height="30" alt="Rainline Garden logo" aria-hidden="true"><span>Rainline Garden</span></a>
+<button type="button" class="head-search" aria-label="Search plants, towns and guides" aria-expanded="false" aria-controls="search-pop">${ICON.search}<span>Search plants, towns and guides</span></button>
 <div class="town-chip-wrap"><button type="button" class="town-chip" aria-expanded="false" aria-controls="town-pop">${ICON.pin}<span class="tc-name">Set your town</span>${ICON.chev}</button>
 <div class="town-pop" id="town-pop" hidden></div></div>
-<nav class="nav" aria-label="Main">${nav}</nav>
-<button type="button" class="head-search" aria-label="Search plants, towns and guides" aria-expanded="false" aria-controls="search-pop">${ICON.search}<span>Search</span></button>
 <a class="head-cta" href="${base}my-garden/"${cur("my-garden/")}>${ICON.plan}<span class="cta-long">My garden plan</span><span class="cta-short">My plan</span></a>
 <button class="theme-btn" type="button" aria-label="Switch to dark mode" title="Light or dark mode">${ICON.moon}${ICON.sun}</button>
 <a class="plan-btn" href="${base}my-garden/" aria-label="My garden plan"${cur("my-garden/")}>${ICON.plan.replace(/18/g, "20")}</a>
 <button type="button" class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="site-menu">${ICON.menu}</button>
 </div>
+<nav class="nav" aria-label="Main"><div class="wrap">${nav}</div></nav>
 ${menu}
 ${search}
 </header>
@@ -271,7 +270,9 @@ const DATE_RE = /\d{4}-\d\d-\d\d|(?:January|February|March|April|May|June|July|A
 // Version stamps on assets, so browsers fetch new CSS and scripts as soon as they change instead of after their cache expires.
 const ver = f => require("crypto").createHash("sha1").update(fs.readFileSync(path.join(__dirname, "../assets", f))).digest("hex").slice(0, 8);
 // Only <main> counts, so a change to the shared header, menu or footer doesn't restamp every page as updated.
-const bodyOf = h => { const m = h.indexOf("<main"), e = h.lastIndexOf("</main>"); return (m >= 0 && e > m ? h.slice(m, e) : h.slice(h.indexOf("<body"))).replace(/\?v=[0-9a-f]{8}/g, ""); };
+// Layout-only markup is ignored too: moving the banner photo into the page header isn't new content.
+const bodyOf = h => { const m = h.indexOf("<main"), e = h.lastIndexOf("</main>"); return (m >= 0 && e > m ? h.slice(m, e) : h.slice(h.indexOf("<body"))).replace(/\?v=[0-9a-f]{8}/g, "")
+  .replace(/<figure class="photo-banner">[\s\S]*?<\/figure>\n?/g, "").replace(/ has-photo/g, "").replace(/\n{2,}/g, "\n"); };
 // Glossary links are ignored too: adding them doesn't change what a page says.
 const sameBut = (a, b) => unGlossary(bodyOf(a)).replace(DATE_RE, "D") === unGlossary(bodyOf(b)).replace(DATE_RE, "D");
 // Pages built before dates went month-and-year printed full dates; read them as the new format so they keep their date.
@@ -717,22 +718,35 @@ function categoryTiles(rel, drops) {
 }
 
 /* Home */
+// Shortcuts under the home search box: two popular plants and one big town from each state, all real pages.
+const HOME_QUICK = [["when-to-plant/garlic/", "Garlic"], ["when-to-plant/tomatoes/", "Tomatoes"],
+  ...["portland-or", "spokane-wa", "boise-id", "bend-or"].map(slug => { const pl = D.places.find(x => x.slug === slug); return [`frost-dates/${slug}/`, `${pl.city}, ${pl.state}`]; })];
+const HOME_ICONS = [
+  ["frost-dates/", "Town calendars", '<rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4M8 14h2M14 14h2M8 17h2"/>'],
+  ["when-to-plant/", "When to plant", '<path d="M12 21v-9"/><path d="M12 13C7 13 4.5 10 4.5 5.5 9.5 5.5 12 8.5 12 13z"/><path d="M12 11c0-4.5 3-7 7.5-7 0 4.5-3 7-7.5 7z"/>'],
+  ["my-garden/", "My garden plan", '<path d="M3 15h18v5H3z"/><path d="M7 15v-3M12 15V9M17 15v-4"/><circle cx="12" cy="7.5" r="1.5"/><circle cx="7" cy="10.5" r="1.3"/><circle cx="17" cy="9.5" r="1.3"/>'],
+  ["what-to-grow/", "Plant quiz", '<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6M12 17.2v.1"/>'],
+  ["garden-calendar/", "Monthly chores", '<path d="M5 4h11l3 3v13H5z"/><path d="M8.5 11l1.8 1.8L14 9M8.5 16h7"/>'],
+  ["fall-planting/", "Fall planting", '<path d="M6 18c0-7 5-12 13-12 0 8-5 13-13 13"/><path d="M6 18 13 11M4 21l2-3"/>'],
+  ["articles/", "Articles", '<path d="M4 5.5C6.5 4 9.5 4 12 6c2.5-2 5.5-2 8-.5V19c-2.5-1.5-5.5-1.5-8 .5-2.5-2-5.5-2-8-.5z"/><path d="M12 6v13.5"/>']];
 write("", "index.html", layout({
   rel: "", canonical: "", current: "",
   title: "Oregon, Washington & Idaho Planting Calendar | Rainline Garden",
   description: "When to plant vegetables in Oregon, Washington and Idaho. Enter your ZIP for local frost dates and a planting calendar built from NOAA data.",
   jsonld: [{ "@context": "https://schema.org", "@type": "WebSite", name: "Rainline Garden", url: CONFIG.siteUrl, publisher: OWNER_LD }],
   body: `
-<div class="home-top">
-${photo("hero", "", { big: "hero", small: "heroSm", cls: "hero-art", sizes: "(min-width: 70rem) 33rem, (min-width: 900px) 46vw, calc(100vw - 32px)", eager: true })}
-<section class="hero">
+<section class="home-hero">
+${photo("hero", "", { big: "hero", small: "heroSm", cls: "home-photo", sizes: "100vw", eager: true })}
+<div class="hero">
 <p class="eyebrow">Oregon · Washington · Idaho</p>
 <h1>Plant on Northwest time.</h1>
 <p class="lede">Local frost dates and a year-round planting calendar for your town, on either side of the Cascades.</p>
 ${townBox({ id: "where", rel: "", button: "Show my dates", browse: true })}
+<ul class="quick" aria-label="Popular">${HOME_QUICK.map(([href, label]) => `<li><a href="${href}">${label}<span aria-hidden="true"> &rarr;</span></a></li>`).join("")}</ul>
 <ul class="trust"><li>${D.places.length} towns</li><li>NOAA frost records</li><li>Free, no sign-up</li></ul>
-</section>
 </div>
+<nav class="home-icons" aria-label="Sections">${HOME_ICONS.map(([href, label, d]) => `<a href="${href}"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg><span>${label}</span></a>`).join("")}</nav>
+</section>
 <section id="result" aria-live="polite"></section>
 <section id="season-now" class="home-sec season-now" aria-live="polite" hidden></section>
 <section id="plant-types" class="home-sec"><div class="sec-head"><h2>Browse by plant type</h2><a href="${WHEN_INDEX}">All ${D.crops.length} plants</a></div>
@@ -1021,8 +1035,7 @@ D.crops.forEach(c => {
     image: PHOTOS["crop:" + c.id] && photoFile("crop:" + c.id, "banner"),
     jsonld: sci ? [hb.ld, faqLd(sci.faq)] : [hb.ld],
     body: `${hb.html}
-${banner("crop:" + c.id, "../../")}
-<section class="hero hero-crop">${PHOTOS["crop:" + c.id] ? "" : R.icon(c.id, "../../", 120)}<div>
+<section class="hero hero-crop${PHOTOS["crop:" + c.id] ? " has-photo" : ""}">${banner("crop:" + c.id, "../../")}${PHOTOS["crop:" + c.id] ? "" : R.icon(c.id, "../../", 120)}<div>
 <p class="eyebrow">Oregon · Washington · Idaho</p>
 <h1>When to plant ${lc(c.name)}</h1>
 <p class="lede">${g.fall ? hubLede(c, ledeTowns, "fall") : hubLede(c, ledeTowns)}</p>
@@ -1102,8 +1115,7 @@ D.categories.forEach(k => {
     jsonld: [kb.ld],
     image: PHOTOS["cat:" + k.id] && photoFile("cat:" + k.id, "banner"),
     body: `${kb.html}
-${banner("cat:" + k.id, rel)}
-<section class="hero"><p class="eyebrow">When to plant · ${list.length} plants</p><h1>${esc(k.name)}</h1>
+<section class="hero${PHOTOS["cat:" + k.id] ? " has-photo" : ""}">${banner("cat:" + k.id, rel)}<p class="eyebrow">When to plant · ${list.length} plants</p><h1>${esc(k.name)}</h1>
 <p class="lede">${k.blurb} Pick one for its dates in your town and how to grow it.</p>
 <div class="cat-now" data-crops="${k.crops.join(" ")}">${townBox({ id: "cat-box", rel, button: "Show" })}</div></section>
 ${cards}
@@ -1315,8 +1327,7 @@ ARTICLES.forEach(a => {
       image: CONFIG.siteUrl + (PHOTOS["article:" + a.slug] ? photoFile("article:" + a.slug, "banner") : "assets/img/og.png"), author: byLd(a.author || DEFAULT_AUTHOR), publisher: OWNER_LD, mainEntityOfPage: CONFIG.siteUrl + `articles/${a.slug}/` }],
     body: `${ab.html}
 <article class="article">
-${banner("article:" + a.slug, rel)}
-<header class="hero hero-crop">${PHOTOS["article:" + a.slug] ? "" : articleIcon(a, rel, 120)}<div><p class="eyebrow">${topic} · Oregon · Washington · Idaho</p><h1>${esc(articleH1(a.title))}</h1><p class="lede">${esc(a.description)}</p>
+<header class="hero hero-crop${PHOTOS["article:" + a.slug] ? " has-photo" : ""}">${banner("article:" + a.slug, rel)}${PHOTOS["article:" + a.slug] ? "" : articleIcon(a, rel, 120)}<div><p class="eyebrow">${topic} · Oregon · Washington · Idaho</p><h1>${esc(articleH1(a.title))}</h1><p class="lede">${esc(a.description)}</p>
 <p class="byline">${byAvatar(rel, a.author || DEFAULT_AUTHOR)}<span>By ${byName(rel, a.author || DEFAULT_AUTHOR)}<br><span class="byline-d">Updated ${stamp(CONFIG.updated)}</span></span></p></div></header>
 ${toc.nav}
 <div class="prose">${toc.html}</div>
