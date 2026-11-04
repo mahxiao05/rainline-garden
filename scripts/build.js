@@ -234,7 +234,7 @@ ${ld}
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-head"><div class="wrap">
-<a class="brand" href="${base}"><img src="${base}assets/icon.svg" width="30" height="30" alt="Rainline Garden logo" aria-hidden="true"><span>Rainline Garden</span></a>
+<a class="brand" href="${base}"><img src="${base}assets/mark.svg" width="32" height="32" alt="Rainline Garden logo" aria-hidden="true"><span>Rainline Garden</span></a>
 <button type="button" class="head-search" aria-label="Search plants, towns and guides" aria-expanded="false" aria-controls="search-pop">${ICON.search}<span>Search plants, towns and guides</span></button>
 <div class="town-chip-wrap"><button type="button" class="town-chip" aria-expanded="false" aria-controls="town-pop">${ICON.pin}<span class="tc-name">Set your town</span>${ICON.chev}</button>
 <div class="town-pop" id="town-pop" hidden></div></div>
