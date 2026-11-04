@@ -86,7 +86,7 @@
   }
 
   // Planting dates for every crop, one collapsed table per plant type so 80-odd rows don't make one very long list.
-  function table(p, base) {
+  function table(p, base, only) {
     var row = function (r) {
       var spring = r.windows.filter(function (w) { return w.kind === "spring"; })[0];
       var fall = r.windows.filter(function (w) { return w.kind === "fall"; })[0];
@@ -96,11 +96,14 @@
         '<td data-label="Plant again for fall">' + (fall ? P.fmtRange(fall.start, fall.end) : '<span class="none">—</span>') + '</td></tr>';
     };
     var head = '<thead><tr><th scope="col">Crop</th><th scope="col">Start seeds indoors</th><th scope="col">Plant in the garden</th><th scope="col">Plant again for fall</th></tr></thead>';
+    var groupRows = function (cat) { return p.crops.filter(function (r) { return r.crop.cat === cat.id; }); };
+    var tbl = function (rows) { return '<div class="table-wrap"><table class="plan">' + head + '<tbody>' + rows.map(row).join("") + '</tbody></table></div>'; };
+    // One plant type's dates (the home page's plant-type tiles open these).
+    if (only) { var rows1 = groupRows(only); return rows1.length ? tbl(rows1) : ""; }
     return '<div class="area-groups">' + D.categories.map(function (cat) {
-      var rows = p.crops.filter(function (r) { return r.crop.cat === cat.id; });
+      var rows = groupRows(cat);
       if (!rows.length) return "";
-      return '<details class="area-group"><summary>' + cat.name + ' <span>' + rows.length + (rows.length === 1 ? ' plant' : ' plants') + '</span></summary>' +
-        '<div class="table-wrap"><table class="plan">' + head + '<tbody>' + rows.map(row).join("") + '</tbody></table></div></details>';
+      return '<details class="area-group"><summary>' + cat.name + ' <span>' + rows.length + (rows.length === 1 ? ' plant' : ' plants') + '</span></summary>' + tbl(rows) + '</details>';
     }).join("") + '</div>';
   }
 

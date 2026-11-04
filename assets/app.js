@@ -114,12 +114,36 @@
       R.frostFacts(p) + fold("about", "About these dates", R.regionNote(p)) +
       '<h2>What to plant now</h2>' + R.nowBlock(p, today, base) +
       fold("year", "Your year at a glance", '<div class="reveal">' + R.chart(p, today) + '</div>') +
-      fold("dates", "Planting dates", R.table(p, base));
+      '<p class="dates-jump"><a href="#plant-types">Planting dates for every plant, by plant type</a></p>';
     out.querySelectorAll("details.fold").forEach(function (d) {
       d.addEventListener("toggle", function () { store("rainline-fold-" + d.getAttribute("data-fold"), d.open ? "1" : "0"); });
     });
     if (history.replaceState) history.replaceState(null, "", "?place=" + place.slug);
     seasonNow(place);
+    typeDates(p);
+  }
+
+  // The plant-type tiles below open each group's plants. Once a town is picked, each list becomes that
+  // town's planting-dates table (this used to be a separate "Planting dates" list in the result).
+  function typeDates(p) {
+    var sec = document.getElementById("plant-types");
+    if (!sec) return;
+    var town = p.place.city + ", " + p.place.state;
+    sec.querySelector("h2").textContent = "Planting dates by plant type";
+    var sub = document.getElementById("plant-types-sub");
+    if (sub) sub.textContent = "Tap a plant type to see its dates for " + town + ".";
+    D.categories.forEach(function (k) {
+      var d = document.getElementById("drop-" + k.id);
+      if (!d) return;
+      var old = d.querySelector(".drop-dates");
+      if (old) old.remove();
+      var html = R.table(p, base, k), list = d.querySelector(".drop-rows");
+      if (!html) { if (list) list.hidden = false; return; }
+      if (list) list.hidden = true;
+      var t = d.querySelector(".cat-drop-t");
+      if (t) t.textContent = k.name + " in " + town;
+      d.insertAdjacentHTML("beforeend", '<div class="drop-dates">' + html + '</div>');
+    });
   }
 
   function scrollToResult() { out.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" }); }

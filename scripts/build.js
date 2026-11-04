@@ -735,12 +735,13 @@ ${townBox({ id: "where", rel: "", button: "Show my dates", browse: true })}
 </div>
 <section id="result" aria-live="polite"></section>
 <section id="season-now" class="home-sec season-now" aria-live="polite" hidden></section>
+<section id="plant-types" class="home-sec"><div class="sec-head"><h2>Browse by plant type</h2><a href="${WHEN_INDEX}">All ${D.crops.length} plants</a></div>
+<p class="sec-sub" id="plant-types-sub">Tap a plant type to see its plants.</p>
+${categoryTiles("", true)}
+</section>
 <section class="home-sec plan-cta"><div><h2>Plan your garden</h2>
 <p>Pick your plants, or start from a ready-made plan like a salad bed or a salsa garden, and get a dated to-do list for the year. It warns you when a plant isn't in season, saves as you go and prints on one page.</p></div>
 <div class="plan-cta-btns"><a class="btn" href="my-garden/">Make my garden plan</a><a class="btn btn-ghost" href="what-to-grow/">Not sure what to grow? Take the quiz</a></div></section>
-<section class="home-sec"><div class="sec-head"><h2>Browse by plant type</h2><a href="${WHEN_INDEX}">All ${D.crops.length} plants</a></div>
-${categoryTiles("")}
-</section>
 <section class="home-sec starter"><div><h2>New to gardening?</h2>
 <p>Start with five forgiving crops that are hard to kill, then read the <a href="beginners-guide/">beginner's guide</a>.</p></div>
 <ul class="chips">${G.beginner.map(id => `<li><a href="${WHEN_INDEX}${id}/">${R.icon(id, "", 28)}${cropById(id).name}</a></li>`).join("")}</ul></section>
@@ -754,7 +755,7 @@ ${newsletter()}
 <h2>Why Northwest planting dates are different</h2>
 <p>National charts key everything off the last frost date. Here that's only half the story: the Portland airport's typical last frost is in mid-March, yet tomatoes planted then sit in cold, wet soil for two months, while the high desert can frost into June. Rainline Garden combines NOAA frost records for each area with regional timing for when the soil is actually ready. <a href="how-it-works/">See how the dates are worked out</a>.</p>
 </section>`,
-  scripts: ["data.js", "plan.js", "render.js", "near.js", "townbox.js", "app.js"]
+  scripts: ["data.js", "plan.js", "render.js", "near.js", "townbox.js", "catdrop.js", "app.js"]
 }), "1.0");
 
 /* Town comparisons for frost-date pages: worked out from the frost data, so each town's page says
