@@ -20,7 +20,7 @@
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <link rel="manifest" href="../site.webmanifest">
 <link rel="stylesheet" href="../assets/fonts/fonts.css?v=d53b2365">
-<link rel="stylesheet" href="../assets/style.css?v=63741fb0">
+<link rel="stylesheet" href="../assets/style.css?v=577f4aba">
 
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://rainlinegarden.org/"},{"@type":"ListItem","position":2,"name":"Plant quiz"}]}</script>
@@ -54,7 +54,7 @@
 <section class="hero"><p class="eyebrow">Plant quiz · 2 minutes</p><h1>What should I grow?</h1>
 <p class="lede">Eight quick questions. You get plants that suit your garden and a one-tap plan.</p></section>
 <template id="quiz-tbox"><div class="tbox" id="quiz-box">
-<form class="home-find" novalidate><div class="home-find-box"><label class="home-find-in" for="quiz-box-in"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><span class="sr">ZIP code or town</span><input id="quiz-box-in" type="text" autocomplete="off" spellcheck="false" enterkeyhint="go" placeholder="ZIP code or town" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="quiz-box-list"></label><button class="btn" type="submit">Next</button></div>
+<form class="home-find" novalidate><div class="home-find-box"><label class="home-find-in" for="quiz-box-in"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><span class="sr">Town or ZIP</span><input id="quiz-box-in" type="text" autocomplete="off" spellcheck="false" enterkeyhint="go" placeholder="Town or ZIP" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="quiz-box-list"></label><button class="btn" type="submit">Next</button></div>
 <ul id="quiz-box-list" class="where-list" role="listbox" aria-label="Matching towns" hidden></ul></form>
 <p class="home-find-alt"><button type="button" class="link-btn tbox-near" hidden><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg><span>Use my location</span></button></p>
 <p class="msg tbox-msg" role="status" aria-live="polite"></p>
@@ -87,7 +87,7 @@
 <script>(function(){var r=document.documentElement,b=document.querySelector(".theme-btn"),w=document.querySelector(".theme-row");function cur(){return r.dataset.theme==="dark"?"dark":"light"}function sync(){if(b)b.setAttribute("aria-label",cur()==="dark"?"Switch to light mode":"Switch to dark mode");if(w)w.setAttribute("aria-checked",String(cur()==="dark"))}function flip(){var n=cur()==="dark"?"light":"dark";r.dataset.theme=n;try{localStorage.setItem("rainline-theme",n)}catch(e){}sync()}sync();if(b)b.addEventListener("click",flip);if(w)w.addEventListener("click",flip)})();</script>
 <script src="../assets/data.js?v=32cd5294"></script>
 <script src="../assets/plan.js?v=b996308b"></script>
-<script src="../assets/render.js?v=edfdd0b2"></script>
+<script src="../assets/render.js?v=c2041214"></script>
 <script src="../assets/guide-data.js?v=6f1386c7"></script>
 <script src="../assets/near.js?v=243179ab"></script>
 <script src="../assets/townbox.js?v=f660969e"></script>

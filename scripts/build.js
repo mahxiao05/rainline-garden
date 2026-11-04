@@ -272,7 +272,8 @@ const ver = f => require("crypto").createHash("sha1").update(fs.readFileSync(pat
 // Only <main> counts, so a change to the shared header, menu or footer doesn't restamp every page as updated.
 // Layout-only markup is ignored too: moving the banner photo into the page header isn't new content.
 const bodyOf = h => { const m = h.indexOf("<main"), e = h.lastIndexOf("</main>"); return (m >= 0 && e > m ? h.slice(m, e) : h.slice(h.indexOf("<body"))).replace(/\?v=[0-9a-f]{8}/g, "")
-  .replace(/<figure class="photo-banner">[\s\S]*?<\/figure>\n?/g, "").replace(/ has-photo/g, "").replace(/\n{2,}/g, "\n"); };
+  .replace(/<figure class="photo-banner">[\s\S]*?<\/figure>\n?/g, "").replace(/ has-photo/g, "")
+  .replace(/Town or ZIP/g, "ZIP code or town").replace(/<script>[\s\S]*?<\/script>/g, "").replace(/<details class="fold"[^>]*>|<\/details>|<\/?summary>/g, "").replace(/<h2>([^<]*)<\/h2>/g, "<h2 id>$1</h2>").replace(/<h2 id="[^"]*">/g, "<h2 id>").replace(/\n{2,}/g, "\n"); };
 // Glossary links are ignored too: adding them doesn't change what a page says.
 const sameBut = (a, b) => unGlossary(bodyOf(a)).replace(DATE_RE, "D") === unGlossary(bodyOf(b)).replace(DATE_RE, "D");
 // Pages built before dates went month-and-year printed full dates; read them as the new format so they keep their date.
@@ -410,7 +411,7 @@ ${TOWN_PICK_JS}`;
 // (data.js, plan.js, near.js) only when someone types a ZIP or taps "Use my location".
 const SEARCH_SVG = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
 const PIN_SVG = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg>';
-function townBox({ id, rel, button = "Show dates", label = "ZIP code or town", browse = false, lite = false, savedLine = true, cls = "" }) {
+function townBox({ id, rel, button = "Show dates", label = "Town or ZIP", browse = false, lite = false, savedLine = true, cls = "" }) {
   const lazy = lite ? ` data-lazy="${["data.js", "plan.js", "near.js"].map(f => `${rel}assets/${f}?v=${ver(f)}`).join("|")}" data-towns="${esc(D.places.map(p => `${p.slug}|${placeLabel(p)}`).join(";"))}"` : "";
   return `<div class="tbox${cls ? " " + cls : ""}" id="${id}"${lazy}>
 <form class="home-find" novalidate><div class="home-find-box"><label class="home-find-in" for="${id}-in">${SEARCH_SVG}<span class="sr">${label}</span><input id="${id}-in" type="text" autocomplete="off" spellcheck="false" enterkeyhint="go" placeholder="${label}" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="${id}-list"></label><button class="btn" type="submit">${button}</button></div>
@@ -583,14 +584,14 @@ function plantAfter(c, ex, port) {
 function seedSaving(c) {
   const s = SEED_SAVING[c.id];
   if (!s) return "";
-  return `<h2 id="seed">Saving ${singular(c.name)} seed</h2>
-<div class="sci-cards"><section class="sci-card"><h3>Will it come true?</h3><p>${esc(s[0])}</p></section>
-<section class="sci-card"><h3>How to save it</h3><p>${esc(s[1])}</p></section></div>`;
+  return phoneFold("seed", `Saving ${singular(c.name)} seed`, `<div class="sci-cards"><section class="sci-card"><h3>Will it come true?</h3><p>${esc(s[0])}</p></section>
+<section class="sci-card"><h3>How to save it</h3><p>${esc(s[1])}</p></section></div>`, true);
 }
 // Long sections that start closed on phones (open on wider screens); "On this page" links open them.
-const phoneFold = (id, title, body) => `<details class="fold" id="${id}" data-phone-fold open><summary><h2>${title}</h2></summary>
+// closed = starts closed on every screen size (long extras like the science notes).
+const phoneFold = (id, title, body, closed) => `<details class="fold" id="${id}" data-phone-fold${closed ? "" : " open"}><summary><h2>${title}</h2></summary>
 ${body}</details>`;
-const PHONE_FOLD_JS = `<script>(function(){var f=document.querySelectorAll("details[data-phone-fold]");if(matchMedia("(max-width: 40rem)").matches)f.forEach(function(d){if("#"+d.id!==location.hash)d.open=false});function show(){var d=location.hash&&document.getElementById(location.hash.slice(1));if(d&&d.matches("details[data-phone-fold]"))d.open=true}addEventListener("hashchange",show)})()</script>`;
+const PHONE_FOLD_JS = `<script>(function(){var f=document.querySelectorAll("details[data-phone-fold]");if(matchMedia("(max-width: 40rem)").matches)f.forEach(function(d){if("#"+d.id!==location.hash)d.open=false});function show(){var d=location.hash&&document.getElementById(location.hash.slice(1));if(d&&d.matches("details[data-phone-fold]"))d.open=true}addEventListener("hashchange",show);show()})()</script>`;
 const jump = (sci, vars) => `<nav class="jump" aria-label="On this page"><span>On this page:</span><a href="#dates">Planting dates</a><a href="#grow">How to grow</a><a href="#regions">By region</a>${vars ? '<a href="#varieties">Varieties</a>' : ""}<a href="#how-many">How much to grow</a><a href="#numbers">Key numbers</a><a href="#science">${sci.notes ? "Growing notes" : "The science"}</a><a href="#neighbors">Neighbors</a><a href="#pests">Pests</a><a href="#faq">Questions</a></nav>`;
 
 /* Plant-page extras from scripts/plant-extras.js and scripts/collections.js */
@@ -676,7 +677,7 @@ function varietyCards(c) {
   const vs = VARIETIES[c.id];
   if (!vs) return "";
   return phoneFold("varieties", `More ${singular(c.name)} varieties`, `<p class="lede-sm">More widely sold picks that do well somewhere in the Northwest. The tag says which part of the Northwest suits each one best.</p>
-<div class="var-cards">${vs.map(v => `<section class="var-card"><h3>${esc(v.name)}</h3><p class="var-meta">${esc(v.type)}${v.days ? ` <span>&middot; ${esc(v.days)}</span>` : ""}</p><p>${esc(v.note)}</p><p class="var-where">${esc(v.where)}</p></section>`).join("")}</div>`);
+<div class="var-cards">${vs.map(v => `<section class="var-card"><h3>${esc(v.name)}</h3><p class="var-meta">${esc(v.type)}${v.days ? ` <span>&middot; ${esc(v.days)}</span>` : ""}</p><p>${esc(v.note)}</p><p class="var-where">${esc(v.where)}</p></section>`).join("")}</div>`, true);
 }
 // Click-to-load how-to video from scripts/videos.js: shows the plant's own photo until clicked, then YouTube's official player.
 function videoBox(c) {
@@ -696,7 +697,7 @@ function scienceParts(sci, c) {
 <ul class="keys">${sci.keys.map(([l, v]) => `<li><span class="k-v">${esc(v)}</span><span class="k-l">${esc(l)}</span></li>`).join("")}</ul>${tip ? `
 <p class="care-tip"><strong>Top care tip:</strong> ${esc(tip)}</p>` : ""}
 ${phoneFold("science", sci.notes ? "Growing notes" : "The plant science", `<p class="lede-sm">${sci.notes ? "What makes the difference in Northwest gardens, in plain language." : "The plant biology behind the advice above, in plain language."}</p>
-<div class="sci-cards">${sci.sections.map(([h, ...ps]) => `<section class="sci-card"><h3>${esc(h)}</h3>${ps.map(p => `<p>${esc(p)}</p>`).join("")}</section>`).join("\n")}</div>`)}`;
+<div class="sci-cards">${sci.sections.map(([h, ...ps]) => `<section class="sci-card"><h3>${esc(h)}</h3>${ps.map(p => `<p>${esc(p)}</p>`).join("")}</section>`).join("\n")}</div>`, true)}`;
 }
 function stepsForHub(c, g, port) {
   return steps(c, rowFor(port, c.id), g).replace(/(Start seeds indoors|Plant them in the garden|Plant seeds|Plant seed potatoes|Plant onion sets|Break bulbs into cloves and plant them|Plant them|Plant again|Plant [A-Za-z -]+?) [A-Z][a-z]{2} \d+(–\d+| – [A-Z][a-z]{2} \d+)/g, "$1 on your city's dates");
@@ -721,14 +722,6 @@ function categoryTiles(rel, drops) {
 // Shortcuts under the home search box: two popular plants and one big town from each state, all real pages.
 const HOME_QUICK = [["when-to-plant/garlic/", "Garlic"], ["when-to-plant/tomatoes/", "Tomatoes"],
   ...["portland-or", "spokane-wa", "boise-id", "bend-or"].map(slug => { const pl = D.places.find(x => x.slug === slug); return [`frost-dates/${slug}/`, `${pl.city}, ${pl.state}`]; })];
-const HOME_ICONS = [
-  ["frost-dates/", "Town calendars", '<rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4M8 14h2M14 14h2M8 17h2"/>'],
-  ["when-to-plant/", "When to plant", '<path d="M12 21v-9"/><path d="M12 13C7 13 4.5 10 4.5 5.5 9.5 5.5 12 8.5 12 13z"/><path d="M12 11c0-4.5 3-7 7.5-7 0 4.5-3 7-7.5 7z"/>'],
-  ["my-garden/", "My garden plan", '<path d="M3 15h18v5H3z"/><path d="M7 15v-3M12 15V9M17 15v-4"/><circle cx="12" cy="7.5" r="1.5"/><circle cx="7" cy="10.5" r="1.3"/><circle cx="17" cy="9.5" r="1.3"/>'],
-  ["what-to-grow/", "Plant quiz", '<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6M12 17.2v.1"/>'],
-  ["garden-calendar/", "Monthly chores", '<path d="M5 4h11l3 3v13H5z"/><path d="M8.5 11l1.8 1.8L14 9M8.5 16h7"/>'],
-  ["fall-planting/", "Fall planting", '<path d="M6 18c0-7 5-12 13-12 0 8-5 13-13 13"/><path d="M6 18 13 11M4 21l2-3"/>'],
-  ["articles/", "Articles", '<path d="M4 5.5C6.5 4 9.5 4 12 6c2.5-2 5.5-2 8-.5V19c-2.5-1.5-5.5-1.5-8 .5-2.5-2-5.5-2-8-.5z"/><path d="M12 6v13.5"/>']];
 write("", "index.html", layout({
   rel: "", canonical: "", current: "",
   title: "Oregon, Washington & Idaho Planting Calendar | Rainline Garden",
@@ -745,7 +738,6 @@ ${townBox({ id: "where", rel: "", button: "Show my dates", browse: true })}
 <ul class="quick" aria-label="Popular">${HOME_QUICK.map(([href, label]) => `<li><a href="${href}">${label}<span aria-hidden="true"> &rarr;</span></a></li>`).join("")}</ul>
 <ul class="trust"><li>${D.places.length} towns</li><li>NOAA frost records</li><li>Free, no sign-up</li></ul>
 </div>
-<nav class="home-icons" aria-label="Sections">${HOME_ICONS.map(([href, label, d]) => `<a href="${href}"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg><span>${label}</span></a>`).join("")}</nav>
 </section>
 <section id="result" aria-live="polite"></section>
 <section id="season-now" class="home-sec season-now" aria-live="polite" hidden></section>
@@ -765,7 +757,7 @@ ${articleCards("", ARTICLES.slice(0, 3))}</section>
 <section class="home-sec garden-photos"><h2>From a Northwest garden</h2>
 ${gardenGrid("", GARDEN_PHOTOS.filter(r => r.home))}</section>
 ${newsletter()}
-<section class="home-sec prose">
+<section class="home-sec prose why-dates">
 <h2>Why Northwest planting dates are different</h2>
 <p>National charts key everything off the last frost date. Here that's only half the story: the Portland airport's typical last frost is in mid-March, yet tomatoes planted then sit in cold, wet soil for two months, while the high desert can frost into June. Rainline Garden combines NOAA frost records for each area with regional timing for when the soil is actually ready. <a href="how-it-works/">See how the dates are worked out</a>.</p>
 </section>`,
