@@ -270,7 +270,7 @@ img.avatar.avatar-site { background: var(--paper); border: 1px solid var(--line)
 .bar-fall { background: var(--ochre); }
 .bar-in { border: 2px dashed var(--teal); background: var(--teal-soft); }
 .today { position: absolute; z-index: 2; top: 0; bottom: 10px; pointer-events: none; border-left: 2px solid var(--warn); left: calc(var(--pad) + var(--lbl) + var(--plot) * var(--f)); }
-.key-today { width: 0; height: 16px; border-radius: 0; border-left: 2px solid var(--warn); margin: 0 10px; }
+.key.key-today { width: 0; height: 16px; border-radius: 0; border-left: 2px solid var(--warn); margin: 0 10px; }
 .legend { display: flex; flex-wrap: wrap; gap: 6px 20px; list-style: none; padding: 0; margin: .5rem 0 0; font-size: .95rem; color: var(--muted); }
 .legend li { display: flex; align-items: center; gap: 8px; }
 .key { position: relative; width: 22px; height: 12px; border-radius: 3px; }
