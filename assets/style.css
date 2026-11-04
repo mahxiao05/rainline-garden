@@ -1412,6 +1412,8 @@ html.tm-lock, html.tm-lock body { overflow: hidden; }
   #result .fact-k { font-size: .8rem; }
   .home-sec .cat-tiles { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 6px; }
   .home-sec .cat-tiles > li { flex: 0 0 38%; scroll-snap-align: start; }
+  /* Tiles that open a dates list stay a grid, so the list can open under the tapped row. */
+  .home-sec .cat-tiles-drop { display: grid; overflow: visible; padding-bottom: 0; }
 }
 /* The green-bar fold header used everywhere else a section folds open: garden calendar regions, plant index groups,
    garden plan groups, "Read more" intros, the town list areas and the How it works station list. */
@@ -1469,6 +1471,15 @@ html.tm-lock, html.tm-lock body { overflow: hidden; }
 @media (max-width: 600px) {
   .cat-drop { padding: 12px 12px 6px; }
   .drop-rows { grid-template-columns: 1fr; }
+}
+/* Home: plant-type tiles double as the town's planting-dates tables */
+.sec-sub { margin: -.5rem 0 1rem; color: var(--muted); }
+.drop-rows[hidden] { display: none; }
+.drop-dates .table-wrap { margin: 0 0 6px; }
+.drop-dates table.plan { background: transparent; }
+.dates-jump { margin: .75rem 0 0; font-weight: 700; }
+@media (max-width: 720px) {
+  .drop-dates .plan tr { padding: 10px 0; }
 }
 /* Bed planner: square-foot grid */
 .sq-sum { margin: .2rem 0 .8rem; color: var(--muted); }
