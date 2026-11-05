@@ -1829,3 +1829,8 @@ main > .crumbs:first-child, main > .hero:first-child, main > .crumbs:first-child
 
 /* Jump links land below the taller two-row header. */
 main [id] { scroll-margin-top: 124px; }
+
+/* White cards inside the dark page header use dark text (they were inheriting the header's white text). */
+.hero .yd-card, .hero .cat-now, .hero .town-line { color: var(--ink); }
+.hero .yd-card .pick-now b { color: var(--fir); }
+.hero .yd-card a { color: var(--moss); }
