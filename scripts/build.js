@@ -188,14 +188,19 @@ function layout({ rel, title, description, canonical, current, body, scripts, js
   };
   // The logo is the way home, so Home isn't repeated in the menus.
   const MAIN = [["when-to-plant/", "When to plant"], ["frost-dates/", "Town calendars"]];
-  // Section links: one row under the header bar, scrolling sideways on phones.
-  const STRIP = MAIN.concat([["fall-planting/", "Fall planting"]], LEARN.filter(([href]) => href !== "how-it-works/").map(([href, label]) => [href, label]));
-  const nav = STRIP.map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("");
+  // Main links sit in the header bar itself: three sections plus a Learn dropdown (the rest of the guides and dark mode).
+  const TOP = MAIN.concat([["fall-planting/", "Fall planting"]]);
+  const learnCur = LEARN.some(([href]) => href === current);
+  const themeRow = `<button type="button" class="theme-row" role="switch" aria-checked="false"><span>${ICON.moon}Dark mode</span><i class="sw" aria-hidden="true"></i></button>`;
+  const nav = TOP.map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("") +
+    `<div class="nav-more"><button type="button" class="nav-more-btn${learnCur ? " is-current" : ""}" aria-expanded="false" aria-controls="nav-learn">Learn${ICON.chev}</button>` +
+    `<div class="nav-menu" id="nav-learn" hidden>${LEARN.map(([href, label, sub]) => `<a href="${base}${href}"${cur(href)}><strong>${label}</strong><span>${sub}</span></a>`).join("")}${themeRow}</div></div>`;
   const menu = `<div class="site-menu" id="site-menu" hidden><div class="wrap">
+<button type="button" class="menu-search">${ICON.search}<span>Search plants, towns and guides</span></button>
 <p class="menu-town" hidden></p>
 <div class="menu-cols"><div><p class="menu-h">Plan</p>${MAIN.concat([["my-garden/", "My garden plan"], ["what-to-grow/", "Plant quiz"]]).map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("")}</div>
 <div><p class="menu-h">Learn</p>${LEARN.filter(([href]) => href !== "what-to-grow/").map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("")}</div></div>
-<button type="button" class="theme-row" role="switch" aria-checked="false"><span>${ICON.moon}Dark mode</span><i class="sw" aria-hidden="true"></i></button>
+${themeRow}
 </div></div>`;
   const search = `<div class="search-pop" id="search-pop" hidden><div class="wrap"><div class="search-box" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-owns="search-list">
 ${ICON.search}<label for="search-q" class="sr">Search plants, towns and guides</label><input id="search-q" type="search" autocomplete="off" spellcheck="false" placeholder="Search plants, towns and guides" aria-autocomplete="list" aria-controls="search-list">
@@ -237,15 +242,15 @@ ${ld}
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-head"><div class="wrap">
 <a class="brand" href="${base}"><img src="${base}assets/mark.svg" width="32" height="32" alt="Rainline Garden logo" aria-hidden="true"><span>Rainline Garden</span></a>
+<nav class="head-links" aria-label="Main">${nav}</nav>
+<p class="head-where" aria-hidden="true"></p>
 <button type="button" class="head-search" aria-label="Search plants, towns and guides" aria-expanded="false" aria-controls="search-pop">${ICON.search}<span>Search plants, towns and guides</span></button>
 <div class="town-chip-wrap"><button type="button" class="town-chip" aria-expanded="false" aria-controls="town-pop">${ICON.pin}<span class="tc-name">Set your town</span>${ICON.chev}</button>
 <div class="town-pop" id="town-pop" hidden></div></div>
 <a class="head-cta" href="${base}my-garden/"${cur("my-garden/")}>${ICON.plan}<span class="cta-long">My garden plan</span><span class="cta-short">My plan</span></a>
-<button class="theme-btn" type="button" aria-label="Switch to dark mode" title="Light or dark mode">${ICON.moon}${ICON.sun}</button>
 <a class="plan-btn" href="${base}my-garden/" aria-label="My garden plan"${cur("my-garden/")}>${ICON.plan.replace(/18/g, "20")}</a>
 <button type="button" class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="site-menu">${ICON.menu}</button>
 </div>
-<nav class="nav" aria-label="Main"><div class="wrap">${nav}</div></nav>
 ${menu}
 ${search}
 </header>
@@ -257,7 +262,7 @@ ${body}
 <nav aria-label="Footer"><a href="${base}glossary/">Glossary</a><a href="${base}how-it-works/">How it works</a><a href="${base}about/">About</a><a href="${base}contact/">Contact</a><a href="${base}privacy/">Privacy</a><a href="${base}terms/">Terms</a></nav>
 <p class="owner">&copy; ${YEAR} ${CONFIG.owner}. Rainline Garden is owned and operated by ${CONFIG.owner}.</p>
 </div></footer>
-<script>(function(){var r=document.documentElement,b=document.querySelector(".theme-btn"),w=document.querySelector(".theme-row");function cur(){return r.dataset.theme==="dark"?"dark":"light"}function sync(){if(b)b.setAttribute("aria-label",cur()==="dark"?"Switch to light mode":"Switch to dark mode");if(w)w.setAttribute("aria-checked",String(cur()==="dark"))}function flip(){var n=cur()==="dark"?"light":"dark";r.dataset.theme=n;try{localStorage.setItem("rainline-theme",n)}catch(e){}sync()}sync();if(b)b.addEventListener("click",flip);if(w)w.addEventListener("click",flip)})();</script>
+<script>(function(){var r=document.documentElement,w=document.querySelectorAll(".theme-row");function cur(){return r.dataset.theme==="dark"?"dark":"light"}function sync(){for(var i=0;i<w.length;i++)w[i].setAttribute("aria-checked",String(cur()==="dark"))}function flip(){var n=cur()==="dark"?"light":"dark";r.dataset.theme=n;try{localStorage.setItem("rainline-theme",n)}catch(e){}sync()}sync();for(var i=0;i<w.length;i++)w[i].addEventListener("click",flip)})();</script>
 ${(scripts || []).map(s => `<script src="${base}assets/${s}?v=${ver(s)}"></script>`).join("\n")}
 <script src="${base}assets/nav.js?v=${ver("nav.js")}" defer></script>
 </body>
