@@ -31,6 +31,19 @@
   var setTown = panel(chip, tpop, fillChip);
   var setSearch = panel(searchBtn, pop, function () { load().then(run); input.value = ""; run(); setTimeout(function () { input.focus(); }, 0); });
 
+  // "Plant in <month>": point at today's month (the build only knows the month it ran in).
+  var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  var mNow = MONTHS[new Date().getMonth()], mSlug = mNow.toLowerCase();
+  Array.prototype.forEach.call(doc.querySelectorAll(".month-link"), function (a) {
+    a.href = base + "garden-calendar/" + mSlug + "/";
+    a.title = "What to plant in " + mNow;
+    if (a.hasAttribute("data-month-label")) a.textContent = "Plant in " + mNow;
+    if (location.pathname.indexOf("/garden-calendar/" + mSlug + "/") !== -1) {
+      a.setAttribute("aria-current", "page");
+      var lb = head.querySelector(".nav-more-btn.is-current"); if (lb) lb.classList.remove("is-current");
+    }
+  });
+
   // Phone menu: its search box opens the same search panel.
   var menuSearch = menu && menu.querySelector(".menu-search");
   if (menuSearch) menuSearch.addEventListener("click", function (e) { e.stopPropagation(); setMenu(false); setSearch(true); });
