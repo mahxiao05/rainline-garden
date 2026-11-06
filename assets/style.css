@@ -1816,7 +1816,7 @@ main [id] { scroll-margin-top: 84px; }
 .plant-intro { font-size: 1.12rem; line-height: 1.65; max-width: 44rem; margin: 1.5rem 0 1.25rem; }
 
 /* Header: one row. Logo, three main links + Learn dropdown, search, town, My garden plan.
- * After scrolling past the page header (nav.js adds .is-small) the bar gets shorter and shows where you are. */
+ * After scrolling past the page header (nav.js adds .is-small) the bar gets shorter. */
 .site-head > .wrap { transition: padding .2s; }
 .site-head .brand { flex: none; }
 .head-links { flex: none; display: flex; align-items: center; gap: 18px; margin-left: 24px; font-size: .94rem; font-weight: 600; }
@@ -1834,9 +1834,12 @@ main [id] { scroll-margin-top: 84px; }
 .head-where b { overflow: hidden; text-overflow: ellipsis; color: #fff; }
 .site-head.is-small > .wrap { padding-top: 7px; padding-bottom: 7px; }
 .site-head.is-small { box-shadow: 0 6px 18px rgba(0, 0, 0, .18); }
-.site-head.is-small.has-where .brand span { display: none; }
-.site-head.is-small.has-where .head-links { display: none; }
-.site-head.is-small.has-where .head-where { display: flex; }
+/* Wide screens keep every menu link in the slim bar. Phones (where the links live in the menu) swap the
+ * site name for where you are. */
+@media (max-width: 860px) {
+  .site-head.is-small.has-where .brand span { display: none; }
+  .site-head.is-small.has-where .head-where { display: flex; }
+}
 /* The bar is as wide as the page column, so search is an icon and the plan button says "My plan" at every width. */
 .site-head .head-search { flex: none; width: 40px; padding: 0; justify-content: center; }
 .site-head .head-search span { display: none; }
