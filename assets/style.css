@@ -1474,6 +1474,13 @@ html.tm-lock, html.tm-lock body { overflow: hidden; }
 /* Home: plant-type tiles double as the town's planting-dates tables */
 .sec-sub { margin: -.5rem 0 1rem; color: var(--muted); }
 .drop-rows[hidden] { display: none; }
+/* Garden planner: the same plant-type picture tiles, opening tick boxes instead of plant links. */
+.gp-tiles .cat-tiles { margin-top: .25rem; }
+.gp-drop-hint { color: var(--muted); font-size: .9rem; }
+.gp-tiles .cat-drop .gp-opts { padding: 0; }
+.gp-tiles .cat-tile .card-s::after { white-space: nowrap; }
+.gp-searching > li:not(.cat-drop) { display: none; }
+.gp-searching > .cat-drop { order: 0 !important; }
 .drop-dates .table-wrap { margin: 0 0 6px; }
 .drop-dates table.plan { background: transparent; }
 .dates-jump { margin: .75rem 0 0; font-weight: 700; }

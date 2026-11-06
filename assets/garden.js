@@ -973,21 +973,25 @@
   function groupCounts() {
     if (!groups) return;
     Array.prototype.forEach.call(groups, function (g) {
-      var n = g.querySelectorAll("input:checked").length, el = g.querySelector(".gp-group-n");
+      var n = g.querySelectorAll("input:checked").length, el = pick.querySelector('[data-g="' + g.id + '"]');
       var total = g.querySelectorAll(".gp-opt").length;
-      el.textContent = plantsN(total) + (n ? " · " + n + " picked" : "");
+      el.textContent = n ? n + " of " + total + " picked" : plantsN(total);
     });
   }
   pick.addEventListener("change", groupCounts);
+  // The groups are picture tiles (assets/catdrop.js) that open a list of tick boxes. While searching, the tiles step
+  // aside and every group with a match shows its list; clearing the search folds them back.
+  var tileGrid = pick.querySelector(".cat-tiles-drop");
   if (find) find.addEventListener("input", function () {
     var q = plain(find.value), any = false;
+    if (tileGrid) { tileGrid.dispatchEvent(new Event("catdrop:close")); tileGrid.classList.toggle("gp-searching", !!q); }
     Array.prototype.forEach.call(groups, function (g) {
       var shown = 0;
       Array.prototype.forEach.call(g.querySelectorAll(".gp-opt"), function (lab) {
         var hit = !q || plain(lab.querySelector("span").textContent).indexOf(q) >= 0 || plain(lab.querySelector("input").value).indexOf(q) >= 0;
         lab.hidden = !hit; if (hit) shown++;
       });
-      g.hidden = !shown; g.open = !!q && !!shown; if (shown) any = true;
+      g.hidden = !q || !shown; if (shown) any = true;
     });
     if (findNone) findNone.hidden = any;
   });
