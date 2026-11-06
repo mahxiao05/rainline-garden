@@ -82,6 +82,13 @@
     else if (!mine.crops.length) { mine.place = shared.place || mine.place; mine.crops = shared.crops; clearQuery(); }
     else { state = shared; preview = true; }
   } else if (qPlace) mine.place = qPlace;
+  // "Add to my garden plan" from a plant page (?add=tomatoes): put that plant in your own plan, then say so (with Undo).
+  var added = null, qAdd = !qs.get("plants") && cropOf(qs.get("add") || "");
+  if (qAdd) {
+    added = { c: qAdd, have: mine.crops.indexOf(qAdd.id) >= 0, before: JSON.stringify({ crops: mine.crops, sq: mine.sq, manual: mine.manual, bedOf: mine.bedOf }) };
+    if (!added.have) mine.crops.push(qAdd.id);
+    clearQuery();
+  }
   if (!state.place) { try { state.place = localStorage.getItem("rainline-place") || ""; } catch (e) { /* ignore */ } }
   if (!preview) save();
 
@@ -280,7 +287,7 @@
       return '<li>' + eico(it.c.id, 28) + '<span><strong>' + esc(it.c.name) + '</strong> needs ' + it.sq + (it.sq === 1 ? ' more square' : ' more squares') + '. Add a bed, use less of something else, or take it out.</span>' +
         (preview ? '' : '<button type="button" class="gp-x" data-act="sqrm" data-crop="' + it.c.id + '" aria-label="Remove ' + esc(lc(it.c.name)) + ' from my plan" title="Remove from my plan">×</button>') + '</li>'; }).join("") + '</ul></div>' : '';
     var gr = ground.length ? '<div class="sq-ground"><h3>Plant in the ground</h3><p>Trees, shrubs, bushes, vines and canes get too big for a raised bed. Give each one this much room:</p><ul>' + ground.map(function (c) {
-      return '<li>' + eico(c.id, 28) + '<span><strong>' + esc(c.name) + '</strong> ' + spTxt(c.id) + ' apart</span>' +
+      return '<li data-pid="' + c.id + '">' + eico(c.id, 28) + '<span><strong>' + esc(c.name) + '</strong> ' + spTxt(c.id) + ' apart</span>' +
         (preview ? '' : '<button type="button" class="gp-x" data-act="sqrm" data-crop="' + c.id + '" aria-label="Remove ' + esc(lc(c.name)) + ' from my plan" title="Remove from my plan">×</button>') + '</li>'; }).join("") + '</ul></div>' : '';
     return head + '<div class="sq-cards">' + cards + '</div>' + loose + gr;
   }
@@ -390,7 +397,7 @@
     var rate = state.rating[c.id] || {}, past = Object.keys(rate).filter(function (y) { return +y < YEAR; }).sort().reverse()[0];
     var hs = harvestsOf(c.id).filter(function (h) { return h.date.slice(0, 4) === String(YEAR); });
     var label = { good: "did well", ok: "was OK", poor: "struggled" };
-    var h = '<article class="gp-card"><h3>' + R.icon(c.id, base, 32) + '<a href="' + base + 'when-to-plant/' + c.id + '/">' + esc(c.name) + '</a></h3>';
+    var h = '<article class="gp-card"><h3>' + R.icon(c.id, base, 32) + '<a href="' + plantUrl(c.id) + '">' + esc(c.name) + '</a></h3>';
     if (past) h += '<p class="gp-past gp-past-' + rate[past] + '">In ' + past + ' it ' + label[rate[past]] + '.</p>';
     h += '<dl>' + rows.filter(function (r) { return r[1]; }).map(function (r) { return '<dt>' + r[0] + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join("") + '</dl>';
     // Sowing, variety, rating and harvests fold away so the card leads with the growing tips; the summary says what's filled in.
@@ -493,7 +500,7 @@
     var ready = rows.filter(function (x) { return (x.s.k === "now" || x.s.k === "last") && x.r.season !== "short"; });
     var indoor = rows.filter(function (x) { return x.s.k === "indoor" && x.r.season !== "short"; });
     var rest = rows.filter(function (x) { return ready.indexOf(x) < 0 && indoor.indexOf(x) < 0 && x.s.next; });
-    var nm = function (x) { return esc(x.r.crop.name); };
+    var nm = function (x) { return '<a href="' + plantUrl(x.r.crop.id) + '">' + esc(x.r.crop.name) + '</a>'; };
     var lines = [];
     if (ready.length) lines.push('<li><span class="gp-st gp-st-now">Plant now</span> ' + ready.map(function (x) { return nm(x) + (x.s.k === "last" ? ' <span class="gp-st gp-st-last">by ' + P.fmt(x.s.w.end) + '</span>' : ''); }).join(", ") + '</li>');
     if (indoor.length) lines.push('<li><span class="gp-st gp-st-indoor">Start indoors now</span> ' + indoor.map(nm).join(", ") + '</li>');
@@ -544,6 +551,18 @@
     pickNote.textContent = r.crop.name + ": " + seasonText(r, s, place) + (s.k === "soon" ? "" : " It stays in your plan with its dates.");
   }
 
+  // A plant's guide page, opened with your town so its "Your dates" card shows straight away.
+  function plantUrl(id) { return base + "when-to-plant/" + id + "/" + (state.place ? "?town=" + state.place : ""); }
+  // The next job for one plant in your town: the window that's open now, or the next one coming up.
+  function nextJob(id) {
+    var place = P.findPlace(D, state.place); if (!place) return "";
+    var t = tasks(P.plan(D, place)).filter(function (x) { return x.crop && x.crop.id === id && +(x.end || x.date) >= +now; })[0];
+    if (!t) return "";
+    var open = t.date <= now;
+    // Short enough for two lines on a phone: "Next: start seeds indoors Mar 20."
+    var job = ({ indoor: "start seeds indoors", harden: "start hardening off", plant: "plant", fall: "plant again for fall", harvest: "first harvest" })[t.kind] || (/-sow/.test(t.kind) ? "sow another row" : "") || t.text.replace(/^./, function (x) { return x.toLowerCase(); }).replace(" for " + lc(t.crop.name), "");
+    return open ? "Now: " + job + (t.end ? " by " + short(t.end) : "") + "." : "Next: " + job + " " + short(t.date) + ".";
+  }
   function chosenCrops() { return D.crops.filter(function (c) { return state.crops.indexOf(c.id) >= 0; }); }
 
   function shareBanner() {
@@ -672,12 +691,12 @@
     save(); render();
     showUndo(c.name + " taken out of your plan", before);
   }
-  function showUndo(text, before) {
+  function showUndo(text, before, ms) {
     if (!undoBar) { undoBar = document.createElement("div"); undoBar.className = "sq-undo"; undoBar.setAttribute("role", "status"); document.body.appendChild(undoBar); }
-    undoBar.innerHTML = '<span>' + esc(text) + '</span><button type="button">Undo</button>';
+    undoBar.innerHTML = '<span>' + esc(text) + '</span>' + (before ? '<button type="button">Undo</button>' : '');
     undoBar.classList.add("is-on");
-    clearTimeout(undoBar.t); undoBar.t = setTimeout(function () { undoBar.classList.remove("is-on"); }, 6000);
-    undoBar.querySelector("button").onclick = function () {
+    clearTimeout(undoBar.t); undoBar.t = setTimeout(function () { undoBar.classList.remove("is-on"); }, ms || 6000);
+    if (before) undoBar.querySelector("button").onclick = function () {
       var o = JSON.parse(before); state.crops = o.crops; state.sq = o.sq; state.manual = o.manual; state.bedOf = o.bedOf;
       save(); render(); undoBar.classList.remove("is-on");
     };
@@ -979,4 +998,18 @@
   if (state.place && state.crops.length) pick.open = false;
   render();
   groupCounts();
+  if (added) {
+    var id = added.c.id, where = P.findPlace(D, state.place) ? "" : " Choose your town to see its dates.";
+    var job = nextJob(id);
+    var text = added.c.name + (added.have ? ": already in your plan." : " added.") + (job ? " " + job : "") + where;
+    showUndo(text, added.have ? null : added.before, job ? 9000 : 6000);
+    // Show where it went: scroll to its row in your beds (or the "Plant in the ground" list) and pulse its squares.
+    var spots = out.querySelectorAll('[data-pid="' + id + '"]');
+    if (spots.length) {
+      var row = out.querySelector('li[data-pid="' + id + '"]') || spots[0];
+      Array.prototype.forEach.call(spots, function (el) { el.classList.add("is-new"); });
+      setTimeout(function () { row.scrollIntoView({ behavior: "smooth", block: "center" }); }, 250);
+      setTimeout(function () { Array.prototype.forEach.call(out.querySelectorAll(".is-new"), function (el) { el.classList.remove("is-new"); }); }, 4500);
+    }
+  }
 })();
