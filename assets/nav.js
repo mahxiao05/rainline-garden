@@ -31,6 +31,29 @@
   var setTown = panel(chip, tpop, fillChip);
   var setSearch = panel(searchBtn, pop, function () { load().then(run); input.value = ""; run(); setTimeout(function () { input.focus(); }, 0); });
 
+  // Phone menu: its search box opens the same search panel.
+  var menuSearch = menu && menu.querySelector(".menu-search");
+  if (menuSearch) menuSearch.addEventListener("click", function (e) { e.stopPropagation(); setMenu(false); setSearch(true); });
+
+  /* Slim bar on scroll: once you're past the page header, the bar gets shorter and shows where you are
+   * (taken from the breadcrumb) in place of the main links. Pages without a breadcrumb just get the shorter bar. */
+  var where = head.querySelector(".head-where"), crumbs = doc.querySelectorAll("main .crumbs li");
+  if (where && crumbs.length > 1) {
+    var last = crumbs[crumbs.length - 1].textContent.trim(), sec = crumbs.length > 2 ? crumbs[crumbs.length - 2].textContent.trim() : "";
+    where.innerHTML = (sec ? '<span class="hw-sec">' + esc(sec) + ' \u203a</span> ' : "") + "<b>" + esc(last) + "</b>";
+    head.classList.add("has-where");
+  }
+  var small = false, ticking = false;
+  function onScroll() {
+    ticking = false;
+    var y = window.pageYOffset || html.scrollTop;
+    // Two thresholds so the bar doesn't flicker when the height change nudges the page.
+    var v = small ? y > 80 : y > 180;
+    if (v !== small) { small = v; head.classList.toggle("is-small", v); }
+  }
+  window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+  onScroll();
+
   doc.addEventListener("click", function (e) {
     panels.forEach(function (p) { if (!p.el.hidden && !p.el.contains(e.target) && !p.btn.contains(e.target)) p.set(false); });
   });
