@@ -8,7 +8,7 @@ const os = require("os");
 const path = require("path");
 const { execFileSync } = require("child_process");
 const PHOTOS = require("./photos.js");
-const { SIZES, fileBase, sizesFor } = require("./photo-sizes.js");
+const { SIZES, fileBase, sizesFor, sizeTag, formatsFor } = require("./photo-sizes.js");
 
 const OUT = path.join(__dirname, "..", "assets/img/photos");
 const force = process.argv.includes("--force");
@@ -17,24 +17,32 @@ const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "rainline-photos-"));
 
 function sourceUrl(src) {
   const [site, id] = src.split(":");
-  if (site === "pexels") return `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=2000`;
-  if (site === "unsplash") return `https://images.unsplash.com/photo-${id}?w=2000&q=90&fm=jpg`;
+  if (site === "pexels") return `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=3200`;
+  if (site === "unsplash") return `https://images.unsplash.com/photo-${id}?w=3200&q=90&fm=jpg`;
   throw new Error(`Unknown photo source ${src}`);
 }
 
 const downloaded = {};
 for (const [key, p] of Object.entries(PHOTOS)) {
   const base = fileBase(key);
-  const outputs = sizesFor(key).flatMap(s => ["webp", "jpg"].map(ext => [s, path.join(OUT, `${base}-${SIZES[s].w}.${ext}`)]));
-  if (!force && outputs.every(([, f]) => fs.existsSync(f))) continue;
+  // Only missing files are written (all of them with --force), so adding a size leaves existing files untouched.
+  const outputs = sizesFor(key).flatMap(s => formatsFor(s).map(ext => [s, path.join(OUT, `${base}-${sizeTag(s)}.${ext}`)]))
+    .filter(([, f]) => force || !fs.existsSync(f));
+  if (!outputs.length) continue;
   if (!downloaded[p.src]) {
     downloaded[p.src] = path.join(tmp, p.src.replace(/[^a-z0-9-]/gi, "_") + ".jpg");
     execFileSync("curl", ["-sSfL", "--retry", "3", "-o", downloaded[p.src], sourceUrl(p.src)]);
   }
+  const [sw, sh] = execFileSync("identify", ["-format", "%w %h", downloaded[p.src]]).toString().split(" ").map(Number);
   for (const [s, file] of outputs) {
     const { w, h } = SIZES[s];
-    const fmt = file.endsWith(".webp") ? ["-quality", "72", "-define", "webp:method=6"] : ["-quality", "78", "-interlace", "Plane", "-sampling-factor", "4:2:0"];
-    execFileSync("convert", [downloaded[p.src], "-auto-orient", "-resize", `${w}x${h}^`, "-gravity", p.focus || "Center", "-extent", `${w}x${h}`,
+    if (Math.max(w / sw, h / sh) > 1) console.warn(`  ${base}: source ${sw}x${sh} is upscaled for ${w}x${h}`);
+    // Tall phone crops can use their own gravity (tallFocus) when the subject sits off-center.
+    const gravity = (s === "tall" || s === "tallXl") && p.tallFocus || p.focus || "Center";
+    // Header crops fill the whole screen width, so they get a higher WebP quality than the small cards.
+    const q = s.startsWith("wide") || s.startsWith("tall") ? "80" : "72";
+    const fmt = file.endsWith(".webp") ? ["-quality", q, "-define", "webp:method=6"] : ["-quality", "78", "-interlace", "Plane", "-sampling-factor", "4:2:0"];
+    execFileSync("convert", [downloaded[p.src], "-auto-orient", "-resize", `${w}x${h}^`, "-gravity", gravity, "-extent", `${w}x${h}`,
       "-colorspace", "sRGB", "-strip", ...fmt, file]);
   }
   console.log(`${base}: ${outputs.map(([, f]) => Math.round(fs.statSync(f).size / 1024) + "K").join(" ")}`);
