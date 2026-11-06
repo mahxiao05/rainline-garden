@@ -176,7 +176,7 @@ const titleCase = t => t.replace(/[A-Za-z][^\s-]*/g, (w, i) => i && /^(and|or|of
 function layout({ rel, title, description, canonical, current, body, scripts, jsonld, noindex, image }) {
   const base = rel; // relative prefix back to the site root, e.g. "../../"
   const cur = href => current === href ? ' aria-current="page"' : "";
-  const LEARN = [["beginners-guide/", "Beginner's guide", "Start your first Northwest garden"], ["garden-calendar/", "Monthly chores", "What to do in the garden each month"],
+  const LEARN = [["beginners-guide/", "Beginner's guide", "Start your first Northwest garden"], ["garden-calendar/", "Month by month", "What to plant and do each month"],
     ["fall-planting/", "Fall planting", "What to plant from late summer on"],
     ["articles/", "Articles", "Growing guides for Northwest weather"], ["glossary/", "Glossary", "Gardening words in plain language"], ["what-to-grow/", "Plant quiz", "Find the plants that suit you"], ["how-it-works/", "How it works", "Where our dates come from"]];
   const ICON = {
@@ -191,21 +191,19 @@ function layout({ rel, title, description, canonical, current, body, scripts, js
   // The logo is the way home, so Home isn't repeated in the menus.
   const MAIN = [["when-to-plant/", "When to plant"], ["frost-dates/", "Town calendars"]];
   // Main links sit in the header bar itself: three sections plus a More dropdown (the rest of the guides and dark mode).
-  // The third link is this month's planting page. The build writes the month it was built in; nav.js swaps in
-  // today's month when the page loads, so the link never goes stale between rebuilds.
-  const MONTH_NOW = P.MONTHS_LONG[new Date().getMonth()];
-  // In the bar it says "Plant now" (short enough to fit beside your town); in the phone menu it names the month.
-  const monthLink = (label) => `<a class="month-link" href="${base}garden-calendar/${MONTH_NOW.toLowerCase()}/" title="What to plant in ${MONTH_NOW}"${label ? "" : ' data-month-label'}>${label || `Plant in ${MONTH_NOW}`}</a>`;
+  // The third link is Plant now: what can go in this week in your saved town (plant-now/, filled in by plantnow.js).
+  // The month pages live under More as "Month by month".
+  const nowLink = `<a class="now-link" href="${base}plant-now/"${cur("plant-now/")}>Plant now</a>`;
   const TOP = MAIN;
   const learnCur = LEARN.some(([href]) => href === current);
   const themeRow = `<button type="button" class="theme-row" role="switch" aria-checked="false"><span>${ICON.moon}Dark mode</span><i class="sw" aria-hidden="true"></i></button>`;
-  const nav = TOP.map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("") + monthLink("Plant now") +
+  const nav = TOP.map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("") + nowLink +
     `<div class="nav-more"><button type="button" class="nav-more-btn${learnCur ? " is-current" : ""}" aria-expanded="false" aria-controls="nav-learn">More${ICON.chev}</button>` +
     `<div class="nav-menu" id="nav-learn" hidden>${LEARN.map(([href, label, sub]) => `<a href="${base}${href}"${cur(href)}><strong>${label}</strong><span>${sub}</span></a>`).join("")}${themeRow}</div></div>`;
   const menu = `<div class="site-menu" id="site-menu" hidden><div class="wrap">
 <button type="button" class="menu-search">${ICON.search}<span>Search plants, towns and guides</span></button>
 <p class="menu-town" hidden></p>
-<div class="menu-cols"><div><p class="menu-h">Plan</p>${MAIN.map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("")}${monthLink()}${[["fall-planting/", "Fall planting"], ["my-garden/", "My garden plan"], ["what-to-grow/", "Plant quiz"]].map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("")}</div>
+<div class="menu-cols"><div><p class="menu-h">Plan</p>${MAIN.map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("")}${nowLink}${[["fall-planting/", "Fall planting"], ["my-garden/", "My garden plan"], ["what-to-grow/", "Plant quiz"]].map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("")}</div>
 <div><p class="menu-h">Learn</p>${LEARN.filter(([href]) => href !== "what-to-grow/" && href !== "fall-planting/").map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("")}</div></div>
 ${themeRow}
 </div></div>`;
@@ -1484,18 +1482,7 @@ const CHORES = require("./chores.js");
 const MONTH_ICONS = ["potatoes", "onions", "peas", "lettuce", "tomatoes", "beans", "cucumbers", "corn", "winter-squash", "garlic", "cabbage", "kale"];
 const CHORE_KINDS = [["plant", "Plant and sow"], ["indoor", "Start indoors"], ["harvest", "Harvest"], ["care", "Garden care"], ["pests", "Pests and problems"], ["perennial", "Fruit, berries and flowers"]];
 const REGION_TAGS = { west: "West-side valleys", coast: "Coast", east: "East-side valleys", high: "High desert and Inland Northwest" };
-// One town stands in for each climate region in the "planting by region" lists.
-const REGION_TOWNS = [["west", "portland-or", D.zones.west.name], ["coast", "astoria-or", D.zones.coast.name], ["east", "pendleton-or", D.zones.east.name], ["high", "bend-or", D.zones.high.name], ["high", "spokane-wa", D.zones.inland.name]];
-function monthPlanting(m) {
-  const a = P.CUM[m - 1] + 1, b = m < 12 ? P.CUM[m] : 365;
-  const overlaps = w => w.start <= b && w.end >= a;
-  return REGION_TOWNS.map(([r, slug, label]) => {
-    const p = P.plan(D, P.findPlace(D, slug));
-    return { r, label, out: p.crops.filter(x => x.windows.some(overlaps)).map(x => x.crop), indoor: p.crops.filter(x => x.indoor && overlaps(x.indoor)).map(x => x.crop) };
-  });
-}
 const articleBySlug = Object.fromEntries(ARTICLES.map(a => [a.slug, a]));
-const chip = (c, rel = "../") => `<a class="mp-crop" href="${rel}when-to-plant/${c.id}/">${R.icon(c.id, rel, 22)}${esc(c.name)}</a>`;
 const monthSlug = m => P.MONTHS_LONG[m - 1].toLowerCase();
 const choreMonth = c => {
   const name = P.MONTHS_LONG[c.m - 1], count = Object.values(c.tasks).reduce((n, t) => n + t.length, 0);
@@ -1510,9 +1497,9 @@ write("../", "garden-calendar/index.html", layout({
   rel: "../", canonical: "garden-calendar/", current: "garden-calendar/",
   title: "Garden Calendar for Oregon, Washington and Idaho",
   description: "Month-by-month garden calendar for Oregon, Washington and Idaho: what to plant, start indoors, harvest and prune, for the coast, west side and east side.",
-  jsonld: [crumbs("../", [["Monthly chores", null]]).ld],
+  jsonld: [crumbs("../", [["Month by month", null]]).ld],
   body: `
-<section class="hero"><p class="eyebrow">Month by month · Oregon · Washington · Idaho</p><h1>Monthly garden chores</h1>
+<section class="hero"><p class="eyebrow">Month by month · Oregon · Washington · Idaho</p><h1>Month by month</h1>
 <p class="lede">What to plant, harvest, prune and watch for each month. Tick jobs off as you go; they save on this device.</p></section>
 ${SEASON_BADGES}
 <div class="cm-filter" role="group" aria-label="Show jobs for"><span>Show jobs for</span>${[["all", "All jobs"], ...Object.entries(REGION_TAGS)].map(([v, l]) => `<button type="button" data-region="${v}" aria-pressed="${v === "all"}">${l}</button>`).join("")}</div>
@@ -1529,24 +1516,46 @@ ${ad("calendar-bottom")}`,
   scripts: ["data.js", "plan.js", "chores.js"]
 }), "0.8");
 
-/* One page per month: what to plant there, with dates by region, and that month's jobs. */
+/* One page per month ("Month by month"): what goes in that month in each region (one summary table, then every plant's
+ * dates), and that month's jobs filtered to your region. "What can I plant this week" lives on Plant now (plant-now/). */
+const ZONE_TAG = { coast: "coast", west: "west", east: "east", high: "high", inland: "high" };
+const isJob = t => !/^Nothing /.test(t); // "Nothing to start yet..." lines aren't jobs
+const MONTH_ROWS = [["coast", "astoria-or"], ["west", "portland-or"], ["east", "pendleton-or"], ["inland", "spokane-wa"], ["high", "bend-or"]];
 CHORES.forEach(c => {
   const rel = "../../", name = P.MONTHS_LONG[c.m - 1], slug = monthSlug(c.m);
   const prev = CHORES[(c.m + 10) % 12], next = CHORES[c.m % 12];
   const a = P.CUM[c.m - 1] + 1, b = c.m < 12 ? P.CUM[c.m] : 365;
   const overlaps = w => w && w.start <= b && w.end >= a;
-  const regions = monthPlanting(c.m);
-  const plans = REGION_TOWNS.map(([, s]) => P.plan(D, P.findPlace(D, s)));
+  const rows = MONTH_ROWS.map(([z, s]) => {
+    const town = P.findPlace(D, s), pl = P.plan(D, town);
+    const out = pl.crops.filter(r => r.windows.some(overlaps)), ws = out.flatMap(r => r.windows.filter(overlaps));
+    const indoor = pl.crops.filter(r => r.indoor && overlaps(r.indoor));
+    return { z, town, pl, out, indoor, name: D.zones[z].name, s: ws.length ? Math.min(...ws.map(w => w.start)) : 0, e: ws.length ? Math.max(...ws.map(w => w.end)) : 0 };
+  });
+  const span = r => !r.out.length ? "" : r.s <= a && r.e >= b ? "" : r.s <= a ? `until ${P.fmt(r.e)}` : r.e >= b ? `from ${P.fmt(r.s)}` : P.fmtRange(r.s, r.e);
+  const plural = (n, w) => `${n} ${w}${n === 1 ? "" : "s"}`;
+  const pct = d => ((Math.min(Math.max(d, a), b + 1) - a) / (b + 1 - a) * 100).toFixed(1);
+  const regTable = `<div class="table-wrap"><table class="mb-reg"><thead><tr><th scope="col">Region</th><th scope="col">Plant outside</th><th scope="col">Start indoors</th><th scope="col" class="mb-barcell">${name} 1 – ${b - a + 1}</th></tr></thead><tbody>
+${rows.map(r => `<tr data-zone="${r.z}"><th scope="row">${r.name}</th><td>${r.out.length ? `${plural(r.out.length, "plant")}${span(r) ? ", " + span(r) : ""}` : '<span class="mb-closed">Nothing</span>'}</td><td>${r.indoor.length ? plural(r.indoor.length, "plant") : '<span class="mb-closed">Nothing</span>'}</td><td class="mb-barcell"><span class="mb-bar">${r.out.length ? `<i style="left:${pct(r.s)}%;width:${(pct(r.e + 1) - pct(r.s)).toFixed(1)}%"></i>` : ""}</span></td></tr>`).join("\n")}
+</tbody></table></div>`;
   // Every crop that can go in somewhere this month, with its dates in each region's town.
-  const ids = D.crops.map(x => x.id).filter(id => regions.some(r => r.out.concat(r.indoor).some(x => x.id === id)));
+  const ids = D.crops.map(x => x.id).filter(id => rows.some(r => r.out.concat(r.indoor).some(x => x.crop.id === id)));
   const cell = (pl, id) => { const r = rowFor(pl, id), out = r.windows.filter(overlaps), parts = [];
     if (r.indoor && overlaps(r.indoor)) parts.push(`Start indoors ${P.fmtRange(r.indoor.start, r.indoor.end)}`);
     out.forEach(w => parts.push(`Plant ${P.fmtRange(w.start, w.end)}`));
     return parts.length ? parts.join("<br>") : '<span class="none">—</span>'; };
-  const table = ids.length ? `<div class="table-wrap"><table class="plan"><thead><tr><th scope="col">Plant</th>${REGION_TOWNS.map(([, , l]) => `<th scope="col">${l}</th>`).join("")}</tr></thead><tbody>
-${ids.map(id => { const cr = cropById(id); return `<tr><th scope="row"><div class="crop-cell">${R.icon(id, rel, 32)}<div><a href="${rel}when-to-plant/${id}/">${esc(cr.name)}</a></div></div></th>${plans.map((pl, i) => `<td data-label="${REGION_TOWNS[i][2]}">${cell(pl, id)}</td>`).join("")}</tr>`; }).join("\n")}
+  const table = ids.length ? `<div class="table-wrap"><table class="plan"><thead><tr><th scope="col">Plant</th>${rows.map(r => `<th scope="col">${r.name}</th>`).join("")}</tr></thead><tbody>
+${ids.map(id => { const cr = cropById(id); return `<tr><th scope="row"><div class="crop-cell">${R.icon(id, rel, 32)}<div><a href="${rel}when-to-plant/${id}/">${esc(cr.name)}</a></div></div></th>${rows.map(r => `<td data-label="${r.name}">${cell(r.pl, id)}</td>`).join("")}</tr>`; }).join("\n")}
 </tbody></table></div>` : "";
-  const bc = crumbs(rel, [["Monthly chores", "garden-calendar/"], [name, null]]);
+  // When every region that plants this month plants the same list (fall bulbs and garlic), name the plants once.
+  const lists = rows.filter(r => r.out.length).map(r => r.out.map(x => x.crop.id).join(" "));
+  const same = lists.length > 1 && lists.every(l => l === lists[0]) && !rows.some(r => r.indoor.length);
+  const intro = !ids.length ? `<p>Nothing goes in the ground or into seed trays anywhere in the region in ${name}.</p>`
+    : same ? `<p class="mb-lede">Wherever there's still time, it's the same ${rows.find(r => r.out.length).out.length} plants:</p>
+<div class="mb-plants">${rows.find(r => r.out.length).out.map(x => `<a href="${rel}when-to-plant/${x.crop.id}/">${R.icon(x.crop.id, rel, 30)}${esc(x.crop.name)}</a>`).join("")}</div>`
+    : `<p class="mb-lede">How much can go in across the five climate regions. Your region's row is highlighted once you pick a town.</p>`;
+  const tasks = CHORE_KINDS.map(([k, label]) => [k, label, (c.tasks[k] || []).filter(([t]) => isJob(t))]).filter(([, , ts]) => ts.length);
+  const bc = crumbs(rel, [["Month by month", "garden-calendar/"], [name, null]]);
   write(rel, `garden-calendar/${slug}/index.html`, layout({
     rel, canonical: `garden-calendar/${slug}/`, current: "garden-calendar/",
     title: fitTitle(`What to Plant in ${name} in Oregon, Washington and Idaho`, `What to Plant in ${name} in Oregon, Washington & Idaho`),
@@ -1554,29 +1563,56 @@ ${ids.map(id => { const cr = cropById(id); return `<tr><th scope="row"><div clas
       `What to plant in ${name} in Oregon, Washington and Idaho, with dates by region and ${name}'s garden jobs.`),
     jsonld: [bc.ld],
     body: `${bc.html}
-<section class="hero"><p class="eyebrow">Oregon · Washington · Idaho</p><h1>What to plant in ${name}</h1>
+<section class="hero"><p class="eyebrow">Month by month · Oregon · Washington · Idaho</p><h1>${name} in the garden</h1>
 <p class="lede">${esc(c.intro)}</p></section>
-<div class="mp-regions" id="mp-regions" data-towns="${esc(D.places.map(x => `${x.slug}|${placeLabel(x)}|${x.zone}`).join(";"))}">
-${regions.map((x, i) => { const town = P.findPlace(D, REGION_TOWNS[i][1]);
-    return `<details class="mp-region" data-zone="${town.zone}"${i === 0 ? " open" : ""}><summary><span class="mp-region-name">${x.label}</span><span class="mp-region-n">${x.out.length ? `${x.out.length} outside` : "Nothing outside"}${x.indoor.length ? ` · ${x.indoor.length} indoors` : ""}</span></summary>
-<div class="mp-region-body"><p class="mp-mine" hidden></p>${x.out.length ? `<p><span class="cm-k">Outside</span>${x.out.map(cr => chip(cr, rel)).join("")}</p>` : `<p class="cm-none">Nothing goes outside this month.</p>`}
-${x.indoor.length ? `<p><span class="cm-k">Start indoors</span>${x.indoor.map(cr => chip(cr, rel)).join("")}</p>` : ""}
-<p class="station">Based on typical frost dates in ${esc(town.city)}. Colder gardens run later.</p></div></details>`; }).join("\n")}
-</div>
-<script>(function(){var w=document.getElementById("mp-regions"),s=null;try{s=localStorage.getItem("rainline-place")}catch(e){}if(!s)return;
-var t=(w.getAttribute("data-towns")||"").split(";").map(function(x){return x.split("|")}).filter(function(x){return x[0]===s})[0];if(!t)return;
-var d=w.querySelector('.mp-region[data-zone="'+t[2]+'"]');if(!d)return;w.querySelectorAll(".mp-region").forEach(function(x){x.open=false});d.open=true;d.classList.add("is-mine");w.insertBefore(d,w.firstChild);
-var m=d.querySelector(".mp-mine");m.innerHTML='Your region: '+t[1]+' is here. <a href="${rel}frost-dates/'+s+'/">Exact dates for '+t[1]+'</a>';m.hidden=false})();</script>
-<p class="mp-look"><a href="${rel}">Look up your town</a> for its exact dates.</p>
-${table ? `<details class="more-fold mp-table"><summary>Every ${name} planting date, by region (${ids.length} plants)</summary>\n<p class="mp-table-note">Dates are for one typical town in each region. Colder gardens run later.</p>\n${table}</details>` : ""}
-<h2>${name} garden jobs</h2>
-<div class="cm-grid">${CHORE_KINDS.filter(([k]) => c.tasks[k] && c.tasks[k].length).map(([k, label]) => `<div class="cm-card cm-${k}"><h3>${label}</h3><ul>${c.tasks[k].map(([t, r]) =>
-    `<li class="cm-plain">${esc(t)}${r ? ` <span class="cm-tag cm-tag-${r}">${REGION_TAGS[r]}</span>` : ""}</li>`).join("")}</ul></div>`).join("")}</div>
+<div class="mb-mine" id="mb-mine" hidden data-towns="${esc(D.places.map(x => `${x.slug}|${x.city}|${x.state}|${x.zone}`).join(";"))}" data-zones="${esc(Object.keys(D.zones).map(z => `${z}|${D.zones[z].name}`).join(";"))}"></div>
+<h2>What to plant in ${name}</h2>
+${intro}
+${ids.length ? regTable : ""}
+${table ? `<details class="more-fold mp-table"${ids.length <= 12 ? " open" : ""}><summary>${ids.length <= 12 ? `${name} planting dates, by region` : `All ${ids.length} plants and their ${name} dates, by region`}</summary>\n${table}</details>` : ""}
+${ids.length ? `<p class="station">Dates are for one typical town in each region: ${listOf(rows.map(r => r.town.city))}. <a href="${rel}plant-now/">Plant now</a> shows your own town's dates.</p>` : ""}
+<h2>${name} jobs</h2>
+<div class="cm-filter mb-filter" role="group" aria-label="Show jobs for">${[["all", "All regions"], ...Object.entries(REGION_TAGS)].map(([v, l]) => `<button type="button" data-region="${v}" aria-pressed="${v === "all"}">${l}</button>`).join("")}</div>
+<div class="cm-grid mb-jobs">${tasks.map(([k, label, ts]) => `<div class="cm-card cm-${k}"><h3>${label}</h3><ul>${ts.map(([t, r]) =>
+    `<li class="cm-plain"${r ? ` data-r="${r}"` : ""}>${esc(t)}${r ? ` <span class="cm-tag cm-tag-${r}">${REGION_TAGS[r]}</span>` : ""}</li>`).join("")}</ul></div>`).join("")}</div>
+<script>(function(){var m=document.getElementById("mb-mine"),s=null;try{s=localStorage.getItem("rainline-place")}catch(e){}
+var tags=${JSON.stringify(ZONE_TAG)},bs=document.querySelectorAll(".mb-filter button");
+function show(v){bs.forEach(function(b){b.setAttribute("aria-pressed",b.getAttribute("data-region")===v?"true":"false")});
+document.querySelectorAll(".mb-jobs .cm-card").forEach(function(c){var n=0;c.querySelectorAll("li").forEach(function(li){var r=li.getAttribute("data-r"),on=v==="all"||!r||r===v;li.hidden=!on;if(on)n++});c.hidden=!n})}
+bs.forEach(function(b){b.addEventListener("click",function(){show(b.getAttribute("data-region"))})});
+var t=s&&(m.getAttribute("data-towns")||"").split(";").map(function(x){return x.split("|")}).filter(function(x){return x[0]===s})[0];if(!t)return;
+var zn={};(m.getAttribute("data-zones")||"").split(";").forEach(function(x){x=x.split("|");zn[x[0]]=x[1]});
+var row=document.querySelector('.mb-reg tr[data-zone="'+t[3]+'"]');if(row)row.classList.add("is-mine");
+m.innerHTML='<p><strong>'+t[1]+', '+t[2]+'</strong> is in the '+zn[t[3]]+'.</p><p class="mb-mine-links"><a class="btn" href="${rel}plant-now/">Plant now in '+t[1]+'</a><a href="${rel}frost-dates/'+t[0]+'/">'+t[1]+'’s full calendar</a></p>';m.hidden=false;
+show(tags[t[3]]||"all")})();</script>
 ${ad("month-mid")}
 ${c.articles.length ? `<h2>Read next</h2>\n${articleCards(rel, c.articles.filter(s => articleBySlug[s]).map(s => articleBySlug[s]))}` : ""}
 <nav class="cm-pager" aria-label="Other months"><a href="../${monthSlug(prev.m)}/">← ${P.MONTHS_LONG[prev.m - 1]}</a><a href="../">All months</a><a href="../${monthSlug(next.m)}/">${P.MONTHS_LONG[next.m - 1]} →</a></nav>`
   }), "0.7");
 });
+
+/* Plant now: what can go in this week in your saved town, filled in by assets/plantnow.js from the same planting
+ * windows as the town calendars. Without a saved town it asks for one. It's personal and mostly built in the browser,
+ * so it stays out of search (noindex) and the sitemap. */
+{
+  const rel = "../";
+  const JOBS = CHORES.map(c => CHORE_KINDS.flatMap(([k, label]) => (c.tasks[k] || []).filter(([t]) => isJob(t)).map(([t, r]) => [label, t, r || ""])));
+  const withPhoto = D.crops.filter(c => fs.existsSync(path.join(ROOT, `assets/img/photos/crop-${c.id}-720.webp`))).map(c => c.id);
+  const picks = ["portland-or", "seattle-wa", "eugene-or", "spokane-wa", "boise-id", "bend-or", "yakima-wa", "medford-or"].map(sl => P.findPlace(D, sl)).filter(Boolean);
+  write(rel, "plant-now/index.html", layout({
+    rel, canonical: "plant-now/", current: "plant-now/", noindex: true,
+    title: "Plant Now: What to Plant This Week in Your Town",
+    description: "What you can plant this week in your Oregon, Washington or Idaho town, what's coming up next, and this month's garden jobs.",
+    body: `${crumbs(rel, [["Plant now", null]]).html}
+<section class="hero pnf-hero" id="pn-hero"><p class="eyebrow">Plant now</p><h1>What can I plant this week?</h1>
+<p class="lede">It depends on your town: the coast and the east side can be weeks apart. Pick yours to see what goes in now and what's next.</p></section>
+<section class="pnf-pick" id="pn-pick">${townBox({ id: "pn-box", rel, button: "Show" })}
+<p class="pnf-popular"><span>Or open a town calendar:</span> ${picks.map(x => `<a href="${rel}frost-dates/${x.slug}/">${esc(placeLabel(x))}</a>`).join("")}</p></section>
+<div id="pn-out" hidden data-photos="${withPhoto.join(" ")}"></div>
+<script>window.RainlineJobs=${JSON.stringify(JOBS)};</script>`,
+    scripts: ["data.js", "plan.js", "render.js", "near.js", "townbox.js", "plantnow.js"]
+  }), null);
+}
 
 /* How it works */
 const HOW_AIRPORTS = D.places.filter(x => AIRPORT.test(D.stations[x.station].name)).length;
@@ -1750,7 +1786,7 @@ const searchIndex = [
   ...ARTICLES.map(a => ({ t: a.title, s: "Article", u: "articles/" + a.slug + "/", k: "article", i: a.icon ? "assets/img/topics/" + a.icon + ".svg" : a.crops && a.crops[0] ? "assets/img/crops/" + a.crops[0] + ".webp" : "" })),
   ...G.glossary.map(g => ({ t: g[0], s: "Glossary", u: "glossary/#" + g[1], k: "term" })),
   ...[["", "Home", "Look up your town's planting dates"], ["my-garden/", "My garden plan", "Plan, track and print your garden"], ["what-to-grow/", "Plant quiz", "Find the plants that suit your space and time"], ["frost-dates/", "Town calendars", "Frost and planting dates for every town"],
-    ["beginners-guide/", "Beginner's guide", "Start your first garden"], ["garden-calendar/", "Monthly chores", "What to do each month"], ["about/", "About", "Who writes Rainline Garden"], ["contact/", "Contact", "Questions and corrections"]]
+    ["beginners-guide/", "Beginner's guide", "Start your first garden"], ["garden-calendar/", "Month by month", "What to plant and do each month"], ["about/", "About", "Who writes Rainline Garden"], ["contact/", "Contact", "Questions and corrections"]]
     .map(([u, t, sub]) => ({ t, s: sub, u, k: "page" }))
 ];
 fs.writeFileSync(path.join(ROOT, "assets/search-index.js"),

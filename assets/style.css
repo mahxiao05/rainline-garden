@@ -1909,3 +1909,79 @@ main [id] { scroll-margin-top: 84px; }
 .town-note > svg { flex: none; color: var(--moss); margin-top: 3px; }
 .town-note h2 { font-family: var(--sans); text-transform: none; letter-spacing: 0; font-size: 1.05rem; line-height: 1.3; margin: 0 0 .3rem; color: var(--fir); font-weight: 800; }
 .town-note p { margin: 0; line-height: 1.6; }
+
+/* Plant now (/plant-now/, assets/plantnow.js): your town this week, coming up, and a few of this month's jobs */
+.pnf-hero { padding-bottom: 1.6rem; }
+.pnf-hero h1 { margin-bottom: .7rem; }
+.pnf-hero .pn-change { color: var(--lime); font-size: inherit; letter-spacing: inherit; text-transform: inherit; text-decoration: underline; text-underline-offset: 3px; margin-left: .3rem; }
+.pnf-facts { display: flex; flex-wrap: wrap; gap: .45rem; margin: 0; padding: 0; list-style: none; }
+.pnf-facts li { font-size: .88rem; padding: .3rem .7rem; border-radius: 99px; border: 1px solid rgba(255, 255, 255, .2); color: var(--night-soft); }
+.pnf-facts li strong { color: var(--on-night); font-weight: 600; }
+.pnf-facts li.tag { background: var(--lime); color: #0F2B22; border-color: transparent; font-weight: 700; }
+.pnf-pick { max-width: 40rem; margin: 1.5rem 0 2rem; }
+.pnf-popular { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; font-size: .92rem; margin-top: 1rem; }
+.pnf-popular span { color: var(--muted); margin-right: .2rem; }
+.pnf-popular a { padding: .25rem .75rem; border: 1px solid var(--line); border-radius: 99px; background: var(--paper); color: var(--ink); text-decoration: none; }
+.pnf-popular a:hover { border-color: var(--moss); }
+.pnf-sec { margin: 1.6rem 0; }
+.pnf-sec h2 { font-size: clamp(1.45rem, 2.4vw, 1.8rem); margin: 0; }
+.pnf-head { display: flex; align-items: baseline; gap: .8rem; flex-wrap: wrap; margin: 0 0 .7rem; }
+.pnf-head p { margin: 0; color: var(--muted); font-size: .92rem; }
+.pnf-cards { display: grid; grid-template-columns: repeat(6, 1fr); gap: .7rem; }
+.pnf-card { display: block; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; color: var(--ink); text-decoration: none; }
+.pnf-card:hover { border-color: var(--moss); }
+.pnf-card > img, .pnf-card .ph-ico { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: grid; place-items: center; background: var(--sand); }
+.pnf-card .t { display: block; padding: .45rem .6rem .6rem; }
+.pnf-card strong { display: block; font-size: .95rem; }
+.pnf-card .t > span { display: block; font-size: .78rem; color: var(--muted); }
+.pnf-card em { font-style: normal; display: inline-block; margin-top: .3rem; font-size: .74rem; font-weight: 700; padding: .1rem .45rem; border-radius: 99px; background: var(--moss-soft); color: var(--moss); }
+.pnf-card em.last { background: var(--mod-bg); color: var(--mod); }
+:root[data-theme="dark"] .pnf-card > img { filter: brightness(.85); }
+.pnf-empty { display: flex; gap: .9rem; align-items: center; flex-wrap: wrap; background: var(--paper); border: 1px solid var(--line); border-left: 5px solid var(--moss); border-radius: 12px; padding: .8rem 1rem; }
+.pnf-empty p { margin: 0; }
+.pnf-empty .big { font-weight: 700; }
+.pnf-empty .small { color: var(--muted); font-size: .9rem; }
+.pnf-empty .chips { display: flex; flex-wrap: wrap; gap: .3rem; }
+.pnf-empty .chips a { display: inline-flex; align-items: center; gap: .3rem; font-size: .8rem; padding: .1rem .5rem .1rem .2rem; border: 1px solid var(--line); border-radius: 99px; color: var(--muted); text-decoration: none; background: var(--bg); }
+.pnf-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 2.2rem; align-items: start; }
+.pnf-box { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; }
+.pnf-jobs { list-style: none; margin: 0; padding: 0; }
+.pnf-jobs li { padding: .6rem .85rem; border-bottom: 1px solid var(--line); font-size: .94rem; line-height: 1.4; }
+.pnf-jobs li:last-child { border-bottom: 0; }
+.pnf-jobs small { display: block; font-size: .7rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+.pnf-tl { list-style: none; margin: 0; padding: .3rem .9rem; }
+.pnf-tl li { display: grid; grid-template-columns: 4.6rem 1fr; gap: .6rem; padding: .55rem 0; border-bottom: 1px solid var(--line); }
+.pnf-tl li:last-child { border-bottom: 0; }
+.pnf-tl .d { font-weight: 700; color: var(--moss); font-size: .9rem; line-height: 1.2; }
+.pnf-tl .d small { display: block; font-weight: 500; color: var(--muted); font-size: .74rem; margin-top: .15rem; }
+.pnf-tl .row { display: flex; flex-wrap: wrap; gap: .3rem; }
+.pnf-tl .row a { display: inline-flex; align-items: center; gap: .3rem; padding: .12rem .55rem .12rem .15rem; background: var(--bg); border: 1px solid var(--line); border-radius: 99px; color: var(--ink); text-decoration: none; font-size: .84rem; }
+.pnf-tl .row a img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
+.pnf-links { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin: .7rem 0 0; font-size: .92rem; }
+.pnf-src { font-size: .8rem; color: var(--muted); margin: 1.6rem 0 1rem; }
+@media (max-width: 980px) { .pnf-cards { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 820px) {
+  .pnf-cols { grid-template-columns: 1fr; gap: 0; }
+  .pnf-cards { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; margin: 0 -16px; padding: 0 16px .3rem; }
+  .pnf-card { flex: 0 0 38%; scroll-snap-align: start; }
+}
+
+/* Month by month pages: your town's region, one summary table of what goes in, then jobs filtered to your region */
+.mb-mine { background: var(--paper); border: 1px solid var(--line); border-left: 5px solid var(--moss); border-radius: 12px; padding: .9rem 1.1rem; margin: 1.5rem 0 0; max-width: 52rem; }
+.mb-mine p { margin: .15rem 0; }
+.mb-mine-links { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-top: .6rem !important; }
+.mb-lede { color: var(--muted); }
+.mb-plants { display: flex; flex-wrap: wrap; gap: .5rem; margin: .4rem 0 1rem; }
+.mb-plants a { display: inline-flex; align-items: center; gap: .45rem; padding: .3rem .8rem .3rem .3rem; border: 1px solid var(--line); border-radius: 99px; background: var(--paper); color: var(--ink); text-decoration: none; }
+.mb-plants a:hover { border-color: var(--moss); }
+.mb-reg { width: 100%; border-collapse: collapse; background: var(--paper); }
+.mb-reg th, .mb-reg td { padding: .6rem .9rem; text-align: left; border-bottom: 1px solid var(--line); font-size: .95rem; }
+.mb-reg thead th { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.mb-reg tr.is-mine { background: var(--moss-soft); }
+.mb-reg tr.is-mine th::after { content: "Your town"; margin-left: .5rem; font-size: .7rem; font-weight: 700; padding: .1rem .45rem; border-radius: 99px; background: var(--moss); color: var(--on-moss); white-space: nowrap; }
+.mb-closed { color: var(--muted); }
+.mb-bar { position: relative; display: block; height: 10px; background: var(--line); border-radius: 99px; min-width: 120px; }
+.mb-bar i { position: absolute; top: 0; bottom: 0; background: var(--moss); border-radius: 99px; }
+.mb-filter { margin: .3rem 0 1rem; }
+.mb-jobs .cm-card[hidden], .mb-jobs li[hidden] { display: none; }
+@media (max-width: 820px) { .mb-barcell { display: none; } }
