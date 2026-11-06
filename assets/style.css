@@ -1834,3 +1834,6 @@ main [id] { scroll-margin-top: 124px; }
 .hero .yd-card, .hero .cat-now, .hero .town-line { color: var(--ink); }
 .hero .yd-card .pick-now b { color: var(--fir); }
 .hero .yd-card a { color: var(--moss); }
+
+/* Plant page intro: what the plant is, right under the header (scripts/plant-intros.js). */
+.plant-intro { font-size: 1.12rem; line-height: 1.65; max-width: 44rem; margin: 1.5rem 0 1.25rem; }
