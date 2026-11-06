@@ -390,6 +390,15 @@ nameEl.textContent=label;out.innerHTML=(v?'<p class="pick-now"><span>Is it too l
 var box=RainlineTownBox(boxEl,{onPick:function(p){if(show(p.slug))box.collapse(p,"Not your town?")}});
 var t=(location.search.match(/[?&]town=([a-z-]+)/)||[])[1],s="";try{s=localStorage.getItem("rainline-place")||""}catch(e){}
 if(t&&show(t)){box.collapse(null,"Not your town?");try{localStorage.setItem("rainline-place",t)}catch(e){}}else if(s&&show(s))box.collapse(null,"Not your town?")})</script>`;
+// "Add to my garden plan" under a plant page's intro: opens My garden plan with this plant already picked
+// (garden.js reads ?add=). If the plant is already in the saved plan, it turns into a quiet "Open my plan" link.
+const PLUS_SVG = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>';
+const CHECK_SVG = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const planAdd = c => `<div class="plan-add" id="plan-add" data-crop="${c.id}"><a class="btn" href="../../my-garden/?add=${c.id}">${PLUS_SVG}<span>Add to my garden plan</span></a>
+<p class="plan-add-note">Puts ${esc(lc(c.name))} on your free plan, with dates for your town and a spot in your beds.</p></div>
+<script>(function(){var b=document.getElementById("plan-add");if(!b)return;var p;try{p=JSON.parse(localStorage.getItem("rainline-garden-plan"))}catch(e){}
+if(p&&p.crops&&p.crops.indexOf(b.dataset.crop)>=0){var a=b.querySelector("a");a.className="btn btn-ghost";a.href="../../my-garden/";a.innerHTML=${JSON.stringify(CHECK_SVG)}+"<span>Open my garden plan</span>";
+b.querySelector(".plan-add-note").textContent=${JSON.stringify(lc(c.name).replace(/^./, x => x.toUpperCase()) + " " + (/s$/.test(c.name) && !/(asparagus|camas|iris|ranunculus|cosmos)$/i.test(c.name) ? "are" : "is") + " already in your plan.")}}})()</script>`;
 // The town box and dates card that sit under a plant page's heading.
 const yourDates = () => `<div class="your-dates" id="your-town">
 <div class="yd-card" hidden><h2>Your dates in <span class="yd-town"></span></h2><div class="town-pick-out" aria-live="polite"></div></div>
@@ -1035,6 +1044,7 @@ D.crops.forEach(c => {
 <p class="lede">${g.fall ? hubLede(c, ledeTowns, "fall") : hubLede(c, ledeTowns)}</p>
 ${yourDates()}</div></section>
 <p class="plant-intro">${esc(INTROS[c.id])}</p>
+${planAdd(c)}
 ${sci ? scienceBody(c, g, sci, { head, dates, plans: sorted, port }) : `${quickFacts(c, g)}
 <p class="callout">${esc(c.note)}</p>
 <h2>${singular(c.name).replace(/^./, x => x.toUpperCase())} planting dates</h2>

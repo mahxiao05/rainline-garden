@@ -82,6 +82,13 @@
     else if (!mine.crops.length) { mine.place = shared.place || mine.place; mine.crops = shared.crops; clearQuery(); }
     else { state = shared; preview = true; }
   } else if (qPlace) mine.place = qPlace;
+  // "Add to my garden plan" from a plant page (?add=tomatoes): put that plant in your own plan, then say so (with Undo).
+  var added = null, qAdd = !qs.get("plants") && cropOf(qs.get("add") || "");
+  if (qAdd) {
+    added = { c: qAdd, have: mine.crops.indexOf(qAdd.id) >= 0, before: JSON.stringify({ crops: mine.crops, sq: mine.sq, manual: mine.manual, bedOf: mine.bedOf }) };
+    if (!added.have) mine.crops.push(qAdd.id);
+    clearQuery();
+  }
   if (!state.place) { try { state.place = localStorage.getItem("rainline-place") || ""; } catch (e) { /* ignore */ } }
   if (!preview) save();
 
@@ -674,10 +681,10 @@
   }
   function showUndo(text, before) {
     if (!undoBar) { undoBar = document.createElement("div"); undoBar.className = "sq-undo"; undoBar.setAttribute("role", "status"); document.body.appendChild(undoBar); }
-    undoBar.innerHTML = '<span>' + esc(text) + '</span><button type="button">Undo</button>';
+    undoBar.innerHTML = '<span>' + esc(text) + '</span>' + (before ? '<button type="button">Undo</button>' : '');
     undoBar.classList.add("is-on");
     clearTimeout(undoBar.t); undoBar.t = setTimeout(function () { undoBar.classList.remove("is-on"); }, 6000);
-    undoBar.querySelector("button").onclick = function () {
+    if (before) undoBar.querySelector("button").onclick = function () {
       var o = JSON.parse(before); state.crops = o.crops; state.sq = o.sq; state.manual = o.manual; state.bedOf = o.bedOf;
       save(); render(); undoBar.classList.remove("is-on");
     };
@@ -979,4 +986,9 @@
   if (state.place && state.crops.length) pick.open = false;
   render();
   groupCounts();
+  if (added) {
+    var where = P.findPlace(D, state.place) ? "" : " Choose your town to see its dates.";
+    if (added.have) showUndo(added.c.name + " is already in your plan." + where, null);
+    else showUndo(added.c.name + " added to your plan." + where, added.before);
+  }
 })();
