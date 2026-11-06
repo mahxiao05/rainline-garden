@@ -1884,3 +1884,9 @@ main [id] { scroll-margin-top: 84px; }
 .site-menu .menu-town a { color: var(--lime); }
 .site-menu .theme-row { background: rgba(255, 255, 255, .06); border-color: rgba(255, 255, 255, .14); color: #fff; }
 .menu-search { display: flex; align-items: center; gap: 10px; width: 100%; height: 46px; margin: 0 0 14px; padding: 0 14px; border: 0; border-radius: 8px; background: #fff; color: #5C635E; font: inherit; font-size: 1rem; cursor: pointer; }
+
+/* Town note: a pin card under the frost dates on town pages (scripts/town-notes.js) */
+.town-note { display: flex; gap: 14px; align-items: flex-start; background: var(--paper); border: 1px solid var(--line); border-left: 4px solid var(--moss); border-radius: 12px; padding: 16px 18px; margin: 1.25rem 0 1.5rem; max-width: 46rem; }
+.town-note > svg { flex: none; color: var(--moss); margin-top: 3px; }
+.town-note h2 { font-family: var(--sans); text-transform: none; letter-spacing: 0; font-size: 1.05rem; line-height: 1.3; margin: 0 0 .3rem; color: var(--fir); font-weight: 800; }
+.town-note p { margin: 0; line-height: 1.6; }
