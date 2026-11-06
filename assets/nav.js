@@ -154,9 +154,12 @@
       .sort(function (a, b) { return b.s - a.s; }).slice(0, 8).map(function (r) { return r.x; });
     active = results.length ? 0 : -1;
     list.innerHTML = (!q ? '<li class="search-h" role="presentation">Popular</li>' : "") + (results.length ? results.map(function (x, i) {
+      // Subtitle without the type, since the pill on the right already says it ("Plant", "Article", "Town").
+      var sub = x.k === "crop" && town() ? "Dates for your town" : String(x.s || "").replace(/^Plant · /, "").replace(/^Town calendar: f/, "F");
+      if (sub.toLowerCase() === String(KIND[x.k]).toLowerCase()) sub = "";
       var ico = x.i ? '<img src="' + base + x.i + '" width="28" height="28" alt="">' : '<span class="search-ico search-ico-' + x.k + '" aria-hidden="true"></span>';
       return '<li role="option" id="sr-' + i + '" aria-selected="' + (i === active) + '"><a href="' + href(x) + '" tabindex="-1">' + ico +
-        '<span class="search-t">' + esc(x.t) + '<small>' + esc(x.k === "crop" && town() ? "Plant · dates for your town" : x.s) + '</small></span><span class="search-k">' + KIND[x.k] + '</span></a></li>';
+        '<span class="search-t">' + esc(x.t) + (sub ? '<small>' + esc(sub) + '</small>' : '') + '</span><span class="search-k">' + KIND[x.k] + '</span></a></li>';
     }).join("") : '<li class="search-empty" role="presentation">Nothing matches "' + esc(input.value) + '". Try a plant like <em>kale</em> or a town like <em>Bend</em>.</li>');
     box.setAttribute("aria-expanded", String(results.length > 0));
     input.setAttribute("aria-activedescendant", active >= 0 ? "sr-" + active : "");

@@ -20,6 +20,7 @@ const CATEGORY_GUIDES = require("./category-guides.js");
 const VARIETIES = require("./varieties.js");
 const VIDEOS = require("./videos.js");
 const AREA_TIPS = require("./area-tips.js");
+const TOWN_NOTES = require("./town-notes.js");
 const REGIONAL = require("./regional-notes.js");
 const INTROS = require("./plant-intros.js");
 D.crops.forEach(c => { if (!INTROS[c.id]) throw new Error(`Plant ${c.id} needs an intro in scripts/plant-intros.js`); });
@@ -834,6 +835,13 @@ function townCompare(p) {
   return phoneFold("compare", `How the season in ${city} compares`, `<div class="prose">${out.map(t => `<p>${t}</p>`).join("\n")}</div>`);
 }
 
+// A short fact note about the town (scripts/town-notes.js), as a pin card under the frost dates.
+function townNote(place) {
+  const note = TOWN_NOTES[place.slug];
+  if (!note) throw new Error(`scripts/town-notes.js has no note for ${place.slug}`);
+  return `<section class="town-note" aria-labelledby="tn-h"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11z" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.3" fill="currentColor"/></svg><div><h2 id="tn-h">About ${esc(place.city)}</h2><p>${esc(note)}</p></div></section>`;
+}
+
 // Local advice for the town's area (scripts/area-tips.js), and how far the frost date sits from the tomato date.
 function townLocal(p) {
   const city = esc(p.place.city), area = D.areas.find(a => a.id === p.place.area), tip = AREA_TIPS[p.place.area];
@@ -926,6 +934,7 @@ D.places.forEach(place => {
 </section>
 ${R.frostFacts(p)}
 <p class="station town-src">NOAA 1991–2020 frost normals, ${esc(D.stations[place.station].name)}${/Station/.test(D.stations[place.station].name) ? "" : " station"}. <a href="#station">Where these dates come from</a></p>
+${townNote(place)}
 <section class="risk-card" id="risk">${R.frostRisk(p)}</section>
 <h2>What to plant now</h2>
 <div id="now"><p class="empty">Turn on JavaScript to see what's in season today. The full calendar is below.</p></div>
