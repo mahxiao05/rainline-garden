@@ -18,6 +18,7 @@
   var starters = document.getElementById("gp-starters"), pickNote = document.getElementById("gp-pick-note");
 
   var MONTHS = P.MONTHS_LONG, DAY = 864e5;
+  function plantsN(n) { return n + (n === 1 ? " plant" : " plants"); }
   var HOW = { "Plant seeds in the ground": "from seed", "Plant seeds or young plants": "from seed or as starts", "Plant young plants or sets": "as starts or sets",
     "Plant young plants (starts)": "as starts", "Plant seed potatoes": "using seed potatoes", "Plant young plants": "as young plants" };
   // Quick crops that do best sown a little at a time.
@@ -569,7 +570,7 @@
     if (!preview) { share.hidden = true; share.innerHTML = ""; return; }
     var place = P.findPlace(D, state.place);
     share.hidden = false;
-    share.innerHTML = '<div><strong>You\'re looking at a shared plan</strong><span>' + state.crops.length + ' plants' + (place ? ' for ' + esc(place.city) : '') +
+    share.innerHTML = '<div><strong>You\'re looking at a shared plan</strong><span>' + plantsN(state.crops.length) + (place ? ' for ' + esc(place.city) : '') +
       '. Your own plan (' + mine.crops.length + ' plants) is safe until you choose.</span></div>' +
       '<div class="gp-share-btns"><button type="button" class="btn" data-act="adopt">Save as my plan</button><button type="button" class="btn btn-ghost" data-act="mine">Back to my plan</button></div>';
   }
@@ -607,7 +608,7 @@
     var jump = [["gp-week", "Right now"], ["gp-beds-sec", "Beds"], ["gp-todo-h", "To-do list"], ["gp-chart-h", "Chart"], ["gp-cards-h", "Plants"]].concat(preview ? [] : [["gp-more", "More tools"]]);
     out.innerHTML =
       '<header class="gp-title"><h2 class="gp-step">' + (preview ? '' : STEP3) + 'Garden plan for ' + esc(place.city) + ', ' + place.state + '</h2>' +
-      '<p>' + chosen.length + ' plants · ' + doneCount + ' of ' + list.length + ' jobs done<span class="gp-print-only"> · made ' + short(now) + ', ' + YEAR + ' at rainlinegarden.org</span></p>' +
+      '<p>' + plantsN(chosen.length) + ' · ' + doneCount + ' of ' + list.length + ' jobs done<span class="gp-print-only"> · made ' + short(now) + ', ' + YEAR + ' at rainlinegarden.org</span></p>' +
       '<p class="gp-rain"><a href="' + base + 'how-it-works/#rain-line">' + side + '</a></p></header>' +
       (preview ? '' : '<div class="gp-bar"><button type="button" class="btn btn-sm" data-act="print">Print or save as PDF</button>' +
       '<button type="button" class="btn btn-ghost btn-sm" data-act="ics">Add dates to my calendar</button>' +
@@ -796,7 +797,7 @@
     starters.addEventListener("click", function (e) {
       var b = e.target.closest("[data-starter]"); if (!b) return;
       var st = STARTERS.filter(function (x) { return x.id === b.dataset.starter; })[0];
-      if (state.crops.length && !confirm("Swap your " + state.crops.length + " plants for the " + st.name + " plan? Your harvest log and notes stay.")) return;
+      if (state.crops.length && !confirm("Swap your " + plantsN(state.crops.length) + " for the " + st.name + " plan? Your harvest log and notes stay.")) return;
       state.crops = st.crops.slice(); state.beds = st.beds.map(function (x) { return { w: x.w, l: x.l }; }); state.sq = {}; state.manual = {}; state.bedOf = {}; state.done = {};
       save(); render();
       if (pickNote) pickNote.hidden = true;
@@ -842,7 +843,7 @@
   share.addEventListener("click", function (e) {
     var b = e.target.closest("[data-act]"); if (!b) return;
     if (b.dataset.act === "adopt") {
-      if (mine.crops.length && !confirm("Replace your plan (" + mine.crops.length + " plants) with this one? Your harvest log stays.")) return;
+      if (mine.crops.length && !confirm("Replace your plan (" + plantsN(mine.crops.length) + ") with this one? Your harvest log stays.")) return;
       mine.place = state.place || mine.place; mine.crops = state.crops; mine.done = {}; mine.repeat = {}; mine.sq = {}; mine.manual = {}; mine.bedOf = {};
     }
     state = mine; preview = false; clearQuery(); save(); render();
@@ -974,7 +975,7 @@
     Array.prototype.forEach.call(groups, function (g) {
       var n = g.querySelectorAll("input:checked").length, el = g.querySelector(".gp-group-n");
       var total = g.querySelectorAll(".gp-opt").length;
-      el.textContent = total + " plants" + (n ? " · " + n + " picked" : "");
+      el.textContent = plantsN(total) + (n ? " · " + n + " picked" : "");
     });
   }
   pick.addEventListener("change", groupCounts);
