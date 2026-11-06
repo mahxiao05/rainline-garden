@@ -189,7 +189,7 @@ function layout({ rel, title, description, canonical, current, body, scripts, js
   };
   // The logo is the way home, so Home isn't repeated in the menus.
   const MAIN = [["when-to-plant/", "When to plant"], ["frost-dates/", "Town calendars"]];
-  // Main links sit in the header bar itself: three sections plus a Learn dropdown (the rest of the guides and dark mode).
+  // Main links sit in the header bar itself: three sections plus a More dropdown (the rest of the guides and dark mode).
   // The third link is this month's planting page. The build writes the month it was built in; nav.js swaps in
   // today's month when the page loads, so the link never goes stale between rebuilds.
   const MONTH_NOW = P.MONTHS_LONG[new Date().getMonth()];
@@ -199,7 +199,7 @@ function layout({ rel, title, description, canonical, current, body, scripts, js
   const learnCur = LEARN.some(([href]) => href === current);
   const themeRow = `<button type="button" class="theme-row" role="switch" aria-checked="false"><span>${ICON.moon}Dark mode</span><i class="sw" aria-hidden="true"></i></button>`;
   const nav = TOP.map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("") + monthLink("Plant now") +
-    `<div class="nav-more"><button type="button" class="nav-more-btn${learnCur ? " is-current" : ""}" aria-expanded="false" aria-controls="nav-learn">Learn${ICON.chev}</button>` +
+    `<div class="nav-more"><button type="button" class="nav-more-btn${learnCur ? " is-current" : ""}" aria-expanded="false" aria-controls="nav-learn">More${ICON.chev}</button>` +
     `<div class="nav-menu" id="nav-learn" hidden>${LEARN.map(([href, label, sub]) => `<a href="${base}${href}"${cur(href)}><strong>${label}</strong><span>${sub}</span></a>`).join("")}${themeRow}</div></div>`;
   const menu = `<div class="site-menu" id="site-menu" hidden><div class="wrap">
 <button type="button" class="menu-search">${ICON.search}<span>Search plants, towns and guides</span></button>
