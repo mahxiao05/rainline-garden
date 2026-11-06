@@ -20,6 +20,7 @@ const CATEGORY_GUIDES = require("./category-guides.js");
 const VARIETIES = require("./varieties.js");
 const VIDEOS = require("./videos.js");
 const AREA_TIPS = require("./area-tips.js");
+const TOWN_NOTES = require("./town-notes.js");
 const REGIONAL = require("./regional-notes.js");
 const INTROS = require("./plant-intros.js");
 D.crops.forEach(c => { if (!INTROS[c.id]) throw new Error(`Plant ${c.id} needs an intro in scripts/plant-intros.js`); });
@@ -838,12 +839,15 @@ function townCompare(p) {
 function townLocal(p) {
   const city = esc(p.place.city), area = D.areas.find(a => a.id === p.place.area), tip = AREA_TIPS[p.place.area];
   if (!tip) throw new Error(`scripts/area-tips.js has no tip for area ${p.place.area}`);
+  const note = TOWN_NOTES[p.place.slug];
+  if (!note) throw new Error(`scripts/town-notes.js has no note for ${p.place.slug}`);
   const tom = win(rowFor(p, "tomatoes"), "spring"), gap = tom.start - p.frost.spring50;
   const weeks = Math.round(gap / 7);
   const gapLine = weeks >= 3 ? `<p><strong>Frost date isn't planting date.</strong> The typical last frost in ${city} is ${P.fmtLong(p.frost.spring50)}, but tomatoes wait until ${P.fmtLong(tom.start)}, about ${weeks} weeks later, ${p.place.zone === "west" ? "because the soil is still too cold for them to grow" : p.place.zone === "coast" ? "because the soil and nights are still too cold for them" : "for warmer soil and less risk of a late frost"}. <a href="../../articles/soil-temperature/">Why soil temperature matters</a>.</p>` : "";
   return `<div class="local">
 <p class="region"><strong>${p.zone.name}.</strong> ${p.zone.blurb}</p>
 <p><strong>Gardening in ${inArea(area.name)}.</strong> ${tip}</p>
+<p><strong>About ${city}.</strong> ${esc(note)}</p>
 ${gapLine}</div>`;
 }
 
