@@ -22,6 +22,7 @@ const VIDEOS = require("./videos.js");
 const AREA_TIPS = require("./area-tips.js");
 const REGIONAL = require("./regional-notes.js");
 const INTROS = require("./plant-intros.js");
+D.crops.forEach(c => { if (!INTROS[c.id]) throw new Error(`Plant ${c.id} needs an intro in scripts/plant-intros.js`); });
 const SEED_SAVING = require("./seed-saving.js");
 const STATION_CHECK = require("./station-check.js");
 const { SIZES, fileBase, sizesFor } = require("./photo-sizes.js");
@@ -1033,7 +1034,7 @@ D.crops.forEach(c => {
 <h1>When to plant ${lc(c.name)}</h1>
 <p class="lede">${g.fall ? hubLede(c, ledeTowns, "fall") : hubLede(c, ledeTowns)}</p>
 ${yourDates()}</div></section>
-${INTROS[c.id] ? `<p class="plant-intro">${esc(INTROS[c.id])}</p>` : ""}
+<p class="plant-intro">${esc(INTROS[c.id])}</p>
 ${sci ? scienceBody(c, g, sci, { head, dates, plans: sorted, port }) : `${quickFacts(c, g)}
 <p class="callout">${esc(c.note)}</p>
 <h2>${singular(c.name).replace(/^./, x => x.toUpperCase())} planting dates</h2>
