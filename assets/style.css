@@ -1818,7 +1818,8 @@ main [id] { scroll-margin-top: 84px; }
 /* Header: one row. Logo, three main links + Learn dropdown, search, town, My garden plan.
  * After scrolling past the page header (nav.js adds .is-small) the bar gets shorter and shows where you are. */
 .site-head > .wrap { transition: padding .2s; }
-.head-links { display: flex; align-items: center; gap: 20px; margin-left: 24px; font-size: .94rem; font-weight: 600; }
+.site-head .brand { flex: none; }
+.head-links { flex: none; display: flex; align-items: center; gap: 18px; margin-left: 24px; font-size: .94rem; font-weight: 600; }
 .head-links > a, .head-links .nav-more-btn { padding: 8px 0; border-radius: 0; background: none; color: var(--night-soft); text-decoration: none; white-space: nowrap; }
 .head-links > a:hover, .head-links .nav-more-btn:hover, .head-links .nav-more-btn[aria-expanded="true"] { background: none; color: #fff; }
 .head-links > a[aria-current="page"], .head-links .nav-more-btn.is-current { background: none; color: #fff; font-weight: 600; box-shadow: inset 0 -2px 0 var(--lime); }
@@ -1827,7 +1828,8 @@ main [id] { scroll-margin-top: 84px; }
 .nav-menu .theme-row { margin-top: 6px; padding: 9px 12px; font-size: .98rem; }
 .site-head .head-search { margin-left: auto; background: rgba(255, 255, 255, .08); color: var(--night-soft); border: 1px solid rgba(255, 255, 255, .2); }
 .site-head .head-search:hover, .site-head .head-search[aria-expanded="true"] { color: #fff; border-color: rgba(255, 255, 255, .45); box-shadow: none; }
-.site-head .town-chip-wrap { flex: none; margin-left: 0; }
+.site-head .town-chip-wrap { flex: 0 1 auto; min-width: 0; margin-left: 0; }
+.site-head .town-chip { max-width: 100%; }
 .head-where { display: none; align-items: center; gap: 6px; min-width: 0; margin: 0 0 0 14px; color: var(--night-soft); font-size: .93rem; font-weight: 600; white-space: nowrap; }
 .head-where b { overflow: hidden; text-overflow: ellipsis; color: #fff; }
 .site-head.is-small > .wrap { padding-top: 7px; padding-bottom: 7px; }
@@ -1840,12 +1842,12 @@ main [id] { scroll-margin-top: 84px; }
 .site-head .head-search span { display: none; }
 .site-head .cta-long { display: none; }
 .site-head .cta-short { display: inline; }
-.site-head .brand { letter-spacing: .2em; }
-@media (max-width: 1100px) {
+.site-head .brand { letter-spacing: .16em; }
+@media (max-width: 1240px) {
   .site-head .brand { margin-right: 0; }
   .site-head .town-chip-wrap { display: none; }
   .head-links { gap: 18px; margin-left: 18px; }
-  .brand { letter-spacing: .18em; }
+  .site-head .brand { letter-spacing: .14em; }
 }
 @media (max-width: 940px) { .brand span { display: none; } }
 @media (max-width: 860px) {

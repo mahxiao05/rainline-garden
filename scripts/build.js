@@ -176,6 +176,7 @@ function layout({ rel, title, description, canonical, current, body, scripts, js
   const base = rel; // relative prefix back to the site root, e.g. "../../"
   const cur = href => current === href ? ' aria-current="page"' : "";
   const LEARN = [["beginners-guide/", "Beginner's guide", "Start your first Northwest garden"], ["garden-calendar/", "Monthly chores", "What to do in the garden each month"],
+    ["fall-planting/", "Fall planting", "What to plant from late summer on"],
     ["articles/", "Articles", "Growing guides for Northwest weather"], ["glossary/", "Glossary", "Gardening words in plain language"], ["what-to-grow/", "Plant quiz", "Find the plants that suit you"], ["how-it-works/", "How it works", "Where our dates come from"]];
   const ICON = {
     search: '<svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
@@ -189,17 +190,22 @@ function layout({ rel, title, description, canonical, current, body, scripts, js
   // The logo is the way home, so Home isn't repeated in the menus.
   const MAIN = [["when-to-plant/", "When to plant"], ["frost-dates/", "Town calendars"]];
   // Main links sit in the header bar itself: three sections plus a Learn dropdown (the rest of the guides and dark mode).
-  const TOP = MAIN.concat([["fall-planting/", "Fall planting"]]);
+  // The third link is this month's planting page. The build writes the month it was built in; nav.js swaps in
+  // today's month when the page loads, so the link never goes stale between rebuilds.
+  const MONTH_NOW = P.MONTHS_LONG[new Date().getMonth()];
+  // In the bar it says "Plant now" (short enough to fit beside your town); in the phone menu it names the month.
+  const monthLink = (label) => `<a class="month-link" href="${base}garden-calendar/${MONTH_NOW.toLowerCase()}/" title="What to plant in ${MONTH_NOW}"${label ? "" : ' data-month-label'}>${label || `Plant in ${MONTH_NOW}`}</a>`;
+  const TOP = MAIN;
   const learnCur = LEARN.some(([href]) => href === current);
   const themeRow = `<button type="button" class="theme-row" role="switch" aria-checked="false"><span>${ICON.moon}Dark mode</span><i class="sw" aria-hidden="true"></i></button>`;
-  const nav = TOP.map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("") +
+  const nav = TOP.map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("") + monthLink("Plant now") +
     `<div class="nav-more"><button type="button" class="nav-more-btn${learnCur ? " is-current" : ""}" aria-expanded="false" aria-controls="nav-learn">Learn${ICON.chev}</button>` +
     `<div class="nav-menu" id="nav-learn" hidden>${LEARN.map(([href, label, sub]) => `<a href="${base}${href}"${cur(href)}><strong>${label}</strong><span>${sub}</span></a>`).join("")}${themeRow}</div></div>`;
   const menu = `<div class="site-menu" id="site-menu" hidden><div class="wrap">
 <button type="button" class="menu-search">${ICON.search}<span>Search plants, towns and guides</span></button>
 <p class="menu-town" hidden></p>
-<div class="menu-cols"><div><p class="menu-h">Plan</p>${MAIN.concat([["my-garden/", "My garden plan"], ["what-to-grow/", "Plant quiz"]]).map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("")}</div>
-<div><p class="menu-h">Learn</p>${LEARN.filter(([href]) => href !== "what-to-grow/").map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("")}</div></div>
+<div class="menu-cols"><div><p class="menu-h">Plan</p>${MAIN.map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("")}${monthLink()}${[["fall-planting/", "Fall planting"], ["my-garden/", "My garden plan"], ["what-to-grow/", "Plant quiz"]].map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("")}</div>
+<div><p class="menu-h">Learn</p>${LEARN.filter(([href]) => href !== "what-to-grow/" && href !== "fall-planting/").map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("")}</div></div>
 ${themeRow}
 </div></div>`;
   const search = `<div class="search-pop" id="search-pop" hidden><div class="wrap"><div class="search-box" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-owns="search-list">
