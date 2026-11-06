@@ -1475,7 +1475,19 @@ html.tm-lock, html.tm-lock body { overflow: hidden; }
 .sec-sub { margin: -.5rem 0 1rem; color: var(--muted); }
 .drop-rows[hidden] { display: none; }
 /* Garden planner: the same plant-type picture tiles, opening tick boxes instead of plant links. */
-.gp-tiles .cat-tiles { margin-top: .25rem; }
+.gp-tiles .cat-tiles { margin-top: .25rem; grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr)); gap: 8px; }
+.gp-tiles .cat-tile { padding: 0 10px 9px; gap: 1px; border-radius: 12px; }
+.gp-tiles .cat-photo { width: calc(100% + 20px); margin: 0 -10px 7px; aspect-ratio: 16 / 9; border-radius: 11px 11px 0 0; }
+.gp-tiles .cat-icons { display: none; }
+.gp-tiles .cat-tile .card-t { font-size: .92rem; line-height: 1.25; }
+.gp-tiles .cat-tile .card-s { font-size: .8rem; }
+@media (max-width: 640px) {
+  .gp-tiles .cat-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .gp-tiles .cat-tile { padding: 0 7px 8px; }
+  .gp-tiles .cat-photo { width: calc(100% + 14px); margin: 0 -7px 5px; }
+  .gp-tiles .cat-tile .card-t { font-size: .85rem; }
+  .gp-tiles .cat-tile .card-s { font-size: .74rem; }
+}
 .gp-drop-hint { color: var(--muted); font-size: .9rem; }
 .gp-tiles .cat-drop .gp-opts { padding: 0; }
 .gp-tiles .cat-tile .card-s::after { white-space: nowrap; }
