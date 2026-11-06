@@ -2,7 +2,8 @@
  * free for commercial use, no attribution required, though each photo is credited in its caption anyway.
  * Never use a photo of a person to stand in for one of the authors.
  *
- * Fields: src ("pexels:<id>" or "unsplash:<id>"), alt, focus (crop gravity: Center, North, South, East, West...).
+ * Fields: src ("pexels:<id>" or "unsplash:<id>"), alt, focus (crop gravity: Center, North, South, East, West...),
+ * tallFocus (optional gravity for the tall phone crop of page headers, when it should differ from focus).
  * Keys: "hero", "cat:<category id>", "article:<article slug>", "inline:<article slug>-<n>" (placed in the article text with ${fig(n)}).
  * After adding or changing one, run `node scripts/fetch-photos.js` (downloads and resizes into assets/img/photos/)
  * and then `node scripts/build.js`. */

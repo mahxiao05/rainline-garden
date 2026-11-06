@@ -25,7 +25,7 @@ const INTROS = require("./plant-intros.js");
 D.crops.forEach(c => { if (!INTROS[c.id]) throw new Error(`Plant ${c.id} needs an intro in scripts/plant-intros.js`); });
 const SEED_SAVING = require("./seed-saving.js");
 const STATION_CHECK = require("./station-check.js");
-const { SIZES, fileBase, sizesFor } = require("./photo-sizes.js");
+const { SIZES, fileBase, sizesFor, sizeTag, formatsFor } = require("./photo-sizes.js");
 const ARTICLES = require("./articles-4.js").concat(require("./articles-3.js"), require("./articles-2.js"), require("./articles.js")); // newest first
 
 const CONFIG = {
@@ -527,14 +527,14 @@ const articleIcon = (a, rel, size) => a.icon
   : R.icon(a.crops[0], rel, size);
 
 /* Real photos (scripts/photos.js). photo() returns a <figure> with WebP and JPEG sources at two widths. */
-Object.keys(PHOTOS).forEach(key => sizesFor(key).forEach(s => ["webp", "jpg"].forEach(ext => {
-  const f = `assets/img/photos/${fileBase(key)}-${SIZES[s].w}.${ext}`;
+Object.keys(PHOTOS).forEach(key => sizesFor(key).forEach(s => formatsFor(s).forEach(ext => {
+  const f = `assets/img/photos/${fileBase(key)}-${sizeTag(s)}.${ext}`;
   if (!fs.existsSync(path.join(ROOT, f))) throw new Error(`Missing ${f}: run node scripts/fetch-photos.js`);
 })));
 D.crops.forEach(c => {
   if (!fs.existsSync(path.join(ROOT, `assets/img/crops/${c.id}.webp`))) throw new Error(`Missing icon assets/img/crops/${c.id}.webp: add a "crop:${c.id}" photo and run node scripts/fetch-photos.js (hardy-kiwi.webp is rendered from hardy-kiwi.svg, since no photo of it exists)`);
 });
-const photoFile = (key, size, ext = "jpg") => `assets/img/photos/${fileBase(key)}-${SIZES[size].w}.${ext}`;
+const photoFile = (key, size, ext = "jpg") => `assets/img/photos/${fileBase(key)}-${sizeTag(size)}.${ext}`;
 function photo(key, rel, { big, small, cls, sizes, eager }) {
   const p = PHOTOS[key];
   if (!p) return "";
@@ -546,7 +546,16 @@ function photo(key, rel, { big, small, cls, sizes, eager }) {
 const inlinePhoto = (a, n, rel) => { const key = `inline:${a.slug}-${n}`;
   if (!PHOTOS[key]) throw new Error(`Article ${a.slug} uses fig(${n}) but scripts/photos.js has no "${key}"`);
   return photo(key, rel, { big: "inline", small: "inlineSm", cls: "photo-inline", sizes: "(min-width: 44rem) 40rem, calc(100vw - 32px)" }); };
-const banner = (key, rel) => photo(key, rel, { big: "banner", small: "bannerSm", cls: "photo-banner", sizes: "(min-width: 70rem) 66rem, calc(100vw - 32px)", eager: true });
+/* Page-header photo. It fills the full screen width behind the title (taller than wide on phones), so it gets
+ * its own crops: a tall one for screens up to 720px and a wide one above, each at two widths for high-DPI screens. */
+function banner(key, rel) {
+  const p = PHOTOS[key];
+  if (!p) return "";
+  const set = (a, b) => `${rel}${photoFile(key, a, "webp")} ${SIZES[a].w}w, ${rel}${photoFile(key, b, "webp")} ${SIZES[b].w}w`;
+  return `<figure class="photo-banner"><picture><source type="image/webp" media="(max-width: 720px)" srcset="${set("tall", "tallXl")}" sizes="100vw">
+<source type="image/webp" srcset="${set("wide", "wideXl")}" sizes="100vw">
+<img src="${rel}${photoFile(key, "banner")}" width="${SIZES.wide.w}" height="${SIZES.wide.h}" alt="${esc(p.alt)}" fetchpriority="high" decoding="async"></picture></figure>`;
+}
 
 function articleCards(rel, list) {
   const pic = a => PHOTOS["article:" + a.slug] ? `<img class="card-photo" src="${rel}${photoFile("article:" + a.slug, "bannerSm", "webp")}" width="720" height="300" alt="" loading="lazy" decoding="async">` : articleIcon(a, rel, 48);
