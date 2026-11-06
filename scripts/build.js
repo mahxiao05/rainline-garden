@@ -745,9 +745,10 @@ function cropGrid(rel, linkFor) {
 }
 // Plant-type tiles. With drops, each tile opens a list of its plants right under its row (assets/catdrop.js);
 // the tile still links to the plant-type page if scripts are off.
-function categoryTiles(rel, drops) {
-  const drop = k => drops ? `<li class="cat-drop" id="drop-${k.id}" hidden><div class="cat-drop-head"><span class="cat-drop-t">${k.name}</span><a href="${rel}${WHEN_INDEX}${k.id}/">Planting order for ${lc(k.name)} &rarr;</a></div><ul class="drop-rows">${k.crops.map(id => { const c = cropById(id); return `<li><a href="${rel}${WHEN_INDEX}${id}/">${R.icon(id, rel, 32)}<span class="drop-n">${c.name}</span>${badge(G.crops[id].difficulty)}</a></li>`; }).join("")}</ul></li>` : "";
-  return `<ul class="cat-tiles${drops ? " cat-tiles-drop" : ""}">${D.categories.map(k => `<li><a class="cat-tile" href="${rel}${WHEN_INDEX}${k.id}/"${drops ? ` data-drop="drop-${k.id}" aria-controls="drop-${k.id}"` : ""}>${PHOTOS["cat:" + k.id] ? `<img class="cat-photo" src="${rel}${photoFile("cat:" + k.id, "thumb", "webp")}" width="480" height="240" alt="${esc(PHOTOS["cat:" + k.id].alt)}" aria-hidden="true" loading="lazy" decoding="async">` : ""}<span class="cat-icons">${k.crops.slice(0, 3).map(id => R.icon(id, rel, 40)).join("")}</span><span class="card-t">${k.name}</span><span class="card-s">${k.crops.length} plants</span></a></li>${drop(k)}`).join("")}</ul>`;
+// pick(k) swaps the plant links for other drop contents (the garden planner's tick boxes).
+function categoryTiles(rel, drops, pick) {
+  const drop = k => !drops ? "" : pick ? `<li class="cat-drop gp-group" id="drop-${k.id}" hidden>${pick(k)}</li>` : `<li class="cat-drop" id="drop-${k.id}" hidden><div class="cat-drop-head"><span class="cat-drop-t">${k.name}</span><a href="${rel}${WHEN_INDEX}${k.id}/">Planting order for ${lc(k.name)} &rarr;</a></div><ul class="drop-rows">${k.crops.map(id => { const c = cropById(id); return `<li><a href="${rel}${WHEN_INDEX}${id}/">${R.icon(id, rel, 32)}<span class="drop-n">${c.name}</span>${badge(G.crops[id].difficulty)}</a></li>`; }).join("")}</ul></li>`;
+  return `<ul class="cat-tiles${drops ? " cat-tiles-drop" : ""}">${D.categories.map(k => `<li><a class="cat-tile" href="${rel}${WHEN_INDEX}${k.id}/"${drops ? ` data-drop="drop-${k.id}" aria-controls="drop-${k.id}"` : ""}>${PHOTOS["cat:" + k.id] ? `<img class="cat-photo" src="${rel}${photoFile("cat:" + k.id, "thumb", "webp")}" width="480" height="240" alt="${esc(PHOTOS["cat:" + k.id].alt)}" aria-hidden="true" loading="lazy" decoding="async">` : ""}<span class="cat-icons">${k.crops.slice(0, 3).map(id => R.icon(id, rel, 40)).join("")}</span><span class="card-t">${k.name}</span><span class="card-s${pick ? " gp-group-n" : ""}"${pick ? ` data-g="drop-${k.id}"` : ""}>${k.crops.length} plants</span></a></li>${drop(k)}`).join("")}</ul>`;
 }
 
 /* Home */
@@ -1236,7 +1237,7 @@ ${townBox({ id: "gp-box", rel: "../", button: "Use this town" })}
 <div class="gp-find"><label for="gp-find" class="sr">Find a plant</label><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><input id="gp-find" type="search" autocomplete="off" spellcheck="false" placeholder="Find a plant, like beans or basil"></div>
 <p id="gp-find-none" class="gp-find-none" role="status" hidden>No plants match that. Try another name, or <a href="../what-to-grow/">take the plant quiz</a>.</p>
 <p class="gp-groups-h">Or browse by group</p>
-${D.categories.map(k => `<details class="gp-group"><summary>${k.name} <span class="gp-group-n">${k.crops.length} plants</span></summary><div class="gp-opts" role="group" aria-label="${esc(k.name)}">${k.crops.map(id => `<label class="gp-opt"><input type="checkbox" value="${id}">${R.icon(id, "../", 28)}<span>${cropById(id).name}</span></label>`).join("")}</div></details>`).join("")}
+<div class="gp-tiles">${categoryTiles("../", true, k => `<div class="cat-drop-head"><span class="cat-drop-t">${k.name}</span><span class="gp-drop-hint">Tick the ones you want</span></div><div class="gp-opts" role="group" aria-label="${esc(k.name)}">${k.crops.map(id => `<label class="gp-opt"><input type="checkbox" value="${id}">${R.icon(id, "../", 28)}<span>${cropById(id).name}</span></label>`).join("")}</div>`)}</div>
 <p class="gp-pick-foot"><button type="button" class="linkish" id="gp-clear">Reset plan</button></p>
 </details>
 <section id="gp-out" class="gp-out" aria-live="polite"><div class="gp-empty-wrap">${PLAN_EMPTY_ART}<p class="empty gp-empty">Choose your town and pick some plants to see your plan.</p></div></section>
@@ -1255,7 +1256,7 @@ ${D.categories.map(k => `<details class="gp-group"><summary>${k.name} <span clas
 <input type="hidden" name="${esc(CONFIG.newsletterTagField)}" value="frost-alert"><input type="hidden" name="${esc(CONFIG.newsletterTagField)}" value="frost-{slug}">
 <label for="gp-alert-email" class="sr">Email address</label><input id="gp-alert-email" type="email" name="${esc(CONFIG.newsletterField)}" placeholder="you@example.com" required autocomplete="email">
 <button class="btn" type="submit">Email me</button></form></template>` : ""}`,
-  scripts: ["data.js", "plan.js", "render.js", "guide-data.js", "near.js", "townbox.js", "garden.js"]
+  scripts: ["data.js", "plan.js", "render.js", "guide-data.js", "near.js", "townbox.js", "catdrop.js", "garden.js"]
 }), "0.8");
 
 /* Plant quiz */

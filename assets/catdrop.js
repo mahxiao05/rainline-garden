@@ -38,6 +38,7 @@
     var r = d.getBoundingClientRect();
     if (r.bottom > window.innerHeight) window.scrollBy({ top: Math.min(r.bottom - window.innerHeight + 16, a.getBoundingClientRect().top - 80), behavior: "smooth" });
   }
+  grid.addEventListener("catdrop:close", function () { if (open) toggle(open); });
   window.addEventListener("resize", place);
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && open) { var a = open; toggle(a); a.focus(); } });
 })();
