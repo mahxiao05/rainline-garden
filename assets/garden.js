@@ -83,8 +83,6 @@
     else { state = shared; preview = true; }
   } else if (qPlace) mine.place = qPlace;
   // "Add to my garden plan" from a plant page (?add=tomatoes): put that plant in your own plan, then say so (with Undo).
-  // DEMO (not for merge): which of the three "connect it" ideas are on. 1 = show the plant, 2 = next job in the bar, 3 = links back with your town.
-  var DEMO = "123"; try { DEMO = sessionStorage.getItem("rl-pa-demo") || DEMO; } catch (e) { /* ignore */ }
   var added = null, qAdd = !qs.get("plants") && cropOf(qs.get("add") || "");
   if (qAdd) {
     added = { c: qAdd, have: mine.crops.indexOf(qAdd.id) >= 0, before: JSON.stringify({ crops: mine.crops, sq: mine.sq, manual: mine.manual, bedOf: mine.bedOf }) };
@@ -502,7 +500,7 @@
     var ready = rows.filter(function (x) { return (x.s.k === "now" || x.s.k === "last") && x.r.season !== "short"; });
     var indoor = rows.filter(function (x) { return x.s.k === "indoor" && x.r.season !== "short"; });
     var rest = rows.filter(function (x) { return ready.indexOf(x) < 0 && indoor.indexOf(x) < 0 && x.s.next; });
-    var nm = function (x) { return DEMO.indexOf("3") >= 0 ? '<a href="' + plantUrl(x.r.crop.id) + '">' + esc(x.r.crop.name) + '</a>' : esc(x.r.crop.name); };
+    var nm = function (x) { return '<a href="' + plantUrl(x.r.crop.id) + '">' + esc(x.r.crop.name) + '</a>'; };
     var lines = [];
     if (ready.length) lines.push('<li><span class="gp-st gp-st-now">Plant now</span> ' + ready.map(function (x) { return nm(x) + (x.s.k === "last" ? ' <span class="gp-st gp-st-last">by ' + P.fmt(x.s.w.end) + '</span>' : ''); }).join(", ") + '</li>');
     if (indoor.length) lines.push('<li><span class="gp-st gp-st-indoor">Start indoors now</span> ' + indoor.map(nm).join(", ") + '</li>');
@@ -554,15 +552,16 @@
   }
 
   // A plant's guide page, opened with your town so its "Your dates" card shows straight away.
-  function plantUrl(id) { return base + "when-to-plant/" + id + "/" + (state.place && DEMO.indexOf("3") >= 0 ? "?town=" + state.place : ""); }
+  function plantUrl(id) { return base + "when-to-plant/" + id + "/" + (state.place ? "?town=" + state.place : ""); }
   // The next job for one plant in your town: the window that's open now, or the next one coming up.
   function nextJob(id) {
     var place = P.findPlace(D, state.place); if (!place) return "";
     var t = tasks(P.plan(D, place)).filter(function (x) { return x.crop && x.crop.id === id && +(x.end || x.date) >= +now; })[0];
     if (!t) return "";
     var open = t.date <= now;
-    return open ? "Do it now: " + t.text.replace(/^./, function (x) { return x.toLowerCase(); }) + (t.end ? " by " + short(t.end) : "") + "."
-      : "Next: " + t.text.replace(/^./, function (x) { return x.toLowerCase(); }) + ", from " + short(t.date) + ".";
+    // Short enough for two lines on a phone: "Next: start seeds indoors Mar 20."
+    var job = ({ indoor: "start seeds indoors", harden: "start hardening off", plant: "plant", fall: "plant again for fall", harvest: "first harvest" })[t.kind] || (/-sow/.test(t.kind) ? "sow another row" : "") || t.text.replace(/^./, function (x) { return x.toLowerCase(); }).replace(" for " + lc(t.crop.name), "");
+    return open ? "Now: " + job + (t.end ? " by " + short(t.end) : "") + "." : "Next: " + job + " " + short(t.date) + ".";
   }
   function chosenCrops() { return D.crops.filter(function (c) { return state.crops.indexOf(c.id) >= 0; }); }
 
@@ -1001,11 +1000,11 @@
   groupCounts();
   if (added) {
     var id = added.c.id, where = P.findPlace(D, state.place) ? "" : " Choose your town to see its dates.";
-    var job = DEMO.indexOf("2") >= 0 ? nextJob(id) : "";
-    var text = added.c.name + (added.have ? " is already in your plan." : " added to your plan.") + (job ? " " + job : "") + where;
+    var job = nextJob(id);
+    var text = added.c.name + (added.have ? ": already in your plan." : " added.") + (job ? " " + job : "") + where;
     showUndo(text, added.have ? null : added.before, job ? 9000 : 6000);
     // Show where it went: scroll to its row in your beds (or the "Plant in the ground" list) and pulse its squares.
-    var spots = DEMO.indexOf("1") >= 0 ? out.querySelectorAll('[data-pid="' + id + '"]') : [];
+    var spots = out.querySelectorAll('[data-pid="' + id + '"]');
     if (spots.length) {
       var row = out.querySelector('li[data-pid="' + id + '"]') || spots[0];
       Array.prototype.forEach.call(spots, function (el) { el.classList.add("is-new"); });
