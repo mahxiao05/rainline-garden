@@ -1844,3 +1844,8 @@ main [id] { scroll-margin-top: 124px; }
 .plan-add-note { margin: 0; color: var(--muted); font-size: .98rem; max-width: 26rem; }
 @media (max-width: 560px) { .plan-add .btn { width: 100%; justify-content: center; } }
 @media print { .plan-add { display: none; } }
+/* Just added from a plant page: pulse the plant's squares and its row in the beds. */
+@keyframes rl-new { 0%, 100% { box-shadow: 0 0 0 0 rgba(166, 214, 70, 0); } 30%, 70% { box-shadow: 0 0 0 4px var(--moss); } }
+.sq.is-new, .sq-list li.is-new, .sq-ground li.is-new { animation: rl-new 1.4s ease-in-out 3; position: relative; z-index: 1; }
+.sq-list li.is-new, .sq-ground li.is-new { background: color-mix(in srgb, var(--moss) 10%, transparent); border-radius: 10px; }
+@media (prefers-reduced-motion: reduce) { .sq.is-new, .sq-list li.is-new, .sq-ground li.is-new { animation: none; box-shadow: 0 0 0 3px var(--moss); } }
