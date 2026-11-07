@@ -1995,9 +1995,46 @@ main [id] { scroll-margin-top: 84px; }
 .site-menu .menu-town a.menu-town-change { margin-left: auto; font-weight: 600; color: var(--lime); text-decoration: underline; }
 .home-find-box .btn { background: var(--lime); color: #0F2B22; }
 .home-find-box .btn:hover { background: #d6f58c; color: #0F2B22; }
-.town-az { columns: 2; column-gap: 18px; padding: 0; margin: .5rem 0 0; list-style: none; }
-.town-az li { break-inside: avoid; padding: 7px 0; border-bottom: 1px solid var(--line); }
-.town-az a { text-decoration: none; font-weight: 600; color: var(--fir); }
-.town-az small { display: block; color: var(--muted); font-size: .82rem; }
-.town-az-st { column-span: all; font-family: var(--sans); font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 1rem 0 0; border: 0 !important; }
-@media (min-width: 720px) { .town-az { columns: 4; } }
+
+
+/* Town calendars hub (2026-11-07) */
+.th-you, .th-guide, .th-all { margin: 1.75rem 0; }
+.th-you h2, .th-guide h2, .th-all h2 { margin: 0 0 .6rem; }
+.th-pop { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; }
+.th-pop a { padding: 7px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--card, #fff); text-decoration: none; font-weight: 600; font-size: .95rem; }
+.th-card { border: 2px solid var(--moss); border-radius: 14px; padding: 4px 14px 14px; background: var(--moss-soft); }
+.th-card .th-list li { border: 0; }
+.th-card .th-name { font-size: 1.25rem; }
+.th-safe { margin: 4px 0 10px; font-size: .95rem; }
+.th-acts { display: flex; align-items: center; gap: 16px; margin: 0; }
+.th-acts .btn { background: var(--lime); color: #0F2B22; }
+.th-guide ul { margin: 0; padding: 12px 14px 12px 32px; border-radius: 12px; background: var(--card, #fff); border: 1px solid var(--line); }
+.th-guide li { margin: 4px 0; font-size: .95rem; line-height: 1.45; }
+.th-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; margin-bottom: .6rem; }
+.th-head h2 { margin: 0; }
+.th-filter input { width: 13rem; max-width: 100%; padding: 9px 12px; border: 1px solid var(--line); border-radius: 10px; font: inherit; font-size: 1rem; background: var(--card, #fff); color: var(--ink); }
+.th-tabs { display: flex; gap: 6px; margin: 0 0 6px; border-bottom: 1px solid var(--line); }
+.th-tabs button { flex: 1; white-space: nowrap; font-size: .95rem; padding: 10px 2px; border: 0; border-bottom: 3px solid transparent; background: none; font: inherit; font-weight: 600; color: var(--muted); cursor: pointer; }
+.th-tabs button small { font-weight: 500; opacity: .75; }
+.th-tabs button[aria-selected="true"] { color: var(--fir); border-bottom-color: var(--moss); }
+.th-all.is-live .th-st h3 { display: none; }
+.th-st h3 { margin: 1rem 0 .25rem; }
+.th-list { list-style: none; margin: 0; padding: 0; }
+.th-list li { border-bottom: 1px solid var(--line); }
+.th-list a { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; padding: 10px 2px; text-decoration: none; color: var(--ink); }
+.th-name { font-weight: 700; color: var(--fir); }
+.th-dates { display: flex; gap: 12px; font-size: .84rem; color: var(--muted); white-space: nowrap; align-self: center; }
+.th-dates b { color: var(--ink); }
+.th-bar { grid-column: 1 / -1; position: relative; height: 6px; border-radius: 3px; background: repeating-linear-gradient(135deg, #c9d3dc 0 3px, #e4eaef 3px 6px); }
+.th-bar i { position: absolute; top: 0; bottom: 0; border-radius: 3px; background: var(--moss); }
+.th-key { margin: 10px 0 0; font-size: .82rem; color: var(--muted); }
+.th-key i.k-free { display: inline-block; width: 18px; height: 6px; border-radius: 3px; background: var(--moss); margin-right: 6px; vertical-align: middle; }
+.th-none { color: var(--muted); }
+@media (max-width: 40rem) {
+  .th-list a { grid-template-columns: 1fr; }
+  .th-dates { justify-content: space-between; }
+  .th-head { display: block; } .th-filter input { width: 100%; margin-top: 8px; }
+}
+@media (min-width: 52rem) { .th-st .th-list { columns: 2; column-gap: 28px; } .th-st .th-list li { break-inside: avoid; } }
+:root[data-theme="dark"] .th-bar { background: repeating-linear-gradient(135deg, #2b3a35 0 3px, #1d2925 3px 6px); }
+.th-tabs[hidden], .th-st[hidden] { display: none; }

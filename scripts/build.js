@@ -297,7 +297,7 @@ const toMonthYear = s => s.replace(/(Updated|Last updated) (\d{4}-\d\d-\d\d)\./g
 const GL_LINKS = G.glossaryLinks.map(([id, re]) => [id, new RegExp(`(^|[^\\w-])(${re})(?![\\w-])`, "i")]);
 const GL_SKIP = new Set(["a", "button", "h1", "h2", "h3", "h4", "h5", "h6", "summary", "table", "nav", "script", "style", "label", "select", "textarea", "figcaption", "dt", "svg", "form", "noscript", "template", "blockquote", "aside"]);
 // Picture-calendar tiles, legends and page intros stay plain; the words get linked in the page's sentences instead.
-const GL_SKIP_CLASS = /class="[^"]*\b(lede|plant-intro|eyebrow|crumbs|count|station|owner|pc-card|pc-legend|legend|author-box|byline|town-az)\b/;
+const GL_SKIP_CLASS = /class="[^"]*\b(lede|plant-intro|eyebrow|crumbs|count|station|owner|pc-card|pc-legend|legend|author-box|byline|th-list|th-key|th-pop)\b/;
 const GL_TRACK = new Set(["p", "li", "dd", "ul", "ol", "div", "section"]);
 const GL_MAX = 12;
 function glossaryLinks(html, rel) {
@@ -1423,10 +1423,6 @@ const placeItem = x => {
   return `<li data-q="${esc((x.city + " " + x.state).toLowerCase())}"><a href="${x.slug}/">${esc(x.city)}</a> <span>last frost ${P.fmt(P.doy(st.spring50))}, first frost ${P.fmt(P.doy(st.fall50))}</span></li>`;
 };
 // Areas are open in the HTML and folded on phones by the script below, so the page is a short list of areas there.
-// Plain A to Z town list under the map (always visible, so phone readers don't have to aim at small dots).
-const townAZ = () => `<section class="town-az-sec" aria-labelledby="az-h"><h2 id="az-h">All ${D.places.length} towns, A to Z</h2><ul class="town-az">${["OR", "WA", "ID"].map(st =>
-  `<li class="town-az-st">${({ OR: "Oregon", WA: "Washington", ID: "Idaho" })[st]}</li>` + D.places.filter(x => x.state === st).slice().sort((a, b) => placeLabel(a).localeCompare(placeLabel(b)))
-    .map(x => `<li><a href="${x.slug}/">${esc(placeLabel(x).replace(/, [A-Z]{2}$/, ""))}</a><small>Last frost ${P.fmt(P.doy(D.stations[x.station].spring50))}</small></li>`).join("")).join("")}</ul></section>`;
 const areaLists = s => P.byArea(D).filter(g => g.area.state === s).map(g => `<details class="area-list" open><summary><h3>${esc(g.area.name)}</h3><span>${g.places.length} ${g.places.length === 1 ? "town" : "towns"}</span></summary><ul class="places">${g.places.map(placeItem).join("")}</ul></details>`).join("");
 // Town map: Census state outlines plus a dot per town (scripts/map-proj.js, scripts/map-states.js). Dots are plain links,
 // so the map works without JavaScript; assets/townmap.js adds the area picker, zoom, labels and town list.
@@ -1442,7 +1438,7 @@ const townMap = () => {
   const seasons = D.places.map(x => [P.plan(D, x).frost.season, x]).sort((a, b) => a[0] - b[0]), short = seasons[0], long = seasons[seasons.length - 1];
   const opts = s => D.areas.filter(a => a.state === s).map(a => `<option value="${a.id}">${esc(a.name)}</option>`).join("");
   const chips = s => D.areas.filter(a => a.state === s).map(a => `<button type="button" data-area="${a.id}" aria-pressed="false">${esc(a.name)}</button>`).join("");
-  return `<section class="town-map" aria-labelledby="tm-h"><h2 id="tm-h">Find your town on the map</h2>
+  return `<section class="town-map" aria-labelledby="tm-h"><h2 id="tm-h">Explore the map</h2>
 <div class="tm-grid"><div class="tm-card">
 <svg class="tm-svg" viewBox="0 0 ${MAP.W} ${MAP.H}" aria-hidden="true"><g class="tm-states">${Object.values(MAP_STATES).map(d => `<path d="${d}"/>`).join("")}</g>
 <defs><clipPath id="tm-clip">${Object.values(MAP_STATES).map(d => `<path d="${d}"/>`).join("")}</clipPath>
@@ -1453,9 +1449,38 @@ const townMap = () => {
 <ul class="tm-key" aria-label="Dot color: frost-free days a year"><li class="tm-key-h">Frost-free days</li>${SEASON_BANDS.map(([lo, hi], i) => `<li><i class="tm-s${i + 1}"></i>${hi > 900 ? `${lo}+` : i === 0 ? `under ${hi + 1}` : `${lo}–${hi}`}</li>`).join("")}</ul>
 <div class="tm-pick" hidden><label class="tm-select"><span>Area</span><select id="tm-area"><option value="">All areas</option><optgroup label="Oregon">${opts("OR")}</optgroup><optgroup label="Washington">${opts("WA")}</optgroup><optgroup label="Idaho">${opts("ID")}</optgroup></select></label>
 <div class="tm-chips" role="group" aria-label="Zoom to an area"><button type="button" data-area="" aria-pressed="true">All areas</button><span>Oregon</span>${chips("OR")}<span>Washington</span>${chips("WA")}<span>Idaho</span>${chips("ID")}</div></div>
-</div><div class="tm-panel" id="tm-panel" aria-live="polite"><p class="tm-hint">Tap a dot to open that town's calendar, or find it in the A to Z list below.</p>
+</div><div class="tm-panel" id="tm-panel" aria-live="polite"><p class="tm-hint">Tap a dot to open that town's calendar.</p>
 <p class="tm-fact">Longest frost-free season: <a href="${long[1].slug}/">${esc(long[1].city)}</a>, ${long[0]} days. Shortest: <a href="${short[1].slug}/">${esc(short[1].city)}</a>, ${short[0]} days.</p></div></div>
 <p class="tm-credit">State outlines: US Census Bureau. Town locations: GeoNames. Rivers and the Cascade Range: Natural Earth.</p></section>`;
+};
+/* Town calendars hub (2026-11-07 redo): your saved town's card (or popular towns), a three-line guide to the
+ * dates, and every town by state with its frost-free season on a year bar. The map comes after, for exploring. */
+const townHub = () => {
+  const yr = d => (Math.max(0, Math.min(365, d - 1)) / 365 * 100).toFixed(2);
+  const STATES = [["OR", "Oregon"], ["WA", "Washington"], ["ID", "Idaho"]];
+  const row = x => { const st = D.stations[x.station], a = P.doy(st.spring50), b = P.doy(st.fall50), safe = P.doy(st.spring10);
+    return `<li data-slug="${x.slug}" data-name="${esc(placeLabel(x).toLowerCase())}" data-safe="${P.fmt(safe)}"><a href="${x.slug}/"><span class="th-name">${esc(placeLabel(x).replace(/, [A-Z]{2}$/, ""))}</span>` +
+      `<span class="th-dates"><span>Last frost <b>${P.fmt(a)}</b></span><span>First frost <b>${P.fmt(b)}</b></span></span>` +
+      `<span class="th-bar" aria-hidden="true"><i style="left:${yr(a)}%;width:${(Math.min(b, 366) - a) / 365 * 100}%"></i></span></a></li>`; };
+  const popular = ["portland-or", "seattle-wa", "spokane-wa", "boise-id", "eugene-or", "bend-or"].map(sl => P.findPlace(D, sl)).filter(Boolean);
+  return `<section class="th-you" id="th-you"><h2>Popular towns</h2><p class="th-pop">${popular.map(x => `<a href="${x.slug}/">${esc(placeLabel(x))}</a>`).join("")}</p></section>
+<section class="th-guide" aria-labelledby="th-g"><h2 id="th-g">Reading the dates</h2><ul>
+<li><b>Last frost</b> is typical: in half of years frost comes later. Fine for hardy crops like peas and lettuce.</li>
+<li><b>Safe date</b> (on each town page) is when frost is over 9 years in 10. Wait for it with tomatoes, peppers and basil.</li>
+<li><b>Cold spot or hilltop?</b> Add a week in spring and take a week off in fall.</li></ul></section>
+<section class="th-all" aria-labelledby="th-h"><div class="th-head"><h2 id="th-h">All ${D.places.length} towns</h2>
+<label class="th-filter"><span class="sr">Filter towns</span><input type="search" placeholder="Filter by name" autocomplete="off" spellcheck="false"></label></div>
+<div class="th-tabs" role="tablist" hidden>${STATES.map(([k, n], i) => `<button type="button" role="tab" data-st="${k}" aria-selected="${i === 0}">${n} <small>${D.places.filter(x => x.state === k).length}</small></button>`).join("")}</div>
+${STATES.map(([k, n]) => `<div class="th-st" data-st="${k}"><h3>${n}</h3><ul class="th-list">${D.places.filter(x => x.state === k).slice().sort((a, b) => placeLabel(a).localeCompare(placeLabel(b))).map(row).join("")}</ul></div>`).join("")}
+<p class="th-none" hidden>No town by that name. Try the search box at the top: it takes any ZIP code.</p>
+<p class="th-key"><i class="k-free" aria-hidden="true"></i>Green bar: the frost-free season, on a January to December line.</p></section>
+<script>(function(){var root=document.querySelector(".th-all"),tabs=root.querySelector(".th-tabs"),sts=[].slice.call(root.querySelectorAll(".th-st")),inp=root.querySelector(".th-filter input"),none=root.querySelector(".th-none"),cur="OR";
+var slug=null;try{slug=localStorage.getItem("rainline-place")}catch(e){}
+var mine=slug&&root.querySelector('li[data-slug="'+slug+'"]');if(mine){cur=mine.closest(".th-st").getAttribute("data-st");var you=document.getElementById("th-you"),c=mine.cloneNode(true);
+you.innerHTML='<h2>Your town</h2><div class="th-card"><ul class="th-list">'+c.outerHTML+'</ul><p class="th-safe">Safe date for tomatoes: <b>'+mine.getAttribute("data-safe")+'</b></p><p class="th-acts"><a class="btn" href="'+slug+'/">Open my calendar</a> <a href="../?change=1#where">Change town</a></p></div>';}
+function show(){var q=inp.value.trim().toLowerCase(),any=0;sts.forEach(function(d){var on=q?1:d.getAttribute("data-st")===cur,n=0;[].forEach.call(d.querySelectorAll("li"),function(li){var m=!q||li.getAttribute("data-name").indexOf(q)>=0;li.hidden=!m;if(m)n++});d.hidden=!on||!n;if(on&&n)any=1});
+tabs.hidden=!!q;none.hidden=!!any;[].forEach.call(tabs.children,function(b){b.setAttribute("aria-selected",b.getAttribute("data-st")===cur)});}
+tabs.hidden=false;root.classList.add("is-live");tabs.addEventListener("click",function(e){var b=e.target.closest("button");if(b){cur=b.getAttribute("data-st");show()}});inp.addEventListener("input",show);show();})();</script>`;
 };
 write("../", "frost-dates/index.html", layout({
   rel: "../", canonical: "frost-dates/", current: "frost-dates/",
@@ -1464,18 +1489,16 @@ write("../", "frost-dates/index.html", layout({
   jsonld: [crumbs("../", [["Town calendars", null]]).ld],
   body: `
 <section class="hero"><p class="eyebrow">${D.places.length} towns · NOAA frost records</p><h1>Town calendars</h1>
-<p class="lede">Find your town's last spring frost and first fall frost dates, what to plant now, and a full-year planting calendar.</p>
-${townBox({ id: "town-box", rel: "../", button: "Show my dates", lite: true })}</section>
+<p class="lede">Frost dates and a year-round planting calendar for your town. Town not listed? Type your ZIP and we'll use the closest one.</p>
+${townBox({ id: "town-box", rel: "../", button: "Show my dates", lite: true, savedLine: false })}</section>
+${townHub()}
 ${townMap()}
-${townAZ()}
-<div id="town-lists">
+<div id="town-lists" hidden>
 <h2 data-state>Oregon</h2>${areaLists("OR")}
 <h2 data-state>Washington</h2>${areaLists("WA")}
 <h2 data-state>Idaho</h2>${areaLists("ID")}
 </div>
-<script>if(matchMedia("(max-width: 40rem)").matches)document.querySelectorAll("#town-lists .area-list").forEach(function(d){d.open=false});
-addEventListener("DOMContentLoaded",function(){var el=document.getElementById("town-box"),box=RainlineTownBox(el,{onPick:function(p){location.href=p.slug+"/"}}),s=null;try{s=localStorage.getItem("rainline-place")}catch(e){}
-var t=s&&(el.getAttribute("data-towns")||"").split(";").filter(function(x){return x.split("|")[0]===s})[0];if(t)box.collapse(null,'Your town: <a href="'+s+'/">'+t.split("|")[1]+'</a>.')});</script>
+<script>addEventListener("DOMContentLoaded",function(){var el=document.getElementById("town-box");RainlineTownBox(el,{onPick:function(p){location.href=p.slug+"/"}})});</script>
 <h2>How to use these dates</h2>
 <div class="prose">
 <p>"Typical" means the median: in half of years the last spring frost comes later. Each town page also shows the date when frost is over in 9 years out of 10. Tender plants like tomatoes and basil need that, and warm soil too, so they often go out weeks later: each town page gives their dates.</p>
