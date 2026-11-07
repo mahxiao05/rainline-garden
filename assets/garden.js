@@ -420,37 +420,40 @@
 
   /* Cheat sheet, ratings and harvest log */
   function harvestsOf(id) { return state.harvests.filter(function (h) { return h.crop === id; }); }
+  var openCards = {}; // which plant cards are open, so a re-render keeps them open
+  function shortSun(t) { return t ? t.split(/[;,]/)[0].trim() : ""; }
   function cheat(c) {
     var g = H.crops[c.id] || {}, rows = [["Sun", g.sun], ["Spacing", g.spacing ? g.spacing.replace(/\.$/, "") + (SPACE[c.id] ? (inGround(c) ? "" : ". In a bed: " + bedTxt(c.id)) : "") : ""], ["Depth", g.depth], ["Harvest", g.harvest], ["Watch for", g.problem]];
     var rate = state.rating[c.id] || {}, past = Object.keys(rate).filter(function (y) { return +y < YEAR; }).sort().reverse()[0];
-    var hs = harvestsOf(c.id).filter(function (h) { return h.date.slice(0, 4) === String(YEAR); });
     var label = { good: "did well", ok: "was OK", poor: "struggled" };
-    var h = '<article class="gp-card"><h3>' + R.icon(c.id, base, 32) + '<a href="' + plantUrl(c.id) + '">' + esc(c.name) + '</a></h3>';
-    if (past) h += '<p class="gp-past gp-past-' + rate[past] + '">In ' + past + ' it ' + label[rate[past]] + '.</p>';
+    var meta = [shortSun(g.sun), g.spacing ? g.spacing.replace(/\.$/, "").split(/[;(]/)[0].trim() : ""].filter(Boolean).join(" · ");
+    var ev = state.repeat[c.id] || 0;
+    var h = '<details class="gp-card" data-card="' + c.id + '"' + (openCards[c.id] ? " open" : "") + '><summary>' + R.icon(c.id, base, 36) +
+      '<span class="gp-card-t"><b>' + esc(c.name) + '</b><span>' + esc(meta) + '</span></span>' +
+      (past ? '<span class="gp-past gp-past-' + rate[past] + '">' + past + ': ' + label[rate[past]] + '</span>' : '') + '</summary><div class="gp-card-b">';
     h += '<dl>' + rows.filter(function (r) { return r[1]; }).map(function (r) { return '<dt>' + r[0] + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join("") + '</dl>';
-    // Sowing, variety, rating and harvests fold away so the card leads with the growing tips; the summary says what's filled in.
-    var ev = state.repeat[c.id] || 0, mineBits = [];
-    if (ev) mineBits.push("sow every " + ev / 7 + " weeks");
-    if (rate[YEAR]) mineBits.push(label[rate[YEAR]]);
-    if (hs.length) mineBits.push(hs.length + (hs.length === 1 ? " harvest" : " harvests"));
-    if (!mineBits.length && state.cropNotes[c.id]) mineBits.push("variety noted");
-    var hasMine = REPEAT.indexOf(c.id) >= 0 || !preview;
-    if (hasMine) h += '<details class="gp-mine" data-mine="' + c.id + '"' + (openNotes[c.id] ? " open" : "") + '><summary>' + (preview ? "Sowing" : "Notes on " + esc(lc(c.name))) +
-      '<span>' + esc(mineBits.length ? mineBits.join(" · ") : preview ? "" : "variety, rating, harvests") + '</span></summary>';
     if (REPEAT.indexOf(c.id) >= 0) {
       h += '<label class="gp-mini">Sowing<select data-repeat="' + c.id + '"' + (preview ? " disabled" : "") + '>' +
         [[0, "Sow once"], [14, "Sow again every 2 weeks"], [21, "Sow again every 3 weeks"]].map(function (o) { return '<option value="' + o[0] + '"' + (ev === o[0] ? " selected" : "") + '>' + o[1] + '</option>'; }).join("") + '</select></label>';
     }
-    if (!preview) {
-      h += '<label class="gp-mini">Variety and where I planted it<input type="text" data-crop="' + c.id + '" value="' + esc(state.cropNotes[c.id]) + '" maxlength="140"></label>' +
-        '<div class="gp-rate" role="group" aria-label="How did ' + esc(lc(c.name)) + ' do in ' + YEAR + '?"><span>How did it do this year?</span><div>' +
-        RATINGS.map(function (r) { return '<button type="button" class="gp-chip gp-chip-' + r[0] + '" data-act="rate" data-crop="' + c.id + '" data-v="' + r[0] + '" aria-pressed="' + (rate[YEAR] === r[0]) + '">' + r[1] + '</button>'; }).join("") +
-        '</div></div>' +
-        '<p class="gp-hcount">' + (hs.length ? hs.length + (hs.length === 1 ? " harvest" : " harvests") + " logged this year, last on " + short(fromIso(hs[hs.length - 1].date)) : "No harvests logged yet") +
-        ' · <button type="button" class="linkish" data-act="loghere" data-crop="' + c.id + '">Log one</button></p>';
-    }
-    if (hasMine) h += '</details>';
-    return h + '</article>';
+    return h + '<a class="gp-card-more" href="' + plantUrl(c.id) + '">Full ' + esc(lc(c.name)) + ' guide</a></div></details>';
+  }
+
+  // Garden journal, one row per plant: variety, how it did, harvests. Folded to a summary line.
+  function journalRow(c) {
+    var rate = state.rating[c.id] || {}, hs = harvestsOf(c.id).filter(function (h) { return h.date.slice(0, 4) === String(YEAR); });
+    var label = { good: "Did well", ok: "OK", poor: "Struggled" }, bits = [];
+    if (rate[YEAR]) bits.push('<span class="gp-st gp-st-' + rate[YEAR] + '">' + label[rate[YEAR]] + '</span>');
+    if (hs.length) bits.push(hs.length + (hs.length === 1 ? " harvest" : " harvests"));
+    if (state.cropNotes[c.id]) bits.push(esc(state.cropNotes[c.id].length > 28 ? state.cropNotes[c.id].slice(0, 26) + "…" : state.cropNotes[c.id]));
+    return '<details class="gp-jrow" data-mine="' + c.id + '"' + (openNotes[c.id] ? " open" : "") + '><summary>' + R.icon(c.id, base, 28) +
+      '<b>' + esc(c.name) + '</b><span class="gp-jrow-s">' + (bits.length ? bits.join(" · ") : "Add notes") + '</span></summary><div class="gp-jrow-b">' +
+      '<label class="gp-mini">Variety and where I planted it<input type="text" data-crop="' + c.id + '" value="' + esc(state.cropNotes[c.id]) + '" maxlength="140" placeholder="Sungold, back bed"></label>' +
+      '<div class="gp-rate" role="group" aria-label="How did ' + esc(lc(c.name)) + ' do in ' + YEAR + '?"><span>How did it do in ' + YEAR + '?</span><div>' +
+      RATINGS.map(function (r) { return '<button type="button" class="gp-chip gp-chip-' + r[0] + '" data-act="rate" data-crop="' + c.id + '" data-v="' + r[0] + '" aria-pressed="' + (rate[YEAR] === r[0]) + '">' + r[1] + '</button>'; }).join("") +
+      '</div></div>' +
+      '<p class="gp-hcount">' + (hs.length ? hs.length + (hs.length === 1 ? " harvest" : " harvests") + " logged this year, last on " + short(fromIso(hs[hs.length - 1].date)) : "No harvests logged yet") +
+      ' · <button type="button" class="linkish" data-act="loghere" data-crop="' + c.id + '">Log one</button></p></div></details>';
   }
 
   function harvestLog(chosen) {
@@ -460,15 +463,15 @@
     var list = state.harvests.slice().sort(function (a, b) { return b.date < a.date ? -1 : b.date > a.date ? 1 : 0; });
     var byYear = {};
     list.forEach(function (h) { var y = h.date.slice(0, 4); (byYear[y] = byYear[y] || []).push(h); });
-    return '<section class="gp-sec" id="gp-log-sec" aria-labelledby="gp-log-h"><h2 id="gp-log-h">Harvest log</h2>' +
-      '<p class="station">Write down what you pick and how much. Next year this shows you what did well.</p>' +
+    return '<section class="gp-sec" id="gp-log-sec" aria-labelledby="gp-log-h"><h3 id="gp-log-h">Harvest log</h3>' +
+      '<p class="station">Write down what you pick and how much.</p>' +
       '<form class="gp-logform" id="gp-logform">' +
       '<div class="field"><label for="gp-log-crop">Plant</label><select id="gp-log-crop">' + opts.map(function (id) { return '<option value="' + id + '">' + esc(cropOf(id).name) + '</option>'; }).join("") + '</select></div>' +
       '<div class="field"><label for="gp-log-date">Date</label><input id="gp-log-date" type="date" value="' + iso(now) + '" max="' + iso(now) + '"></div>' +
       '<div class="field gp-log-note"><label for="gp-log-note">How much</label><input id="gp-log-note" type="text" maxlength="80" placeholder="2 lb, a big bowl, first ripe one…"></div>' +
       '<button class="btn" type="submit">Add</button></form>' + harvestTotals(state.harvests) +
       (list.length ? Object.keys(byYear).sort().reverse().map(function (y) {
-        return '<h3 class="gp-month">' + y + ' <span class="gp-count">' + byYear[y].length + (byYear[y].length === 1 ? " harvest" : " harvests") + '</span></h3><ul class="gp-log">' +
+        return '<h4 class="gp-month">' + y + ' <span class="gp-count">' + byYear[y].length + (byYear[y].length === 1 ? " harvest" : " harvests") + '</span></h4><ul class="gp-log">' +
           byYear[y].map(function (h) {
             var c = cropOf(h.crop);
             return '<li><span class="gp-date">' + short(fromIso(h.date)) + '</span><span class="gp-text">' + (c ? R.icon(c.id, base, 22) + esc(c.name) : "") + (h.note ? ' <span class="gp-log-n">' + esc(h.note) + '</span>' : '') + '</span>' +
@@ -489,17 +492,23 @@
   function daysTo(doy) { var t = today(), d = doy - t; return d < 0 ? d + 365 : d; }
   function frostCountdown(f) {
     var a = daysTo(f.spring50), b = daysTo(f.fall50), first = b <= a;
-    var d = first ? b : a, what = first ? "First fall frost" : "Last spring frost", when = P.fmtLong(first ? f.fall50 : f.spring50);
-    return '<p class="gp-fcount"><b>' + (d === 0 ? "Today" : d + (d === 1 ? " day" : " days")) + '</b><span>' + what + ' usually ' + (d === 0 ? "around now" : "comes around " + when) + '</span></p>';
+    var d = first ? b : a, what = first ? "First fall frost" : "Last spring frost", when = P.fmt(first ? f.fall50 : f.spring50);
+    return '<p class="gp-fcount"><b>' + (d === 0 ? "Around now" : d + (d === 1 ? " day" : " days")) + '</b><span>' + (d === 0 ? "the typical " + what.toLowerCase() + " date" : "until the typical " + what.toLowerCase() + " (" + when + ")") + '</span></p>';
   }
-  function frostAlerts(place, p) {
-    var f = p.frost;
-    var h = '<section class="gp-sec gp-alert" id="gp-alert-sec" aria-labelledby="gp-alert-h"><h2 id="gp-alert-h">Frost alerts</h2>' +
-      '<p>In ' + esc(place.city) + ', frost usually ends around <strong>' + P.fmtLong(f.spring50) + '</strong> and comes back around <strong>' + P.fmtLong(f.fall50) + '</strong>. ' +
-      'Get a heads-up a week before each, plus a reminder on the risky dates.</p>' + frostCountdown(f) +
-      '<div class="gp-alert-row"><button type="button" class="btn" data-act="frostics">Add frost alerts to my calendar</button>' +
-      '<span class="gp-saved">Works with Apple, Google and Outlook calendars</span></div>';
-    if (alertTpl) h += alertTpl.innerHTML.replace(/\{town\}/g, esc(place.city)).replace(/\{slug\}/g, place.slug);
+  function frostBox(place, p) {
+    var f = p.frost, x = p.place;
+    var tile = function (k, v, sub) { return '<div class="gp-tile"><span class="gp-tile-k">' + k + '</span><b class="gp-tile-v">' + v + '</b><span class="gp-tile-s">' + sub + '</span></div>'; };
+    var h = '<section class="gp-frost" id="gp-alert-sec" aria-label="Frost dates for ' + esc(place.city) + '"><div class="gp-tiles">' +
+      tile("Last frost", P.fmt(f.spring50), "safe by " + P.fmt(f.spring10)) +
+      tile("First frost", P.fmt(f.fall50), "as early as " + P.fmt(f.fall10)) +
+      tile("Frost-free", f.season + " days", "for tomatoes, squash") +
+      (x.hz ? tile("Hardiness zone", x.hz, "winter low " + x.hzT.replace(/-/g, "−") + "°F") : "") + '</div>' +
+      frostCountdown(f) +
+      (preview ? '' : '<div class="gp-alert-row"><button type="button" class="btn btn-sm" data-act="frostics">Add frost alerts to my calendar</button>' +
+      '<span class="gp-saved-n">A heads-up a week before each frost date. Works with Apple, Google and Outlook.</span></div>') +
+      '<p class="gp-frost-src">Frost dates: NOAA 1991–2020 normals' + (p.station ? ' for ' + esc(p.station.name) : '') + '.' +
+      (x.hz ? ' Zone: 2023 USDA Plant Hardiness Zone Map. It tells you which perennials survive winter, not when to plant.' : '') + '</p>';
+    if (alertTpl && !preview) h += alertTpl.innerHTML.replace(/\{town\}/g, esc(place.city)).replace(/\{slug\}/g, place.slug);
     return h + '</section>';
   }
 
@@ -547,19 +556,8 @@
     var lines = [];
     if (ready.length) lines.push('<li><span class="gp-st gp-st-now">Plant now</span> ' + ready.map(function (x) { return nm(x) + (x.s.k === "last" ? ' <span class="gp-st gp-st-last">by ' + P.fmt(x.s.w.end) + '</span>' : ''); }).join(", ") + '</li>');
     if (indoor.length) lines.push('<li><span class="gp-st gp-st-indoor">Start indoors now</span> ' + indoor.map(nm).join(", ") + '</li>');
-    // The rest, grouped by the day their next step starts.
-    var byDay = [];
-    rest.sort(function (a, b) { return a.s.next.d - b.s.next.d; }).forEach(function (x) {
-      var n = x.s.next, step = n.kind === "indoor" ? "start indoors" : n.kind === "fall" && x.r.crop.anchor !== "garlic" ? "plant again for fall" : "plant", key = n.w.start + step, last = byDay[byDay.length - 1];
-      if (last && last.key === key) last.n.push(lc(x.r.crop.name)); else byDay.push({ key: key, d: P.fmt(n.w.start), step: step, n: [x.r.crop.name] });
-    });
-    var shown = byDay.slice(0, 4);
-    shown.forEach(function (g) {
-      var who = g.n.map(function (n, i) { return i ? n : lc(n); }), names = who.length > 1 ? who.slice(0, -1).join(", ") + " and " + who[who.length - 1] : who[0];
-      var txt = g.step === "start indoors" ? "Start " + names + " indoors" : g.step === "plant again for fall" ? "Plant " + names + " again for fall" : "Plant " + names;
-      lines.push('<li><span class="gp-date">' + g.d + '</span> ' + esc(txt) + '</li>'); });
-    if (byDay.length > shown.length) lines.push('<li class="gp-rn-more"><a href="#gp-todo-h">The rest are in your to-do list</a></li>');
-    h += '<p class="gp-rn-h">' + (ready.length || indoor.length ? 'Your plants' : 'None of your plants go in yet. Coming up') + '</p><ul class="gp-rn">' + lines.join("") + '</ul>';
+    if (lines.length) h += '<p class="gp-rn-h">Your plants</p><ul class="gp-rn">' + lines.join("") + '</ul>';
+    h += '<p class="gp-rn-more"><a href="#gp-todo-h">See every job in your to-do list</a></p>';
     if (hard.length) h += hard.map(function (x) { return '<p class="gp-when-note"><strong>' + nm(x) + ':</strong> ' + esc(shortSeasonNote(x.r, place)) + '</p>'; }).join("");
     // Ideas to add: only from the groups people already picked from, so a salad bed doesn't get tulips.
     var cats = {};
@@ -647,30 +645,33 @@
     var side = place.zone === "coast" ? "On the coast, west of the rain line: mild, wet winters and cool, foggy summers."
       : place.zone === "west" ? "West of the rain line: wet winters, dry summers and a long, mild season."
       : "East of the rain line: little rain, hot summers and colder winters, so watering matters most.";
-    var jump = [["gp-week", "Right now"], ["gp-beds-sec", "Beds"], ["gp-todo-h", "To-do list"], ["gp-chart-h", "Chart"], ["gp-cards-h", "Plants"]].concat(preview ? [] : [["gp-more", "More tools"]]);
+    var jump = [["gp-week", "Right now"], ["gp-beds-sec", "Beds"], ["gp-todo-h", "To-do list"], ["gp-chart-h", "Chart"], ["gp-cards-h", "Plants"]].concat(preview ? [] : [["gp-journal", "Journal"]]);
     out.innerHTML =
-      '<header class="gp-title"><h2 class="gp-step">' + (preview ? '' : STEP3) + 'Garden plan for ' + esc(place.city) + ', ' + place.state + '</h2>' +
-      '<p>' + plantsN(chosen.length) + ' · ' + doneCount + ' of ' + list.length + ' jobs done<span class="gp-print-only"> · made ' + short(now) + ', ' + YEAR + ' at rainlinegarden.org</span></p>' +
-      '<p class="gp-rain"><a href="' + base + 'how-it-works/#rain-line">' + side + '</a></p></header>' +
-      (preview ? '' : '<div class="gp-bar"><button type="button" class="btn btn-sm" data-act="print">Print or save as PDF</button>' +
-      '<button type="button" class="btn btn-ghost btn-sm" data-act="ics">Add dates to my calendar</button>' +
-      '<button type="button" class="btn btn-ghost btn-sm" data-act="link">Copy link to this plan</button>' +
-      '<button type="button" class="btn btn-ghost btn-sm gp-reset" data-act="reset">Reset plan</button>' +
-      '<span class="gp-saved" role="status">Saved on this device</span></div>') +
+      '<header class="gp-title"><div class="gp-title-row"><h2 class="gp-step">' + (preview ? 'Shared plan' : STEP3 + 'Your plan') + '</h2>' +
+      (preview ? '' : '<details class="gp-sharemenu"><summary class="btn btn-sm">Save &amp; share</summary><div class="gp-menu" role="menu">' +
+        '<button type="button" role="menuitem" data-act="print">Print or save as PDF</button>' +
+        '<button type="button" role="menuitem" data-act="ics">Add all dates to my calendar</button>' +
+        '<button type="button" role="menuitem" data-act="link">Copy a link to this plan</button></div></details>') + '</div>' +
+      '<p><b class="gp-town">' + esc(place.city) + ', ' + place.state + '</b> · ' + plantsN(chosen.length) + ' · ' + doneCount + ' of ' + list.length + ' jobs done<span class="gp-print-only"> · made ' + short(now) + ', ' + YEAR + ' at rainlinegarden.org</span></p>' +
+      '<p class="gp-rain"><a href="' + base + 'how-it-works/#rain-line">' + side + '</a></p>' +
+      (preview ? '' : '<p class="gp-saved" role="status">Saved on this device</p>') + '</header>' +
 
       '<nav class="gp-jump" aria-label="Plan sections">' + jump.map(function (j) { return '<a href="#' + j[0] + '">' + j[1] + '</a>'; }).join("") + '</nav>' +
       rightNow(list, p, place) +
       beds(chosen) +
       '<h2 id="gp-todo-h">Your to-do list</h2>' + todoList(groups, list, doneCount) +
       '<h2 id="gp-chart-h">Season at a glance</h2><div class="reveal">' + R.chart(sub, today()) + '</div>' +
-      R.frostFacts(p) +
-      '<h2 id="gp-cards-h">Plant cheat sheet</h2><div class="gp-cards">' + chosen.map(cheat).join("") + '</div>' +
-      // A shared plan you're only previewing has nothing under More tools, so it's left out.
-      (preview ? '' : '<details class="gp-more" id="gp-more"' + (state.moreOpen ? " open" : "") + '><summary><span class="gp-more-t">More tools</span><span class="gp-more-s">' +
-        'Harvest log' + (state.harvests.length ? ' (' + state.harvests.length + ')' : '') + ', frost alerts and garden notes</span></summary>' +
-      harvestLog(chosen) + frostAlerts(place, p) +
-      '<section class="gp-sec" aria-labelledby="gp-notes-h"><h2 id="gp-notes-h">Garden notes</h2><p class="station">For the whole garden. Notes on one plant go in its card in the plant cheat sheet.</p><label class="sr" for="gp-notes">Garden notes</label><textarea id="gp-notes" class="gp-notes" rows="4" placeholder="What did well, what to change next year, where the sun hits...">' + esc(state.notes) + '</textarea><p class="gp-notes-s" aria-live="polite"></p></section>' +
-      '</details>');
+      frostBox(place, p) +
+      '<div class="gp-cards-head"><h2 id="gp-cards-h">Plant tips</h2>' + (chosen.length > 1 ? '<button type="button" class="linkish" data-act="cardsall">Open all</button>' : '') + '</div>' +
+      '<p class="station">Tap a plant for sun, spacing, depth, harvest and what to watch for.</p><div class="gp-cards">' + chosen.map(cheat).join("") + '</div>' +
+      // A shared plan you're only previewing has no journal, so it's left out.
+      (preview ? '' : '<section class="gp-journal" id="gp-journal" aria-labelledby="gp-journal-h"><h2 id="gp-journal-h">Garden journal</h2>' +
+      '<p class="station">What you picked, how each plant did and notes for next year. Saved on this device.</p>' +
+      harvestLog(chosen) +
+      '<section class="gp-sec" aria-labelledby="gp-jp-h"><h3 id="gp-jp-h">How each plant did</h3><p class="station">Variety, a quick rating and harvests. Next year your plant cards remind you.</p><div class="gp-jrows">' + chosen.map(journalRow).join("") + '</div></section>' +
+      '<section class="gp-sec" aria-labelledby="gp-notes-h"><h3 id="gp-notes-h">Garden notes</h3><label class="sr" for="gp-notes">Garden notes</label><textarea id="gp-notes" class="gp-notes" rows="4" placeholder="What to change next year, where the sun hits, what the slugs found...">' + esc(state.notes) + '</textarea><p class="gp-notes-s" aria-live="polite"></p></section>' +
+      '</section>' +
+      '<p class="gp-reset-row"><button type="button" class="linkish gp-reset" data-act="reset">Reset plan</button> Starts over and clears everything saved on this device.</p>');
   }
 
   function todoList(groups, list, doneCount) {
@@ -926,7 +927,13 @@
   out.addEventListener("click", function (e) {
     var b = e.target.closest("[data-act]"); if (!b) return;
     var place = P.findPlace(D, state.place), act = b.dataset.act;
+    var menu = b.closest(".gp-sharemenu"); if (menu) menu.open = false;
     if (act === "print") window.print();
+    else if (act === "cardsall") {
+      var cards = out.querySelectorAll(".gp-cards > details"), all = Array.prototype.every.call(cards, function (d) { return d.open; });
+      Array.prototype.forEach.call(cards, function (d) { d.open = !all; });
+      b.textContent = all ? "Open all" : "Close all";
+    }
     else if (act === "ics") { ics(tasks(P.plan(D, place)), place); flash("Calendar file downloaded"); }
     else if (act === "frostics") { frostIcs(place); flash("Frost alerts downloaded"); }
     else if (act === "link") {
@@ -978,6 +985,7 @@
       if (r[YEAR] === b.dataset.v) delete r[YEAR]; else r[YEAR] = b.dataset.v;
       save();
       Array.prototype.forEach.call(b.parentNode.querySelectorAll("button"), function (x) { x.setAttribute("aria-pressed", String(r[YEAR] === x.dataset.v)); });
+      var row = b.closest(".gp-jrow"); if (row) { openNotes[row.dataset.mine] = 1; var y = scrollY; render(); window.scrollTo(0, y); }
     }
     else if (act === "loghere") {
       var s = document.getElementById("gp-log-crop"); if (!s) return;
@@ -1017,6 +1025,9 @@
     if (li && card) Array.prototype.forEach.call(card.querySelectorAll('.sq-plant[data-pid="' + li.dataset.pid + '"]'), function (x) { x.classList.add("is-hl"); });
   });
 
+  document.addEventListener("click", function (e) {
+    var m = out.querySelector(".gp-sharemenu[open]"); if (m && !m.contains(e.target)) m.open = false;
+  });
   function openMore() { var m = document.getElementById("gp-more"); if (m && !m.open) m.open = true; }
   // Folds remember their state across re-renders. toggle doesn't bubble, so listen in the capture phase.
   out.addEventListener("toggle", function (e) {
@@ -1024,6 +1035,7 @@
     if (d.id === "gp-more") { if (!!state.moreOpen !== d.open) { state.moreOpen = d.open; save(); } }
     else if (d.id === "gp-later") { if (!!state.laterOpen !== d.open) { state.laterOpen = d.open; save(); } }
     else if (d.dataset && d.dataset.mine) { if (d.open) openNotes[d.dataset.mine] = 1; else delete openNotes[d.dataset.mine]; }
+    else if (d.dataset && d.dataset.card) { if (d.open) openCards[d.dataset.card] = 1; else delete openCards[d.dataset.card]; }
   }, true);
   // The section buttons open "More tools" when they point into it.
   out.addEventListener("click", function (e) {

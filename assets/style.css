@@ -2230,3 +2230,80 @@ main [id] { scroll-margin-top: 84px; }
   .gp-logform .btn { width: auto; align-self: end; min-height: 48px; padding-left: 18px; padding-right: 18px; }
 }
 @media print { .gp-how, .gp-prog-t span, .gp-later > summary, .gp-notes-s { display: none !important; } .gp-task { grid-template-columns: 26px 7.5rem 1fr; } }
+
+/* My garden plan: shorter page (2026-11 big update). Title row with one Save & share menu. */
+.gp-title-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; margin-top: 2rem; }
+.gp-title-row h2.gp-step { margin: 0; }
+.gp-title .gp-town { color: var(--fir); }
+.gp-title .gp-saved { margin: .25rem 0 0; font-size: .9rem; }
+.gp-sharemenu { position: relative; }
+.gp-sharemenu > summary { list-style: none; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+.gp-sharemenu > summary::-webkit-details-marker { display: none; }
+.gp-sharemenu > summary::after { content: ""; width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateY(-2px) rotate(45deg); }
+.gp-sharemenu[open] > summary::after { transform: translateY(2px) rotate(-135deg); }
+.gp-menu { position: absolute; right: 0; top: calc(100% + 6px); z-index: 20; min-width: 15.5rem; padding: 6px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 10px 28px rgba(0, 0, 0, .16); display: grid; }
+.gp-menu button { font: inherit; text-align: left; padding: 11px 12px; min-height: 44px; border: 0; border-radius: 8px; background: none; color: var(--ink); cursor: pointer; }
+.gp-menu button:hover, .gp-menu button:focus-visible { background: var(--moss-soft); }
+/* Right now: one link down to the full list */
+.gp-week .gp-rn-more { margin: .8rem 0 0; font-size: .95rem; }
+/* Frost box: four tiles, a countdown and the calendar alerts */
+.gp-frost { max-width: 52rem; margin-top: 1.5rem; padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--sky); }
+.gp-tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }
+.gp-tile { display: flex; flex-direction: column; gap: 1px; padding: 10px 12px; border-radius: 10px; background: var(--paper); border: 1px solid var(--line); min-width: 0; }
+.gp-tile-k { font-size: .8rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; }
+.gp-tile-v { font-family: var(--serif); font-size: 1.45rem; line-height: 1.15; color: var(--fir); white-space: nowrap; }
+.gp-tile-s { font-size: .85rem; color: var(--muted); line-height: 1.3; }
+.gp-frost .gp-fcount { margin-bottom: 10px !important; flex-wrap: wrap; gap: 2px 10px; }
+.gp-saved-n { font-size: .9rem; color: var(--muted); }
+.gp-frost-src { margin: 12px 0 0; font-size: .82rem; color: var(--muted); line-height: 1.45; }
+/* Plant cheat sheet: one row per plant, tap to open */
+.gp-cards-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px; }
+.gp-cards-head .linkish { font-weight: 700; }
+.gp-cards { align-items: start; }
+details.gp-card { padding: 0; }
+details.gp-card > summary { display: flex; align-items: center; gap: 12px; padding: 10px 14px; cursor: pointer; list-style: none; min-height: 60px; }
+details.gp-card > summary::-webkit-details-marker { display: none; }
+details.gp-card > summary::after { content: ""; flex: none; margin-left: auto; width: 8px; height: 8px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: translateY(-2px) rotate(45deg); transition: transform .15s; }
+details.gp-card[open] > summary::after { transform: translateY(2px) rotate(-135deg); }
+details.gp-card > summary .ico { flex: none; }
+.gp-card-t { display: flex; flex-direction: column; min-width: 0; }
+.gp-card-t b { font-size: 1.1rem; color: var(--fir); }
+.gp-card-t span { font-size: .88rem; color: var(--muted); line-height: 1.35; }
+details.gp-card .gp-past { margin: 0; flex: none; font-size: .8rem; padding: 2px 8px; }
+.gp-card-b { padding: 4px 16px 14px; border-top: 1px solid var(--line); }
+.gp-card-b dl { margin-top: 10px; }
+.gp-card-more { display: inline-block; margin-top: 10px; font-weight: 700; font-size: .95rem; }
+/* Garden journal */
+.gp-journal { max-width: 52rem; margin-top: 2.5rem; scroll-margin-top: calc(var(--head-h, 61px) + 64px); }
+.gp-journal > .gp-sec { margin-top: 1rem; padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); }
+.gp-journal > .gp-sec > h3 { margin: 0 0 .15rem; font-size: 1.2rem; }
+.gp-journal > .gp-sec > .station { margin-top: 0; }
+.gp-journal .gp-logform { background: var(--bg); padding: 12px; }
+.gp-jrows { border-top: 1px solid var(--line); }
+.gp-jrow { border-bottom: 1px solid var(--line); }
+.gp-jrow > summary { display: flex; align-items: center; gap: 10px; padding: 8px 2px; min-height: 48px; cursor: pointer; list-style: none; }
+.gp-jrow > summary::-webkit-details-marker { display: none; }
+.gp-jrow > summary b { color: var(--fir); }
+.gp-jrow-s { margin-left: auto; font-size: .88rem; color: var(--muted); text-align: right; }
+.gp-jrow > summary::after { content: ""; flex: none; width: 7px; height: 7px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: translateY(-2px) rotate(45deg); }
+.gp-jrow[open] > summary::after { transform: translateY(2px) rotate(-135deg); }
+.gp-jrow-b { padding: 0 2px 12px 38px; }
+.gp-jrow-b .gp-mini { margin-top: 0; }
+.gp-st-good { background: var(--easy-bg); color: var(--easy); }
+.gp-st-ok { background: var(--mod-bg); color: var(--mod); }
+.gp-st-poor { background: var(--hard-bg); color: var(--hard); }
+.gp-reset-row { max-width: 52rem; margin: 2rem 0 0; padding-top: 14px; border-top: 1px solid var(--line); font-size: .9rem; color: var(--muted); }
+.gp-reset-row .gp-reset { color: var(--hard); font-weight: 700; margin-right: 6px; }
+@media (max-width: 560px) {
+  .gp-title-row { margin-top: 1.5rem; }
+  .gp-tiles { grid-template-columns: 1fr 1fr; }
+  .gp-frost, .gp-journal > .gp-sec { padding: 14px; }
+  .gp-tile-v { font-size: 1.3rem; }
+  .gp-frost .gp-alert-row .btn { width: 100%; }
+  .gp-jrow-b { padding-left: 2px; }
+}
+@media print {
+  .gp-sharemenu, .gp-reset-row, .gp-journal, .gp-frost .gp-alert-row, .gp-cards-head .linkish, .gp-card-more, details.gp-card > summary::after { display: none !important; }
+  .gp-cards-head + .station { display: none; }
+  .gp-tiles { grid-template-columns: repeat(4, 1fr); }
+}
