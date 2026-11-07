@@ -690,7 +690,7 @@ ${fam ? `<p class="care-tip"><strong>${esc(fam.name)}:</strong> ${esc(fam.text)}
 }
 function pestCards(c, ex) {
   return phoneFold("pests", "Pests and problems", `<p class="lede-sm">What most often goes wrong with ${lc(c.name)} in Northwest gardens, how to spot it and what to do.</p>
-<div class="sci-cards">${ex.pests.map(([h, signs, fix]) => `<section class="sci-card pest-card"><h3>${esc(h)}</h3><p><strong>Signs:</strong> ${esc(signs)}</p><p><strong>What to do:</strong> ${esc(fix)}</p></section>`).join("\n")}</div>`);
+<div class="sci-cards">${ex.pests.map(([h, signs, fix, why]) => `<section class="sci-card pest-card"><h3>${esc(h)}</h3><p><strong>Signs:</strong> ${esc(signs)}</p>${why ? `<p><strong>Why:</strong> ${esc(why)}</p>` : ""}<p><strong>What to do:</strong> ${esc(fix)}</p></section>`).join("\n")}</div>`);
 }
 const faqHtml = qas => `<div class="faq">${qas.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("")}</div>`;
 // On plant pages with a "Pests and problems" section (noPests), the problem is covered there, so the card leaves it out.
@@ -1532,7 +1532,11 @@ write("../", "garden-calendar/index.html", layout({
   jsonld: [crumbs("../", [["Month by month", null]]).ld],
   body: `
 <section class="hero"><p class="eyebrow">Month by month · Oregon · Washington · Idaho</p><h1>Month by month</h1>
-<p class="lede">What to plant, harvest, prune and watch for each month. Tick jobs off as you go; they save on this device.</p></section>
+<p class="lede">Pick a month to see what to plant there in your region, or tick off this month's jobs below.</p></section>
+<nav class="mb-pick" aria-label="Pick a month">${CHORES.map(c => `<a href="${monthSlug(c.m)}/" data-m="${c.m}"><b>${P.MONTHS[c.m - 1]}</b><span>${P.MONTHS_LONG[c.m - 1]}</span></a>`).join("")}</nav>
+<script>(function(){var a=document.querySelector('.mb-pick a[data-m="'+(new Date().getMonth()+1)+'"]');if(a){a.classList.add("is-now");a.setAttribute("aria-current","date");}})();</script>
+<h2 class="mb-jobs-h">Jobs checklist</h2>
+<p class="station">Tick jobs off as you go; they save on this device.</p>
 ${SEASON_BADGES}
 <div class="cm-filter" role="group" aria-label="Show jobs for"><span>Show jobs for</span>${[["all", "All jobs"], ...Object.entries(REGION_TAGS)].map(([v, l]) => `<button type="button" data-region="${v}" aria-pressed="${v === "all"}">${l}</button>`).join("")}</div>
 <p id="cm-note" class="cm-note" hidden></p>
@@ -1541,8 +1545,6 @@ ${SEASON_BADGES}
 </div>
 <div id="cm-mine" class="cm-mine" hidden></div>
 <div class="cm-list">${CHORES.map(choreMonth).join("")}</div>
-<h2>What to plant each month</h2>
-<ul class="cm-month-links">${CHORES.map(c => `<li><a href="${monthSlug(c.m)}/">What to plant in ${P.MONTHS_LONG[c.m - 1]}</a></li>`).join("")}</ul>
 <p class="station cm-foot">Region tags: <strong>West-side valleys</strong> are the Willamette Valley, Puget Sound and southern Oregon valleys; <strong>Coast</strong> is the outer coast; <strong>East-side valleys</strong> are the Columbia Basin, Yakima Valley, Boise's Treasure Valley, Lewiston and other low valleys east of the Cascades; <strong>High desert and Inland Northwest</strong> covers Central Oregon, the Klamath Basin, the cold eastern valleys, Spokane, north Idaho, the Magic Valley, eastern Idaho and Idaho's mountain towns. Each town calendar names its region. Jobs without a tag apply everywhere, a few weeks later the colder your garden is.</p>
 ${ad("calendar-bottom")}`,
   scripts: ["data.js", "plan.js", "chores.js"]
@@ -1579,7 +1581,8 @@ ${rows.map(r => `<tr data-zone="${r.z}"><th scope="row">${r.name}</th><td>${r.ou
   const table = ids.length ? `<div class="table-wrap"><table class="plan"><thead><tr><th scope="col">Plant</th>${rows.map(r => `<th scope="col">${r.name}</th>`).join("")}</tr></thead><tbody>
 ${ids.map(id => { const cr = cropById(id); return `<tr><th scope="row"><div class="crop-cell">${R.icon(id, rel, 32)}<div><a href="${rel}when-to-plant/${id}/">${esc(cr.name)}</a></div></div></th>${rows.map(r => `<td data-label="${r.name}">${cell(r.pl, id)}</td>`).join("")}</tr>`; }).join("\n")}
 </tbody></table></div>` : "";
-  // When every region that plants this month plants the same list (fall bulbs and garlic), name the plants once.
+  // When every region that plants this month plants the same list (fall bulbs and garlic), name the plants once and
+  // skip the plant-by-region table: the chips plus the region table already say which plants and until when.
   const lists = rows.filter(r => r.out.length).map(r => r.out.map(x => x.crop.id).join(" "));
   const same = lists.length > 1 && lists.every(l => l === lists[0]) && !rows.some(r => r.indoor.length);
   const intro = !ids.length ? `<p>Nothing goes in the ground or into seed trays anywhere in the region in ${name}.</p>`
@@ -1601,7 +1604,7 @@ ${ids.map(id => { const cr = cropById(id); return `<tr><th scope="row"><div clas
 <h2>What to plant in ${name}</h2>
 ${intro}
 ${ids.length ? regTable : ""}
-${table ? `<details class="more-fold mp-table"${ids.length <= 12 ? " open" : ""}><summary>${ids.length <= 12 ? `${name} planting dates, by region` : `All ${ids.length} plants and their ${name} dates, by region`}</summary>\n${table}</details>` : ""}
+${table && !same ? `<details class="more-fold mp-table"${ids.length <= 12 ? " open" : ""}><summary>${ids.length <= 12 ? `${name} planting dates, by region` : `All ${ids.length} plants and their ${name} dates, by region`}</summary>\n${table}</details>` : ""}
 ${ids.length ? `<p class="station">Dates are for one typical town in each region: ${listOf(rows.map(r => r.town.city))}. <a href="${rel}plant-now/">Plant now</a> shows your own town's dates.</p>` : ""}
 <h2>${name} jobs</h2>
 <div class="cm-filter mb-filter" role="group" aria-label="Show jobs for">${[["all", "All regions"], ...Object.entries(REGION_TAGS)].map(([v, l]) => `<button type="button" data-region="${v}" aria-pressed="${v === "all"}">${l}</button>`).join("")}</div>

@@ -102,6 +102,16 @@
     return '<details class="fold" data-fold="' + key + '"' + (open ? " open" : "") + '><summary><h2>' + title + '</h2></summary>' + body + '</details>';
   }
 
+  // The general "Why Northwest planting dates are different" note sits at the foot of the page for first-time
+  // visitors. Once a town is picked it moves into "About these dates" so the page says it once.
+  var whyEl = document.querySelector(".why-dates");
+  function whyNote() {
+    if (!whyEl) return "";
+    whyEl.hidden = true;
+    var para = whyEl.querySelector("p");
+    return para ? '<p class="why-note">' + para.innerHTML + '</p>' : "";
+  }
+
   function show(place, viaZip) {
     var p = P.plan(D, place);
     store("rainline-place", place.slug);
@@ -111,9 +121,8 @@
       '<div class="result-head"><h2>' + place.city + ', ' + place.state + '</h2>' +
       '<a href="' + base + 'frost-dates/' + place.slug + '/">Full ' + place.city + ' calendar</a></div>' +
       (viaZip ? '<p class="station">Using the nearest NOAA station we have for that ZIP. If another town on the list is closer to you, pick it instead.</p>' : '') +
-      R.frostFacts(p) + fold("about", "About these dates", R.regionNote(p)) +
+      R.frostFacts(p) + fold("about", "About these dates", R.regionNote(p) + whyNote()) +
       '<h2>What to plant now</h2>' + R.nowBlock(p, today, base) +
-      fold("year", "Your year at a glance", '<div class="reveal">' + R.chart(p, today) + '</div>') +
       '<p class="dates-jump"><a href="#plant-types">Planting dates for every plant, by plant type</a></p>';
     out.querySelectorAll("details.fold").forEach(function (d) {
       d.addEventListener("toggle", function () { store("rainline-fold-" + d.getAttribute("data-fold"), d.open ? "1" : "0"); });

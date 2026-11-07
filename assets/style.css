@@ -2095,3 +2095,14 @@ main [id] { scroll-margin-top: 84px; }
 .mb-mine-links a:not(.btn) { color: #fff; }
 :root[data-theme="dark"] .mb-mine { background: #0A1611; box-shadow: 0 0 0 1px var(--line); }
 .gear { background: var(--paper); border: 1px solid var(--line); border-left: 4px solid var(--moss); }
+
+/* Month by month: 12-month picker at the top of the index (2026-11-07). */
+.mb-pick { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin: 4px 0 28px; }
+.mb-pick a { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 12px 4px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); color: var(--ink); text-decoration: none; }
+.mb-pick a b { font-size: 1.1rem; }
+.mb-pick a span { font-size: .75rem; color: var(--muted, #6b7280); }
+.mb-pick a:hover { border-color: var(--moss, #4c7a3a); }
+.mb-pick a.is-now { background: var(--btn-bg); color: var(--btn-fg); border-color: var(--btn-bg); }
+.mb-pick a.is-now span { color: var(--btn-fg); }
+.mb-pick a.is-now span::after { content: " · now"; }
+@media (max-width: 720px) { .mb-pick { grid-template-columns: repeat(4, 1fr); } .mb-pick a span { display: none; } }
