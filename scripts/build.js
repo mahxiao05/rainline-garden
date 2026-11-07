@@ -536,11 +536,13 @@ D.crops.forEach(c => {
   if (!fs.existsSync(path.join(ROOT, `assets/img/crops/${c.id}.webp`))) throw new Error(`Missing icon assets/img/crops/${c.id}.webp: add a "crop:${c.id}" photo and run node scripts/fetch-photos.js (hardy-kiwi.webp is rendered from hardy-kiwi.svg, since no photo of it exists)`);
 });
 const photoFile = (key, size, ext = "jpg") => `assets/img/photos/${fileBase(key)}-${sizeTag(size)}.${ext}`;
-function photo(key, rel, { big, small, cls, sizes, eager }) {
+function photo(key, rel, { big, small, cls, sizes, eager, phone }) {
   const p = PHOTOS[key];
   if (!p) return "";
   const set = ext => `${rel}${photoFile(key, big, ext)} ${SIZES[big].w}w, ${rel}${photoFile(key, small, ext)} ${SIZES[small].w}w`;
-  return `<figure class="${cls}"><picture><source type="image/webp" srcset="${set("webp")}" sizes="${sizes}">
+  // phone: full-screen photos (the home hero) also get the tall crop on screens up to 720px, like banner() below.
+  const tall = phone ? `<source type="image/webp" media="(max-width: 720px)" srcset="${rel}${photoFile(key, "tall", "webp")} ${SIZES.tall.w}w, ${rel}${photoFile(key, "tallXl", "webp")} ${SIZES.tallXl.w}w" sizes="100vw">\n` : "";
+  return `<figure class="${cls}"><picture>${tall}<source type="image/webp" srcset="${set("webp")}" sizes="${sizes}">
 <img src="${rel}${photoFile(key, big)}" srcset="${set("jpg")}" sizes="${sizes}" width="${SIZES[big].w}" height="${SIZES[big].h}" alt="${esc(p.alt)}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async"></picture></figure>`;
 }
 // In-article photos: "inline:<slug>-<n>" in scripts/photos.js, placed in the article text with ${fig(n)}.
@@ -762,7 +764,7 @@ write("", "index.html", layout({
   jsonld: [{ "@context": "https://schema.org", "@type": "WebSite", name: "Rainline Garden", url: CONFIG.siteUrl, publisher: OWNER_LD }],
   body: `
 <section class="home-hero">
-${photo("hero", "", { big: "hero", small: "heroSm", cls: "home-photo", sizes: "100vw", eager: true })}
+${photo("hero", "", { big: "hero", small: "heroSm", cls: "home-photo", sizes: "100vw", eager: true, phone: true })}
 <div class="hero">
 <p class="eyebrow">Oregon · Washington · Idaho</p>
 <h1>Plant on Northwest time.</h1>

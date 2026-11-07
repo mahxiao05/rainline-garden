@@ -1734,7 +1734,9 @@ main > .crumbs:first-child + .hero > p a, main > .crumbs:first-child + .hero > d
 @media (max-width: 720px) {
   .home-hero { min-height: 0; }
   .home-hero .hero { padding: 2.75rem 0 1.5rem; }
-  .quick { flex-wrap: nowrap; overflow-x: auto; margin-right: -16px; padding-right: 16px; scrollbar-width: none; }
+  /* Scrolls edge to edge, so chips slide off the screen edge instead of being cut at the page margin. */
+  .quick { flex-wrap: nowrap; overflow-x: auto; margin-left: -16px; margin-right: -16px; padding: 0 16px; scroll-padding-inline: 16px; scrollbar-width: none; }
+  .quick::-webkit-scrollbar { display: none; }
 }
 
 /* Cards and sections */

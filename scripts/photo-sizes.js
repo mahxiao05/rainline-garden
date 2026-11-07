@@ -15,6 +15,6 @@ const sizeTag = s => SIZES[s].file || String(SIZES[s].w);
 const HEADER = ["wide", "wideXl", "tall", "tallXl"];
 // Header sizes only need WebP: every browser that can't show WebP falls back to the banner JPEG.
 const formatsFor = s => HEADER.includes(s) ? ["webp"] : ["webp", "jpg"];
-const sizesFor = key => key === "hero" ? ["hero", "heroSm"] : key.startsWith("cat:") ? ["banner", "bannerSm", "thumb", ...HEADER]
+const sizesFor = key => key === "hero" ? ["hero", "heroSm", "tall", "tallXl"] : key.startsWith("cat:") ? ["banner", "bannerSm", "thumb", ...HEADER]
   : key.startsWith("inline:") ? ["inline", "inlineSm"] : ["banner", "bannerSm", ...HEADER];
 module.exports = { SIZES, fileBase, sizesFor, sizeTag, formatsFor };

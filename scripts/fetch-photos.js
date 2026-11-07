@@ -42,7 +42,11 @@ for (const [key, p] of Object.entries(PHOTOS)) {
     // Header crops fill the whole screen width, so they get a higher WebP quality than the small cards.
     const q = s.startsWith("wide") || s.startsWith("tall") ? "80" : "72";
     const fmt = file.endsWith(".webp") ? ["-quality", q, "-define", "webp:method=6"] : ["-quality", "78", "-interlace", "Plane", "-sampling-factor", "4:2:0"];
-    execFileSync("convert", [downloaded[p.src], "-auto-orient", "-resize", `${w}x${h}^`, "-gravity", gravity, "-extent", `${w}x${h}`,
+    // tallX (0-100) centers the tall phone crop on that point across the source width, for subjects that sit off-center.
+    const tallX = (s === "tall" || s === "tallXl") && typeof p.tallX === "number" ? p.tallX : null;
+    const fit = tallX === null ? ["-resize", `${w}x${h}^`, "-gravity", gravity, "-extent", `${w}x${h}`]
+      : ["-resize", `${w}x${h}^`, "-gravity", "NorthWest", "-crop", `${w}x${h}+${Math.round(Math.min(Math.max(sw * h / sh * tallX / 100 - w / 2, 0), Math.max(sw * h / sh - w, 0)))}+0`, "+repage"];
+    execFileSync("convert", [downloaded[p.src], "-auto-orient", ...fit,
       "-colorspace", "sRGB", "-strip", ...fmt, file]);
   }
   console.log(`${base}: ${outputs.map(([, f]) => Math.round(fs.statSync(f).size / 1024) + "K").join(" ")}`);
