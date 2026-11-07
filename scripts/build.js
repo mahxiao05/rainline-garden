@@ -921,7 +921,10 @@ D.places.forEach(place => {
   write("../../", `frost-dates/${place.slug}/index.html`, layout({
     rel: "../../", canonical: `frost-dates/${place.slug}/`, current: "frost-dates/",
     // The date itself goes in the title, so searchers see the answer in the results.
-    title: fitTitle(`${placeLabel(place)} Last Frost Date: ${P.fmtLong(f.spring50)} | Planting Calendar`, `${placeLabel(place)} Last Frost Date: ${P.fmtLong(f.spring50)}`,
+    // Both dates: in spring people search "last frost", in fall "first frost" (Search Console, Nov 2026).
+    title: fitTitle(`${placeLabel(place)} Frost Dates: Last ${P.fmt(f.spring50)}, First ${P.fmt(f.fall50)}`, `${placeLabel(place)}: Last Frost ${P.fmt(f.spring50)}, First ${P.fmt(f.fall50)}`,
+      `${place.city.split(/ and |, | \(/)[0]}, ${place.state} Frost Dates: Last ${P.fmt(f.spring50)}, First ${P.fmt(f.fall50)}`,
+      `${placeLabel(place)} Last Frost Date: ${P.fmtLong(f.spring50)}`,
       `${placeLabel(place)} Last Frost: ${P.fmt(f.spring50)}`,
       `${placeLabel(place)} Last Frost Date and Planting Calendar`, `${placeLabel(place)} Last Frost Date & Planting Calendar`,
       `${placeLabel(place)} Last and First Frost Dates`, `${placeLabel(place)} Last Frost Date`),
@@ -1485,7 +1488,7 @@ tabs.hidden=false;root.classList.add("is-live");tabs.addEventListener("click",fu
 };
 write("../", "frost-dates/index.html", layout({
   rel: "../", canonical: "frost-dates/", current: "frost-dates/",
-  title: "Last Frost Dates by Town: Oregon, Washington and Idaho",
+  title: "First and Last Frost Dates by Town: Oregon, Washington, Idaho",
   description: `Last spring and first fall frost dates for ${D.places.length} Oregon, Washington and Idaho towns from NOAA records, with a map and a free planting calendar for each.`,
   jsonld: [crumbs("../", [["Town calendars", null]]).ld],
   body: `
