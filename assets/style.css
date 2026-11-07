@@ -1101,7 +1101,7 @@ h2.gp-step { font-size: 1.35rem; margin: 2rem 0 0; }
 .home-find-box .btn { flex: none; padding: 0 18px; }
 .where-list { position: absolute; z-index: 5; left: 0; right: 0; top: calc(100% + 6px); list-style: none; margin: 0; padding: 6px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 12px 28px color-mix(in srgb, var(--fir) 14%, transparent); }
 .where-list[hidden] { display: none; }
-.where-list li { padding: 10px 12px; border-radius: 8px; cursor: pointer; font-size: 1.05rem; }
+.where-list li { padding: 10px 12px; border-radius: 8px; cursor: pointer; font-size: 1.05rem; color: var(--ink); }
 .where-list li:hover, .where-list [aria-selected="true"] { background: var(--moss-soft); }
 .home-find-alt { display: flex; flex-wrap: wrap; gap: 6px 20px; margin: .75rem 0 0; font-size: 1rem; }
 .home-find-alt a, .link-btn { color: var(--moss); font-weight: 600; text-decoration: none; }
