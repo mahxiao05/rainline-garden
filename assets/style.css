@@ -1987,3 +1987,17 @@ main [id] { scroll-margin-top: 84px; }
 .mb-filter { margin: .3rem 0 1rem; }
 .mb-jobs .cm-card[hidden], .mb-jobs li[hidden] { display: none; }
 @media (max-width: 820px) { .mb-barcell { display: none; } }
+
+/* Simpler menus (2026-11-07): one column of six links on phones, and the same lime button in every town box. */
+.menu-cols.menu-one { grid-template-columns: 1fr; }
+.site-menu .menu-cols.menu-one a { padding: 12px 2px; font-size: 1.12rem; }
+.menu-town { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.site-menu .menu-town a.menu-town-change { margin-left: auto; font-weight: 600; color: var(--lime); text-decoration: underline; }
+.home-find-box .btn { background: var(--lime); color: #0F2B22; }
+.home-find-box .btn:hover { background: #d6f58c; color: #0F2B22; }
+.town-az { columns: 2; column-gap: 18px; padding: 0; margin: .5rem 0 0; list-style: none; }
+.town-az li { break-inside: avoid; padding: 7px 0; border-bottom: 1px solid var(--line); }
+.town-az a { text-decoration: none; font-weight: 600; color: var(--fir); }
+.town-az small { display: block; color: var(--muted); font-size: .82rem; }
+.town-az-st { column-span: all; font-family: var(--sans); font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 1rem 0 0; border: 0 !important; }
+@media (min-width: 720px) { .town-az { columns: 4; } }

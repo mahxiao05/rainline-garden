@@ -176,9 +176,9 @@ const titleCase = t => t.replace(/[A-Za-z][^\s-]*/g, (w, i) => i && /^(and|or|of
 function layout({ rel, title, description, canonical, current, body, scripts, jsonld, noindex, image }) {
   const base = rel; // relative prefix back to the site root, e.g. "../../"
   const cur = href => current === href ? ' aria-current="page"' : "";
-  const LEARN = [["beginners-guide/", "Beginner's guide", "Start your first Northwest garden"], ["garden-calendar/", "Month by month", "What to plant and do each month"],
-    ["fall-planting/", "Fall planting", "What to plant from late summer on"],
-    ["articles/", "Articles", "Growing guides for Northwest weather"], ["glossary/", "Glossary", "Gardening words in plain language"], ["what-to-grow/", "Plant quiz", "Find the plants that suit you"], ["how-it-works/", "How it works", "Where our dates come from"]];
+  // Menus keep six links: the four tools plus two places to read. Month by month, Fall planting, Plant quiz, Glossary
+  // and How it works are linked from the footer and from inside pages instead (Plant now links to every month).
+  const LEARN = [["beginners-guide/", "Beginner's guide", "Start your first Northwest garden"], ["articles/", "Articles", "Growing guides for Northwest weather"]];
   const ICON = {
     search: '<svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
     chev: '<svg class="chev" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
@@ -203,8 +203,7 @@ function layout({ rel, title, description, canonical, current, body, scripts, js
   const menu = `<div class="site-menu" id="site-menu" hidden><div class="wrap">
 <button type="button" class="menu-search">${ICON.search}<span>Search plants, towns and guides</span></button>
 <p class="menu-town" hidden></p>
-<div class="menu-cols"><div><p class="menu-h">Plan</p>${MAIN.map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("")}${nowLink}${[["fall-planting/", "Fall planting"], ["my-garden/", "My garden plan"], ["what-to-grow/", "Plant quiz"]].map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("")}</div>
-<div><p class="menu-h">Learn</p>${LEARN.filter(([href]) => href !== "what-to-grow/" && href !== "fall-planting/").map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("")}</div></div>
+<div class="menu-cols menu-one"><div>${MAIN.map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("")}${nowLink}${[["my-garden/", "My garden plan"], ...LEARN].map(([href, label]) => `<a href="${base}${href}"${cur(href)}>${label}</a>`).join("")}</div></div>
 ${themeRow}
 </div></div>`;
   const search = `<div class="search-pop" id="search-pop" hidden><div class="wrap"><div class="search-box" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-owns="search-list">
@@ -266,7 +265,7 @@ ${body}
 </main>
 <footer class="site-foot"><div class="wrap">
 <p><strong class="foot-brand">Rainline Garden</strong><br>Free planting calendars for Oregon, Washington and Idaho gardens.<br>Frost data from NOAA climate normals. Updated ${stamp(CONFIG.updated)}.${CONFIG.amazonTag ? "<br>As an Amazon Associate, Rainline Garden earns from qualifying purchases." : ""}</p>
-<nav aria-label="Footer"><a href="${base}glossary/">Glossary</a><a href="${base}how-it-works/">How it works</a><a href="${base}about/">About</a><a href="${base}contact/">Contact</a><a href="${base}privacy/">Privacy</a><a href="${base}terms/">Terms</a></nav>
+<nav aria-label="Footer"><a href="${base}garden-calendar/">Month by month</a><a href="${base}fall-planting/">Fall planting</a><a href="${base}what-to-grow/">Plant quiz</a><a href="${base}glossary/">Glossary</a><a href="${base}how-it-works/">How it works</a><a href="${base}about/">About</a><a href="${base}contact/">Contact</a><a href="${base}privacy/">Privacy</a><a href="${base}terms/">Terms</a></nav>
 <p class="owner">&copy; ${YEAR} ${CONFIG.owner}. Rainline Garden is owned and operated by ${CONFIG.owner}.</p>
 </div></footer>
 <script>(function(){var r=document.documentElement,w=document.querySelectorAll(".theme-row");function cur(){return r.dataset.theme==="dark"?"dark":"light"}function sync(){for(var i=0;i<w.length;i++)w[i].setAttribute("aria-checked",String(cur()==="dark"))}function flip(){var n=cur()==="dark"?"light":"dark";r.dataset.theme=n;try{localStorage.setItem("rainline-theme",n)}catch(e){}sync()}sync();for(var i=0;i<w.length;i++)w[i].addEventListener("click",flip)})();</script>
@@ -298,7 +297,7 @@ const toMonthYear = s => s.replace(/(Updated|Last updated) (\d{4}-\d\d-\d\d)\./g
 const GL_LINKS = G.glossaryLinks.map(([id, re]) => [id, new RegExp(`(^|[^\\w-])(${re})(?![\\w-])`, "i")]);
 const GL_SKIP = new Set(["a", "button", "h1", "h2", "h3", "h4", "h5", "h6", "summary", "table", "nav", "script", "style", "label", "select", "textarea", "figcaption", "dt", "svg", "form", "noscript", "template", "blockquote", "aside"]);
 // Picture-calendar tiles, legends and page intros stay plain; the words get linked in the page's sentences instead.
-const GL_SKIP_CLASS = /class="[^"]*\b(lede|plant-intro|eyebrow|crumbs|count|station|owner|pc-card|pc-legend|legend|author-box|byline)\b/;
+const GL_SKIP_CLASS = /class="[^"]*\b(lede|plant-intro|eyebrow|crumbs|count|station|owner|pc-card|pc-legend|legend|author-box|byline|town-az)\b/;
 const GL_TRACK = new Set(["p", "li", "dd", "ul", "ol", "div", "section"]);
 const GL_MAX = 12;
 function glossaryLinks(html, rel) {
@@ -1424,6 +1423,10 @@ const placeItem = x => {
   return `<li data-q="${esc((x.city + " " + x.state).toLowerCase())}"><a href="${x.slug}/">${esc(x.city)}</a> <span>last frost ${P.fmt(P.doy(st.spring50))}, first frost ${P.fmt(P.doy(st.fall50))}</span></li>`;
 };
 // Areas are open in the HTML and folded on phones by the script below, so the page is a short list of areas there.
+// Plain A to Z town list under the map (always visible, so phone readers don't have to aim at small dots).
+const townAZ = () => `<section class="town-az-sec" aria-labelledby="az-h"><h2 id="az-h">All ${D.places.length} towns, A to Z</h2><ul class="town-az">${["OR", "WA", "ID"].map(st =>
+  `<li class="town-az-st">${({ OR: "Oregon", WA: "Washington", ID: "Idaho" })[st]}</li>` + D.places.filter(x => x.state === st).slice().sort((a, b) => placeLabel(a).localeCompare(placeLabel(b)))
+    .map(x => `<li><a href="${x.slug}/">${esc(placeLabel(x).replace(/, [A-Z]{2}$/, ""))}</a><small>Last frost ${P.fmt(P.doy(D.stations[x.station].spring50))}</small></li>`).join("")).join("")}</ul></section>`;
 const areaLists = s => P.byArea(D).filter(g => g.area.state === s).map(g => `<details class="area-list" open><summary><h3>${esc(g.area.name)}</h3><span>${g.places.length} ${g.places.length === 1 ? "town" : "towns"}</span></summary><ul class="places">${g.places.map(placeItem).join("")}</ul></details>`).join("");
 // Town map: Census state outlines plus a dot per town (scripts/map-proj.js, scripts/map-states.js). Dots are plain links,
 // so the map works without JavaScript; assets/townmap.js adds the area picker, zoom, labels and town list.
@@ -1450,7 +1453,7 @@ const townMap = () => {
 <ul class="tm-key" aria-label="Dot color: frost-free days a year"><li class="tm-key-h">Frost-free days</li>${SEASON_BANDS.map(([lo, hi], i) => `<li><i class="tm-s${i + 1}"></i>${hi > 900 ? `${lo}+` : i === 0 ? `under ${hi + 1}` : `${lo}–${hi}`}</li>`).join("")}</ul>
 <div class="tm-pick" hidden><label class="tm-select"><span>Area</span><select id="tm-area"><option value="">All areas</option><optgroup label="Oregon">${opts("OR")}</optgroup><optgroup label="Washington">${opts("WA")}</optgroup><optgroup label="Idaho">${opts("ID")}</optgroup></select></label>
 <div class="tm-chips" role="group" aria-label="Zoom to an area"><button type="button" data-area="" aria-pressed="true">All areas</button><span>Oregon</span>${chips("OR")}<span>Washington</span>${chips("WA")}<span>Idaho</span>${chips("ID")}</div></div>
-</div><div class="tm-panel" id="tm-panel" aria-live="polite"><p class="tm-hint">Tap a dot to open that town's calendar, or find it in the list below.</p>
+</div><div class="tm-panel" id="tm-panel" aria-live="polite"><p class="tm-hint">Tap a dot to open that town's calendar, or find it in the A to Z list below.</p>
 <p class="tm-fact">Longest frost-free season: <a href="${long[1].slug}/">${esc(long[1].city)}</a>, ${long[0]} days. Shortest: <a href="${short[1].slug}/">${esc(short[1].city)}</a>, ${short[0]} days.</p></div></div>
 <p class="tm-credit">State outlines: US Census Bureau. Town locations: GeoNames. Rivers and the Cascade Range: Natural Earth.</p></section>`;
 };
@@ -1462,8 +1465,9 @@ write("../", "frost-dates/index.html", layout({
   body: `
 <section class="hero"><p class="eyebrow">${D.places.length} towns · NOAA frost records</p><h1>Town calendars</h1>
 <p class="lede">Find your town's last spring frost and first fall frost dates, what to plant now, and a full-year planting calendar.</p>
-${townBox({ id: "town-box", rel: "../", button: "Open calendar", lite: true })}</section>
+${townBox({ id: "town-box", rel: "../", button: "Show my dates", lite: true })}</section>
 ${townMap()}
+${townAZ()}
 <div id="town-lists">
 <h2 data-state>Oregon</h2>${areaLists("OR")}
 <h2 data-state>Washington</h2>${areaLists("WA")}
@@ -1610,7 +1614,7 @@ ${c.articles.length ? `<h2>Read next</h2>\n${articleCards(rel, c.articles.filter
     body: `${crumbs(rel, [["Plant now", null]]).html}
 <section class="hero pnf-hero" id="pn-hero"><p class="eyebrow">Plant now</p><h1>What can I plant this week?</h1>
 <p class="lede">It depends on your town: the coast and the east side can be weeks apart. Pick yours to see what goes in now and what's next.</p></section>
-<section class="pnf-pick" id="pn-pick">${townBox({ id: "pn-box", rel, button: "Show" })}
+<section class="pnf-pick" id="pn-pick">${townBox({ id: "pn-box", rel, button: "Show my dates" })}
 <p class="pnf-popular"><span>Or open a town calendar:</span> ${picks.map(x => `<a href="${rel}frost-dates/${x.slug}/">${esc(placeLabel(x))}</a>`).join("")}</p></section>
 <div id="pn-out" hidden data-photos="${withPhoto.join(" ")}"></div>
 <script>window.RainlineJobs=${JSON.stringify(JOBS)};</script>`,

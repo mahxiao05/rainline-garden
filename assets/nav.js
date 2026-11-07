@@ -78,7 +78,7 @@
     load().then(function () {
       var t = index.filter(function (x) { return x.p === slug; })[0];
       if (!t) return;
-      el.innerHTML = 'Your town: <a href="' + base + t.u + '">' + esc(t.t) + ' calendar</a>';
+      el.innerHTML = 'Your town: <a href="' + base + t.u + '">' + esc(t.t) + '</a> <a class="menu-town-change" href="' + base + '?change=1#where">Change</a>';
       el.hidden = false;
     });
   }

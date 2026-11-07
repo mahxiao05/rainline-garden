@@ -21,14 +21,15 @@
 
   var box = RainlineTownBox(boxEl, { onPick: function (p) { show(p); window.scrollTo(0, 0); } });
 
-  function show(place) {
+  function show(place, example) {
     var p = P.plan(D, place), n = P.nowList(p, today), f = p.frost, slug = place.slug, city = place.city;
     var seen = {}, inNow = n.sow.concat(n.indoor).filter(function (x) { return !seen[x.r.crop.id] && (seen[x.r.crop.id] = 1); });
     var empty = !inNow.length;
     var x = P.fromDoy(today), tag = (x.d <= 10 ? "Early " : x.d <= 20 ? "Mid " : "Late ") + month;
 
     // Header: town, season and the two frost dates that frame the year.
-    hero.innerHTML = '<p class="eyebrow">Plant now · ' + esc(city + ", " + place.state) + ' <button type="button" class="link-btn pn-change">Change</button></p>' +
+    // example: no town saved yet, so Portland is shown as a sample (like the home page) with a clear way to pick yours.
+    hero.innerHTML = '<p class="eyebrow">Plant now · ' + (example ? 'Showing ' : '') + esc(city + ", " + place.state) + ' <button type="button" class="link-btn pn-change">' + (example ? 'Pick your town' : 'Change') + '</button></p>' +
       '<h1>Plant now in ' + esc(city) + '</h1><ul class="pnf-facts"><li class="tag">' + tag + '</li><li>Last spring frost <strong>' + P.fmt(f.spring50) +
       '</strong></li><li>First fall frost <strong>' + P.fmt(wrap(f.fall50)) + '</strong></li></ul>';
     document.title = "Plant Now in " + city + ", " + place.state + " | Rainline Garden";
@@ -80,7 +81,7 @@
 
     out.innerHTML = '<section class="pnf-sec"><div class="pnf-head"><h2>Right now</h2>' + (empty ? '' : '<p>' + inNow.length + (inNow.length === 1 ? ' plant can' : ' plants can') + ' go in this week</p>') + '</div>' + right + '</section>' +
       '<div class="pnf-cols">' + (empty ? jb + up : up + jb) + '</div>' +
-      '<p class="pnf-src">Dates from NOAA 1991–2020 frost normals, ' + esc(p.station.name) + ' station. <a href="' + base + 'how-it-works/">How the dates work</a> · <a href="' + monthUrl + '">' + month + ' in the garden: every region</a></p>';
+      '<p class="pnf-src">Dates from NOAA 1991–2020 frost normals, ' + esc(p.station.name) + ' station. <a href="' + base + 'how-it-works/">How the dates work</a> · <a href="' + monthUrl + '">' + month + ' in the garden: every region</a> · <a href="' + base + 'garden-calendar/">See every month</a></p>';
     out.hidden = false;
     hero.querySelector(".pn-change").addEventListener("click", function () {
       pick.hidden = false; box.expand(); var i = boxEl.querySelector("input"); if (i) { i.value = ""; i.focus(); }
@@ -91,4 +92,5 @@
   var slug = ""; try { slug = localStorage.getItem("rainline-place") || ""; } catch (e) { /* private mode */ }
   var place = slug && P.findPlace(D, slug);
   if (place) show(place);
+  else if ((place = P.findPlace(D, "portland-or"))) show(place, true);
 })();
