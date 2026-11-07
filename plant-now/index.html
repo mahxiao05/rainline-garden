@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Rainline Garden">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0B1A15">
-<script>try{var t=localStorage.getItem("rainline-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
+<script>try{var t=localStorage.getItem("rainline-theme");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"";if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="icon" href="../favicon.ico" sizes="48x48">
 <link rel="icon" href="../assets/icon-96.png" type="image/png" sizes="96x96">
 <link rel="icon" href="../assets/icon-192.png" type="image/png" sizes="192x192">

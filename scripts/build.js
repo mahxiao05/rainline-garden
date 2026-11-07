@@ -237,7 +237,7 @@ ${noindex ? '<meta name="robots" content="noindex, follow">\n' : ""}<link rel="c
 <meta property="og:site_name" content="Rainline Garden">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0B1A15">
-<script>try{var t=localStorage.getItem("rainline-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
+<script>try{var t=localStorage.getItem("rainline-theme");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"";if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="icon" href="${base}favicon.ico" sizes="48x48">
 <link rel="icon" href="${base}assets/icon-96.png" type="image/png" sizes="96x96">
 <link rel="icon" href="${base}assets/icon-192.png" type="image/png" sizes="192x192">
@@ -421,14 +421,14 @@ const yourDates = () => `<div class="your-dates" id="your-town">
 <div class="yd-card" hidden><h2>Your dates in <span class="yd-town"></span></h2><div class="town-pick-out" aria-live="polite"></div></div>
 ${townBox({ id: "yd-box", rel: "../../", button: "Show dates", lite: true })}</div>`;
 // Every town's dates, folded under one toggle and grouped by area.
-// Six main cities are shown; every town's row sits in a <template> (not shown, and not read as page text) that the
+// Six main towns are shown; every town's row sits in a <template> (not shown, and not read as page text) that the
 // "Your dates" card reads, so each plant page isn't mostly one long table of town names that every plant page repeats.
 const MAIN_CITIES = ["portland-or", "seattle-wa", "spokane-wa", "boise-id", "bend-or", "astoria-or"];
 function areaTables(head, dates, plans) {
   const bySlug = slug => plans.find(p => p.place.slug === slug);
   const lead = MAIN_CITIES.map(bySlug).filter(Boolean);
   return `<div class="table-wrap"><table class="plan"><thead>${head}</thead><tbody>${groupedRows(lead, dates)}</tbody></table></div>
-<p class="note">Dates for six main cities. For any of the other ${plans.length - lead.length} towns, type it in the box at the top of the page or <a href="../../frost-dates/">browse all towns</a>.</p>
+<p class="note">Dates for six main towns. For any of the other ${plans.length - lead.length} towns, type it in the box at the top of the page or <a href="../../frost-dates/">browse all towns</a>.</p>
 <template id="all-town-rows"><div class="area-groups">${P.byArea(D).map(g => `<table class="plan"><tbody>${groupedRows(g.places.map(pl => bySlug(pl.slug)), dates)}</tbody></table>`).join("")}</div></template>
 ${TOWN_PICK_JS}`;
 }
@@ -739,7 +739,7 @@ ${phoneFold("science", sci.notes ? "Growing notes" : "The plant science", `<p cl
 <div class="sci-cards">${sci.sections.map(([h, ...ps]) => `<section class="sci-card"><h3>${esc(h)}</h3>${ps.map(p => `<p>${esc(p)}</p>`).join("")}</section>`).join("\n")}</div>`, true)}`;
 }
 function stepsForHub(c, g, port) {
-  return steps(c, rowFor(port, c.id), g).replace(/(Start seeds indoors|Plant them in the garden|Plant seeds|Plant seed potatoes|Plant onion sets|Break bulbs into cloves and plant them|Plant them|Plant again|Plant [A-Za-z -]+?) [A-Z][a-z]{2} \d+(–\d+| – [A-Z][a-z]{2} \d+)/g, "$1 on your city's dates");
+  return steps(c, rowFor(port, c.id), g).replace(/(Start seeds indoors|Plant them in the garden|Plant seeds|Plant seed potatoes|Plant onion sets|Break bulbs into cloves and plant them|Plant them|Plant again|Plant [A-Za-z -]+?) [A-Z][a-z]{2} \d+(–\d+| – [A-Z][a-z]{2} \d+)/g, "$1 on your town's dates");
 }
 
 const WHEN_INDEX = "when-to-plant/";
