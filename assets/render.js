@@ -23,7 +23,17 @@
       '<span class="fact-s">Typical date. Comes as early as ' + P.fmt(f.fall10) + ' in 1 year out of 10.</span></div>' +
       '<div class="fact"><span class="fact-k">Frost-free season</span><span class="fact-v">' + f.season + ' days</span>' +
       '<span class="fact-s">Your growing season for frost-tender crops like tomatoes and squash.</span></div>' +
-      '</div>';
+      '</div>' + hardiness(p);
+  }
+  // USDA hardiness zone for the town's ZIP codes (2023 map). Says what it's for, since people mix it up with planting dates.
+  function hardiness(p) {
+    var x = p.place;
+    if (!x.hz) return '';
+    var range = x.hz.indexOf('–') > 0;
+    return '<p class="hz-line"><span class="hz-k">USDA hardiness zone</span> <b class="hz-v">' + x.hz + '</b>' +
+      '<span class="hz-s">' + (range ? 'Depends on your ZIP. ' : '') + 'The coldest winter night is usually ' + x.hzT.replace(/-/g, '−') + '°F. ' +
+      'Zones tell you which perennials, shrubs and trees survive winter, not when to plant. ' +
+      '<small>2023 USDA Plant Hardiness Zone Map, USDA-ARS and Oregon State University (PRISM).</small></span></p>';
   }
 
   // brief leaves out the general microclimate advice (the frost-dates index says it once for every town).

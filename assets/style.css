@@ -2143,3 +2143,11 @@ main [id] { scroll-margin-top: 84px; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .mj-frost { border: 1px solid #2E4A3E; background: #13261F; } }
 @media (max-width: 560px) { .mj-head { grid-template-columns: 1fr; } .mj-head .mj-prog { justify-self: start; } .mj-town { max-width: none; } }
 .mj-head .mj-prog { margin: 0; }
+
+/* Hardiness zone line under the frost facts (2026-11-07). */
+.hz-line { margin-bottom: 10px !important; display: grid; grid-template-columns: auto auto 1fr; align-items: baseline; gap: 4px 12px; margin: 10px 0 0; padding: 10px 14px; border: 1px solid var(--line); border-left: 4px solid var(--moss); border-radius: 10px; background: var(--paper); }
+.hz-k { font-size: .85rem; color: var(--muted); }
+.hz-v { font-size: 1.35rem; color: var(--ink); }
+.hz-s { font-size: .9rem; color: var(--muted); line-height: 1.45; }
+.hz-s small { display: block; margin-top: 2px; font-size: .78rem; }
+@media (max-width: 560px) { .hz-line { grid-template-columns: auto 1fr; } .hz-s { grid-column: 1 / -1; } }

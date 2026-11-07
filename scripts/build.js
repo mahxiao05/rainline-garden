@@ -400,7 +400,7 @@ if(next)return (g&&g.e<t?"<b>Too late for spring.</b> Next chance: "+next.l.toLo
 var first=w.slice().sort(function(a,b){return a.s-b.s})[0];
 return "<b>Too late for this year</b> in "+town+". Next chance: "+first.l.toLowerCase()+" from "+fmt(first.s)+" next year."}
 var tpl=document.getElementById("all-town-rows"),rows=tpl?tpl.content:document;
-function show(slug){var a=rows.querySelector('.area-groups a[data-slug="'+slug+'"]');if(!a)return false;
+function show(slug){if(!/^[a-z0-9-]+$/.test(slug||""))return false;var a=rows.querySelector('.area-groups a[data-slug="'+slug+'"]');if(!a)return false;
 var label=a.textContent,tds=[].slice.call(a.closest("tr").querySelectorAll("td")),v=verdict(tds,label.replace(/, [A-Z]{2}$/,""));
 var h=tds.map(function(td){return '<p><b>'+td.innerHTML+'</b> <span>'+td.getAttribute("data-label")+'</span></p>'}).join("");
 nameEl.textContent=label;out.innerHTML=(v?'<p class="pick-now"><span>Is it too late to plant?</span> '+v+'</p>':'')+h+'<a href="'+a.getAttribute("href")+'">Full '+label+' calendar &rarr;</a>';card.hidden=false;return true}
@@ -906,11 +906,12 @@ function townQuestions(p) {
   const rank = ALL_PLANS.slice().sort((a, b) => b.frost.season - a.frost.season).findIndex(x => x.frost.season <= f.season) + 1;
   const where = rank <= 10 ? "one of the longest" : rank > ALL_PLANS.length - 10 ? "one of the shortest" : rank <= ALL_PLANS.length / 2 ? "longer than most" : "shorter than most";
   return [
-    [`When is the last frost in ${city}?`, `${P.fmtLong(f.spring50)} in a typical year. Frost is over by ${P.fmtLong(f.spring10)} in 9 years out of 10, Tender plants like tomatoes wait longer than that, for warm soil: see the tomato question below.`],
+    [`When is the last frost in ${city}?`, `${P.fmtLong(f.spring50)} in a typical year. Frost is over by ${P.fmtLong(f.spring10)} in 9 years out of 10. Tender plants like tomatoes wait longer than that, for warm soil: see the tomato question below.`],
     [`When is the first frost in ${city}?`, `Around ${P.fmtLong(f.fall50)}. It comes as early as ${P.fmtLong(f.fall10)} in 1 year out of 10.`],
     [`When can I plant tomatoes in ${city}?`, `Set out tomato plants ${P.fmtRange(sp.start, sp.end)}${tom.indoor ? `, after starting seeds indoors ${P.fmtRange(tom.indoor.start, tom.indoor.end)}` : ""}.` +
       (tom.cover ? ` Keep frost cover handy until about ${P.fmt(tom.coverUntil)}.` : "") + (tom.season === "short" || tom.season === "tight" ? " The season is short here, so pick an early variety." : "")],
     [`When should I plant garlic in ${city}?`, `Plant garlic cloves ${P.fmtRange(garlic.start, garlic.end)}, and harvest next summer when the lower leaves turn brown.`],
+    ...(p.place.hz ? [[`What growing zone is ${city} in?`, `USDA hardiness zone ${p.place.hz}${p.place.hz.includes("–") ? ", depending on your ZIP code" : ""}, on the 2023 USDA map: the coldest winter night is usually ${p.place.hzT.replace(/-/g, "−")}°F. The zone tells you which perennials, shrubs and trees survive the winter; for vegetables, go by the frost dates and planting calendar instead.`]] : []),
     [`How long is the growing season in ${city}?`, `About ${f.season} frost-free days, ${where} of the ${ALL_PLANS.length} Oregon, Washington and Idaho towns we cover.`]
   ];
 }
@@ -1489,7 +1490,7 @@ ${STATES.map(([k, n]) => `<div class="th-st" data-st="${k}"><h3>${n}</h3><ul cla
 <p class="th-key"><i class="k-free" aria-hidden="true"></i>Green bar: the frost-free season, January to December. The dot matches the map: darker means a longer season.</p></section>
 <script>(function(){var root=document.querySelector(".th-all"),tabs=root.querySelector(".th-tabs"),sts=[].slice.call(root.querySelectorAll(".th-st")),inp=root.querySelector(".th-filter input"),none=root.querySelector(".th-none"),cur="OR";
 var slug=null;try{slug=localStorage.getItem("rainline-place")}catch(e){}
-var mine=slug&&root.querySelector('li[data-slug="'+slug+'"]');if(mine){cur=mine.closest(".th-st").getAttribute("data-st");var you=document.getElementById("th-you"),c=mine.cloneNode(true);
+var mine=slug&&/^[a-z0-9-]+$/.test(slug)&&root.querySelector('li[data-slug="'+slug+'"]');if(mine){cur=mine.closest(".th-st").getAttribute("data-st");var you=document.getElementById("th-you"),c=mine.cloneNode(true);
 you.innerHTML='<h2>Your town</h2><div class="th-card"><ul class="th-list">'+c.outerHTML+'</ul><p class="th-safe">Safe date for tomatoes: <b>'+mine.getAttribute("data-safe")+'</b></p><p class="th-acts"><a class="btn" href="'+slug+'/">Open my calendar</a> <a href="../?change=1#where">Change town</a></p></div>';}
 function show(){var q=inp.value.trim().toLowerCase(),any=0;sts.forEach(function(d){var on=q?1:d.getAttribute("data-st")===cur,n=0;[].forEach.call(d.querySelectorAll("li"),function(li){var m=!q||li.getAttribute("data-name").indexOf(q)>=0;li.hidden=!m;if(m)n++});d.hidden=!on||!n;if(on&&n)any=1});
 tabs.hidden=!!q;none.hidden=!!any;[].forEach.call(tabs.children,function(b){b.setAttribute("aria-selected",b.getAttribute("data-st")===cur)});}

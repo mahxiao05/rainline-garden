@@ -23,7 +23,10 @@ window.RainlineTownBox = function (root, opts) {
       return { slug: a[0], city: m ? m[1] : a[1], state: m ? m[2] : "" };
     });
   }
-  var towns = townsFrom().map(function (t) { return { t: t, label: t.city + ", " + t.state, key: norm(t.city + " " + t.state), city: norm(t.city) }; });
+  // parts: each town name inside a combined entry, so "Meridian" or "Pasco" finds "Boise and Meridian" or "Tri-Cities (Pasco, ...)".
+  var towns = townsFrom().map(function (t) { return { t: t, label: t.city + ", " + t.state, key: norm(t.city + " " + t.state), city: norm(t.city),
+    parts: t.city.split(/,| and |\(|\)/).map(norm).filter(Boolean) }; });
+  var STATES = { or: "OR", oregon: "OR", wa: "WA", washington: "WA", id: "ID", idaho: "ID" };
   function full(t) { return (D && P && P.findPlace(D, t.slug)) || t; }
 
   // Loads data.js, plan.js and near.js on pages that don't have them yet (only when a ZIP or location needs them).
@@ -47,9 +50,13 @@ window.RainlineTownBox = function (root, opts) {
   function matches(q) {
     q = norm(q);
     if (!q) return [];
+    // A trailing state ("Boise, ID", "newport wa") narrows the towns to that state.
+    var st = null, m = q.match(/^(.+) (or|oregon|wa|washington|id|idaho)$/);
+    if (m) { q = m[1]; st = STATES[m[2]]; }
     var starts = [], inside = [];
     towns.forEach(function (t) {
-      if (t.city.indexOf(q) === 0 || t.key.indexOf(q) === 0) starts.push(t);
+      if (st && t.t.state !== st) return;
+      if (t.city.indexOf(q) === 0 || t.key.indexOf(q) === 0 || t.parts.some(function (x) { return x.indexOf(q) === 0; })) starts.push(t);
       else if (t.key.indexOf(" " + q) > 0) inside.push(t);
     });
     var all = starts.concat(inside);
@@ -91,6 +98,7 @@ window.RainlineTownBox = function (root, opts) {
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     var v = input.value.trim();
+    if (/^\d{5}-\d{4}$/.test(v)) v = v.slice(0, 5); // ZIP+4
     if (!v) { say("Enter a ZIP code or the name of your town."); input.focus(); return; }
     if (/^\d+$/.test(v)) {
       return needData(function () {
@@ -99,7 +107,7 @@ window.RainlineTownBox = function (root, opts) {
         go(r.place, true);
       });
     }
-    var m = matches(v), exact = m.filter(function (t) { return t.city === norm(v) || t.key === norm(v); });
+    var m = matches(v), exact = m.filter(function (t) { return t.city === norm(v) || t.key === norm(v) || t.parts.indexOf(norm(v).replace(/ (or|oregon|wa|washington|id|idaho)$/, "")) >= 0; });
     var one = exact.length === 1 ? exact[0] : m.length === 1 ? m[0] : m.best;
     if (one) return go(one.t, false);
     if (m.length) { openList(); say("Pick your town from the list."); return; }
