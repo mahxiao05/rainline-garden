@@ -2307,3 +2307,36 @@ details.gp-card .gp-past { margin: 0; flex: none; font-size: .8rem; padding: 2px
   .gp-cards-head + .station { display: none; }
   .gp-tiles { grid-template-columns: repeat(4, 1fr); }
 }
+
+/* My garden plan colours (option A, 2026-11): solid job tags, lime progress and due-soon tint, Right now + frost box as night cards with lime. */
+.gp-prog-bar { height: 10px; }
+.gp-prog-bar i { background: linear-gradient(90deg, var(--moss), #8BC34A, var(--lime)); }
+.gp-kind { color: #fff; }
+.gp-k-plant .gp-kind { background: #2E7D4F; color: #fff; }
+.gp-k-indoor .gp-kind, .gp-k-harden .gp-kind { background: #2C7A8C; color: #fff; }
+.gp-k-harvest .gp-kind { background: #D9822B; color: #fff; }
+.gp-k-frost .gp-kind { background: #4A78B8; color: #fff; }
+.gp-k-water .gp-kind { background: #3E9AD6; color: #fff; border: 0; }
+.gp-task.is-soon { background: color-mix(in srgb, var(--lime) 22%, var(--bg)); }
+
+.gp-jump a[aria-current="true"] { background: var(--lime); border-color: var(--lime); color: #0F2B22; }
+.gp-week, .gp-frost { background: #0F2B22; border-color: #0F2B22; color: #E6EFE9; }
+.gp-week h2, .gp-week .gp-rn-h, .gp-week .gp-swaps p { color: var(--lime); }
+.gp-week a, .gp-week .gp-date, .gp-week .gp-week-head span { color: #E6EFE9; }
+.gp-week .gp-task { border-color: rgba(255,255,255,.14); }
+.gp-week .gp-swap { background: transparent; color: var(--lime); border-color: color-mix(in srgb, var(--lime) 60%, transparent); }
+.gp-week { border-left-color: var(--lime) !important; }
+.gp-tile { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.12); }
+.gp-tile-k, .gp-tile-s, .gp-fcount span, .gp-saved-n, .gp-frost-src { color: #A9BDB2; }
+.gp-tile-v, .gp-fcount b { color: var(--lime); }
+.gp-frost .btn { background: var(--lime); color: #0F2B22; }
+#gp-todo-h::after, #gp-chart-h::after, #gp-cards-h::after, #gp-journal-h::after, #gp-beds-sec h2::after { content: ""; display: block; width: 48px; height: 4px; margin-top: 6px; border-radius: 4px; background: var(--lime); }
+details.gp-card[open] { border-color: #0F2B22; box-shadow: 0 0 0 2px var(--lime); }
+
+.gp-week .gp-task.is-soon { background: rgba(198, 240, 106, .12); }
+.gp-week .gp-text, .gp-week .gp-week-empty, .gp-week .gp-when-note { color: #E6EFE9; }
+@media print {
+  .gp-week, .gp-frost, .gp-tile { background: none !important; color: #000 !important; border-color: #999 !important; }
+  .gp-week *, .gp-frost * { color: #000 !important; }
+  #gp-todo-h::after, #gp-chart-h::after, #gp-cards-h::after, #gp-journal-h::after, #gp-beds-sec h2::after { display: none; }
+}
