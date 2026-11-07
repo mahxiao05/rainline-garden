@@ -1554,6 +1554,10 @@ ${ad("calendar-bottom")}`,
  * dates), and that month's jobs filtered to your region. "What can I plant this week" lives on Plant now (plant-now/). */
 const ZONE_TAG = { coast: "coast", west: "west", east: "east", high: "high", inland: "high" };
 const isJob = t => !/^Nothing /.test(t); // "Nothing to start yet..." lines aren't jobs
+// Month-page jobs: hand-written planting jobs that name a plant on the date list are left to the dated list the
+// browser builds from your town's windows (assets/monthjobs.js), so the two never disagree.
+const CROP_RES = D.crops.map(x => new RegExp("\\b" + x.name.toLowerCase().replace(/\s*\(.*\)/, "").replace(/(ies|es|s)$/, "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"));
+const namesCrop = t => !/bare-root|cover crop/i.test(t) && CROP_RES.some(re => re.test(t));
 const MONTH_ROWS = [["coast", "astoria-or"], ["west", "portland-or"], ["east", "pendleton-or"], ["inland", "spokane-wa"], ["high", "bend-or"]];
 CHORES.forEach(c => {
   const rel = "../../", name = P.MONTHS_LONG[c.m - 1], slug = monthSlug(c.m);
@@ -1607,7 +1611,7 @@ ${ids.length ? regTable : ""}
 ${table && !same ? `<details class="more-fold mp-table"${ids.length <= 12 ? " open" : ""}><summary>${ids.length <= 12 ? `${name} planting dates, by region` : `All ${ids.length} plants and their ${name} dates, by region`}</summary>\n${table}</details>` : ""}
 ${ids.length ? `<p class="station">Dates are for one typical town in each region: ${listOf(rows.map(r => r.town.city))}. <a href="${rel}plant-now/">Plant now</a> shows your own town's dates.</p>` : ""}
 <h2>${name} jobs</h2>
-<div class="cm-filter mb-filter" role="group" aria-label="Show jobs for">${[["all", "All regions"], ...Object.entries(REGION_TAGS)].map(([v, l]) => `<button type="button" data-region="${v}" aria-pressed="${v === "all"}">${l}</button>`).join("")}</div>
+<div id="mj" class="mj" hidden data-m="${c.m}" data-samples="${MONTH_ROWS.map(([z, sl]) => `${z}|${sl}`).join(";")}" data-tags="${esc(JSON.stringify(ZONE_TAG))}" data-jobs="${esc(JSON.stringify(CHORE_KINDS.flatMap(([k]) => (c.tasks[k] || []).map(([t, r], i) => [k, i, t, r || ""]).filter(([kk, , t]) => isJob(t) && !((kk === "plant" || kk === "indoor" || (kk === "perennial" && /^(Plant|Sow) /.test(t))) && namesCrop(t))))))}"></div>
 <div class="cm-grid mb-jobs">${tasks.map(([k, label, ts]) => `<div class="cm-card cm-${k}"><h3>${label}</h3><ul>${ts.map(([t, r]) =>
     `<li class="cm-plain"${r ? ` data-r="${r}"` : ""}>${esc(t)}${r ? ` <span class="cm-tag cm-tag-${r}">${REGION_TAGS[r]}</span>` : ""}</li>`).join("")}</ul></div>`).join("")}</div>
 <script>(function(){var m=document.getElementById("mb-mine"),s=null;try{s=localStorage.getItem("rainline-place")}catch(e){}
@@ -1622,7 +1626,8 @@ m.innerHTML='<p><strong>'+t[1]+', '+t[2]+'</strong> is in the '+zn[t[3]]+'.</p><
 show(tags[t[3]]||"all")})();</script>
 ${ad("month-mid")}
 ${c.articles.length ? `<h2>Read next</h2>\n${articleCards(rel, c.articles.filter(s => articleBySlug[s]).map(s => articleBySlug[s]))}` : ""}
-<nav class="cm-pager" aria-label="Other months"><a href="../${monthSlug(prev.m)}/">← ${P.MONTHS_LONG[prev.m - 1]}</a><a href="../">All months</a><a href="../${monthSlug(next.m)}/">${P.MONTHS_LONG[next.m - 1]} →</a></nav>`
+<nav class="cm-pager" aria-label="Other months"><a href="../${monthSlug(prev.m)}/">← ${P.MONTHS_LONG[prev.m - 1]}</a><a href="../">All months</a><a href="../${monthSlug(next.m)}/">${P.MONTHS_LONG[next.m - 1]} →</a></nav>`,
+    scripts: ["data.js", "plan.js", "monthjobs.js"]
   }), "0.7");
 });
 
