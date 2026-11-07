@@ -2076,3 +2076,22 @@ main [id] { scroll-margin-top: 84px; }
 .tm-key { padding: 0 6px; }
 .tm-pick { padding: 0 6px 6px; }
 .tm-key i { box-shadow: 0 0 0 2px #fff, 0 1px 2px 2px rgb(0 0 0 / .12); }
+
+/* Whole-site color pass (2026-11-07)
+ * 1 One primary button: lime with dark text in light and dark mode (matches the header's My plan button). */
+:root { --btn-bg: #C6F06A; --btn-fg: #0F2B22; }
+.btn:hover { filter: brightness(.96); }
+/* 2 Frost-chance strip uses the same frost blues as the planting calendar (pale = possible, slate = likely),
+ *   and green for the frost-free stretch, instead of its own blue/yellow/green set. */
+:root { --risk4: #3E5A73; --risk3: #8C9DAD; --risk2: #C3CDD6; --risk1: #8FC3A6; }
+:root[data-theme="dark"] { --risk4: #9DB3C7; --risk3: #6D8193; --risk2: #3A4A58; --risk1: #3F7A5E; }
+/* 3 One note-box style: white card, thin line, green left edge (was sand, pale blue and green-tint boxes). */
+.care-tip, .zips, .author-box, .mb-mine { background: var(--paper); border: 1px solid var(--line); border-left: 4px solid var(--moss); border-radius: 12px; }
+.care-tip { padding: 12px 16px; }
+.th-guide ul { border-left-color: var(--moss); }
+/* 4 "Your town" boxes on month pages match the dark Your town card on Town calendars. */
+.mb-mine { background: var(--night); border: 0; color: #fff; box-shadow: 0 14px 30px -18px rgba(0,0,0,.5); }
+.mb-mine strong { color: var(--lime); }
+.mb-mine-links a:not(.btn) { color: #fff; }
+:root[data-theme="dark"] .mb-mine { background: #0A1611; box-shadow: 0 0 0 1px var(--line); }
+.gear { background: var(--paper); border: 1px solid var(--line); border-left: 4px solid var(--moss); }
