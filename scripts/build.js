@@ -234,6 +234,8 @@ ${noindex ? '<meta name="robots" content="noindex, follow">\n' : ""}<link rel="c
 <meta name="theme-color" content="#0B1A15">
 <script>try{var t=localStorage.getItem("rainline-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="icon" href="${base}favicon.ico" sizes="48x48">
+<link rel="icon" href="${base}assets/icon-96.png" type="image/png" sizes="96x96">
+<link rel="icon" href="${base}assets/icon-192.png" type="image/png" sizes="192x192">
 <link rel="icon" href="${base}assets/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="${base}apple-touch-icon.png">
 <link rel="manifest" href="${base}site.webmanifest">
