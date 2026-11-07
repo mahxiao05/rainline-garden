@@ -163,12 +163,39 @@
 
   function isSoon(t, days) { return t.date - now <= days * DAY && (t.end || t.date) >= now; }
   function dateLabel(t) { var nb = function (d) { return short(d).replace(" ", "&nbsp;"); }; return nb(t.date) + (t.end && t.end - t.date > DAY ? "–<wbr>" + nb(t.end) : ""); }
+  // What kind of job it is, as a short coloured tag.
+  function kindOf(t) {
+    var k = t.kind;
+    if (k === "indoor") return ["indoor", "Start indoors"];
+    if (k === "harden") return ["harden", "Harden off"];
+    if (k === "harvest") return ["harvest", "Harvest"];
+    if (/^water/.test(k)) return ["water", "Water"];
+    if (/frost$/.test(k)) return ["frost", "Frost"];
+    if (/sow\d/.test(k)) return ["plant", "Sow again"];
+    return ["plant", "Plant"];
+  }
+  // A line or two of how-to for the job, taken from the plant's growing guide. Jobs with no guide text get none.
+  function howTo(t) {
+    var g = t.crop && H.crops[t.crop.id], k = t.kind, bits = [];
+    if (!g) return "";
+    if (k === "harvest") { if (g.harvest) bits.push(g.harvest); }
+    else if (k === "indoor") { if (g.depth) bits.push("Sow seeds " + g.depth + "."); }
+    else if (k !== "harden") {
+      if (g.depth && /seed/i.test(t.crop.how || "")) bits.push("Sow " + g.depth + ".");
+      if (g.spacing) bits.push("Space " + g.spacing + ".");
+      if (g.sun) bits.push(g.sun + ".");
+    }
+    var link = '<a href="' + plantUrl(t.crop.id) + '">' + esc(t.crop.name) + ' guide</a>';
+    return '<details class="gp-how"><summary>How</summary><p>' + esc(bits.join(" ").replace(/\.\./g, ".")) + (bits.length ? " " : "") + link + '</p></details>';
+  }
   function taskLi(t) {
-    var done = !!state.done[t.key], soon = isSoon(t, 14);
-    return '<li class="gp-task' + (done ? " is-done" : "") + (soon && !done ? " is-soon" : "") + '"><label>' +
-      '<input type="checkbox" data-key="' + esc(t.key) + '"' + (done ? " checked" : "") + (preview ? " disabled" : "") + '>' +
-      '<span class="gp-date">' + dateLabel(t) + '</span>' +
-      '<span class="gp-text">' + (t.crop ? R.icon(t.crop.id, base, 22) : "") + esc(t.text) + '</span></label></li>';
+    var done = !!state.done[t.key], soon = isSoon(t, 14), kd = kindOf(t);
+    // Only the box ticks a job, so a tap on the words or "How" can't tick it by accident.
+    return '<li class="gp-task gp-k-' + kd[0] + (done ? " is-done" : "") + (soon && !done ? " is-soon" : "") + '">' +
+      '<label class="gp-tick"><input type="checkbox" data-key="' + esc(t.key) + '"' + (done ? " checked" : "") + (preview ? " disabled" : "") + '><span class="sr">Done: ' + esc(t.text) + '</span></label>' +
+      '<span class="gp-date"><span>' + dateLabel(t) + '</span> <span class="gp-kind">' + kd[1] + '</span></span>' +
+      '<div class="gp-tbody"><span class="gp-text">' + (t.crop ? R.icon(t.crop.id, base, 22) : "") + '<span>' + esc(t.text) + '</span></span>' +
+      (preview ? "" : howTo(t)) + '</div></li>';
   }
 
   /* Bed planner helpers */
@@ -439,7 +466,7 @@
       '<div class="field"><label for="gp-log-crop">Plant</label><select id="gp-log-crop">' + opts.map(function (id) { return '<option value="' + id + '">' + esc(cropOf(id).name) + '</option>'; }).join("") + '</select></div>' +
       '<div class="field"><label for="gp-log-date">Date</label><input id="gp-log-date" type="date" value="' + iso(now) + '" max="' + iso(now) + '"></div>' +
       '<div class="field gp-log-note"><label for="gp-log-note">How much</label><input id="gp-log-note" type="text" maxlength="80" placeholder="2 lb, a big bowl, first ripe one…"></div>' +
-      '<button class="btn" type="submit">Add</button></form>' +
+      '<button class="btn" type="submit">Add</button></form>' + harvestTotals(state.harvests) +
       (list.length ? Object.keys(byYear).sort().reverse().map(function (y) {
         return '<h3 class="gp-month">' + y + ' <span class="gp-count">' + byYear[y].length + (byYear[y].length === 1 ? " harvest" : " harvests") + '</span></h3><ul class="gp-log">' +
           byYear[y].map(function (h) {
@@ -450,11 +477,26 @@
       }).join("") : '<p class="empty">No harvests yet.</p>') + '</section>';
   }
 
+  function harvestTotals(hs) {
+    var y = String(YEAR), n = {}, order = [];
+    hs.forEach(function (h) { if (h.date.slice(0, 4) !== y || !cropOf(h.crop)) return; if (!n[h.crop]) { n[h.crop] = 0; order.push(h.crop); } n[h.crop]++; });
+    if (!order.length) return "";
+    order.sort(function (a, b) { return n[b] - n[a]; });
+    return '<p class="gp-htot"><b>' + y + ' so far</b> ' + order.map(function (id) { return '<span class="gp-htot-i">' + R.icon(id, base, 20) + esc(cropOf(id).name) + ' <b>×' + n[id] + '</b></span>'; }).join("") + '</p>';
+  }
+
+  // Days until a day-of-year comes round next (today counts as 0).
+  function daysTo(doy) { var t = today(), d = doy - t; return d < 0 ? d + 365 : d; }
+  function frostCountdown(f) {
+    var a = daysTo(f.spring50), b = daysTo(f.fall50), first = b <= a;
+    var d = first ? b : a, what = first ? "First fall frost" : "Last spring frost", when = P.fmtLong(first ? f.fall50 : f.spring50);
+    return '<p class="gp-fcount"><b>' + (d === 0 ? "Today" : d + (d === 1 ? " day" : " days")) + '</b><span>' + what + ' usually ' + (d === 0 ? "around now" : "comes around " + when) + '</span></p>';
+  }
   function frostAlerts(place, p) {
     var f = p.frost;
     var h = '<section class="gp-sec gp-alert" id="gp-alert-sec" aria-labelledby="gp-alert-h"><h2 id="gp-alert-h">Frost alerts</h2>' +
       '<p>In ' + esc(place.city) + ', frost usually ends around <strong>' + P.fmtLong(f.spring50) + '</strong> and comes back around <strong>' + P.fmtLong(f.fall50) + '</strong>. ' +
-      'Get a heads-up a week before each, plus a reminder on the risky dates.</p>' +
+      'Get a heads-up a week before each, plus a reminder on the risky dates.</p>' + frostCountdown(f) +
       '<div class="gp-alert-row"><button type="button" class="btn" data-act="frostics">Add frost alerts to my calendar</button>' +
       '<span class="gp-saved">Works with Apple, Google and Outlook calendars</span></div>';
     if (alertTpl) h += alertTpl.innerHTML.replace(/\{town\}/g, esc(place.city)).replace(/\{slug\}/g, place.slug);
@@ -619,17 +661,32 @@
       '<nav class="gp-jump" aria-label="Plan sections">' + jump.map(function (j) { return '<a href="#' + j[0] + '">' + j[1] + '</a>'; }).join("") + '</nav>' +
       rightNow(list, p, place) +
       beds(chosen) +
-      '<h2 id="gp-todo-h">Your to-do list</h2><p class="station">Tick jobs off as you go. Jobs due in the next two weeks are highlighted. Dates are a guide: check the soil and the forecast too.</p>' +
-      groups.map(function (g) { return '<h3 class="gp-month">' + g.label + '</h3><ul class="gp-tasks">' + g.items.map(taskLi).join("") + '</ul>'; }).join("") +
+      '<h2 id="gp-todo-h">Your to-do list</h2>' + todoList(groups, list, doneCount) +
       '<h2 id="gp-chart-h">Season at a glance</h2><div class="reveal">' + R.chart(sub, today()) + '</div>' +
       R.frostFacts(p) +
       '<h2 id="gp-cards-h">Plant cheat sheet</h2><div class="gp-cards">' + chosen.map(cheat).join("") + '</div>' +
       // A shared plan you're only previewing has nothing under More tools, so it's left out.
       (preview ? '' : '<details class="gp-more" id="gp-more"' + (state.moreOpen ? " open" : "") + '><summary><span class="gp-more-t">More tools</span><span class="gp-more-s">' +
-        'Harvest log, frost alerts and garden notes</span></summary>' +
+        'Harvest log' + (state.harvests.length ? ' (' + state.harvests.length + ')' : '') + ', frost alerts and garden notes</span></summary>' +
       harvestLog(chosen) + frostAlerts(place, p) +
-      '<section class="gp-sec" aria-labelledby="gp-notes-h"><h2 id="gp-notes-h">Garden notes</h2><p class="station">For the whole garden. Notes on one plant go in its card in the plant cheat sheet.</p><label class="sr" for="gp-notes">Garden notes</label><textarea id="gp-notes" class="gp-notes" rows="6" placeholder="What did well, what to change next year, where the sun hits...">' + esc(state.notes) + '</textarea></section>' +
+      '<section class="gp-sec" aria-labelledby="gp-notes-h"><h2 id="gp-notes-h">Garden notes</h2><p class="station">For the whole garden. Notes on one plant go in its card in the plant cheat sheet.</p><label class="sr" for="gp-notes">Garden notes</label><textarea id="gp-notes" class="gp-notes" rows="4" placeholder="What did well, what to change next year, where the sun hits...">' + esc(state.notes) + '</textarea><p class="gp-notes-s" aria-live="polite"></p></section>' +
       '</details>');
+  }
+
+  function todoList(groups, list, doneCount) {
+    var pct = list.length ? Math.round(doneCount / list.length * 100) : 0;
+    var monthHtml = function (g) {
+      var left = g.items.filter(function (t) { return !state.done[t.key]; }).length;
+      return '<h3 class="gp-month">' + g.label + ' <span class="gp-count">' + (left ? left + (left === 1 ? " job" : " jobs") + " to do" : "all done") + '</span></h3>' +
+        '<ul class="gp-tasks">' + g.items.map(taskLi).join("") + '</ul>';
+    };
+    // The next three months stay open; the rest of the year folds away so the list doesn't run on.
+    var soon = groups.slice(0, 3), later = groups.slice(3), laterN = later.reduce(function (n, g) { return n + g.items.length; }, 0);
+    return '<div class="gp-prog"><div class="gp-prog-t"><b>' + doneCount + ' of ' + list.length + ' jobs done</b>' +
+      '<span>Tick the box when a job is done. Tap How for tips. Dates are a guide: check the soil and the forecast too.</span></div>' +
+      '<div class="gp-prog-bar" role="progressbar" aria-valuenow="' + pct + '" aria-valuemin="0" aria-valuemax="100" aria-label="Jobs done"><i style="width:' + pct + '%"></i></div></div>' +
+      soon.map(monthHtml).join("") +
+      (later.length ? '<details class="gp-later" id="gp-later"' + (state.laterOpen ? " open" : "") + '><summary>Show the rest of the year <span>' + laterN + ' more jobs, ' + later[0].label.split(" ")[0] + ' to ' + later[later.length - 1].label + '</span></summary>' + later.map(monthHtml).join("") + '</details>' : '');
   }
 
   /* Calendar files */
@@ -778,6 +835,21 @@
   out.addEventListener("pointerup", endDrag);
   out.addEventListener("pointercancel", function () { if (drag) { drag.to = null; endDrag(); } });
 
+  // Progress line, month counts and the "jobs done" line under the plan title, without redrawing the list.
+  function progress() {
+    var boxes = out.querySelectorAll("#gp-todo-h ~ .gp-tasks input[data-key], #gp-later input[data-key]"), n = boxes.length, d = 0;
+    Array.prototype.forEach.call(boxes, function (b) { if (b.checked) d++; });
+    var b = out.querySelector(".gp-prog-t b"), bar = out.querySelector(".gp-prog-bar");
+    if (b) b.textContent = d + " of " + n + " jobs done";
+    if (bar) { bar.firstChild.style.width = (n ? Math.round(d / n * 100) : 0) + "%"; bar.setAttribute("aria-valuenow", n ? Math.round(d / n * 100) : 0); }
+    Array.prototype.forEach.call(out.querySelectorAll(".gp-month + .gp-tasks"), function (ul) {
+      var c = ul.previousElementSibling.querySelector(".gp-count"); if (!c) return;
+      var left = ul.querySelectorAll("input[data-key]:not(:checked)").length;
+      c.textContent = left ? left + (left === 1 ? " job" : " jobs") + " to do" : "all done";
+    });
+    var tp = out.querySelector(".gp-title p"); if (tp) tp.firstChild && (tp.innerHTML = tp.innerHTML.replace(/\d+ of \d+ jobs done/, d + " of " + n + " jobs done"));
+  }
+
   function flash(text) {
     var s = out.querySelector(".gp-saved"); if (!s) return;
     s.textContent = text; s.classList.add("is-on");
@@ -811,7 +883,8 @@
       if (t.checked) state.done[t.dataset.key] = 1; else delete state.done[t.dataset.key];
       // The same job can sit in "This week" and the full list: keep both boxes in step.
       Array.prototype.forEach.call(out.querySelectorAll('[data-key="' + t.dataset.key + '"]'), function (b) { b.checked = t.checked; b.closest(".gp-task").classList.toggle("is-done", t.checked); });
-      save();
+      save(); progress();
+      if (t.checked) flash("Nice, job done");
     } else if (t.dataset.repeat) {
       if (+t.value) state.repeat[t.dataset.repeat] = +t.value; else delete state.repeat[t.dataset.repeat];
       save(); render();
@@ -824,7 +897,7 @@
   out.addEventListener("input", function (e) {
     var t = e.target;
     if (t.dataset.crop && t.type === "text") state.cropNotes[t.dataset.crop] = t.value;
-    else if (t.id === "gp-notes") state.notes = t.value;
+    else if (t.id === "gp-notes") { state.notes = t.value; var ns = out.querySelector(".gp-notes-s"); if (ns) { ns.textContent = "Saved"; clearTimeout(ns._t); ns._t = setTimeout(function () { ns.textContent = ""; }, 1500); } }
     else if (t.dataset.bed) { var v = parseFloat(t.value); if (v > 0) { state.beds[+t.dataset.bed][t.dataset.dim] = Math.min(v, 100); refreshBeds(); } }
     else return;
     save();
@@ -949,6 +1022,7 @@
   out.addEventListener("toggle", function (e) {
     var d = e.target;
     if (d.id === "gp-more") { if (!!state.moreOpen !== d.open) { state.moreOpen = d.open; save(); } }
+    else if (d.id === "gp-later") { if (!!state.laterOpen !== d.open) { state.laterOpen = d.open; save(); } }
     else if (d.dataset && d.dataset.mine) { if (d.open) openNotes[d.dataset.mine] = 1; else delete openNotes[d.dataset.mine]; }
   }, true);
   // The section buttons open "More tools" when they point into it.
@@ -999,6 +1073,25 @@
   var head = document.querySelector(".site-head");
   function headH() { if (head) document.documentElement.style.setProperty("--head-h", head.offsetHeight + "px"); }
   headH(); window.addEventListener("resize", headH);
+  // The header gets shorter once you scroll (nav.js), so measure it again whenever its size changes.
+  if (head && window.ResizeObserver) new ResizeObserver(headH).observe(head);
+  var jumpTick = false;
+  function jumpNow() {
+    jumpTick = false;
+    var nav = out.querySelector(".gp-jump"); if (!nav) return;
+    var line = nav.getBoundingClientRect().bottom + 24, cur = null;
+    Array.prototype.forEach.call(nav.querySelectorAll("a"), function (a) {
+      var t = document.getElementById(a.getAttribute("href").slice(1));
+      if (t && t.getBoundingClientRect().top <= line) cur = a;
+    });
+    Array.prototype.forEach.call(nav.querySelectorAll("a"), function (a) {
+      var on = a === cur;
+      if (on !== (a.getAttribute("aria-current") === "true")) {
+        if (on) { a.setAttribute("aria-current", "true"); nav.scrollTo({ left: a.offsetLeft - 16, behavior: "smooth" }); } else a.removeAttribute("aria-current");
+      }
+    });
+  }
+  window.addEventListener("scroll", function () { if (!jumpTick) { jumpTick = true; requestAnimationFrame(jumpNow); } }, { passive: true });
 
   if (state.place && state.crops.length) pick.open = false;
   render();

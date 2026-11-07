@@ -2151,3 +2151,82 @@ main [id] { scroll-margin-top: 84px; }
 .hz-s { font-size: .9rem; color: var(--muted); line-height: 1.45; }
 .hz-s small { display: block; margin-top: 2px; font-size: .78rem; }
 @media (max-width: 560px) { .hz-line { grid-template-columns: auto 1fr; } .hz-s { grid-column: 1 / -1; } }
+
+/* My garden plan: section buttons, to-do list and More tools (2026-11 polish).
+ * Section buttons: solid, sit flush under the header as it shrinks, and the one for the section you're in lights up. */
+.gp-jump { background: var(--bg); backdrop-filter: none; -webkit-backdrop-filter: none; border-bottom: 1px solid var(--line); box-shadow: 0 -12px 0 var(--bg); margin-bottom: 1.5rem; }
+.gp-jump a { transition: background .15s, color .15s, border-color .15s; }
+.gp-jump a[aria-current="true"] { background: var(--fir); border-color: var(--fir); color: var(--bg); }
+/* To-do rows: tick box | date | job (+ How). Only the box ticks. */
+.gp-task { display: grid; grid-template-columns: 44px 8.5rem 1fr; gap: 0 10px; align-items: start; padding: 4px 6px 4px 0; }
+.gp-task > .gp-date { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; white-space: normal; }
+.gp-task > .gp-date > span:first-child { white-space: nowrap; }
+.gp-task > .gp-tick { display: flex; justify-content: center; padding: 8px 0; cursor: pointer; }
+.gp-task > .gp-tick input { margin: 0; width: 22px; height: 22px; }
+.gp-task > .gp-date { padding-top: 7px; }
+.gp-tbody { padding: 7px 0 4px; min-width: 0; }
+.gp-tbody .gp-text { line-height: 1.45; }
+.gp-kind { display: inline-block; font-family: var(--sans); font-size: .7rem; font-weight: 800; letter-spacing: .03em; text-transform: uppercase; line-height: 1.6; padding: 0 7px; white-space: nowrap; border-radius: 999px; vertical-align: 1px; background: var(--free, var(--sand)); color: var(--muted); }
+.gp-k-plant .gp-kind { background: var(--easy-bg); color: var(--easy); }
+.gp-k-indoor .gp-kind, .gp-k-harden .gp-kind { background: var(--teal-soft); color: var(--teal); }
+.gp-k-harvest .gp-kind { background: var(--mod-bg); color: var(--mod); }
+.gp-k-frost .gp-kind { background: var(--hard-bg); color: var(--hard); }
+.gp-k-water .gp-kind { background: var(--sky); color: var(--fir); border: 1px solid var(--line); }
+.gp-task.is-done .gp-kind { opacity: .55; }
+.gp-task.is-done .gp-date > span:first-child { text-decoration: line-through; color: var(--muted); }
+.gp-task.is-done .gp-date { text-decoration: none; }
+.gp-task.is-done .gp-text > span { text-decoration: line-through; color: var(--muted); }
+.gp-task.is-done .gp-how { display: none; }
+.gp-how { margin: 2px 0 0 30px; font-size: .92rem; }
+.gp-how > summary { display: inline-flex; align-items: center; gap: 5px; cursor: pointer; color: var(--fir); font-weight: 700; list-style: none; padding: 2px 0; min-height: 28px; }
+.gp-how > summary::-webkit-details-marker { display: none; }
+.gp-how > summary::after { content: ""; width: 6px; height: 6px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform .15s; }
+.gp-how[open] > summary::after { transform: translateY(1px) rotate(-135deg); }
+.gp-how p { margin: 2px 0 4px; padding: 8px 12px; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; color: var(--ink); line-height: 1.5; }
+.gp-week-list .gp-how { display: none; }
+/* Progress line above the list */
+.gp-prog { max-width: 52rem; margin: 0 0 .5rem; }
+.gp-prog-t { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; }
+.gp-prog-t b { color: var(--fir); font-size: 1.05rem; }
+.gp-prog-t span { color: var(--muted); font-size: .95rem; }
+.gp-prog-bar { height: 8px; margin-top: 8px; border-radius: 999px; background: var(--line); overflow: hidden; }
+.gp-prog-bar i { display: block; height: 100%; min-width: 0; border-radius: inherit; background: var(--moss); transition: width .3s; }
+.gp-month .gp-count { font-family: var(--sans); font-size: .85rem; font-weight: 600; color: var(--muted); margin-left: 6px; }
+/* The rest of the year, folded */
+.gp-later { max-width: 52rem; margin-top: 1.25rem; }
+.gp-later > summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; cursor: pointer; list-style: none; padding: 12px 16px; border: 1.5px dashed var(--line); border-radius: 12px; color: var(--fir); font-weight: 700; }
+.gp-later > summary::-webkit-details-marker { display: none; }
+.gp-later > summary span { color: var(--muted); font-weight: 500; font-size: .95rem; }
+.gp-later[open] > summary { border-style: solid; }
+.gp-later[open] > summary span::after { content: " · hide"; }
+/* More tools: one panel with three cards and smaller headings */
+.gp-more > .gp-sec { max-width: 52rem; margin-top: 1rem; padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); }
+.gp-more > .gp-sec > h2 { font-family: var(--sans); text-transform: none; letter-spacing: -.01em; font-size: 1.25rem; font-weight: 800; margin: 0 0 .25rem; }
+.gp-more > .gp-sec > .station, .gp-more > .gp-sec > p:first-of-type { margin-top: 0; }
+.gp-more .gp-logform { background: var(--bg); padding: 12px; }
+.gp-more .gp-alert { background: var(--sky); }
+.gp-htot { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin: .75rem 0; font-size: .95rem; }
+.gp-htot > b { color: var(--fir); margin-right: 2px; }
+.gp-htot-i { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px 3px 4px; border-radius: 999px; background: var(--bg); border: 1px solid var(--line); }
+.gp-fcount { display: flex; align-items: baseline; gap: 10px; margin: 0 0 12px !important; }
+.gp-fcount b { font-family: var(--serif); font-size: 1.9rem; line-height: 1; color: var(--fir); white-space: nowrap; }
+.gp-fcount span { color: var(--muted); }
+.gp-notes { background: var(--bg); }
+.gp-notes-s { min-height: 1.3em; margin: 4px 0 0; font-size: .9rem; color: var(--moss); font-weight: 700; }
+@media (max-width: 560px) {
+  /* Phone: date sits above the job so the words get the full width. */
+  .gp-task { grid-template-columns: 40px 1fr; padding-right: 4px; }
+  .gp-task > .gp-date { grid-column: 2; padding-top: 9px; font-size: .92rem; flex-direction: row; align-items: center; gap: 8px; }
+  .gp-task > .gp-date + .gp-tbody { grid-column: 2; padding-top: 0; }
+  .gp-task > .gp-tick { grid-row: 1 / span 2; padding-top: 10px; }
+  .gp-how { margin-left: 30px; }
+  /* Harvest log: two short rows instead of four tall ones. */
+  .gp-more > .gp-sec { padding: 14px; }
+  .gp-logform { display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: start; }
+  .gp-logform .field { margin: 0; }
+  .gp-logform .field, .gp-logform .field select, .gp-logform .field input { width: 100%; min-width: 0; }
+  .gp-logform .field:nth-child(2) { grid-column: 2 / 4; }
+  .gp-logform .gp-log-note { grid-column: 1 / 3; }
+  .gp-logform .btn { width: auto; align-self: end; min-height: 48px; padding-left: 18px; padding-right: 18px; }
+}
+@media print { .gp-how, .gp-prog-t span, .gp-later > summary, .gp-notes-s { display: none !important; } .gp-task { grid-template-columns: 26px 7.5rem 1fr; } }
