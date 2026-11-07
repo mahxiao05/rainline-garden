@@ -2001,18 +2001,18 @@ main [id] { scroll-margin-top: 84px; }
 .th-you, .th-guide, .th-all { margin: 1.75rem 0; }
 .th-you h2, .th-guide h2, .th-all h2 { margin: 0 0 .6rem; }
 .th-pop { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; }
-.th-pop a { padding: 7px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--card, #fff); text-decoration: none; font-weight: 600; font-size: .95rem; }
+.th-pop a { padding: 7px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--paper); text-decoration: none; font-weight: 600; font-size: .95rem; }
 .th-card { border: 2px solid var(--moss); border-radius: 14px; padding: 4px 14px 14px; background: var(--moss-soft); }
 .th-card .th-list li { border: 0; }
 .th-card .th-name { font-size: 1.25rem; }
 .th-safe { margin: 4px 0 10px; font-size: .95rem; }
 .th-acts { display: flex; align-items: center; gap: 16px; margin: 0; }
 .th-acts .btn { background: var(--lime); color: #0F2B22; }
-.th-guide ul { margin: 0; padding: 12px 14px 12px 32px; border-radius: 12px; background: var(--card, #fff); border: 1px solid var(--line); }
+.th-guide ul { margin: 0; padding: 12px 14px 12px 32px; border-radius: 12px; background: var(--paper); border: 1px solid var(--line); }
 .th-guide li { margin: 4px 0; font-size: .95rem; line-height: 1.45; }
 .th-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; margin-bottom: .6rem; }
 .th-head h2 { margin: 0; }
-.th-filter input { width: 13rem; max-width: 100%; padding: 9px 12px; border: 1px solid var(--line); border-radius: 10px; font: inherit; font-size: 1rem; background: var(--card, #fff); color: var(--ink); }
+.th-filter input { width: 13rem; max-width: 100%; padding: 9px 12px; border: 1px solid var(--line); border-radius: 10px; font: inherit; font-size: 1rem; background: var(--paper); color: var(--ink); }
 .th-tabs { display: flex; gap: 6px; margin: 0 0 6px; border-bottom: 1px solid var(--line); }
 .th-tabs button { flex: 1; white-space: nowrap; font-size: .95rem; padding: 10px 2px; border: 0; border-bottom: 3px solid transparent; background: none; font: inherit; font-weight: 600; color: var(--muted); cursor: pointer; }
 .th-tabs button small { font-weight: 500; opacity: .75; }
@@ -2038,3 +2038,41 @@ main [id] { scroll-margin-top: 84px; }
 @media (min-width: 52rem) { .th-st .th-list { columns: 2; column-gap: 28px; } .th-st .th-list li { break-inside: avoid; } }
 :root[data-theme="dark"] .th-bar { background: repeating-linear-gradient(135deg, #2b3a35 0 3px, #1d2925 3px 6px); }
 .th-tabs[hidden], .th-st[hidden] { display: none; }
+/* Town calendars colors (2026-11-07): dark "your town" card like the header, map-matching dots on each town. */
+.th-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; vertical-align: 1px; }
+.th-dot.tm-s1 { background: var(--tm-s1); box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); } .th-dot.tm-s2 { background: var(--tm-s2); } .th-dot.tm-s3 { background: var(--tm-s3); } .th-dot.tm-s4 { background: var(--tm-s4); }
+.th-card { border: 0; background: var(--night); color: #fff; padding: 6px 16px 16px; box-shadow: 0 14px 30px -18px rgba(0,0,0,.5); }
+.th-card .th-list a { padding-top: 12px; }
+.th-card .th-name { color: #fff; }
+.th-card .th-dot { display: none; }
+.th-card .th-dates { color: var(--night-soft); }
+.th-card .th-dates b, .th-card .th-safe b { color: var(--lime); }
+.th-card .th-bar { background: repeating-linear-gradient(135deg, rgba(255,255,255,.18) 0 3px, rgba(255,255,255,.06) 3px 6px); }
+.th-card .th-bar i { background: var(--lime); }
+.th-card .th-safe { color: var(--night-soft); }
+.th-card .th-acts a:not(.btn) { color: #fff; }
+.th-list a { padding: 12px 2px; }
+.th-guide ul { border-left: 4px solid var(--lime); }
+:root[data-theme="dark"] .th-card { background: #0A1611; box-shadow: 0 0 0 1px var(--line); }
+
+/* Town map, cleaner look (2026-11-07): flat "maps app" style. Light land on a soft gray surround, white state borders,
+ * a plain green Cascades band (no peak hatching), lighter rivers, pin-style dots with a white ring, haloed labels. */
+:root { --tm-sea: #E6ECEA; --tm-land: #FBFAF5; --tm-edge: #FFFFFF; --tm-water: #8FBBD8; --tm-range: #E3EEDF; --tm-peak: #7FA58B; }
+:root[data-theme="dark"] { --tm-sea: #0B1310; --tm-land: #22322A; --tm-edge: #0F1915; --tm-water: #3F6E8E; --tm-range: #1F3027; --tm-peak: #6E9A80; }
+.tm-stage { background: var(--tm-sea); border-radius: 12px; overflow: hidden; }
+.tm-states path { fill: var(--tm-land); stroke: var(--tm-edge); stroke-width: 2.5; }
+.tm-svg #tm-peaks path { stroke: none; }
+.tm-range { fill: var(--tm-range); }
+.tm-peaks { display: none; }
+.tm-r1 { stroke-width: 2; } .tm-r2 { stroke-width: 1.3; } .tm-r3 { stroke-width: .8; opacity: .7; }
+.tm-names text { font: 600 11px var(--sans); letter-spacing: .22em; opacity: .55; }
+.tm-names .tm-pn { font: italic 600 10.5px var(--sans); stroke: var(--tm-land); letter-spacing: .02em; }
+.tm-dots circle { stroke: #fff; stroke-width: 2; filter: drop-shadow(0 1px 1.5px rgb(0 0 0 / .28)); }
+:root[data-theme="dark"] .tm-dots circle { stroke: #0F1915; }
+.tm-labels text { font-weight: 600; stroke: var(--tm-land); stroke-width: 3.5px; stroke-linejoin: round; }
+.tm-ctrl, .tm-full { border: 0; border-radius: 10px; box-shadow: 0 2px 8px rgb(0 0 0 / .14); }
+.tm-ctrl button + button { border-top-color: var(--line); }
+.tm-card { padding: 8px; border-radius: 16px; }
+.tm-key { padding: 0 6px; }
+.tm-pick { padding: 0 6px 6px; }
+.tm-key i { box-shadow: 0 0 0 2px #fff, 0 1px 2px 2px rgb(0 0 0 / .12); }

@@ -1459,7 +1459,8 @@ const townHub = () => {
   const yr = d => (Math.max(0, Math.min(365, d - 1)) / 365 * 100).toFixed(2);
   const STATES = [["OR", "Oregon"], ["WA", "Washington"], ["ID", "Idaho"]];
   const row = x => { const st = D.stations[x.station], a = P.doy(st.spring50), b = P.doy(st.fall50), safe = P.doy(st.spring10);
-    return `<li data-slug="${x.slug}" data-name="${esc(placeLabel(x).toLowerCase())}" data-safe="${P.fmt(safe)}"><a href="${x.slug}/"><span class="th-name">${esc(placeLabel(x).replace(/, [A-Z]{2}$/, ""))}</span>` +
+    const days = P.plan(D, x).frost.season, band = SEASON_BANDS.findIndex(([lo, hi]) => days >= lo && days <= hi) + 1;
+    return `<li data-slug="${x.slug}" data-name="${esc(placeLabel(x).toLowerCase())}" data-safe="${P.fmt(safe)}"><a href="${x.slug}/"><span class="th-name"><i class="th-dot tm-s${band}" aria-hidden="true"></i>${esc(placeLabel(x).replace(/, [A-Z]{2}$/, ""))}</span>` +
       `<span class="th-dates"><span>Last frost <b>${P.fmt(a)}</b></span><span>First frost <b>${P.fmt(b)}</b></span></span>` +
       `<span class="th-bar" aria-hidden="true"><i style="left:${yr(a)}%;width:${(Math.min(b, 366) - a) / 365 * 100}%"></i></span></a></li>`; };
   const popular = ["portland-or", "seattle-wa", "spokane-wa", "boise-id", "eugene-or", "bend-or"].map(sl => P.findPlace(D, sl)).filter(Boolean);
@@ -1473,7 +1474,7 @@ const townHub = () => {
 <div class="th-tabs" role="tablist" hidden>${STATES.map(([k, n], i) => `<button type="button" role="tab" data-st="${k}" aria-selected="${i === 0}">${n} <small>${D.places.filter(x => x.state === k).length}</small></button>`).join("")}</div>
 ${STATES.map(([k, n]) => `<div class="th-st" data-st="${k}"><h3>${n}</h3><ul class="th-list">${D.places.filter(x => x.state === k).slice().sort((a, b) => placeLabel(a).localeCompare(placeLabel(b))).map(row).join("")}</ul></div>`).join("")}
 <p class="th-none" hidden>No town by that name. Try the search box at the top: it takes any ZIP code.</p>
-<p class="th-key"><i class="k-free" aria-hidden="true"></i>Green bar: the frost-free season, on a January to December line.</p></section>
+<p class="th-key"><i class="k-free" aria-hidden="true"></i>Green bar: the frost-free season, January to December. The dot matches the map: darker means a longer season.</p></section>
 <script>(function(){var root=document.querySelector(".th-all"),tabs=root.querySelector(".th-tabs"),sts=[].slice.call(root.querySelectorAll(".th-st")),inp=root.querySelector(".th-filter input"),none=root.querySelector(".th-none"),cur="OR";
 var slug=null;try{slug=localStorage.getItem("rainline-place")}catch(e){}
 var mine=slug&&root.querySelector('li[data-slug="'+slug+'"]');if(mine){cur=mine.closest(".th-st").getAttribute("data-st");var you=document.getElementById("th-you"),c=mine.cloneNode(true);
@@ -1499,7 +1500,7 @@ ${townMap()}
 <h2 data-state>Idaho</h2>${areaLists("ID")}
 </div>
 <script>addEventListener("DOMContentLoaded",function(){var el=document.getElementById("town-box");RainlineTownBox(el,{onPick:function(p){location.href=p.slug+"/"}})});</script>
-<h2>How to use these dates</h2>
+<h2>More about these dates</h2>
 <div class="prose">
 <p>"Typical" means the median: in half of years the last spring frost comes later. Each town page also shows the date when frost is over in 9 years out of 10. Tender plants like tomatoes and basil need that, and warm soil too, so they often go out weeks later: each town page gives their dates.</p>
 <p>Each town's dates come from one weather station, usually an airport. Gardens in cold hollows or at higher elevation can frost later in spring and earlier in fall; city gardens and warm, south-facing spots often run a week or so ahead. If your garden is in a frost pocket, add a week to spring dates and take a week off fall ones.</p>
