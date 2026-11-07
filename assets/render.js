@@ -33,7 +33,7 @@
     return '<p class="hz-line"><span class="hz-k">USDA hardiness zone</span> <b class="hz-v">' + x.hz + '</b>' +
       '<span class="hz-s">' + (range ? 'Depends on your ZIP. ' : '') + 'The coldest winter night is usually ' + x.hzT.replace(/-/g, '−') + '°F. ' +
       'Zones tell you which perennials, shrubs and trees survive winter, not when to plant. ' +
-      '<small>2023 USDA Plant Hardiness Zone Map, USDA-ARS and Oregon State University (PRISM).</small></span></p>';
+      '<small>Source: 2023 USDA Plant Hardiness Zone Map.</small></span></p>';
   }
 
   // brief leaves out the general microclimate advice (the frost-dates index says it once for every town).
