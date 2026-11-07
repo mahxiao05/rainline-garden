@@ -170,6 +170,12 @@ const fitDesc = (...ds) => ds.find(d => d.length <= 160) || ds[ds.length - 1];
 // "In Portland: May 15 – Jun 12. " for a crop's description, the window most people search for.
 const portDates = (c, port) => { const r = rowFor(port, c.id), w = G.crops[c.id].fall ? win(r, "fall") : win(r, "spring") || win(r, "fall");
   return w ? `In Portland: ${P.fmtRange(w.start, w.end)}. ` : ""; };
+// "Oct–Nov" (or "May"): the months of a crop's main Portland/Seattle window, for plant page titles.
+const seasonMonths = (pl, id, only) => { const r = rowFor(pl, id); if (!r) return "";
+  const m = d => P.MONTHS[P.fromDoy(d > 365 ? d - 365 : d).m], one = w => m(w.start) === m(w.end) ? m(w.start) : `${m(w.start)}–${m(w.end)}`;
+  // Spring and fall windows both show ("Mar–Apr, Aug") when a crop has two.
+  if (only) { const w = win(r, only) || r.windows[0]; return w ? one(w) : ""; }
+  return [...new Set(r.windows.slice().sort((a, b) => a.start - b.start).map(one))].join(", "); };
 // "Red-flowering currant" -> "Red-Flowering Currant" for titles.
 const titleCase = t => t.replace(/[A-Za-z][^\s-]*/g, (w, i) => i && /^(and|or|of|in|the|for)$/.test(w) ? w : w[0].toUpperCase() + w.slice(1));
 
@@ -1062,7 +1068,10 @@ D.crops.forEach(c => {
   const dk = g.fall ? "fall" : "spring", lead = n => cityDates(c, ledeTowns.slice(0, n), dk);
   write("../../", `when-to-plant/${c.id}/index.html`, layout({
     rel: "../../", canonical: `when-to-plant/${c.id}/`, current: WHEN_INDEX,
-    title: fitTitle(`When to Plant ${titleCase(c.name)} in Oregon, Washington and Idaho`, `When to Plant ${titleCase(c.name)} in Oregon, Washington & Idaho`, `When to Plant ${titleCase(c.name)} in the Pacific Northwest`, `When to Plant ${titleCase(c.name)} in the Northwest`),
+    // Season in the title so the result stands out ("…in Oregon & Washington: Oct–Nov"). Nearly all Northwest searches
+    // say "in Oregon" and none said Idaho yet (Search Console, Nov 2026); Idaho stays in the description and on the page.
+    title: fitTitle(...(seasonMonths(port, c.id) ? [`When to Plant ${titleCase(c.name)} in Oregon & Washington: ${seasonMonths(port, c.id)}`, `When to Plant ${titleCase(c.name)} in Oregon & Washington: ${seasonMonths(port, c.id, dk)}`, `When to Plant ${titleCase(c.name)} in OR & WA: ${seasonMonths(port, c.id)}`, `When to Plant ${titleCase(c.name)} in OR & WA: ${seasonMonths(port, c.id, dk)}`] : []),
+      `When to Plant ${titleCase(c.name)} in Oregon, Washington and Idaho`, `When to Plant ${titleCase(c.name)} in Oregon, Washington & Idaho`, `When to Plant ${titleCase(c.name)} in the Pacific Northwest`, `When to Plant ${titleCase(c.name)} in the Northwest`),
     // Lead with the dates themselves: that's what a searcher wants to see in the result.
     description: fitDesc(...[5, 4, 3, 2].map(n => lead(n)).filter(Boolean).flatMap(d => [`Plant ${lc(c.name)} ${d}. Dates for ${D.places.length} Northwest towns and a growing guide.`, `Plant ${lc(c.name)} ${d}. Dates for ${D.places.length} Northwest towns.`]),
       `When to plant ${lc(c.name)} in Oregon, Washington and Idaho. ${portDates(c, port)}Dates for ${D.places.length} towns from Seattle to Boise, plus a growing guide.`,
