@@ -788,9 +788,9 @@ function categoryTiles(rel, drops, pick) {
 }
 
 /* Home */
-// Shortcuts under the home search box: two popular plants and one big town from each state, all real pages.
-const HOME_QUICK = [["when-to-plant/garlic/", "Garlic"], ["when-to-plant/tomatoes/", "Tomatoes"],
-  ...["portland-or", "spokane-wa", "boise-id", "bend-or"].map(slug => { const pl = D.places.find(x => x.slug === slug); return [`frost-dates/${slug}/`, `${pl.city}, ${pl.state}`]; })];
+// Under the home search box. First visit: a quiet "Or try" line of example towns (one per state), all real pages.
+// Once a town is picked, app.js swaps it for shortcuts to that town's pages (Plant now, its calendar, the plan).
+const HOME_TRY = ["portland-or", "seattle-wa", "spokane-wa", "boise-id"].map(slug => D.places.find(x => x.slug === slug));
 write("", "index.html", layout({
   rel: "", canonical: "", current: "",
   title: "Oregon, Washington & Idaho Planting Calendar | Rainline Garden",
@@ -804,7 +804,8 @@ ${photo("hero", "", { big: "hero", small: "heroSm", cls: "home-photo", sizes: "1
 <h1>Plant on Northwest time.</h1>
 <p class="lede">Local frost dates and a year-round planting calendar for your town, on either side of the Cascades.</p>
 ${townBox({ id: "where", rel: "", button: "Show my dates", browse: true })}
-<ul class="quick" aria-label="Popular">${HOME_QUICK.map(([href, label]) => `<li><a href="${href}">${label}<span aria-hidden="true"> &rarr;</span></a></li>`).join("")}</ul>
+<p class="quick-try" id="quick-try">Or try ${HOME_TRY.map((pl, i) => `${i ? (i === HOME_TRY.length - 1 ? " or " : ", ") : ""}<a href="frost-dates/${pl.slug}/" title="${esc(pl.city)}, ${pl.state}">${pl.city.split(" and ")[0]}</a>`).join("")}</p>
+<ul class="quick" id="quick" aria-label="Shortcuts for your town" hidden></ul>
 <ul class="trust"><li>${D.places.length} towns</li><li>NOAA frost records</li><li>Free, no sign-up</li></ul>
 </div>
 </section>
