@@ -7,11 +7,11 @@ module.exports = [
     topic: "soil", icon: "leaves",
     author: "site",
     title: "Turning Fall Leaves into Leaf Mold and Mulch",
-    description: "The leaves piling up in your yard every October are the best free soil builder there is. How to make leaf mold, which leaves to use, and where to put it.",
+    description: "Fall leaves left in a pile for a year turn into crumbly leaf mold. Which leaves break down best and where to use it.",
     crops: ["blueberries", "garlic", "rhubarb", "lettuce"],
     published: "2026-10-23",
     body: ({ link, fig }) => `
-<p>If you have a big tree in your yard, you know the routine. Sometime in late October you rake for an afternoon, fill the yard-waste bin, rake some more, and wonder where you'll put the rest. Here's a better idea: keep them.</p>
+<p>Fall leaves left in a pile for a year or two turn into leaf mold, a dark, crumbly material that holds water like a sponge and makes a good mulch and soil conditioner. It costs nothing and takes almost no work, which makes it a better use for a big tree's leaves than the yard-waste bin.</p>
 <p>Every fall, Northwest yards and streets fill with maples, oaks and alders dropping their leaves, and plenty of them end up in yard-waste bins. That's a lot of free organic matter leaving the garden. With a little patience, those same leaves turn into leaf mold: a dark, crumbly, earthy-smelling material that holds water like a sponge and makes heavy soil easier to work.</p>
 <p>Leaf mold isn't the same as compost. Compost is made mostly by bacteria, needs a mix of greens and browns, and works best when it heats up. Leaf mold is made slowly by fungi, needs nothing but leaves and water, and never has to be turned. Our wet, mild winters west of the Cascades are close to ideal for it.</p>
 <h2>Which leaves to use</h2>
@@ -51,7 +51,7 @@ ${fig(1)}
     topic: "crops",
     author: "site",
     title: "Winter Pruning for Apple and Pear Trees",
-    description: "Late winter is the time to prune apples and pears. Which cuts to make, how much to take off, and why cherries, plums and peaches wait for a different season.",
+    description: "Apples and pears are pruned while dormant in late winter; cherries and plums aren't. Which cuts to make and how much to remove.",
     crops: ["apples", "pears", "cherries", "plums", "peaches"],
     published: "2026-10-23",
     body: ({ link, fig }) => `
@@ -102,7 +102,7 @@ ${fig(1)}
     topic: "timing", icon: "rotation",
     author: "site",
     title: "Crop Rotation for a Small Northwest Vegetable Garden",
-    description: "Winter is the time to plan next year's beds. A simple way to rotate vegetable families in a few raised beds, and the soil diseases it helps you avoid.",
+    description: "Moving tomatoes, potatoes and cabbage-family crops to a new bed each year cuts down on soil diseases. A simple plan for three or four beds.",
     crops: ["tomatoes", "potatoes", "broccoli", "cabbage", "peas", "beans", "garlic", "onions"],
     published: "2026-10-23",
     gardenPhoto: "janelle-raised-beds",
@@ -158,7 +158,7 @@ ${fig(1)}
     topic: "soil", icon: "winter",
     author: "site",
     title: "Putting the Vegetable Garden to Bed for a Northwest Winter",
-    description: "A fall cleanup list for wet western gardens and cold eastern ones: what to pull, what to leave standing, and how to protect the soil until spring.",
+    description: "What to pull, what to leave standing for birds and insects, and how to cover soil before winter rain or a hard eastern freeze.",
     crops: ["tomatoes", "potatoes", "dahlias", "rhubarb", "asparagus", "strawberries"],
     published: "2026-10-23",
     body: ({ frost, link }) => {
@@ -210,7 +210,7 @@ ${fig(1)}
     topic: "crops",
     author: "site",
     title: "How to Plant Bare-Root Fruit Trees in the Northwest",
-    description: "Late winter is fruit tree season. How to choose, store and plant a bare-root apple, pear, plum or cherry so it gets off to a strong start.",
+    description: "Bare-root trees arrive in late winter with no soil on the roots. Keeping them alive until planting day and setting the graft at the right height.",
     crops: ["apples", "pears", "plums", "cherries", "peaches"],
     published: "2026-10-23",
     body: ({ link, fig }) => `
@@ -252,11 +252,11 @@ ${fig(1)}
     topic: "crops",
     author: "site",
     title: "Growing Raspberries in the Northwest",
-    description: "Summer-bearing or fall-bearing, how to plant canes so they don't drown in winter, and the pruning that keeps a raspberry patch productive for years.",
+    description: "Raspberry canes drown in soggy winter soil. Choosing summer- or fall-bearing types, planting on a raised row, and which canes to cut.",
     crops: ["raspberries"],
     published: "2026-10-23",
     body: ({ link, fig }) => `
-<p>If you've ever picked raspberries warm off the cane on a July afternoon, you know why people grow them. Store-bought raspberries are expensive, fragile and often bland. Homegrown ones are none of those things, and a single short row can give you more than you can eat fresh.</p>
+<p>Raspberries are one of the easiest fruits to grow in the Northwest, and one of the most worth growing, since store-bought berries are expensive and fragile. A single short row of canes can give more than you can eat fresh.</p>
 <p>Raspberries love the Northwest. Cool nights, mild summers and long days suit them so well that northwest Washington grows a large share of the country's red raspberries. A home patch planted well can produce for ten years or more.</p>
 <p>The two things that decide success are drainage and pruning. Get those right and raspberries are one of the most rewarding fruits you can grow here.</p>
 <h2>Summer-bearing or fall-bearing?</h2>
@@ -291,12 +291,12 @@ ${fig(1)}
     topic: "problems",
     author: "site",
     title: "Cabbage Worms and Aphids on Kale, Broccoli and Cabbage",
-    description: "The two pests that chew and crowd Northwest cabbage-family crops, how to spot them early, and how to keep them off without harsh sprays.",
+    description: "Green caterpillars chew holes, gray aphids cluster under leaves. Row cover, hand-picking and other low-spray ways to protect kale and broccoli.",
     crops: ["kale", "broccoli", "cabbage", "brussels-sprouts", "collards", "cauliflower"],
     published: "2026-10-23",
     gardenPhoto: "janelle-red-cabbage-bed",
     body: ({ link, fig }) => `
-<p>You go out to cut a head of broccoli for dinner, rinse it at the sink, and a small green caterpillar floats to the top of the water. Or you pick Brussels sprouts in November and find every one of them packed with gray aphids. Almost everyone who grows cabbage-family crops has a story like this.</p>
+<p>Imported cabbage worms and cabbage aphids are the two pests most likely to show up on broccoli, cabbage, kale and Brussels sprouts in Northwest gardens. Most gardeners first meet them as a caterpillar in the rinse water or a sprout full of aphids.</p>
 <p>Kale, broccoli, cabbage and their relatives are some of the easiest crops in a Northwest garden, and two pests know it. Green caterpillars chew holes through the leaves in summer, and gray aphids pack the undersides of leaves and the inside of Brussels sprouts by fall. Both are easy to manage if you catch them early.</p>
 <h2>Cabbage worms</h2>
 <p>If small white butterflies are flitting around your garden in summer, they're almost certainly cabbage whites, and they're laying eggs on your cabbage-family plants. The eggs hatch into velvety green caterpillars that match the leaves so well you'll usually see the damage first: ragged holes, chewed edges and small dark green droppings in the leaf joints and broccoli heads. Cabbage loopers, pale green caterpillars that arch their backs as they move, cause the same kind of damage.</p>

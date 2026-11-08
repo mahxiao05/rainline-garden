@@ -50,7 +50,7 @@ module.exports = {
   },
   kale: {
     west: "Kale is a year-round crop here. Plants set out in summer keep producing through most winters, and frost makes the leaves sweeter. Aphids and cabbage worms are the usual pests.",
-    coast: "Kale thrives in the cool, moist climate and can be picked almost all year.",
+    coast: "Kale loves the cool, moist climate and can be picked almost all year.",
     east: "Summer heat makes leaves tough and brings aphids, so focus on spring and fall crops. In colder winters, a row cover or low tunnel keeps plants going longer.",
     high: "Kale is one of the hardiest crops here and is fine through summer thanks to cool nights. Plants survive hard frosts, though a deep cold snap ends the season."
   },
@@ -191,7 +191,7 @@ module.exports = {
   "summer-squash": {
     west: "Zucchini grows well once nights warm in June. Powdery mildew coats leaves by late summer, and slugs chew young plants.",
     coast: "Summer squash is one of the easier warm crops on the coast, though plants grow more slowly and mildew comes early in damp weather.",
-    east: "Summer squash thrives in the heat. Water deeply and watch for squash bugs, which are more common east of the Cascades.",
+    east: "Summer squash grows fast in the heat. Water deeply and watch for squash bugs, which are more common east of the Cascades.",
     high: "Plant after the last frost and cover young plants on cold nights. Zucchini usually still produces well in a short season."
   },
   "winter-squash": {
@@ -253,7 +253,7 @@ module.exports = {
   basil: {
     west: "Basil stalls and blackens when nights drop below 50°F, so wait until June to plant it out. Slugs love young basil.",
     coast: "Basil struggles outdoors in cool, foggy summers. Grow it in pots on a sunny, sheltered patio or in a greenhouse.",
-    east: "Basil thrives in the heat. Keep pinching flower buds to keep the leaves coming.",
+    east: "Basil loves the heat. Keep pinching flower buds to keep the leaves coming.",
     high: "Frost can come any month, so keep basil in pots you can bring in, or cover it on cold nights."
   },
   cilantro: {
@@ -292,7 +292,7 @@ module.exports = {
   thyme: {
     west: "Thyme rots in wet, heavy soil, so plant in raised beds, rock gardens or pots with good drainage.",
     coast: "Give thyme the sunniest, best-drained spot; constant damp is its biggest enemy here.",
-    east: "Thyme thrives in the dry, sunny climate and handles cold winters.",
+    east: "Thyme is well suited to the dry, sunny climate and handles cold winters.",
     high: "Thyme is hardy and drought tolerant; it is one of the best herbs for the high desert."
   },
   oregano: {
@@ -303,7 +303,7 @@ module.exports = {
   sage: {
     west: "Sage dislikes wet, heavy soil in winter, so plant in raised beds or well-drained spots.",
     coast: "Damp winters can rot sage; good drainage and full sun are key.",
-    east: "Sage thrives in the dry, sunny climate. It is hardy through most winters.",
+    east: "Sage likes the dry, sunny climate. It is hardy through most winters.",
     high: "Common garden sage is hardy and drought tolerant here, as long as the soil drains well."
   },
   "lemon-balm": {
@@ -335,7 +335,7 @@ module.exports = {
   sunflowers: {
     west: "Slugs often eat sunflower seedlings, so start them in pots or protect young plants. Birds go for seeds in fall.",
     coast: "Wind and cool summers can stunt tall sunflowers; choose shorter, branching varieties.",
-    east: "Sunflowers thrive in the hot, sunny east-side summers and handle dry soil once established.",
+    east: "Sunflowers love the hot, sunny east-side summers and handle dry soil once established.",
     high: "Sow after the last frost. Shorter, quicker varieties finish before fall frost."
   },
   "sweet-peas": {
@@ -359,7 +359,7 @@ module.exports = {
   zinnias: {
     west: "Zinnias need warm weather, so plant them out in June. Powdery mildew is common by late summer; choose resistant varieties.",
     coast: "Cool, damp summers make zinnias slow and prone to mildew. Choose a sunny, sheltered spot.",
-    east: "Zinnias thrive in the heat and bloom until frost.",
+    east: "Zinnias like the heat and bloom until frost.",
     high: "Start indoors and plant after frost; zinnias bloom from midsummer until the first frost."
   },
   peonies: {
@@ -375,19 +375,19 @@ module.exports = {
   },
   nasturtiums: {
     west: "Nasturtiums are easy here. Aphids often cluster on them, so check the undersides of leaves.",
-    coast: "Nasturtiums thrive in the cool, mild climate and often self-seed.",
+    coast: "Nasturtiums do well in the cool, mild climate and often self-seed.",
     east: "Heat slows nasturtium blooming; give them afternoon shade.",
     high: "Nasturtiums are frost tender. Sow after the last frost."
   },
   marigolds: {
     west: "Marigolds need warm weather and are a slug favorite when young. Plant out in late May or June.",
     coast: "Marigolds bloom in cool summers but grow more slowly than inland.",
-    east: "Marigolds thrive in the heat. Watch for spider mites in hot, dry weather.",
+    east: "Marigolds handle heat well. Watch for spider mites in hot, dry weather.",
     high: "Marigolds are frost tender. Plant after the last frost."
   },
   calendula: {
     west: "Calendula blooms from spring through fall and sometimes into winter in mild years. Powdery mildew shows up late in the season.",
-    coast: "Calendula thrives in the cool coastal climate and self-seeds freely.",
+    coast: "Calendula does well in the cool coastal climate and self-seeds freely.",
     east: "Summer heat stops calendula blooming. Sow in early spring and again in late summer for fall flowers.",
     high: "Calendula blooms through the cool summers and handles light frost."
   },
@@ -406,7 +406,7 @@ module.exports = {
   lavender: {
     west: "Wet, heavy soil kills more lavender than cold. Plant in raised beds or slopes with gravel mixed in. English lavender is the hardiest type.",
     coast: "Winter wet is the challenge on most of the coast, but the dry Olympic rain shadow around Sequim is famous for lavender farms.",
-    east: "Lavender thrives in the dry, sunny east-side climate and handles alkaline soil.",
+    east: "Lavender is right at home in the dry, sunny east-side climate and handles alkaline soil.",
     high: "English lavender is hardy here. Plant in well-drained soil and full sun."
   },
 
@@ -467,7 +467,7 @@ module.exports = {
   },
   huckleberries: {
     west: "Evergreen huckleberry is native to the west side and coast and grows well in gardens.",
-    coast: "Evergreen huckleberry thrives in coastal soils and shade.",
+    coast: "Evergreen huckleberry is at home in coastal soils and shade.",
     east: "Mountain huckleberries grow wild in east-side and Idaho mountains but are notoriously hard to grow in gardens. They need acidic, well-drained soil and rarely fruit much outside the forest."
   },
   asparagus: {
@@ -477,7 +477,7 @@ module.exports = {
   },
   rhubarb: {
     west: "Rhubarb needs winter chill, which the west side provides. Crown rot can occur in waterlogged soil.",
-    east: "Rhubarb thrives with cold winters. Summer heat can make it stall; water deeply.",
+    east: "Rhubarb likes cold winters. Summer heat can make it stall; water deeply.",
     high: "Rhubarb is very hardy and grows well in cold winters."
   },
   artichokes: {
@@ -573,7 +573,7 @@ module.exports = {
   },
   salmonberry: {
     west: "Salmonberry is native to wet west-side woods and stream banks and wants moist soil all year.",
-    coast: "Salmonberry thrives in the wet coastal climate and spreads quickly.",
+    coast: "Salmonberry grows wild in the wet coastal climate and spreads quickly.",
     east: "Salmonberry is a poor fit for dry east-side gardens unless it gets steady water and shade."
   },
   salal: {
@@ -603,7 +603,7 @@ module.exports = {
   },
   "sword-fern": {
     west: "Sword fern is one of the most common west-side forest plants and handles dry summer shade once established.",
-    coast: "Sword fern thrives in the coastal climate and can take more sun there.",
+    coast: "Sword fern grows easily in the coastal climate and can take more sun there.",
     east: "Sword fern needs shade and regular water east of the Cascades; hot sun burns the fronds."
   },
   "oregon-iris": {

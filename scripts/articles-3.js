@@ -17,7 +17,7 @@ module.exports = [
     author: "jigmey-dorjee",
     topic: "timing", icon: "frost",
     title: "What Your Last Frost Date Really Means",
-    description: "A last frost date isn't a promise. Here's what the number on a planting chart actually measures, and how to use it without losing your tomatoes.",
+    description: "A 'last frost date' is an average, and in half of years frost comes later. What the number means and how much margin to give tomatoes.",
     crops: ["tomatoes", "peppers", "basil", "beans"],
     published: "2026-10-14",
     body: ({ D, P, link }) => {
@@ -28,7 +28,7 @@ module.exports = [
 <h2>It's an average, not a deadline</h2>
 <p>The frost dates on Rainline Garden come from NOAA's U.S. Climate Normals, which summarize 30 years of daily temperature records (1991 to 2020) at official weather stations. For each station, NOAA works out the odds of a freeze, meaning 32°F or colder, after each day in spring.</p>
 <p>The date most charts call the "last frost date" is the median. In half of years the last spring freeze comes before it, and in half of years it comes after. Planting tender crops on that exact day is a coin flip.</p>
-<p>That's why Rainline Garden also shows a safer date: the day after which there's only a 10% chance of another freeze. Put simply, if you plant on that date, you'd expect to get caught by a frost about one spring in ten. At Portland International Airport, for example:</p>
+<p>So Rainline Garden also shows a safer date: the day after which there's only a 10% chance of another freeze. Put simply, if you plant on that date, you'd expect to get caught by a frost about one spring in ten. At Portland International Airport, for example:</p>
 <ul>
 <li><strong>Median last freeze:</strong> ${pdx.median}</li>
 <li><strong>Only a 10% chance of a freeze after:</strong> ${pdx.safe}</li>
@@ -52,7 +52,7 @@ module.exports = [
 <h2>Don't forget the fall date</h2>
 <p>The first fall frost works the same way, in reverse. The typical date is a 50/50 point, so in half of years frost arrives earlier. At Portland airport the typical first fall freeze is around ${pdx.fall}; in Bend it's around ${bend.fall}. That's the date to count back from when you plan fall crops, and the date to keep in mind when your tomatoes are still green in September. Frost often comes on the first clear, calm night after a cold front, so watch for those.</p>
 <h2>Frost-free doesn't mean warm enough</h2>
-<p>The last frost date only tells you when freezing becomes unlikely. Tomatoes, peppers, basil, beans and squash also need warm soil and mild nights, which in the Northwest often arrive weeks later. That's why Rainline Garden's planting windows for warm crops start after the frost date, not on it. Read more in <a href="${link("articles/soil-temperature/")}">why to plant by soil temperature</a>.</p>
+<p>The last frost date only tells you when freezing becomes unlikely. Tomatoes, peppers, basil, beans and squash also need warm soil and mild nights, which in the Northwest often arrive weeks later. Rainline Garden's planting windows for warm crops start a while after the frost date for this reason. Read more in <a href="${link("articles/soil-temperature/")}">why to plant by soil temperature</a>.</p>
 <h2>How to use your dates</h2>
 <ol>
 <li>Plant frost-hardy crops like peas, spinach and kale around the median date or even before it.</li>
@@ -68,7 +68,7 @@ module.exports = [
     author: "jigmey-dorjee",
     topic: "timing", icon: "hardening",
     title: "How to Harden Off Seedlings Before Planting Out",
-    description: "Seedlings raised indoors need a week or two to adjust to sun, wind and cool nights. Here's a simple day-by-day schedule that works in a Northwest spring.",
+    description: "Indoor seedlings scorch or stall if they go straight outside. A week-by-week routine for getting them used to sun, wind and cold nights.",
     crops: ["tomatoes", "peppers", "broccoli", "cabbage", "lettuce", "basil"],
     published: "2026-10-14",
     body: ({ D, P, link }) => {
@@ -123,17 +123,17 @@ module.exports = [
     topic: "soil", icon: "soil-ph",
     title: "Soil pH in the Northwest: Testing, Lime and When to Leave It Alone",
     seoTitle: "Northwest Soil pH: How to Test It and When to Lime",
-    description: "Heavy rain makes many west-side soils acidic, while east-side soils lean the other way. Here's how to find out what you have and what to do about it.",
+    description: "Rain-washed west-side soils run acidic and east-side soils alkaline. Testing your pH and when lime or sulfur is worth adding.",
     crops: ["blueberries", "potatoes", "broccoli", "cabbage", "kale", "beans"],
     published: "2026-10-14",
     body: ({ link }) => `
-<p>If you've ever stood in a garden center aisle holding a bag of lime and wondering whether you actually need it, this one's for you. Lime is one of the most common things Northwest gardeners add to their soil, and one of the most common things they add without knowing if it helps.</p>
+<p>Many vegetable beds west of the Cascades are acidic enough to benefit from lime, but not all of them, and east of the Cascades most soils don't need it at all. Lime is one of the most common things Northwest gardeners add to their soil, and one of the most common things they add without knowing if it helps. A soil test answers the question for a few dollars.</p>
 <p>Soil pH is a measure of how acidic or alkaline your soil is, on a scale from 0 to 14 where 7 is neutral. It matters because pH controls how easily plants can take up nutrients. A soil can be full of nutrients and still grow pale, slow plants if the pH is far off.</p>
-<p>The scale is also steeper than it looks. Each whole step is ten times more acidic or alkaline than the next, so soil at pH 5 is ten times more acidic than soil at pH 6. That's why small changes in the number can make a real difference, and why it takes a fair amount of lime to move it.</p>
+<p>The scale is also steeper than it looks. Each whole step is ten times more acidic or alkaline than the next, so soil at pH 5 is ten times more acidic than soil at pH 6. A small change in the number is a big change in the soil, and it takes a fair amount of lime to move it.</p>
 <h2>Why Northwest soils differ</h2>
 <p>West of the Cascades, decades of heavy winter rain wash calcium, magnesium and other basic minerals down through the soil. Over time that leaves many gardens on the acidic side. Soils in Portland, Seattle and the Willamette Valley often test below the range most vegetables prefer.</p>
 <p>East of the Cascades, where rainfall is low, those minerals stay put. Soils there are more often neutral or alkaline, and adding lime would make things worse.</p>
-<p>That's why the first step is always a test, not a bag of lime.</p>
+<p>Test before you lime. A soil test from a garden center kit or your county extension office tells you where you stand.</p>
 <h2>What plants want</h2>
 <ul>
 <li><strong>Most vegetables:</strong> slightly acidic to neutral, roughly pH 6.0 to 7.0.</li>
@@ -168,7 +168,7 @@ module.exports = [
     author: "jigmey-dorjee",
     topic: "crops",
     title: "Growing Peas in Oregon, Washington and Idaho",
-    description: "Peas love a cool Northwest spring. Here's when to sow them where you live, which kind to grow, and how to keep them producing until summer heat arrives.",
+    description: "Peas go in as soon as the soil can be worked and quit in summer heat. Sowing dates by region, snap vs. shelling, and trellising.",
     crops: ["peas", "sweet-peas", "fava-beans"],
     published: "2026-10-14",
     body: ({ D, P, link }) => {
@@ -224,7 +224,7 @@ module.exports = [
     author: "jigmey-dorjee",
     topic: "problems", icon: "blight",
     title: "Late Blight on Tomatoes: How to Spot It and Keep It Away",
-    description: "Cool, wet weather makes late blight a real threat to Northwest tomatoes and potatoes. How to spot it, tell it from other leaf spots and prevent it.",
+    description: "Late blight arrives with cool, wet late-summer weather and can kill tomatoes in a week. Spotting it early and keeping it out of next year's garden.",
     crops: ["tomatoes", "potatoes"],
     published: "2026-10-14",
     body: ({ link }) => `
@@ -233,7 +233,7 @@ module.exports = [
 <h2>What causes it</h2>
 <p>Late blight is caused by <em>Phytophthora infestans</em>, a water mold. It spreads by spores that travel on the wind and need wet leaves to infect a plant. In cool, wet weather it moves very fast and can kill whole plants within a week or two.</p>
 <h2>Why some years are worse</h2>
-<p>The spores need water sitting on the leaf for several hours to infect it, and they spread fastest when temperatures are mild, roughly in the 60s, with damp nights. A dry, warm August west of the Cascades usually keeps late blight away, and plants come through fine. An early return of rain in late August, or a stretch of cool nights with heavy dew, gives it the conditions it needs. That's why one year your tomatoes produce into October and the next year they're gone by mid-September, even though you did the same thing both times.</p>
+<p>The spores need water sitting on the leaf for several hours to infect it, and they spread fastest when temperatures are mild, roughly in the 60s, with damp nights. A dry, warm August west of the Cascades usually keeps late blight away, and plants come through fine. An early return of rain in late August, or a stretch of cool nights with heavy dew, gives it the conditions it needs. So one year your tomatoes produce into October and the next year they're gone by mid-September, even though you did the same thing both times.</p>
 <h2>How to recognize it</h2>
 <ul>
 <li><strong>Leaves:</strong> large, irregular patches that look gray-green and water-soaked at first, then turn brown. In damp weather a white, fuzzy growth may appear on the underside around the edges of the patches.</li>
@@ -273,7 +273,7 @@ module.exports = [
     author: "jigmey-dorjee",
     topic: "timing", icon: "succession",
     title: "Succession Planting: Steady Harvests Instead of All at Once",
-    description: "Sow small amounts every few weeks and follow early crops with later ones. Here's how to time it with Northwest planting windows.",
+    description: "Small sowings of lettuce, beans and carrots every few weeks, and a fall crop after the spring one, keep a small bed producing longer.",
     crops: ["lettuce", "radishes", "beans", "cilantro", "carrots", "peas"],
     published: "2026-10-14",
     body: ({ D, P, link }) => {
@@ -327,7 +327,7 @@ module.exports = [
     author: "elaine-holloway",
     topic: "flowers",
     title: "Growing Dahlias in the Northwest",
-    description: "Dahlias thrive in Northwest summers if you get the timing and drainage right. Here's when to plant tubers, how to care for them, and what to do in winter.",
+    description: "Dahlia tubers rot in cold, wet soil, so timing matters more than anything. Planting, staking, and digging or mulching in winter.",
     crops: ["dahlias", "sunflowers", "sweet-peas"],
     published: "2026-10-14",
     body: ({ D, P, link, fig }) => {

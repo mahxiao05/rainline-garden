@@ -137,7 +137,7 @@
   var zones = {
     coast: { name: "Coast", blurb: "Mild winters but cool, foggy summers. Frost is rarely the problem; warmth is. Pick early, cool-tolerant varieties of tomatoes and squash.",
       anchors: { coolEarly: "03-25", coolTrans: "04-01", warmSeed: "05-15", warmTrans: "05-20", hotTrans: "06-01", garlicStart: "10-01", garlicEnd: "11-15" } },
-    west: { name: "West-side valleys", blurb: "The Willamette Valley, Puget Sound and southern Oregon valleys. Long frost-free seasons, but soil stays cold and wet into May, so warm crops wait for warm soil, not just the last frost.",
+    west: { name: "West-side valleys", blurb: "The Willamette Valley, Puget Sound and southern Oregon valleys. Long frost-free seasons, but soil stays cold and wet into May, so tomatoes, beans and squash usually go in a few weeks after the last frost, once the soil warms.",
       anchors: { coolEarly: "03-01", coolTrans: "03-15", warmSeed: "05-10", warmTrans: "05-15", hotTrans: "05-25", garlicStart: "10-01", garlicEnd: "11-15" } },
     east: { name: "East-side valleys", blurb: "The Columbia Basin, Yakima Valley, Boise's Treasure Valley, Lewiston and other low valleys east of the Cascades. Hot, dry summers and quick spring warm-up. Warm crops go in earlier than west of the Cascades, and irrigation matters more than rain.",
       anchors: { coolEarly: "03-20", coolTrans: "04-01", warmSeed: "04-25", warmTrans: "05-01", hotTrans: "05-10", garlicStart: "10-01", garlicEnd: "11-01" } },

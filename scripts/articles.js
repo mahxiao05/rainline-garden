@@ -8,7 +8,7 @@ module.exports = [
     topic: "crops",
     author: "jigmey-dorjee",
     title: "The Best Tomatoes for Cool Northwest Summers",
-    description: "Which tomato varieties actually ripen in Portland, Seattle and the coast, and how to give them the heat they need.",
+    description: "Big slicers often stay green in a cool Northwest summer. These are the tomatoes that do ripen in Portland, Seattle and on the coast.",
     crops: ["tomatoes"],
     published: "2026-10-13",
     body: ({ frost, link, fig }) => {
@@ -55,7 +55,7 @@ ${fig(1)}
     topic: "timing", icon: "winter",
     author: "jigmey-dorjee",
     title: "Fall and Winter Vegetable Gardening West of the Cascades",
-    description: "How to keep harvesting kale, carrots, garlic and greens through a mild Northwest winter, and when to plant for it.",
+    description: "West of the Cascades, kale, leeks and carrots keep going through most winters. The catch is planting them in July and August.",
     crops: ["kale", "carrots", "garlic", "spinach", "broccoli", "cabbage", "lettuce"],
     published: "2026-10-13",
     body: ({ frost, link }) => {
@@ -110,7 +110,7 @@ ${fig(1)}
     topic: "timing", icon: "mountain",
     author: "jigmey-dorjee",
     title: "Gardening in Bend and Central Oregon's Short Season",
-    description: "How to grow vegetables where frost can come almost any month: what to plant, when, and how to protect it.",
+    description: "Bend and Redmond can see frost in June and again in September. What still grows well there, and how gardeners stretch the season.",
     crops: ["tomatoes", "peas", "lettuce", "potatoes", "kale", "summer-squash"],
     published: "2026-10-13",
     body: ({ frost, link, fig }) => {
@@ -164,7 +164,7 @@ ${fig(1)}
     topic: "problems", icon: "slug",
     author: "elaine-holloway",
     title: "How to Control Slugs in a Northwest Garden",
-    description: "Practical, pet-safe ways to protect seedlings, lettuce and strawberries from the Pacific Northwest's most famous garden pest.",
+    description: "Gray garden slugs do most of the damage in Northwest beds. When they hatch, how to tell their damage apart, and which controls are pet-safe.",
     crops: ["lettuce", "strawberries", "beans", "dahlias"],
     published: "2026-10-13",
     body: ({ link, fig }) => `
@@ -175,7 +175,7 @@ ${fig(1)}
 <p>The banana slug, the big yellow-green one you see on forest trails, is native to the Northwest. It mostly eats fallen leaves, fungi and rotting plant matter and is rarely the culprit in a vegetable bed. If you find one in the garden, move it to a shady corner or the compost pile and let it do its job.</p>
 <h2>Know when they strike</h2>
 <p>Slugs need moisture. They breathe through their skin and dry out in sun and wind, so they feed at night and on overcast, drizzly days, then hide under boards, mulch, pots, dense groundcovers and the lower leaves of lettuce and strawberries. They go after tender seedlings, lettuce, beans, strawberries (often a hollow pit in a ripe berry) and dahlia shoots first. Damage shows up as ragged holes in leaves and shiny slime trails. A seedling can vanish overnight.</p>
-<p>They also breed on the Northwest's schedule. Gray garden slugs lay clusters of small, round, pearly eggs in damp soil and under debris, mostly in fall and again in spring when the rain is steady, and one slug can lay hundreds of eggs in a season. Eggs laid in fall hatch over winter and early spring, right when you start planting. That's why damage in April often feels sudden: a new generation has just hatched under your mulch.</p>
+<p>They also breed on the Northwest's schedule. Gray garden slugs lay clusters of small, round, pearly eggs in damp soil and under debris, mostly in fall and again in spring when the rain is steady, and one slug can lay hundreds of eggs in a season. Eggs laid in fall hatch over winter and early spring, right when you start planting, so damage in April can seem to come out of nowhere: a new generation has just hatched under your mulch.</p>
 <h2>Is it really slugs?</h2>
 <p>Holes in leaves have other causes too, so check before you start baiting. Slime trails and damage overnight point to slugs or snails. Lots of tiny round pits in young leaves of radishes, arugula or eggplant are flea beetles. Ragged holes with small green droppings in kale or broccoli are caterpillars; see <a href="${link("articles/cabbage-worms-and-aphids/")}">cabbage worms and aphids</a>. Earwigs chew irregular holes at night too, and often hide in dahlia and lettuce leaves by day. A flashlight walk an hour after dark settles it: you'll see who's eating.</p>
 <h2>What works</h2>
@@ -207,7 +207,7 @@ ${fig(1)}
     topic: "timing", icon: "thermometer",
     author: "elaine-holloway",
     title: "Why Northwest Gardeners Should Plant by Soil Temperature",
-    description: "The air warms up long before the soil does here. A $10 soil thermometer tells you when it's really time to plant beans, squash and tomatoes.",
+    description: "Beans and squash rot in cold soil even after the last frost. A cheap soil thermometer settles when it's warm enough to plant.",
     crops: ["tomatoes", "beans", "corn", "summer-squash", "cucumbers", "peppers"],
     published: "2026-10-13",
     body: ({ frost, link }) => {
@@ -224,7 +224,7 @@ ${fig(1)}
 </ul>
 <h2>How much difference a few degrees makes</h2>
 <p>The numbers above aren't on-off switches. Seeds sprout faster and faster as soil warms, and the change is dramatic. In classic germination studies by the horticulturist J.F. Harrington, still reprinted in university vegetable guides, tomato seed took around six weeks to come up in 50°F soil, about two weeks at 59°F, and about a week at 68°F. Sweet corn took about three weeks at 50°F and under a week at 68°F. Lettuce, a cool-season crop, came up in about a week at 50°F and in just a few days at 60°F.</p>
-<p>A seed sitting in cold, wet soil for three weeks has three weeks for fungi, seedcorn maggots and slugs to find it. That's why a row of beans sown into April soil so often comes up patchy or not at all, and why the same seed sown two weeks later comes up in a few days.</p>
+<p>A seed sitting in cold, wet soil for three weeks has three weeks for fungi, seedcorn maggots and slugs to find it. A row of beans sown into April soil often comes up patchy or not at all, and why the same seed sown two weeks later comes up in a few days.</p>
 <h2>Why wet soil stays cold</h2>
 <p>Water takes much more energy to warm than dry soil or air does. A bed that's soaked from weeks of spring rain uses up the sun's heat warming the water in it, so it lags behind a well-drained bed next to it. This is the real reason raised beds and sandy soils are ready earlier in the Northwest, and heavy clay that holds water is ready later. Anything that helps a bed drain, from raised beds to adding compost year after year, also helps it warm.</p>
 <h2>How to measure it</h2>

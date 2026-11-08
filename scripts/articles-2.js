@@ -12,7 +12,7 @@ module.exports = [
     topic: "crops",
     author: "jigmey-dorjee",
     title: "When and How to Plant Garlic in Oregon, Washington and Idaho",
-    description: "Garlic goes in during fall and comes out the next summer. Here's when to plant it where you live, which kind to buy, and how to harvest and cure it.",
+    description: "Garlic goes in around October and comes out the next July. Planting dates by region, hardneck or softneck, and curing the harvest.",
     crops: ["garlic", "shallots"],
     published: "2026-10-14",
     body: ({ D, P, link, fig }) => {
@@ -63,7 +63,7 @@ ${fig(1)}
     topic: "timing", icon: "seed-tray",
     author: "jigmey-dorjee",
     title: "Starting Vegetable Seeds Indoors: A Northwest Timeline",
-    description: "When to start tomatoes, peppers and other seeds indoors in Oregon, Washington and Idaho, plus the simple setup that grows strong seedlings.",
+    description: "Onions in late winter, peppers next, tomatoes last. A Northwest seed-starting timeline and the light setup that keeps seedlings stocky.",
     crops: ["tomatoes", "peppers", "eggplant", "broccoli", "cabbage", "lettuce", "kale"],
     published: "2026-10-14",
     body: ({ D, P, link, fig }) => {
@@ -117,7 +117,7 @@ ${fig(1)}
     topic: "crops",
     author: "elaine-holloway",
     title: "Growing Blueberries in the Pacific Northwest",
-    description: "Blueberries love the Northwest's acidic soil and wet winters. How to plant them, which varieties to pair, and how to get a big harvest for decades.",
+    description: "Acidic, rainy west-side soil is close to what blueberries want. Choosing two varieties that pollinate each other, planting, and pruning.",
     crops: ["blueberries"],
     published: "2026-10-14",
     body: ({ link }) => `
@@ -166,7 +166,7 @@ ${fig(1)}
     topic: "crops",
     author: "elaine-holloway",
     title: "Growing Strawberries in the Pacific Northwest",
-    description: "June-bearing or everbearing? How to plant strawberries, keep them out of the mud, and keep a patch productive for years.",
+    description: "June-bearers give one big crop, everbearers a trickle all summer. Planting, mulching against rot, and renewing an old patch.",
     crops: ["strawberries"],
     published: "2026-10-14",
     body: ({ link }) => `
@@ -209,7 +209,7 @@ ${fig(1)}
     topic: "flowers", icon: "bee",
     author: "elaine-holloway",
     title: "Native Plants for a Northwest Pollinator Garden",
-    description: "Native shrubs and flowers that feed bees, butterflies and hummingbirds from late winter to fall, and how to plant for pollinators in Northwest gardens.",
+    description: "Red-flowering currant in March, asters in October: Northwest natives that keep bees and hummingbirds fed from late winter to fall.",
     crops: ["sunflowers", "dahlias"],
     published: "2026-10-14",
     body: ({ link }) => `
@@ -256,7 +256,7 @@ ${fig(1)}
     topic: "soil", icon: "cover-crop",
     author: "elaine-holloway",
     title: "Winter Cover Crops for Northwest Vegetable Beds",
-    description: "Why to sow cover crops in empty beds each fall, which ones grow well in Northwest gardens, and how to turn them under in spring.",
+    description: "Crimson clover, fava beans or cereal rye sown in early fall hold bare soil through the winter rain and feed it by spring.",
     crops: ["fava-beans", "garlic"],
     published: "2026-10-14",
     body: ({ link }) => `
@@ -296,7 +296,7 @@ ${fig(1)}
     topic: "soil", icon: "watering",
     author: "elaine-holloway",
     title: "How Much to Water Vegetables in a Dry Northwest Summer",
-    description: "The Northwest is rainy for nine months and bone dry for three. How much water vegetables need in summer, when to water, and how to waste less of it.",
+    description: "Northwest summers are close to rainless from July to September. How much vegetables need each week, and drip, soaker hose or hand watering.",
     crops: ["tomatoes", "summer-squash", "beans", "lettuce", "cucumbers"],
     published: "2026-10-14",
     body: ({ link }) => `
@@ -341,7 +341,7 @@ ${fig(1)}
     topic: "soil", icon: "raised-bed",
     author: "elaine-holloway",
     title: "Raised Beds for Rainy Northwest Gardens",
-    description: "Why raised beds suit the Northwest so well, how big and deep to build them, what to fill them with, and the mistakes to avoid.",
+    description: "Raised beds drain after winter rain and warm up sooner in spring. Sizes, depth, what to fill them with, and lumber choices.",
     crops: ["tomatoes", "carrots", "lettuce", "garlic", "strawberries"],
     published: "2026-10-14",
     gardenPhoto: "janelle-raised-beds",
@@ -390,7 +390,7 @@ ${fig(1)}
     topic: "crops",
     author: "jigmey-dorjee",
     title: "Growing Potatoes in Oregon, Washington and Idaho",
-    description: "When to plant potatoes in the Northwest, how to cut and plant seed potatoes, hilling, and when to dig for new potatoes and storage potatoes.",
+    description: "Seed potatoes, cutting and curing them, hilling, and digging both new potatoes and keepers in Oregon, Washington and Idaho.",
     crops: ["potatoes"],
     published: "2026-10-14",
     body: ({ D, P, link }) => {
@@ -445,7 +445,7 @@ ${fig(1)}
     author: "jigmey-dorjee",
     title: "Growing Vegetables in Containers on a Northwest Balcony or Patio",
     seoTitle: "Growing Vegetables in Pots on a Northwest Balcony or Patio",
-    description: "No yard? Herbs, greens, tomatoes and more grow well in pots. Container sizes, soil, watering and the best crops for small Northwest spaces.",
+    description: "A balcony is enough for herbs, greens and cherry tomatoes. Pot sizes, potting mix and the summer watering that pots need.",
     crops: ["tomatoes", "lettuce", "basil", "peppers", "strawberries", "kale"],
     published: "2026-10-14",
     body: ({ link }) => `

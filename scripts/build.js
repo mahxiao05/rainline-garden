@@ -481,7 +481,7 @@ function areaTables(head, dates, plans) {
   const bySlug = slug => plans.find(p => p.place.slug === slug);
   const lead = MAIN_CITIES.map(bySlug).filter(Boolean);
   return `<div class="table-wrap"><table class="plan"><thead>${head}</thead><tbody>${groupedRows(lead, dates)}</tbody></table></div>
-<p class="note">Dates for six main towns. For any of the other ${plans.length - lead.length} towns, type it in the box at the top of the page or <a href="../../frost-dates/">browse all towns</a>.</p>
+<p class="note">For any of the other ${plans.length - lead.length} towns, type it in the box at the top of the page or <a href="../../frost-dates/">browse all towns</a>.</p>
 <template id="all-town-rows"><div class="area-groups">${P.byArea(D).map(g => `<table class="plan"><tbody>${groupedRows(g.places.map(pl => bySlug(pl.slug)), dates)}</tbody></table>`).join("")}</div></template>
 ${TOWN_PICK_JS}`;
 }
@@ -802,7 +802,7 @@ function yearStrip(c, ex, port) {
   return `<h2 id="year">${singular(c.name).replace(/^./, x => x.toUpperCase())} year at a glance</h2>
 <div class="table-wrap"><table class="year"><thead><tr><th scope="col"><span class="sr-only">Task</span></th>${M.map(m => `<th scope="col"><abbr title="${m}">${m[0]}</abbr></th>`).join("")}</tr></thead>
 <tbody>${rows.map(([label, cls, set]) => `<tr data-yr="${cls}"><th scope="row">${label}</th>${M.map((m, i) => set.has(i) ? `<td class="on ${cls}"><span class="sr-only">${m}</span></td>` : "<td></td>").join("")}</tr>`).join("")}</tbody></table></div>
-<p class="note yr-note">Around Portland. Colder towns, especially east of the Cascades, run a few weeks later; the table above has your town's planting dates.${perennial && ex.pick ? " Harvest months are for an established plant." : ""}</p>`;
+<p class="note yr-note">Shown for Portland. Pick your town in the table above for its own dates.${perennial && ex.pick ? " Harvest months are for an established plant." : ""}</p>`;
 }
 function howMany(c, ex) {
   const flower = c.cat === "flowers";
@@ -850,8 +850,7 @@ function regionalNotes(c) {
   const r = REGIONAL[c.id];
   if (!r) throw new Error(`scripts/regional-notes.js has no entry for ${c.id}`);
   const parts = REGION_LABELS.filter(([k]) => r[k]);
-  return phoneFold("regions", `Growing ${lc(c.name)} in your part of the Northwest`, `<p class="lede-sm region-lede">The same plant behaves differently on the wet west side, the foggy coast and the dry, colder east side.</p>
-<div class="sci-cards region-cards">${parts.map(([k, h, where]) => `<section class="sci-card region-card region-${k}" data-k="${k}">${miniMap(k)}<h3>${h}</h3><p class="region-where">${where}</p><p>${esc(r[k])}</p></section>`).join("\n")}</div>
+  return phoneFold("regions", `Growing ${lc(c.name)} in your part of the Northwest`, `<div class="sci-cards region-cards">${parts.map(([k, h, where]) => `<section class="sci-card region-card region-${k}" data-k="${k}">${miniMap(k)}<h3>${h}</h3><p class="region-where">${where}</p><p>${esc(r[k])}</p></section>`).join("\n")}</div>
 ${regionShared()}`);
 }
 // Popular variety cards from scripts/varieties.js, shown on each plant's main page.
@@ -1068,14 +1067,14 @@ function stationBox(p) {
   const ft = (Math.round(s.elev * 3.281 / 10) * 10 || Math.round(s.elev * 3.281)).toLocaleString("en-US");
   const kind = AIRPORT.test(s.name)
     ? "It's an airport station, out on open ground, so a garden in town, on a slope or in a low spot can run a few days earlier or later."
-    : "It's a NOAA cooperative station, not an airport station.";
+    : "";
   // The box already names the station, so drop a note's opening "These dates come from..." sentence.
   const note = place.note ? esc(place.note.replace(/^These dates come from [^.]*\.\s*/, "")) : "";
   const inTown = chk.miles[0] < 1 && s.name === names[0];
   const why = chk.closest ? `It's the closest weather station to ${city} with NOAA's 1991–2020 frost records.` : "";
   return `<section class="station-box" id="station"><h2>Where these dates come from</h2>
 <p>The frost dates for ${city} come from ${inTown ? `the NOAA weather station in ${esc(s.name)}` : AIRPORT.test(s.name) ? `the NOAA weather station at ${esc(s.name)}, ${where}` : `NOAA's ${esc(s.name)}${/Station/.test(s.name) ? "" : " weather station"}, ${where}`}, at ${ft} feet. ${why} ${note || kind}</p>
-<p class="station">They're NOAA's 1991–2020 climate normals: 30-year averages, not a forecast. <a href="../../how-it-works/#stations">How we pick each town's station</a>.</p></section>`;
+<p class="station">Source: NOAA 1991–2020 climate normals. <a href="../../how-it-works/#stations">How we pick each town's station</a>.</p></section>`;
 }
 
 // Which ZIP codes a town page answers for, worked out the same way the planner looks a ZIP up.

@@ -9,13 +9,13 @@ module.exports = [
     author: "site",
     title: "How the Seasons Change What You Grow in the Northwest",
     seoTitle: "Northwest Garden Seasons: What to Grow and Do | Rainline Garden",
-    description: "Spring, summer, fall and winter each ask for different crops and different jobs in an Oregon, Washington or Idaho garden. A season-by-season guide with tips.",
+    description: "From pea sowing in March to garlic in October: what a year in a Northwest vegetable garden looks like, season by season.",
     crops: ["peas", "lettuce", "tomatoes", "beans", "kale", "garlic"],
     published: "2026-11-08",
     body: ({ frost, link }) => {
       const pdx = frost("portland-or"), sea = frost("seattle-wa"), spo = frost("spokane-wa"), boi = frost("boise-id"), bend = frost("bend-or");
       return `
-<p>If you're new to gardening here, or new to the region, the year can feel confusing. People talk about planting in February, harvesting in December and doing nothing in August except watering. Once you see the pattern, though, it makes sense, and it's a big part of what makes gardening in the Northwest so rewarding.</p>
+<p>The Northwest garden year runs on wet, mild winters and dry summers, not on the hot-summer, frozen-winter pattern most gardening books assume. That's why gardeners here talk about sowing peas in February, picking kale in December and spending August mostly watering.</p>
 <p>A Northwest garden doesn't run on one calendar. The same week can be planting time in Seattle and still frost season in Bend, and a crop that thrives in April can sulk in July. Knowing what each season does to your plants, and what it asks of you, is most of the skill. This guide walks through the year and points to the detailed articles for each job.</p>
 <h2>How long your season really is</h2>
 <p>The frost-free season, from the typical last spring frost to the typical first fall frost, is the backbone of every planting date. From NOAA records it runs about ${sea.season} days in Seattle and ${pdx.season} in Portland, but about ${boi.season} in Boise, ${spo.season} in Spokane and only ${bend.season} around Bend and Redmond. That gap is why one region's advice can be wrong in another. Our article on <a href="${link("articles/frost-dates-explained/")}">what your last frost date really means</a> explains how to read these numbers, and your <a href="${link("frost-dates/")}">town calendar</a> has your own.</p>
@@ -62,11 +62,11 @@ module.exports = [
     author: "site",
     title: "Making Compost in a Rainy Northwest Garden",
     seoTitle: "How to Make Compost in the Northwest | Rainline Garden",
-    description: "Wet winters and dry summers both make home compost harder. How to build a pile that breaks down here, what to put in, and how to fix one that's slimy or stuck.",
+    description: "West-side piles get soaked in winter and east-side piles dry out in summer. Bins, the green-brown mix, and fixing a slimy or stalled pile.",
     crops: ["tomatoes", "summer-squash", "kale", "lettuce"],
     published: "2026-11-08",
     body: ({ link }) => `
-<p>If you've ever tried composting and ended up with a slimy, smelly heap in February, or a dry pile of leaves that looked exactly the same in August as it did in October, you're in good company. Composting is simple in principle, but the Northwest's weather has a way of tripping people up.</p>
+<p>Compost piles in the Northwest have two seasonal problems: too much water in winter and too little in summer. A pile left open to the rain from November to April turns slimy and smelly, and the same pile in a dry August can sit unchanged for months. Covering it in winter and watering it in summer solves most of both.</p>
 <p>Compost is decomposed plant material that feeds soil life, loosens clay, helps sandy soil hold water and slowly releases nutrients. Almost every bed on this site starts with "mix in an inch or two of compost." Making your own is cheap and uses up kitchen scraps and garden waste, but the Northwest's weather makes it a little different from the textbook. West of the Cascades, piles get soaked all winter. East of the Cascades, they dry out all summer.</p>
 <h2>Greens, browns, air and water</h2>
 <p>A compost pile needs four things in balance:</p>
@@ -89,7 +89,7 @@ module.exports = [
 <p>A simple open bin made of wire fencing, pallets or boards, about 3 feet on each side, handles a typical yard's leaves and garden waste and is easy to turn with a fork. Many cities and counties in the region sell or give away plastic bins with lids, which keep rain off and look tidier in a small yard. Tumblers, barrels on a stand that you rotate, are easy to turn and keep rats out, but they hold less than people expect and work best when filled in batches rather than a little at a time.</p>
 <p>If you don't have a yard at all, a worm bin is worth a look. A plastic tote with holes drilled for air, some shredded newspaper bedding and a pound or so of red wiggler worms (not garden earthworms) will turn kitchen scraps into rich worm castings under a sink or on a balcony. Keep it out of hard frost and summer heat, and don't overfeed it.</p>
 <h2>West of the Cascades: keep the rain off</h2>
-<p>A wet Northwest winter can turn an open pile into a cold, soggy, smelly mass. The fix is simple:</p>
+<p>A wet Northwest winter can turn an open pile into a cold, soggy, smelly mass. A few changes help:</p>
 <ul>
 <li><strong>Use a lid or a cover.</strong> A closed bin, or a tarp over a heap, keeps out the worst of the rain. Lift it during dry spells if the pile needs moisture.</li>
 <li><strong>Add extra browns in winter.</strong> Store a few bags of fall leaves next to the bin. Every time you add kitchen scraps, cover them with a layer of leaves. It soaks up excess water and stops smells.</li>
@@ -118,7 +118,7 @@ module.exports = [
     author: "site",
     title: "Harvesting, Drying and Freezing Kitchen Herbs",
     seoTitle: "How to Harvest, Dry and Freeze Herbs | Rainline Garden",
-    description: "When and how to cut basil, parsley, thyme and other kitchen herbs so they keep growing, plus the best way to dry or freeze each one before a Northwest frost.",
+    description: "Cutting basil, parsley and thyme so they keep regrowing, and whether drying or freezing works better for each one.",
     crops: ["basil", "parsley", "thyme", "rosemary", "oregano", "sage", "chives", "mint", "cilantro", "dill"],
     published: "2026-11-08",
     body: ({ link }) => `
