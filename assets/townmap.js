@@ -12,7 +12,7 @@
   var towns = Array.prototype.map.call(root.querySelectorAll(".tm-dots a"), function (a) {
     var c = a.querySelector("circle");
     return { a: a, c: c, slug: a.getAttribute("data-slug"), area: a.getAttribute("data-area"), name: a.getAttribute("data-name"),
-      dates: a.getAttribute("data-dates"), last: +a.getAttribute("data-last"), first: +a.getAttribute("data-first"), days: +a.getAttribute("data-days"), href: a.getAttribute("href"), x: +c.getAttribute("cx"), y: +c.getAttribute("cy") };
+      hz: a.getAttribute("data-hz"), dates: a.getAttribute("data-dates"), last: +a.getAttribute("data-last"), first: +a.getAttribute("data-first"), days: +a.getAttribute("data-days"), href: a.getAttribute("href"), x: +c.getAttribute("cx"), y: +c.getAttribute("cy") };
   });
   var area = null, sel = null, reduce = matchMedia("(prefers-reduced-motion: reduce)").matches, anim = 0;
   root.querySelector(".tm-pick").hidden = false;
@@ -124,7 +124,7 @@
 
   // One card per town in the picked area: its frost-free season on a year bar, with today marked.
   function card(t) {
-    return '<li><a class="tc' + (t === sel ? " is-on" : "") + '" href="' + t.href + '" data-slug="' + t.slug + '"><span class="tc-top"><b>' + esc(t.name) + '</b><small>' + t.days + ' frost-free days</small></span>' +
+    return '<li><a class="tc' + (t === sel ? " is-on" : "") + '" href="' + t.href + '" data-slug="' + t.slug + '"><span class="tc-top"><b>' + esc(t.name) + '</b><small>' + (t.hz ? 'Zone ' + t.hz + ' · ' : '') + t.days + ' frost-free days</small></span>' +
       '<span class="tc-trk" aria-hidden="true"><i style="left:' + pct(t.last) + ';width:' + ((Math.min(t.first, 366) - t.last) / 365 * 100).toFixed(2) + '%"></i><i class="tc-now" style="left:' + pct(today) + '"></i></span>' +
       '<span class="tc-mo" aria-hidden="true">' + "JFMAMJJASOND".split("").map(function (m) { return "<span>" + m + "</span>"; }).join("") + '</span>' +
       '<span class="tc-dates"><span>Last frost <b>' + t.dates.split(" – ")[0] + '</b></span><span>First frost <b>' + t.dates.split(" – ")[1] + '</b></span></span></a></li>';
@@ -250,4 +250,30 @@
   var mine = saved && towns.filter(function (t) { return t.slug === saved; })[0];
   setVB(full());
   if (mine) setArea(mine.area, { sel: mine, now: true }); else { draw(); showPanel(); }
+  // Dot colours: frost-free days (default on Town calendars), USDA hardiness zone or region. Tapping a colour in the key
+  // highlights just those towns; tap it again (or switch colours) to show them all.
+  var keyOn = null;
+  function highlight(li) {
+    keyOn = li && li !== keyOn ? li : null;
+    Array.prototype.forEach.call(root.querySelectorAll(".tm-key li[data-k]"), function (x) { x.classList.toggle("is-on", x === keyOn); x.setAttribute("aria-pressed", String(x === keyOn)); });
+    root.classList.toggle("tm-hl", !!keyOn);
+    Array.prototype.forEach.call(root.querySelectorAll(".tm-dots circle"), function (c) {
+      c.classList.toggle("is-hl", !!keyOn && c.getAttribute("data-" + keyOn.getAttribute("data-k")) === keyOn.getAttribute("data-v"));
+    });
+  }
+  Array.prototype.forEach.call(root.querySelectorAll(".tm-key li[data-k]"), function (li) {
+    li.tabIndex = 0; li.setAttribute("role", "button"); li.setAttribute("aria-pressed", "false");
+    li.addEventListener("click", function () { highlight(li); });
+    li.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); highlight(li); } });
+  });
+  Array.prototype.forEach.call(root.querySelectorAll(".tm-mode button"), function (b, i, all) {
+    b.addEventListener("click", function () {
+      var m = b.getAttribute("data-mode");
+      root.classList.toggle("tm-zmode", m === "zone"); root.classList.toggle("tm-rmode", m === "region");
+      Array.prototype.forEach.call(all, function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+      highlight(null);
+    });
+  });
+  // A ring around your own town.
+  try { var my = localStorage.getItem("rainline-place"), me = my && root.querySelector('.tm-dots a[data-slug="' + my + '"] circle'); if (me) { me.classList.add("is-mine"); me.parentNode.parentNode.appendChild(me.parentNode); } } catch (e) { /* private mode */ }
 })();

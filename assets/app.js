@@ -121,7 +121,7 @@
       '<div class="result-head"><h2>' + place.city + ', ' + place.state + '</h2>' +
       '<a href="' + base + 'frost-dates/' + place.slug + '/">Full ' + place.city + ' calendar</a></div>' +
       (viaZip ? '<p class="station">Using the nearest NOAA station we have for that ZIP. If another town on the list is closer to you, pick it instead.</p>' : '') +
-      R.frostFacts(p) + fold("about", "About these dates", R.regionNote(p) + whyNote()) +
+      R.frostFacts(p, base) + fold("about", "About these dates", R.regionNote(p) + whyNote()) +
       '<h2>What to plant now</h2>' + R.nowBlock(p, today, base) +
       '<p class="dates-jump"><a href="#plant-types">Planting dates for every plant, by plant type</a></p>';
     out.querySelectorAll("details.fold").forEach(function (d) {

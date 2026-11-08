@@ -332,7 +332,7 @@ const toMonthYear = s => s.replace(/(Updated|Last updated) (\d{4}-\d\d-\d\d)\./g
 const GL_LINKS = G.glossaryLinks.map(([id, re]) => [id, new RegExp(`(^|[^\\w-])(${re})(?![\\w-])`, "i")]);
 const GL_SKIP = new Set(["a", "button", "h1", "h2", "h3", "h4", "h5", "h6", "summary", "table", "nav", "script", "style", "label", "select", "textarea", "figcaption", "dt", "svg", "form", "noscript", "template", "blockquote", "aside"]);
 // Picture-calendar tiles, legends and page intros stay plain; the words get linked in the page's sentences instead.
-const GL_SKIP_CLASS = /class="[^"]*\b(lede|plant-intro|eyebrow|crumbs|count|station|owner|pc-card|pc-legend|legend|author-box|byline|th-list|th-key|th-pop)\b/;
+const GL_SKIP_CLASS = /class="[^"]*\b(hz-line|lede|plant-intro|eyebrow|crumbs|count|station|owner|pc-card|pc-legend|legend|author-box|byline|th-list|th-key|th-pop)\b/;
 const GL_TRACK = new Set(["p", "li", "dd", "ul", "ol", "div", "section"]);
 const GL_MAX = 12;
 function glossaryLinks(html, rel) {
@@ -973,7 +973,7 @@ D.places.forEach(place => {
 <p class="eyebrow">Frost dates and planting calendar</p><h1>${esc(place.city)}, ${place.state}</h1>
 <p class="lede">The typical last spring frost in ${esc(place.city)} is ${P.fmtLong(f.spring50)}, and the first fall frost is around ${P.fmtLong(f.fall50)}. Plant peas from ${P.fmt(peas.start)}; plant tomatoes from ${P.fmt(tomato.start)}.</p>
 </section>
-${R.frostFacts(p)}
+${R.frostFacts(p, "../../")}
 <p class="station town-src">NOAA 1991–2020 frost normals, ${esc(D.stations[place.station].name)}${/Station/.test(D.stations[place.station].name) ? "" : " station"}. <a href="#station">Where these dates come from</a></p>
 ${townNote(place)}
 <section class="risk-card" id="risk">${R.frostRisk(p)}</section>
@@ -1498,16 +1498,20 @@ const areaLists = s => P.byArea(D).filter(g => g.area.state === s).map(g => `<de
 const MAP = require("./map-proj.js"), MAP_STATES = require("./map-states.js"), MAP_PHYS = require("./map-physical.js");
 // Dot colors on the map: frost-free days a year, in four bands.
 const SEASON_BANDS = [[0, 119], [120, 179], [180, 239], [240, 999]];
-const townMap = () => {
+// Whole USDA zone (5-9) a town's dots are coloured by: the colder end when its ZIPs span two zones.
+const zoneNum = x => x.hz ? +x.hz.match(/\d+/)[0] : 0;
+const ZONES = [[5, "−20 to −10°F"], [6, "−10 to 0°F"], [7, "0 to 10°F"], [8, "10 to 20°F"], [9, "20 to 30°F"]];
+const REGION_ORDER = ["coast", "west", "east", "inland", "high"];
+const townMap = ({ rel = "", zones = false } = {}) => {
   const dots = D.places.map(x => {
     const st = D.stations[x.station], [cx, cy] = MAP.xy(x.ll[0], x.ll[1]), last = P.fmt(P.doy(st.spring50)), first = P.fmt(P.doy(st.fall50));
     const f = P.plan(D, x).frost, band = SEASON_BANDS.findIndex(([lo, hi]) => f.season >= lo && f.season <= hi) + 1;
-    return `<a href="${x.slug}/" tabindex="-1" data-slug="${x.slug}" data-area="${x.area}" data-name="${esc(x.city)}" data-dates="${last} – ${first}" data-last="${f.spring50}" data-first="${f.fall50}" data-days="${f.season}"><title>${esc(placeLabel(x))}: last frost ${last}, first frost ${first}, ${f.season} frost-free days</title><circle class="tm-s${band}" cx="${cx}" cy="${cy}" r="5.5"/></a>`;
+    return `<a href="${rel}${x.slug}/" tabindex="-1" data-slug="${x.slug}" data-hz="${x.hz || ""}" data-area="${x.area}" data-name="${esc(x.city)}" data-dates="${last} – ${first}" data-last="${f.spring50}" data-first="${f.fall50}" data-days="${f.season}"><title>${esc(placeLabel(x))}: last frost ${last}, first frost ${first}, ${f.season} frost-free days</title><circle class="tm-s${band}" data-s="${band}" data-z="${zoneNum(x)}" data-r="${x.zone}" cx="${cx}" cy="${cy}" r="5.5"/></a>`;
   }).join("");
   const seasons = D.places.map(x => [P.plan(D, x).frost.season, x]).sort((a, b) => a[0] - b[0]), short = seasons[0], long = seasons[seasons.length - 1];
   const opts = s => D.areas.filter(a => a.state === s).map(a => `<option value="${a.id}">${esc(a.name)}</option>`).join("");
   const chips = s => D.areas.filter(a => a.state === s).map(a => `<button type="button" data-area="${a.id}" aria-pressed="false">${esc(a.name)}</button>`).join("");
-  return `<section class="town-map" aria-labelledby="tm-h"><h2 id="tm-h">Explore the map</h2>
+  return `<section class="town-map${zones ? " tm-zmode" : ""}" aria-labelledby="tm-h">${zones ? "" : `<h2 id="tm-h">Explore the map</h2>`}
 <div class="tm-grid"><div class="tm-card">
 <svg class="tm-svg" viewBox="0 0 ${MAP.W} ${MAP.H}" aria-hidden="true"><g class="tm-states">${Object.values(MAP_STATES).map(d => `<path d="${d}"/>`).join("")}</g>
 <defs><clipPath id="tm-clip">${Object.values(MAP_STATES).map(d => `<path d="${d}"/>`).join("")}</clipPath>
@@ -1515,7 +1519,10 @@ const townMap = () => {
 <g class="tm-phys" clip-path="url(#tm-clip)">${MAP_PHYS.ranges.map(r => `<path class="tm-range" d="${r.d}"/><path class="tm-peaks" d="${r.d}" fill="url(#tm-peaks)"/>`).join("")}${MAP_PHYS.rivers.map(r => `<path class="tm-river tm-r${r.rank}" d="${r.d}"/>`).join("")}</g>
 <g class="tm-names"><text x="300" y="92">Washington</text><text x="228" y="410">Oregon</text><text x="492" y="335">Idaho</text>
 <text class="tm-pn" transform="translate(126 338) rotate(-80)">Cascades</text><text class="tm-pn tm-rn" x="212" y="233">Columbia R.</text><text class="tm-pn tm-rn" transform="translate(440 384) rotate(-12)">Snake R.</text><text class="tm-pn tm-rn" transform="translate(76 268) rotate(-82)">Willamette R.</text></g><g class="tm-dots">${dots}</g><g class="tm-labels"></g></svg>
-<ul class="tm-key" aria-label="Dot color: frost-free days a year"><li class="tm-key-h">Frost-free days</li>${SEASON_BANDS.map(([lo, hi], i) => `<li><i class="tm-s${i + 1}"></i>${hi > 900 ? `${lo}+` : i === 0 ? `under ${hi + 1}` : `${lo}–${hi}`}</li>`).join("")}</ul>
+<div class="tm-mode" role="group" aria-label="Color the dots by"><span>Color by</span><button type="button" data-mode="season" aria-pressed="${!zones}">Frost-free days</button><button type="button" data-mode="zone" aria-pressed="${zones}">Zone</button><button type="button" data-mode="region" aria-pressed="false">Region</button></div>
+<ul class="tm-key tm-key-zone" aria-label="Dot color: USDA hardiness zone">${ZONES.map(([z, t]) => `<li data-k="z" data-v="${z}"><i class="tm-z${z}"></i>Zone ${z} <small>${t}</small></li>`).join("")}</ul>
+<ul class="tm-key tm-key-region" aria-label="Dot color: region">${REGION_ORDER.map(r => `<li data-k="r" data-v="${r}"><i class="tm-r-${r}"></i>${esc(D.zones[r].name)}</li>`).join("")}</ul>
+<ul class="tm-key tm-key-season" aria-label="Dot color: frost-free days a year">${SEASON_BANDS.map(([lo, hi], i) => `<li data-k="s" data-v="${i + 1}"><i class="tm-s${i + 1}"></i>${hi > 900 ? `${lo}+` : i === 0 ? `under ${hi + 1}` : `${lo}–${hi}`}</li>`).join("")}</ul>
 <div class="tm-pick" hidden><label class="tm-select"><span>Area</span><select id="tm-area"><option value="">All areas</option><optgroup label="Oregon">${opts("OR")}</optgroup><optgroup label="Washington">${opts("WA")}</optgroup><optgroup label="Idaho">${opts("ID")}</optgroup></select></label>
 <div class="tm-chips" role="group" aria-label="Zoom to an area"><button type="button" data-area="" aria-pressed="true">All areas</button><span>Oregon</span>${chips("OR")}<span>Washington</span>${chips("WA")}<span>Idaho</span>${chips("ID")}</div></div>
 </div><div class="tm-panel" id="tm-panel" aria-live="polite"><p class="tm-hint">Tap a dot to open that town's calendar.</p>
@@ -1577,6 +1584,66 @@ ${townMap()}
 </div>`,
   scripts: ["townbox.js", "townmap.js"]
 }), "0.9");
+
+/* Hardiness zones page: every town's 2023 USDA zone, what the number means, and why it isn't a planting date.
+ * Two designs were demoed (HZ_DESIGN=A ladder, B map first); see the thread notes. */
+{
+  const rel = "../", design = process.env.HZ_DESIGN || "A";
+  const half = z => { const n = +z.match(/\d+/)[0], lo = -60 + n * 10 + (/b/.test(z) ? 5 : 0); return `${lo < 0 ? "−" + -lo : lo} to ${lo + 5 < 0 ? "−" + -(lo + 5) : lo + 5}°F`; };
+  const byZone = ZONES.map(([z, t]) => [z, t, D.places.filter(x => zoneNum(x) === z).sort((a, b) => a.hz.localeCompare(b.hz) || a.city.localeCompare(b.city))]).filter(r => r[2].length);
+  const warmest = D.places.slice().sort((a, b) => b.hz.localeCompare(a.hz))[0], coldest = D.places.slice().sort((a, b) => a.hz.localeCompare(b.hz))[0];
+  const pf = s => P.findPlace(D, s), pdx = pf("portland-or"), sea = pf("seattle-wa"), boi = pf("boise-id"), spo = pf("spokane-wa"), bend = pf("bend-or");
+  const season = x => P.plan(D, x).frost.season;
+  // A real pair from the data: same zone, very different frost-free seasons.
+  const same = [pf("hillsboro-or") || pdx, pf("port-townsend-wa")].filter(Boolean);
+  const chip = x => `<li><a href="${rel}frost-dates/${x.slug}/"><b>${esc(x.city)}, ${x.state}</b><span>${x.hz}</span></a></li>`;
+  const qas = [
+    ...[pdx, sea, boi, spo, bend].filter(Boolean).map(x => [`What growing zone is ${x.city}, ${({ OR: "Oregon", WA: "Washington", ID: "Idaho" })[x.state]} in?`,
+      `${x.city} is in USDA hardiness zone ${x.hz} on the 2023 map${x.hz.indexOf("–") > 0 ? ", depending on the ZIP code" : ""}. The coldest winter night there is usually ${x.hzT.replace(/-/g, "−")}°F.`]),
+    ["Does my hardiness zone tell me when to plant?", "No. The zone only describes how cold winter gets, so it tells you which perennials, shrubs and trees can survive. When to plant vegetables and annual flowers depends on your frost dates and soil temperature, which each town calendar shows."],
+    ["What changed on the 2023 hardiness zone map?", "The 2023 USDA map replaced the 2012 map. It averages the coldest winter night of each year from 1991 to 2020 and uses many more weather stations. Many places moved half a zone warmer; some of that is the newer weather data and some is the more detailed mapping."]
+  ];
+  const finder = `<section class="hz-find">${townBox({ id: "hz-box", rel, button: "Find my zone", lite: true, savedLine: false })}<div id="hz-mine" class="hz-mine" hidden aria-live="polite"></div></section>`;
+  const explain = `<h2>What the zone number means</h2>
+<div class="prose"><p>Your zone comes from one number: how cold the coldest night of the winter usually gets. The USDA map averages the single coldest night of each winter over 30 years, 1991 to 2020. Each zone covers 10°F, and the "a" and "b" halves split it into 5°F steps, with "a" the colder half. Zone ${pdx.hz}, for example, means the coldest night is usually ${pdx.hzT.replace(/-/g, "−")}°F.</p>
+<p>It's an average, not a record. Once every several years a cold snap can go colder, so a plant that's only just hardy in your zone can still be lost in a hard winter. A sheltered spot or a pot that you can move gives borderline plants a better chance.</p>
+<p>Our ${D.places.length} towns run from zone ${coldest.hz} in ${esc(coldest.city)}, ${coldest.state} to zone ${warmest.hz} in ${esc(warmest.city)}, ${warmest.state}. Mountains, distance from the ocean and elevation do most of the sorting: the coast stays mild, the valleys sit in the middle, and the high desert and mountain towns are coldest.</p></div>`;
+  const vsFrost = `<h2>Zones aren't planting dates</h2>
+<div class="prose"><p>A zone tells you whether a plant can live through your winter. It says nothing about how long your summer is, so it can't tell you when to plant tomatoes or sow peas. That's what frost dates are for.</p>
+${same.length === 2 ? `<p>Two towns in the same zone can have very different seasons. ${esc(same[0].city)}, ${same[0].state} and ${esc(same[1].city)}, ${same[1].state} are both zone ${same[0].hz}${same[0].hz !== same[1].hz ? ` and ${same[1].hz}` : ""}, but the frost-free season is about ${season(same[0])} days in ${esc(same[0].city)} and about ${season(same[1])} in ${esc(same[1].city)}.</p>` : ""}
+<p>Use your zone when you choose perennials, shrubs, fruit trees and bulbs, and your <a href="${rel}frost-dates/">town calendar</a> for when to plant.</p></div>`;
+  const changed = `<h2>What changed in 2023</h2>
+<div class="prose"><p>The USDA released the current map in November 2023, replacing the 2012 map. It's built from 1991–2020 weather records and many more weather stations than before. Many places moved half a zone warmer, some stayed the same, and the borders now follow valleys and ridges more closely. If an old plant tag or book gives your zone one step colder, that's usually why.</p></div>`;
+  const ladder = `<h2>Zones in Oregon, Washington and Idaho</h2>
+<p class="hz-sub">Coldest to warmest. Tap a zone to see its towns, then a town for its frost dates and planting calendar.</p>
+<div class="hz-ladder">${byZone.map(([z, t, list]) => `<details class="hz-band" data-z="${z}"><summary class="hz-band-h hzc-${z}"><b>Zone ${z}</b><span>Coldest night ${t}</span><small>${list.length} ${list.length === 1 ? "town" : "towns"}</small></summary><ul class="hz-towns">${list.map(chip).join("")}</ul></details>`).join("")}</div>`;
+  const STATES = [["OR", "Oregon"], ["WA", "Washington"], ["ID", "Idaho"]];
+  const table = `<h2>Every town's zone</h2>
+${STATES.map(([s, n]) => `<details class="hz-state"><summary>${n} <small>${D.places.filter(x => x.state === s).length} towns</small></summary><table class="hz-table"><thead><tr><th>Town</th><th>Zone</th><th>Coldest night</th></tr></thead><tbody>${D.places.filter(x => x.state === s).sort((a, b) => a.city.localeCompare(b.city)).map(x => `<tr><td><a href="${rel}frost-dates/${x.slug}/">${esc(x.city)}</a></td><td><span class="hz-pill hzc-${zoneNum(x)}">${x.hz}</span></td><td>${x.hzT.replace(/-/g, "−")}°F</td></tr>`).join("")}</tbody></table></details>`).join("")}`;
+  const fold = (h, inner) => `<details class="more-fold"><summary>${h}</summary>${inner.replace(/<h2>[^<]*<\/h2>\n/, "")}</details>`;
+  const body = design === "B"
+    ? `${finder}\n<h2>Zones on the map</h2>\n${townMap({ rel: rel + "frost-dates/", zones: true })}\n${fold("What the zone number means", explain)}\n${fold("Zones aren't planting dates", vsFrost)}\n${fold("What changed in 2023", changed)}\n${table}`
+    : `${finder}\n${ladder}\n${explain}\n${vsFrost}\n${changed}`;
+  const hb = crumbs(rel, [["Town calendars", "frost-dates/"], ["Hardiness zones", null]]);
+  write(rel, "hardiness-zones/index.html", layout({
+    rel, canonical: "hardiness-zones/", current: "frost-dates/",
+    title: "Hardiness Zones in Oregon, Washington and Idaho (2023 USDA Map)",
+    description: `USDA hardiness zones for ${D.places.length} Oregon, Washington and Idaho towns from the 2023 map, zone ${coldest.hz} to ${warmest.hz}, and what your zone does and doesn't tell you.`,
+    jsonld: [hb.ld, faqLd(qas)],
+    body: `${hb.html}
+<section class="hero"><p class="eyebrow">2023 USDA map · ${D.places.length} towns</p><h1>Hardiness zones</h1>
+<p class="lede">How cold winter gets in ${D.places.length} Oregon, Washington and Idaho towns, and which zone that puts you in. Your zone tells you which perennials, shrubs and trees survive the winter.</p></section>
+${body}
+<h2>Common questions</h2>
+${faqHtml(qas)}
+<p class="hz-src">Source: 2023 USDA Plant Hardiness Zone Map. Each town's zone covers its own ZIP codes, so a town that spans two zones shows both.</p>
+<script>addEventListener("DOMContentLoaded",function(){var D=window.RainlineData,P=window.RainlinePlan,R=window.RainlineRender,out=document.getElementById("hz-mine");if(!D||!P||!R||!window.RainlineTownBox)return;
+function show(p){if(!p||!p.hz)return;out.hidden=false;out.innerHTML='<p class="hz-mine-h">'+p.city+', '+p.state+'</p><p class="hz-mine-z hzc-'+p.hz.match(/\\d+/)[0]+'">Zone '+p.hz+'</p><p>'+R.zoneExplain(p)+'</p><a href="${rel}frost-dates/'+p.slug+'/">Frost dates and planting calendar for '+p.city+' \\u203a</a>';box.collapse(p,"Showing <strong>"+p.city+", "+p.state+"</strong>.");var b=document.querySelector('.hz-band[data-z="'+p.hz.match(/\\d+/)[0]+'"]');if(b)b.open=true}
+var box=RainlineTownBox(document.getElementById("hz-box"),{onPick:show});var s="";try{s=localStorage.getItem("rainline-place")||""}catch(e){}if(s)show(P.findPlace(D,s));});</script>`,
+    scripts: ["data.js", "plan.js", "render.js", "near.js", "townbox.js"].concat(design === "B" ? ["townmap.js"] : [])
+  }), "0.8");
+}
+
 
 /* Monthly calendar */
 const CHORES = require("./chores.js");

@@ -203,14 +203,15 @@
     box.style.top = (r.bottom + scrollY + 8) + "px";
   }
   function open(a) {
-    var d = data[a.getAttribute("data-gl")];
+    // A word can carry its own explanation (the zone on town pages): data-gl-t/-d/-more, no glossary needed.
+    var d = a.hasAttribute("data-gl-d") ? { t: a.getAttribute("data-gl-t"), d: a.getAttribute("data-gl-d") } : data && data[a.getAttribute("data-gl")];
     if (!d) { location.href = a.href; return; }
     close(false);
     from = a; a.setAttribute("aria-expanded", "true");
     box = doc.createElement("div");
     box.className = "gl-pop"; box.setAttribute("role", "dialog"); box.setAttribute("aria-label", d.t); box.tabIndex = -1;
     box.innerHTML = '<button type="button" class="gl-x" aria-label="Close">&times;</button><p class="gl-t">' + esc(d.t) + '</p><p class="gl-d">' + esc(d.d) +
-      '</p><a class="gl-more" href="' + esc(a.href) + '">More gardening words in the glossary</a>';
+      '</p><a class="gl-more" href="' + esc(a.href) + '">' + esc(a.getAttribute("data-gl-more") || "More gardening words in the glossary") + ' \u203a</a>';
     doc.body.appendChild(box);
     place();
     box.focus({ preventScroll: true });
@@ -222,6 +223,7 @@
     if (!a || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || e.button) return;
     e.preventDefault();
     if (a === from) { close(false); return; }
+    if (a.hasAttribute("data-gl-d")) { open(a); return; }
     load().then(function () { open(a); }, function () { location.href = a.href; });
   });
   doc.addEventListener("keydown", function (e) { if (e.key === "Escape" && box) close(true); });

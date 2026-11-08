@@ -14,7 +14,7 @@
   }
   function cropUrl(id, slug, base) { return (base || "") + 'when-to-plant/' + id + '/?town=' + slug + '#your-town'; }
 
-  function frostFacts(p) {
+  function frostFacts(p, base) {
     var f = p.frost;
     return '<div class="facts">' +
       '<div class="fact"><span class="fact-k">Last spring frost</span><span class="fact-v">' + P.fmtLong(f.spring50) + '</span>' +
@@ -23,17 +23,21 @@
       '<span class="fact-s">Typical date. Comes as early as ' + P.fmt(f.fall10) + ' in 1 year out of 10.</span></div>' +
       '<div class="fact"><span class="fact-k">Frost-free season</span><span class="fact-v">' + f.season + ' days</span>' +
       '<span class="fact-s">Your growing season for frost-tender crops like tomatoes and squash.</span></div>' +
-      '</div>' + hardiness(p);
+      '</div>' + hardiness(p, base);
   }
   // USDA hardiness zone for the town's ZIP codes (2023 map). Says what it's for, since people mix it up with planting dates.
-  function hardiness(p) {
+  // Zone text for the tap-to-explain box (assets/nav.js) and the zones page. hzT is the town's coldest-night range in °F.
+  function zoneExplain(x) {
+    var range = x.hz.indexOf('–') > 0;
+    return 'Zone ' + x.hz + ' means the coldest night of a typical winter in ' + x.city + ' gets down to about ' + x.hzT.replace(/-/g, '−') + '°F' +
+      (range ? ' (it depends on your ZIP code)' : '') + '. Zones tell you which perennials, shrubs and trees can survive the winter. They don\'t tell you when to plant; your frost dates do.';
+  }
+  // USDA hardiness zone for the town's ZIP codes (2023 map). Tapping the zone explains it in a small box, with a link to the zones page.
+  function hardiness(p, base) {
     var x = p.place;
     if (!x.hz) return '';
-    var range = x.hz.indexOf('–') > 0;
-    return '<p class="hz-line"><span class="hz-k">USDA hardiness zone</span> <b class="hz-v">' + x.hz + '</b>' +
-      '<span class="hz-s">' + (range ? 'Depends on your ZIP. ' : '') + 'The coldest winter night is usually ' + x.hzT.replace(/-/g, '−') + '°F. ' +
-      'Zones tell you which perennials, shrubs and trees survive winter, not when to plant. ' +
-      '<small>Source: 2023 USDA Plant Hardiness Zone Map.</small></span></p>';
+    return '<p class="hz-line"><span class="hz-k">USDA hardiness zone</span> <a class="gl hz-v" href="' + (base || '') + 'hardiness-zones/" data-gl-t="Zone ' + x.hz + '" data-gl-d="' + zoneExplain(x).replace(/"/g, '&quot;') + '" data-gl-more="More about hardiness zones">' + x.hz + '</a>' +
+      '<span class="hz-s">Coldest winter night: usually ' + x.hzT.replace(/-/g, '−') + '°F. <small>Source: 2023 USDA Plant Hardiness Zone Map.</small></span></p>';
   }
 
   // brief leaves out the general microclimate advice (the frost-dates index says it once for every town).
@@ -300,7 +304,7 @@
     return '<span class="season-tag">' + tag + '</span> ' + s;
   }
 
-  var API = { icon: icon, cropUrl: cropUrl, frostFacts: frostFacts, regionNote: regionNote, chart: chart, table: table, townCal: townCal, calToday: calToday, nowBlock: nowBlock,
+  var API = { zoneExplain: zoneExplain, icon: icon, cropUrl: cropUrl, frostFacts: frostFacts, regionNote: regionNote, chart: chart, table: table, townCal: townCal, calToday: calToday, nowBlock: nowBlock,
     frostRisk: frostRisk, seasonLede: seasonLede, nextJob: nextJob };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else root.RainlineRender = API;
 })(this);
