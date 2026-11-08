@@ -212,7 +212,7 @@ function layout({ rel, title, description, canonical, current, body, scripts, js
   const cur = href => current === href ? ' aria-current="page"' : "";
   // Menus keep six links: the four tools plus two places to read. Month by month, Fall planting, Plant quiz, Glossary
   // and How it works are linked from the footer and from inside pages instead (Plant now links to every month).
-  const LEARN = [["beginners-guide/", "Beginner's guide", "Start your first Northwest garden"], ["articles/", "Articles", "Growing guides for Northwest weather"], ["hardiness-zones/", "Hardiness zones", "Your USDA zone and what it means"]];
+  const LEARN = [["beginners-guide/", "Beginner's guide", "Start your first Northwest garden"], ["articles/", "Articles", "Growing guides for Northwest weather"]];
   const ICON = {
     search: '<svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
     chev: '<svg class="chev" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
