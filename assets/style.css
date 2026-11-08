@@ -2571,3 +2571,8 @@ details.gp-card[open] { border-color: #0F2B22; box-shadow: 0 0 0 2px var(--lime)
   .topic-sec .card-t { font-size: 1.02rem; }
   .topic-sec .card-s { font-size: .86rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 }
+
+/* Phone fixes 2026-11-08: keep arrows with their words */
+.hz-mine > div { flex: 1 1 auto; min-width: 0; }
+.cm-pager a { overflow-wrap: normal; }
+.cm-pager a:first-child, .cm-pager a:last-child { white-space: nowrap; }

@@ -1627,7 +1627,7 @@ ${body}
 ${faqHtml(qas)}
 <p class="hz-src">Source: 2023 USDA Plant Hardiness Zone Map. Each town's zone covers its own ZIP codes, so a town that spans two zones shows both.</p>
 <script>addEventListener("DOMContentLoaded",function(){var D=window.RainlineData,P=window.RainlinePlan,R=window.RainlineRender,out=document.getElementById("hz-mine");if(!D||!P||!R||!window.RainlineTownBox)return;
-function show(p){if(!p||!p.hz)return;out.hidden=false;out.innerHTML='<p class="hz-mine-z hzc-'+p.hz.match(/\\d+/)[0]+'">'+p.hz+'</p><div><p class="hz-mine-h">'+p.city+', '+p.state+'</p><p>Coldest winter night: usually '+p.hzT.replace(/-/g,"\\u2212")+'\\u00b0F'+(p.hz.indexOf("\\u2013")>0?", depending on your ZIP code":"")+'.</p><a href="${rel}frost-dates/'+p.slug+'/">Planting calendar for '+p.city.split(" and ")[0]+' \\u203a</a></div>';box.collapse(p,"Showing <strong>"+p.city+", "+p.state+"</strong>.");[].forEach.call(document.querySelectorAll(".hz-band"),function(b){b.classList.toggle("is-mine",b.getAttribute("data-z")===p.hz.match(/\\d+/)[0])})}
+function show(p){if(!p||!p.hz)return;out.hidden=false;out.innerHTML='<p class="hz-mine-z hzc-'+p.hz.match(/\\d+/)[0]+'">'+p.hz+'</p><div><p class="hz-mine-h">'+p.city+', '+p.state+'</p><p>Coldest winter night: usually '+p.hzT.replace(/-/g,"\\u2212")+'\\u00b0F'+(p.hz.indexOf("\\u2013")>0?", depending on your ZIP code":"")+'.</p><a href="${rel}frost-dates/'+p.slug+'/">Planting calendar for '+p.city.split(" and ")[0]+'\\u00a0\\u203a</a></div>';box.collapse(p,"Showing <strong>"+p.city+", "+p.state+"</strong>.");[].forEach.call(document.querySelectorAll(".hz-band"),function(b){b.classList.toggle("is-mine",b.getAttribute("data-z")===p.hz.match(/\\d+/)[0])})}
 var box=RainlineTownBox(document.getElementById("hz-box"),{onPick:show});var s="";try{s=localStorage.getItem("rainline-place")||""}catch(e){}if(s)show(P.findPlace(D,s));});</script>`,
     scripts: ["data.js", "plan.js", "render.js", "near.js", "townbox.js"].concat(design === "B" ? ["townmap.js"] : [])
   }), "0.8");
@@ -1751,7 +1751,7 @@ m.innerHTML='<p><strong>'+t[1]+', '+t[2]+'</strong> is in the '+zn[t[3]]+'.</p><
 show(tags[t[3]]||"all")})();</script>
 ${ad("month-mid")}
 ${c.articles.length ? `<h2>Read next</h2>\n${articleCards(rel, c.articles.filter(s => articleBySlug[s]).map(s => articleBySlug[s]))}` : ""}
-<nav class="cm-pager" aria-label="Other months"><a href="../${monthSlug(prev.m)}/">← ${P.MONTHS_LONG[prev.m - 1]}</a><a href="../">All months</a><a href="../${monthSlug(next.m)}/">${P.MONTHS_LONG[next.m - 1]} →</a></nav>`,
+<nav class="cm-pager" aria-label="Other months"><a href="../${monthSlug(prev.m)}/">←&nbsp;${P.MONTHS_LONG[prev.m - 1]}</a><a href="../">All months</a><a href="../${monthSlug(next.m)}/">${P.MONTHS_LONG[next.m - 1]}&nbsp;→</a></nav>`,
     scripts: ["data.js", "plan.js", "monthjobs.js"]
   }), "0.7");
 });
