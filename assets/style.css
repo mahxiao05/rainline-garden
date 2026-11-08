@@ -2344,3 +2344,59 @@ details.gp-card[open] { border-color: #0F2B22; box-shadow: 0 0 0 2px var(--lime)
 /* Plant names in My garden plan link to the plant's page: same colour as the text, underlined so they read as links. */
 .gp-pl { color: inherit; text-decoration: underline; text-decoration-color: color-mix(in srgb, currentColor 40%, transparent); text-underline-offset: 2px; }
 .gp-pl:hover, .gp-pl:focus-visible { text-decoration-color: currentColor; }
+/* Fall planting reminder strip under the header (assets/fallbar.js), shown only while fall planting is open.
+ * Dark like the header, with a lime button. */
+.fall-bar .wrap { display: flex; align-items: center; gap: 6px; }
+.fall-bar .fb-main { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+.fall-bar .fb-ico { flex: none; border-radius: 50%; object-fit: cover; }
+.fall-bar .fb-t { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
+.fall-bar .fb-t strong { font-weight: 700; }
+.fall-bar .fb-t span { font-size: .85rem; opacity: .85; }
+.fall-bar .fb-go { flex: none; font-weight: 700; font-size: .85rem; white-space: nowrap; }
+.fall-bar button { flex: none; width: 36px; height: 36px; border: 0; border-radius: 50%; background: none; color: inherit; font-size: 1.3rem; line-height: 1; cursor: pointer; opacity: .7; }
+.fall-bar button:hover, .fall-bar button:focus-visible { opacity: 1; background: color-mix(in srgb, currentColor 12%, transparent); }
+.fall-bar { background: var(--night, #0f1c17); color: #fff; border-top: 1px solid rgba(255,255,255,.08); }
+.fall-bar .wrap { padding-top: 8px; padding-bottom: 10px; }
+.fall-bar .fb-ico { width: 32px; height: 32px; }
+.fall-bar .fb-go { background: var(--lime, #c8f169); color: #12201a; padding: 7px 12px; border-radius: 999px; }
+/* Fall planting page: Still time box and the month-by-month timeline */
+.fall-now { margin: 1.25rem 0 .5rem; padding: 14px 16px; border-radius: 14px; background: var(--night, #12201a); color: #fff; }
+.fall-now h2 { margin: 0 0 10px; font-size: 1.25rem; color: #fff; }
+.fall-chips { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.fall-chips a { display: flex; align-items: center; gap: 8px; padding: 6px 12px 6px 6px; border-radius: 999px; background: rgba(255,255,255,.1); color: #fff; text-decoration: none; font-weight: 600; font-size: .95rem; }
+.fall-chips a:hover { background: rgba(255,255,255,.18); }
+.fall-chips .ico { border-radius: 50%; }
+.fall-chips small { font-weight: 400; opacity: .8; }
+.fall-next { margin: 10px 0 0; font-size: .95rem; opacity: .9; }
+.fall-list { margin-top: 1rem; }
+.fall-m { margin: 0 0 1.25rem; }
+.fall-mh { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin: 1.25rem 0 .5rem; }
+.fall-mn { font-family: var(--sans, inherit); font-size: .85rem; font-weight: 400; color: var(--muted); letter-spacing: 0; text-transform: none; }
+.fall-m-past { border: 1px solid var(--line); border-radius: 12px; padding: 0 14px; background: var(--paper); }
+.fall-m-past > summary { cursor: pointer; padding: 12px 0; list-style: none; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.fall-m-past > summary::-webkit-details-marker { display: none; }
+.fall-m-past > summary::after { content: "\25BE"; margin-left: auto; color: var(--moss); }
+.fall-m-past[open] > summary::after { content: "\25B4"; }
+.fall-m-past .fall-mh { margin: 0; font-weight: 700; font-family: var(--serif, inherit); font-size: 1.15rem; color: var(--fir); }
+.fall-rows { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr)); gap: 0 18px; }
+.fall-rows a { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: var(--ink); }
+.fall-rows a:hover .fr-n { text-decoration: underline; }
+.fall-rows .ico { flex: none; border-radius: 50%; }
+.fr-t { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.fr-n { font-weight: 700; color: var(--fir); }
+.fr-d { font-size: .88rem; color: var(--muted); }
+.fr-s { flex: none; font-size: .75rem; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: var(--line); color: var(--ink); white-space: nowrap; }
+.fr-open .fr-s { background: var(--lime, #c8f169); color: #12201a; }
+.fr-past { opacity: .6; }
+.fr-past .fr-s { background: none; border: 1px solid var(--line); color: var(--muted); }
+.fall-none { color: var(--muted); font-size: .92rem; }
+.fall-guides .ico { border-radius: 50%; }
+.fall-now-h { margin: 0; font-family: var(--serif, inherit); font-size: 1.2rem; text-transform: uppercase; letter-spacing: .02em; }
+.fall-now-l { margin: 6px 0 0; line-height: 1.45; }
+.fall-now .fall-next { margin-top: 6px; }
+.fall-m-past > summary { display: grid; grid-template-columns: 1fr auto; column-gap: 10px; row-gap: 0; align-items: center; padding: 10px 0; }
+.fall-m-past > summary .fall-mh { grid-column: 1; }
+.fall-m-past > summary .fall-mn { grid-column: 1; }
+.fall-m-past > summary::after { grid-column: 2; grid-row: 1 / span 2; margin: 0; }
+.fall-m-past + .fall-m-past { margin-top: -10px; }
+.fall-guides .fg-photo { flex: none; width: 88px; height: 66px; object-fit: cover; border-radius: 10px; }
