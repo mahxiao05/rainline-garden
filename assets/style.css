@@ -2532,3 +2532,19 @@ details.gp-card[open] { border-color: #0F2B22; box-shadow: 0 0 0 2px var(--lime)
 .tm-hl .tm-areas path:not(.is-hl) { opacity: .15; }
 .tm-area-note { display: none; }
 .tm-rmode ~ .tm-area-note, .tm-rmode .tm-area-note { display: block; }
+
+/* Lighter map (2026-11-08, max): the dark frame and lime controls stay, the map itself is light. */
+.town-map .tm-card { --tm-sea: #DCE7E1; --tm-land: #F7F8F2; --tm-edge: #FFFFFF; --tm-water: #7FB2D1; --tm-range: #E4EEDF; --tm-peak: #8DB39A;
+  --tm-s1: #BCD3E3; --tm-s2: #72B293; --tm-s3: #2B7656; --tm-s4: #0E3D29; }
+.town-map .tm-stage { background: var(--tm-sea); }
+.town-map .tm-dots circle { stroke: #FFFFFF; }
+.town-map .tm-names text { fill: #2E4A3D; opacity: .55; }
+.town-map .tm-names .tm-pn { stroke: var(--tm-land); fill: #4F7563; }
+.town-map .tm-labels text { fill: #12201A; stroke: #FFFFFF; }
+.town-map .tm-ctrl, .town-map .tm-full { background: #FFFFFF; color: #12201A; border: 1px solid #D5DED8; }
+.town-map .tm-ctrl button, .town-map .tm-full { color: #12201A; }
+.town-map .tm-ctrl button + button { border-top-color: #D5DED8; }
+.town-map .tm-ctrl button:hover, .town-map .tm-full:hover { background: #EEF3EF; }
+.tm-areas path { stroke: var(--tm-sea); opacity: .62; }
+.tm-rmode .tm-dots circle { stroke: rgba(18, 32, 26, .55); }
+.town-map .tm-dots circle.is-mine { stroke: #12201A; stroke-width: 3; }
