@@ -142,6 +142,15 @@ p { margin: 0 0 1rem; }
 .profile-facts { list-style: none; padding: 0; margin: 0 0 1rem; display: flex; flex-wrap: wrap; gap: 8px; }
 .profile-facts li { font-size: .92rem; padding: 5px 12px 5px 28px; border-radius: 999px; background: var(--moss-soft); color: var(--fir); position: relative; }
 .profile-facts li::before { content: ""; position: absolute; left: 11px; top: 50%; width: 9px; height: 5px; border-left: 2px solid var(--moss); border-bottom: 2px solid var(--moss); transform: translateY(-70%) rotate(-45deg); }
+.profile-more { margin: 1rem 0 0; font-weight: 600; }
+.profile-page { margin-top: 1rem; }
+.profile-cover picture { display: block; height: 100%; }
+.profile-page .profile-name { font-family: var(--display); text-transform: none; font-weight: 600; letter-spacing: -0.01em; line-height: 1.15; font-size: clamp(2rem, 6vw, 2.4rem); }
+.profile-page .profile-cover { height: auto; aspect-ratio: 3 / 2; max-height: 380px; }
+.profile-page .profile-cover picture { display: block; height: 100%; }
+.profile-page .profile-cover img { object-position: 50% 60%; }
+.author-reads { max-width: 46rem; margin: 2rem 0 0; }
+.author-reads .count { display: inline-grid; place-items: center; min-width: 1.6em; height: 1.6em; padding: 0 .4em; border-radius: 999px; background: color-mix(in srgb, var(--moss) 16%, transparent); color: var(--fir); font-size: .8rem; vertical-align: middle; font-family: var(--sans, inherit); }
 .results-h { margin: 1.6rem 0 .2rem; font-size: 1.3rem; }
 .results-note { color: var(--muted); font-size: .92rem; margin: 0 0 .9rem; }
 .results-grid { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }

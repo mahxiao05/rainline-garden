@@ -102,6 +102,9 @@ const OWNER_LD = { "@type": "Organization", name: CONFIG.owner, url: CONFIG.site
 const AUTHORS = {
   "jigmey-dorjee": {
     name: "Jigmey Dorjee", role: "Experienced home gardener", he: "He", cover: "author-jigmey.svg",
+    // page: has its own profile page at about/{id}/. photo: header picture in assets/img/authors/{photo}-800/-1280 (.jpg + .webp, 3:2, metadata stripped).
+    page: true, kicker: "Vegetables and planting dates",
+    photo: { img: "jigmey-river", alt: "A calm green river lined with tall fir trees under a clear blue summer sky, with maple leaves overhead and mossy rocks along the bank" },
     facts: ["Grew up in Oregon", "Years of growing vegetables at home", "Checks dates against NOAA weather records"],
     bio: "Jigmey Dorjee grew up in Oregon, where gardening means working with the weather: cold, wet springs, dry summers and long, mild falls. He's an experienced home gardener who has grown his own vegetables for years, and he knows firsthand that a Northwest garden runs on a different calendar than the national planting charts. He writes about vegetables and planting timing for Rainline Garden and checks the advice against NOAA weather records and university research.",
     short: "Jigmey Dorjee grew up in Oregon and has grown his own vegetables at home for years. He writes about vegetables and planting timing, and checks the advice against NOAA weather records and university research."
@@ -130,17 +133,19 @@ const authorPhoto = id => fs.existsSync(path.join(ROOT, "assets/img/authors", id
 const avatar = (rel, id, cls) => authorPhoto(id)
   ? `<img class="avatar ${cls || ""}" src="${rel}${authorPhoto(id)}" alt="${AUTHORS[id].name}" width="96" height="96">`
   : `<span class="avatar ${cls || ""}${id === "elaine-holloway" ? " avatar-alt" : ""}" aria-hidden="true">${initials(AUTHORS[id].name)}</span>`;
-const authorLd = id => ({ "@type": "Person", name: AUTHORS[id].name, url: `${CONFIG.siteUrl}about/#${id}` });
+// Authors with their own page link there; the rest link to their card on the About page.
+const authorPath = id => AUTHORS[id].page ? `about/${id}/` : `about/#${id}`;
+const authorLd = id => ({ "@type": "Person", name: AUTHORS[id].name, url: CONFIG.siteUrl + authorPath(id) });
 // author: "site" bylines an article to Rainline Garden itself, for general guides no one person wrote or checked.
 const SITE_BY = "site";
 const byLd = id => id === SITE_BY ? { "@type": "Organization", name: CONFIG.siteName, url: CONFIG.siteUrl } : authorLd(id);
 const byAvatar = (rel, id, cls) => id === SITE_BY ? `<img class="avatar avatar-site ${cls || ""}" src="${rel}assets/icon.svg" alt="Rainline Garden logo" aria-hidden="true" width="96" height="96">` : avatar(rel, id, cls);
-const byName = (rel, id) => id === SITE_BY ? `<a href="${rel}about/">${CONFIG.siteName}</a>` : `<a href="${rel}about/#${id}">${AUTHORS[id].name}</a>`;
+const byName = (rel, id) => id === SITE_BY ? `<a href="${rel}about/">${CONFIG.siteName}</a>` : `<a href="${rel}${authorPath(id)}">${AUTHORS[id].name}</a>`;
 const byBox = (rel, id) => id === SITE_BY
   ? `<aside class="author-box">${byAvatar(rel, id, "avatar-lg")}<div><h2>About Rainline Garden</h2><p>Free planting calendars and growing guides for Oregon, Washington and Idaho gardens, built from NOAA frost records for ${D.places.length} towns.</p><a href="${rel}about/">More about us</a></div></aside>`
-  : `<aside class="author-box">${avatar(rel, id, "avatar-lg")}<div><h2>About the author</h2><p>${esc(AUTHORS[id].short)}</p><a href="${rel}about/#${id}">More about ${AUTHORS[id].name.split(" ")[0]}</a></div></aside>`;
+  : `<aside class="author-box">${avatar(rel, id, "avatar-lg")}<div><h2>About the author</h2><p>${esc(AUTHORS[id].short)}</p><a href="${rel}${authorPath(id)}">More about ${AUTHORS[id].name.split(" ")[0]}</a></div></aside>`;
 const authorCard = (rel, id, heading) => { const a = AUTHORS[id]; return `<section class="profile" id="${id}">
-<div class="profile-cover"><img src="${rel}assets/img/${a.cover}" alt="Garden illustration for ${a.name}" aria-hidden="true" width="1200" height="320" loading="lazy"></div>
+<div class="profile-cover">${a.photo ? `<picture><source type="image/webp" srcset="${rel}assets/img/authors/${a.photo.img}-800.webp"><img src="${rel}assets/img/authors/${a.photo.img}-800.jpg" alt="" aria-hidden="true" width="800" height="533" loading="lazy" decoding="async"></picture>` : `<img src="${rel}assets/img/${a.cover}" alt="Garden illustration for ${a.name}" aria-hidden="true" width="1200" height="320" loading="lazy">`}</div>
 <div class="profile-body">
 ${avatar(rel, id, "avatar-xl")}
 <p class="profile-kicker">${heading}</p>
@@ -149,6 +154,7 @@ ${avatar(rel, id, "avatar-xl")}
 <ul class="profile-facts">${a.facts.map(f => `<li>${esc(f)}</li>`).join("")}</ul>
 <p>${esc(a.bio)}</p>
 ${a.results ? resultsGallery(rel, a.results) : ""}
+${a.page ? `<p class="profile-more"><a href="${rel}${authorPath(id)}">See ${esc(a.name.split(" ")[0])}'s page and articles</a></p>` : ""}
 </div></section>`; };
 const resultsGallery = (rel, list) => `<h3 class="results-h" id="growing-results">Growing results</h3>
 <p class="results-note">Harvests from the home garden.</p>
@@ -1939,6 +1945,37 @@ ${Object.keys(CONTRIBUTORS).map(id => contributorCard("../", id)).join("\n")}
 <p>Rainline Garden is owned and operated by ${CONFIG.owner}. The site is free and supported by advertising and affiliate links, which never decide what we recommend. It isn't affiliated with NOAA or any university.</p>
 <p>Questions or corrections: <a href="mailto:${CONFIG.contactEmail}">${CONFIG.contactEmail}</a>.</p></div>`
 }), "0.3");
+
+/* Author pages: about/{id}/ for authors with page: true */
+Object.keys(AUTHORS).filter(id => AUTHORS[id].page).forEach(id => {
+  const a = AUTHORS[id], first = a.name.split(" ")[0], rel = "../../";
+  const mine = ARTICLES.filter(x => (x.author || DEFAULT_AUTHOR) === id);
+  const pic = a.photo && (ext => `${rel}assets/img/authors/${a.photo.img}-800.${ext} 800w, ${rel}assets/img/authors/${a.photo.img}-1280.${ext} 1280w`);
+  write(rel, `about/${id}/index.html`, layout({
+    rel, canonical: `about/${id}/`, current: "about/",
+    title: `${a.name}, ${a.role.toLowerCase()} | Rainline Garden`,
+    description: a.short,
+    image: a.photo ? `assets/img/authors/${a.photo.img}-1280.jpg` : undefined,
+    jsonld: [{ "@context": "https://schema.org", "@type": "ProfilePage", url: CONFIG.siteUrl + authorPath(id),
+      mainEntity: { ...authorLd(id), jobTitle: a.role, description: a.bio, worksFor: { "@type": "Organization", name: CONFIG.siteName, url: CONFIG.siteUrl } } }],
+    body: `<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="${rel}about/">About</a></li><li aria-current="page">${esc(a.name)}</li></ol></nav>
+<section class="profile profile-page" id="${id}">
+${a.photo ? `<div class="profile-cover"><picture><source type="image/webp" srcset="${pic("webp")}" sizes="(min-width: 50rem) 46rem, 100vw">
+<img src="${rel}assets/img/authors/${a.photo.img}-1280.jpg" srcset="${pic("jpg")}" sizes="(min-width: 50rem) 46rem, 100vw" width="1280" height="853" alt="${esc(a.photo.alt)}" fetchpriority="high" decoding="async"></picture></div>`
+  : `<div class="profile-cover"><img src="${rel}assets/img/${a.cover}" alt="" aria-hidden="true" width="1200" height="320"></div>`}
+<div class="profile-body">
+${avatar(rel, id, "avatar-xl")}
+<p class="profile-kicker">${esc(a.kicker)}</p>
+<h1 class="profile-name">${esc(a.name)}</h1>
+<p class="profile-role">${esc(a.role)}</p>
+<ul class="profile-facts">${a.facts.map(f => `<li>${esc(f)}</li>`).join("")}</ul>
+<p>${esc(a.bio)}</p>
+</div></section>
+<section class="author-reads"><h2 id="articles">Articles by ${esc(first)} <span class="count">${mine.length}</span></h2>
+${articleCards(rel, mine)}</section>
+<p class="station">Questions for ${esc(first)} or a correction? Email <a href="mailto:${CONFIG.contactEmail}">${CONFIG.contactEmail}</a>.</p>`
+  }), "0.4");
+});
 
 /* Privacy */
 write("../", "privacy/index.html", layout({
