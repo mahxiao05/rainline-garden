@@ -27,7 +27,7 @@ D.crops.forEach(c => { if (!INTROS[c.id]) throw new Error(`Plant ${c.id} needs a
 const SEED_SAVING = require("./seed-saving.js");
 const STATION_CHECK = require("./station-check.js");
 const { SIZES, fileBase, sizesFor, sizeTag, formatsFor } = require("./photo-sizes.js");
-const ARTICLES = require("./articles-4.js").concat(require("./articles-3.js"), require("./articles-2.js"), require("./articles.js")); // newest first
+const ARTICLES = require("./articles-5.js").concat(require("./articles-4.js"), require("./articles-3.js"), require("./articles-2.js"), require("./articles.js")); // newest first
 
 const CONFIG = {
   siteName: "Rainline Garden",
@@ -349,7 +349,7 @@ function glossaryLinks(html, rel) {
 }
 const unGlossary = h => h.replace(/<a class="gl" href="[^"]*" data-gl="[^"]*">([^<]*)<\/a>/g, "$1");
 
-function write(rel, file, html, priority) {
+function write(rel, file, html, priority, lastmod) {
   if (file !== "glossary/index.html") html = glossaryLinks(html, rel);
   const out = path.join(ROOT, file);
   fs.mkdirSync(path.dirname(out), { recursive: true });
@@ -359,7 +359,7 @@ function write(rel, file, html, priority) {
     .split(`"dateModified":"${U}"`).join(`"dateModified":"${kept}"`).split(`Last updated ${monthYear(U)}.`).join(`Last updated ${monthYear(kept)}.`);
   if (final !== old) fs.writeFileSync(out, final);
   const loc = file.replace(/index\.html$/, "");
-  if (priority !== null) pages.push({ loc, priority: priority || "0.6", lastmod: kept || CONFIG.updated });
+  if (priority !== null) pages.push({ loc, priority: priority || "0.6", lastmod: lastmod || kept || CONFIG.updated });
 }
 
 // One responsive display unit per slot. Unfilled units (e.g. while AdSense reviews the site) are hidden by CSS.
@@ -1361,10 +1361,24 @@ function articleToc(html) {
   const nav = items.length >= 3 ? `<nav class="jump" aria-label="On this page"><span>On this page:</span>${items.map(([id, l]) => `<a href="#${id}">${l}</a>`).join("")}</nav>` : "";
   return { html, nav };
 }
+/* Article dates: each article shows the date it was first posted, and that date never moves on a rebuild.
+ * data/article-dates.json keeps a fingerprint of each article's own words. "Updated" is only added when those words change,
+ * not when photos, headings, menus, the town count or the cards around the article change. */
+const ART_DATES_FILE = path.join(__dirname, "../data/article-dates.json");
+const ART_DATES = fs.existsSync(ART_DATES_FILE) ? JSON.parse(fs.readFileSync(ART_DATES_FILE, "utf8")) : {};
+const articleWords = h => h.replace(/<figure[\s\S]*?<\/figure>/g, "").replace(/<[^>]+>/g, " ").replace(/&[a-z#0-9]+;/g, " ").replace(/\s+/g, " ").trim();
+function articleDates(a, html) {
+  const hash = require("crypto").createHash("sha1").update(articleWords(html)).digest("hex").slice(0, 16);
+  const rec = ART_DATES[a.slug] || (ART_DATES[a.slug] = { hash, updated: null });
+  if (rec.hash !== hash) { rec.hash = hash; rec.updated = CONFIG.updated; }
+  const updated = rec.updated && rec.updated > a.published ? rec.updated : null;
+  return { published: a.published, modified: updated || a.published, updated };
+}
 ARTICLES.forEach(a => {
   const rel = "../../";
   const ab = crumbs(rel, [["Articles", "articles/"], [a.title, null]]);
   const toc = articleToc(a.body({ D, P, frost: frostFor, link: p => rel + p, fig: n => inlinePhoto(a, n, rel) }));
+  const dt = articleDates(a, toc.html);
   const topic = ARTICLE_TOPICS.find(t => t[0] === a.topic)[1];
   const others = ARTICLES.filter(x => x.slug !== a.slug);
   write(rel, `articles/${a.slug}/index.html`, layout({
@@ -1372,12 +1386,12 @@ ARTICLES.forEach(a => {
     // seoTitle: a shorter search-result title when the on-page headline runs past ~60 characters.
     title: a.seoTitle || `${a.title} | Rainline Garden`, description: a.description,
     image: PHOTOS["article:" + a.slug] && photoFile("article:" + a.slug, "banner"),
-    jsonld: [ab.ld, { "@context": "https://schema.org", "@type": "Article", headline: a.title, description: a.description, datePublished: a.published, dateModified: CONFIG.updated,
+    jsonld: [ab.ld, { "@context": "https://schema.org", "@type": "Article", headline: a.title, description: a.description, datePublished: dt.published, dateModified: dt.modified,
       image: CONFIG.siteUrl + (PHOTOS["article:" + a.slug] ? photoFile("article:" + a.slug, "banner") : "assets/img/og.png"), author: byLd(a.author || DEFAULT_AUTHOR), publisher: OWNER_LD, mainEntityOfPage: CONFIG.siteUrl + `articles/${a.slug}/` }],
     body: `${ab.html}
 <article class="article">
 <header class="hero hero-crop${PHOTOS["article:" + a.slug] ? " has-photo" : ""}">${banner("article:" + a.slug, rel)}${PHOTOS["article:" + a.slug] ? "" : articleIcon(a, rel, 120)}<div><p class="eyebrow">${topic} · Oregon · Washington · Idaho</p><h1>${esc(articleH1(a.title))}</h1><p class="lede">${esc(a.description)}</p>
-<p class="byline">${byAvatar(rel, a.author || DEFAULT_AUTHOR)}<span>By ${byName(rel, a.author || DEFAULT_AUTHOR)}<br><span class="byline-d">Updated ${stamp(CONFIG.updated)}</span></span></p></div></header>
+<p class="byline">${byAvatar(rel, a.author || DEFAULT_AUTHOR)}<span>By ${byName(rel, a.author || DEFAULT_AUTHOR)}<br><span class="byline-d">Posted ${stamp(dt.published)}${dt.updated && monthYear(dt.updated) !== monthYear(dt.published) ? ` · Updated ${stamp(dt.updated)}` : ""}</span></span></p></div></header>
 ${toc.nav}
 <div class="prose">${toc.html}</div>
 ${SPROUT_DIVIDER}
@@ -1390,7 +1404,8 @@ ${ad("article-bottom")}
 ${newsletter()}
 <h2>More guides</h2>
 ${articleCards(rel, others.slice(0, 3))}`
-  }), "0.7");
+  }), "0.7", dt.modified);
+  fs.writeFileSync(ART_DATES_FILE, JSON.stringify(ART_DATES, null, 1) + "\n");
 });
 const ib = crumbs("../", [["Articles", null]]);
 write("../", "articles/index.html", layout({

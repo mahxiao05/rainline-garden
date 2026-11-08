@@ -54,6 +54,9 @@ module.exports = {
   "article:planting-bare-root-fruit-trees": { src: "pexels:7656746", alt: "Watering a newly planted young tree tied between two stakes", tallX: 62 },
   "article:growing-raspberries-in-the-northwest": { src: "pexels:6889551", alt: "Ripe raspberries hanging among the leaves of a raspberry cane" },
   "article:cabbage-worms-and-aphids": { src: "pexels:33009446", alt: "A cabbage white butterfly resting on curly kale leaves", tallX: 34 },
+  "article:gardening-through-the-seasons": { src: "pexels:7658811", alt: "A gardener kneeling to pick lettuce in a vegetable garden" },
+  "article:composting-in-a-rainy-climate": { src: "pexels:5503336", alt: "A wooden compost bin filled with vegetable scraps in a garden" },
+  "article:harvesting-and-preserving-herbs": { src: "pexels:5808450", alt: "Bunches of herbs hanging upside down to dry" },
 
   // In-article photos, placed in the text with ${fig(n)}. Only where a photo shows what the section is about.
   "inline:slugs-1": { src: "pexels:2974409", alt: "Leaves riddled with holes chewed by garden pests" },
