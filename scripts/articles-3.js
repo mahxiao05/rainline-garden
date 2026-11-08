@@ -68,7 +68,7 @@ module.exports = [
     author: "jigmey-dorjee",
     topic: "timing", icon: "hardening",
     title: "How to Harden Off Seedlings Before Planting Out",
-    description: "Indoor seedlings scorch or stall if they go straight outside. A week-by-week routine for getting them used to sun, wind and cold nights.",
+    description: "Indoor seedlings scorch or stall if they go straight outside. A day-by-day routine for getting them used to sun, wind and cold nights.",
     crops: ["tomatoes", "peppers", "broccoli", "cabbage", "lettuce", "basil"],
     published: "2026-10-14",
     body: ({ D, P, link }) => {
