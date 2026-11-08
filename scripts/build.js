@@ -528,7 +528,7 @@ const tipIcon = h => { const t = h.toLowerCase();
     : /pest/.test(t) ? "bug" : /heat|sun|warm/.test(t) ? "sun" : /cold|winter|protect|snap/.test(t) ? "snow" : /timing|season|order|plan|patience|look back|calendar/.test(t) ? "calendar"
     : /prun|cut/.test(t) ? "scissors" : /wildlife/.test(t) ? "bird" : /tree|choosing|spot/.test(t) ? "tree" : "seed";
   return `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${TIP_ICONS[k]}</svg>`; };
-const tipCards = sections => `<div class="tips">${sections.map(([h, ps], i) => `<section class="tip tip-${i % 3}"><div class="tip-ic">${tipIcon(h)}</div><div><h3>${esc(h)}</h3>${(Array.isArray(ps) ? ps : [ps]).map(t => `<p>${esc(t)}</p>`).join("")}</div></section>`).join("")}</div>`;
+const tipCards = sections => `<div class="tips">${sections.map(([h, ps], i) => `<section class="tip tip-${i % 3}"><h3><span class="tip-ic">${tipIcon(h)}</span>${esc(h)}</h3>${(Array.isArray(ps) ? ps : [ps]).map(t => `<p>${esc(t)}</p>`).join("")}</section>`).join("")}</div>`;
 const cropPhoto = id => fs.existsSync(path.join(ROOT, `assets/img/photos/crop-${id}-720.webp`));
 const plantTiles = (rel, list, href = c => `../${c.id}/`) => `<ul class="ptiles">${list.filter(c => G.crops[c.id]).map(c => { const g = G.crops[c.id];
   return `<li><a href="${href(c)}"><span class="pt-img">${cropPhoto(c.id) ? `<img src="${rel}assets/img/photos/crop-${c.id}-720.webp" alt="" width="720" height="480" loading="lazy" decoding="async">` : R.icon(c.id, rel, 64)}</span>
@@ -561,7 +561,7 @@ function beginnerBox(rel, slug, where, onGuide) {
     const href = slug ? `${rel}when-to-plant/${id}/?town=${slug}#your-town` : `${rel}when-to-plant/${id}/`;
     return `<li><a class="card" href="${href}">${R.icon(id, rel, 64)}<span class="card-t">${c.name}</span><span class="card-s">${G.beginnerWhy[id]}</span></a></li>`;
   }).join("");
-  return `<section class="beginner"><h2>New to gardening? Start with these 5 easy crops</h2>
+  return `<section class="beginner${onGuide ? " beginner-rows" : ""}" id="easy-crops"><h2>New to gardening? Start with these 5 easy crops</h2>
 <p>They're forgiving, quick and hard to kill${where ? ` in ${esc(where)}` : ""}. Tap one for planting dates and step-by-step instructions${onGuide ? "" : `, or read the <a href="${rel}beginners-guide/">beginner's guide</a>`}.</p>
 <ul class="cards">${cards}</ul></section>`;
 }
@@ -1423,13 +1423,14 @@ COLLECTIONS.forEach(x => {
 <p class="lede">${esc(x.intro[0])}</p>
 ${x.fallNote ? `<div class="town-line">${townBox({ id: "fall-box", rel, button: "Show" })}</div>` : ""}</section>
 ${x.fallNote ? `<section id="fall-now" class="fall-now" aria-live="polite" hidden></section>` : ""}
-<details class="more-fold"><summary>${esc(short.more || "More about these plants")}</summary><div class="prose">${x.intro.slice(1).map(t => `<p>${esc(t)}</p>`).join("\n")}</div></details>
-${x.fallNote ? fallBody(x, ids, fallPre, rel) : groups.map(([k, cs]) => `<h2>${esc(k.name)}</h2>\n<ul class="pick-list${x.fallNote ? "" : " pick-list-2"}">${cs.map(c => `<li><a href="${rel}${WHEN_INDEX}${c.id}/">${R.icon(c.id, rel, 44)}<span><span class="card-t">${esc(c.name)}</span><span class="card-s"${x.fallNote ? ` data-fall="${c.id}" data-pre="${fallPre(c)}"` : ""}>${esc(note(c))}</span></span></a></li>`).join("")}</ul>`).join("\n")}
-${x.tips ? `<h2>${esc({ "shade-plants": "Gardening in shade", "deer-resistant-plants": "Living with deer", "fall-planting": "Fall planting tips" }[x.slug] || "Tips")}</h2>\n${tipCards(x.tips)}` : ""}
+${x.tips ? `<nav class="jump" aria-label="On this page"><span>Jump to:</span><a href="#easy">Easy picks</a><a href="#all">${x.fallNote ? "What to plant" : `All ${ids.length} plants`}</a><a href="#tips">Tips</a><a href="#faq">Questions</a></nav>` : ""}
 ${(() => { const easy = ids.map(cropById).filter(c => G.crops[c.id] && G.crops[c.id].difficulty === 1 && cropPhoto(c.id)).slice(0, 4);
-  return x.tips && easy.length >= 2 ? `<h2>Easy ones to start with</h2>\n${plantTiles(rel, easy, c => `${rel}${WHEN_INDEX}${c.id}/`)}` : ""; })()}
+  return x.tips && easy.length >= 2 ? `<h2 id="easy">Easy ones to start with</h2>\n${plantTiles(rel, easy, c => `${rel}${WHEN_INDEX}${c.id}/`)}` : ""; })()}
+<details class="more-fold" id="all"><summary>${esc(short.more || "More about these plants")}</summary><div class="prose">${x.intro.slice(1).map(t => `<p>${esc(t)}</p>`).join("\n")}</div></details>
+${x.fallNote ? fallBody(x, ids, fallPre, rel) : groups.map(([k, cs]) => `<h2>${esc(k.name)}</h2>\n<ul class="pick-list${x.fallNote ? "" : " pick-list-2"}">${cs.map(c => `<li><a href="${rel}${WHEN_INDEX}${c.id}/">${R.icon(c.id, rel, 44)}<span><span class="card-t">${esc(c.name)}</span><span class="card-s"${x.fallNote ? ` data-fall="${c.id}" data-pre="${fallPre(c)}"` : ""}>${esc(note(c))}</span></span></a></li>`).join("")}</ul>`).join("\n")}
+${x.tips ? `<h2 id="tips">${esc({ "shade-plants": "Gardening in shade", "deer-resistant-plants": "Living with deer", "fall-planting": "Fall planting tips" }[x.slug] || "Tips")}</h2>\n${tipCards(x.tips)}` : ""}
 ${ad("collection-mid")}
-<h2>Common questions</h2>
+<h2 id="faq">Common questions</h2>
 ${faqHtml(x.faq)}
 <h2>More ways to choose</h2>
 ${collectionChips(rel, x.slug)}
@@ -1533,14 +1534,15 @@ write("../", "beginners-guide/index.html", layout({
   body: `${bgb.html}
 <section class="hero"><h1>Your first Northwest vegetable garden</h1>
 <p class="lede">Everything a first-timer needs, in plain language. You don't need a big yard or any experience: one small bed and five easy crops is a great first year.</p></section>
-<h2>Your first year at a glance</h2>
+<nav class="jump" aria-label="On this page"><span>Jump to:</span><a href="#year">Year at a glance</a><a href="#steps">8 steps</a><a href="#easy-crops">Easy crops</a><a href="#mistakes">Mistakes</a><a href="#faq">Questions</a></nav>
+<h2 id="year">Your first year at a glance</h2>
 <ul class="year4">
 <li class="y-1"><span class="y-k">Late winter</span><strong>Plan</strong><span>Pick a spot, order seeds, sketch one small bed.</span><a href="../garden-calendar/february/">February jobs</a></li>
 <li class="y-2"><span class="y-k">Spring</span><strong>Build and sow</strong><span>Fill the bed, plant cool crops first, then warm crops after frost.</span><a href="../garden-calendar/april/">April jobs</a></li>
 <li class="y-3"><span class="y-k">Summer</span><strong>Water and pick</strong><span>Deep watering once or twice a week, harvest often.</span><a href="../garden-calendar/july/">July jobs</a></li>
 <li class="y-4"><span class="y-k">Fall</span><strong>Plant again</strong><span>Sow greens in late summer, plant garlic, cover the soil.</span><a href="../garden-calendar/october/">October jobs</a></li>
 </ul>
-<h2>Eight steps to a first garden</h2>
+<h2 id="steps">Eight steps to a first garden</h2>
 <ol class="steps">
 <li><h3>Pick the sunniest spot you have</h3>
 <p>Most vegetables need at least six hours of direct sun a day; tomatoes, squash and peppers want eight or more. Watch your yard on a sunny day and note where the light lasts longest. Leafy crops like lettuce, kale and chard can get by with a little less.</p>
@@ -1570,13 +1572,13 @@ ${(() => { const towns = ["portland-or", "seattle-wa", "bend-or", "boise-id"].ma
 <p>Jot down what you planted and when, and what did well. By your second spring you'll know your own garden better than any chart. Stuck on a word? The <a href="../glossary/">glossary</a> explains terms like hardening off, bolting and row cover.</p></li>
 </ol>
 ${beginnerBox("../", null, null, true)}
-<h2>First-year mistakes to skip</h2>
+<h2 id="mistakes">First-year mistakes to skip</h2>
 ${tipCards([
   ["Planting tomatoes in April", "Warm-weather crops planted into cold soil stall or rot. Wait for your town's date, even if a nursery is already selling them."],
   ["Planting everything at once", "One big planting day means one big harvest and then nothing. Sow lettuce, radishes and beans in small batches a few weeks apart instead."],
   ["Too big, too soon", "A large garden in year one usually ends up weedy by August. One well-kept bed teaches more and gives more food than three neglected ones."]
 ])}
-<h2>Common questions</h2>
+<h2 id="faq">Common questions</h2>
 ${faqHtml(BEGINNER_FAQ)}
 ${gearBox(starter, "A simple starter kit")}
 ${newsletter()}`
