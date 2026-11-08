@@ -778,21 +778,42 @@ function neighbors(c, ex) {
 <div class="nb-grid">${list(c.cat === "native-plants" ? "Grows well with" : "Good neighbors", ex.good, "nb-good")}${list("Keep apart", ex.avoid, "nb-avoid")}</div>
 ${fam ? `<p class="care-tip"><strong>${esc(fam.name)}:</strong> ${esc(fam.text)}</p>` : ""}`;
 }
+// Small square photo on a pest card or glossary term when the site already has a photo of that thing (scripts/small-photos.js).
+const SMALL = require("./small-photos.js");
+const sqImg = (key, rel, cls) => `<img class="${cls}" src="${rel}assets/img/photos/sq-${key.replace(":", "-")}.webp" width="200" height="200" alt="${esc(PHOTOS[key].alt)}" loading="lazy" decoding="async">`;
+function pestPhoto(h) {
+  const m = SMALL.pests.find(([re]) => re.test(h));
+  return m ? `<figure class="pest-pic">${sqImg(m[1], "../../", "")}${m[2] ? `<figcaption>${esc(m[2])}</figcaption>` : ""}</figure>` : "";
+}
 function pestCards(c, ex) {
   return phoneFold("pests", "Pests and problems", `<p class="lede-sm">What most often goes wrong with ${lc(c.name)} in Northwest gardens, how to spot it and what to do.</p>
-<div class="sci-cards">${ex.pests.map(([h, signs, fix, why]) => `<section class="sci-card pest-card"><h3>${esc(h)}</h3><p><strong>Signs:</strong> ${esc(signs)}</p>${why ? `<p><strong>Why:</strong> ${esc(why)}</p>` : ""}<p><strong>What to do:</strong> ${esc(fix)}</p></section>`).join("\n")}</div>`);
+<div class="sci-cards">${ex.pests.map(([h, signs, fix, why]) => `<section class="sci-card pest-card">${pestPhoto(h)}<h3>${esc(h)}</h3><p><strong>Signs:</strong> ${esc(signs)}</p>${why ? `<p><strong>Why:</strong> ${esc(why)}</p>` : ""}<p><strong>What to do:</strong> ${esc(fix)}</p></section>`).join("\n")}</div>`);
 }
 const faqHtml = qas => `<div class="faq">${qas.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("")}</div>`;
 // On plant pages with a "Pests and problems" section (noPests), the problem is covered there, so the card leaves it out.
 const sideCard = (g, note, noPests) => `<aside class="side-card"><h3>Top picks for here</h3><ul class="vars">${g.varieties.map(v => `<li>${esc(v)}</li>`).join("")}</ul>
 ${noPests ? "" : `<h3>Watch out for</h3><p>${esc(g.problem)}</p>`}${note ? `<p class="note">${esc(note)}</p>` : ""}</aside>`;
 // How the plant does in each part of the Northwest (scripts/regional-notes.js).
+// Small map on each region card: the region shaded on the Oregon-Washington-Idaho outline (same shapes as the Town calendars
+// map), with a dot for your town once one is picked. "east" notes cover the East-side valleys and Inland Northwest areas.
+const NOTE_FILL = { west: ["west"], coast: ["coast"], east: ["east", "inland"], high: ["high"] };
+const miniMap = k => `<svg class="rg-map" viewBox="0 0 640 462" aria-hidden="true" focusable="false"><use href="#rg-states" class="rg-land"/>${NOTE_FILL[k].map(r => `<use href="#rg-${r}" class="rg-on rg-${k}"/>`).join("")}<use href="#rg-states" class="rg-edge"/><circle class="rg-dot" r="22" cx="-99" cy="-99"/></svg>`;
+let REGION_SHARED = null;
+function regionShared() {
+  if (REGION_SHARED) return REGION_SHARED;
+  const PROJ = require("./map-proj.js"), ST = require("./map-states.js"), RG = require("./map-regions.js"), towns = {};
+  D.places.forEach(x => { towns[x.slug] = PROJ.xy(x.ll[0], x.ll[1]).map(Math.round); });
+  return REGION_SHARED = `<svg class="rg-defs" width="0" height="0" aria-hidden="true" focusable="false"><defs><g id="rg-states">${Object.values(ST).map(d => `<path d="${d}"/>`).join("")}</g>${Object.keys(RG).map(r => `<path id="rg-${r}" d="${RG[r]}"/>`).join("")}</defs></svg>
+<script>(function(){var T=${JSON.stringify(towns)};function dot(slug){var p=T[slug];[].forEach.call(document.querySelectorAll("#regions .region-card"),function(c){var d=c.querySelector(".rg-dot"),on=p&&c.classList.contains("is-mine");d.setAttribute("cx",on?p[0]:-99);d.setAttribute("cy",on?p[1]:-99)})}
+document.addEventListener("rainline:town",function(e){setTimeout(function(){dot(e.detail.slug)},0)});var s=(location.search.match(/[?&]town=([a-z0-9-]+)/)||[])[1];if(!s)try{s=localStorage.getItem("rainline-place")}catch(e){}if(s)dot(s)})()</script>`;
+}
 function regionalNotes(c) {
   const r = REGIONAL[c.id];
   if (!r) throw new Error(`scripts/regional-notes.js has no entry for ${c.id}`);
   const parts = REGION_LABELS.filter(([k]) => r[k]);
   return phoneFold("regions", `Growing ${lc(c.name)} in your part of the Northwest`, `<p class="lede-sm region-lede">The same plant behaves differently on the wet west side, the foggy coast and the dry, colder east side.</p>
-<div class="sci-cards region-cards">${parts.map(([k, h, where]) => `<section class="sci-card region-card region-${k}" data-k="${k}"><h3>${h}</h3><p class="region-where">${where}</p><p>${esc(r[k])}</p></section>`).join("\n")}</div>`);
+<div class="sci-cards region-cards">${parts.map(([k, h, where]) => `<section class="sci-card region-card region-${k}" data-k="${k}">${miniMap(k)}<h3>${h}</h3><p class="region-where">${where}</p><p>${esc(r[k])}</p></section>`).join("\n")}</div>
+${regionShared()}`);
 }
 // Popular variety cards from scripts/varieties.js, shown on each plant's main page.
 function varietyCards(c) {
@@ -1532,7 +1553,7 @@ write("../", "glossary/index.html", layout({
 <div class="gl-start"><h2>Start here: the words on every planting calendar</h2><ul>${G.glossaryStarter.map(id => `<li><a href="#${id}">${esc(glShort(id))}</a> ${esc(GL[id].d.split(". ")[0].replace(/\.$/, ""))}.</li>`).join("")}</ul></div>
 <h2 class="gl-all">All terms by topic</h2>
 <div class="grid-folds gl-groups">${G.glossaryGroups.map(([k, name, ids]) => `<details class="grid-fold gl-group" id="t-${k}"><summary><span class="gl-sum"><span class="grid-fold-t">${name}</span><span class="grid-fold-n">${ids.length} terms: ${ids.slice(0, 3).map(i => esc(glShort(i))).join(", ")}\u2026</span></span></summary>
-<dl class="glossary">${ids.map(id => `<div id="${id}"><dt>${esc(GL[id].t)}</dt><dd>${esc(GL[id].d)}${G.glossaryRelated[id] ? `<span class="gl-rel">See also: ${G.glossaryRelated[id].map(r => `<a href="#${r}">${esc(glShort(r))}</a>`).join(" \u00b7 ")}</span>` : ""}</dd></div>`).join("")}</dl></details>`).join("\n")}</div>
+<dl class="glossary">${ids.map(id => `<div id="${id}"${SMALL.glossary[id] ? ' class="gl-has-pic"' : ""}>${SMALL.glossary[id] ? sqImg(SMALL.glossary[id], "../", "gl-pic") : ""}<dt>${esc(GL[id].t)}</dt><dd>${esc(GL[id].d)}${G.glossaryRelated[id] ? `<span class="gl-rel">See also: ${G.glossaryRelated[id].map(r => `<a href="#${r}">${esc(glShort(r))}</a>`).join(" \u00b7 ")}</span>` : ""}</dd></div>`).join("")}</dl></details>`).join("\n")}</div>
 <script>addEventListener("DOMContentLoaded",function(){var q=document.getElementById("term-q"),out=document.getElementById("term-none"),groups=document.querySelectorAll(".gl-group"),hide=document.querySelectorAll(".gl-start,.gl-all");
 q.addEventListener("input",function(){var v=q.value.trim().toLowerCase(),n=0;groups.forEach(function(g){var k=0;g.querySelectorAll(".glossary > div").forEach(function(d){var m=!v||d.textContent.toLowerCase().indexOf(v)>=0;d.hidden=!m;if(m)k++});g.hidden=!k;g.open=!!v&&k>0;n+=k});hide.forEach(function(e){e.hidden=!!v});out.textContent=v?(n?n+(n>1?" terms match":" term matches"):"No term matches that yet."):""});
 function go(){var t=location.hash&&document.getElementById(decodeURIComponent(location.hash.slice(1)));if(!t)return;var d=t.closest("details");if(d&&!d.open){d.open=true;t.scrollIntoView()}}go();addEventListener("hashchange",go)});</script>`
