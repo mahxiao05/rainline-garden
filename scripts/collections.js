@@ -45,6 +45,11 @@ module.exports = [
     // Shade that only applies east of the mountains (celery, honeyberries) doesn't count.
     pick: (c, g) => /part shade|light shade|full shade|afternoon shade in summer|Part to full shade/i.test(g.sun) && !/east of the Cascades/.test(g.sun),
     note: (c, g) => g.sun,
+    tips: [
+      ["Read your shade first", ["Watch the spot on a sunny day in June and note when direct sun reaches it and when it leaves. Morning sun with afternoon shade suits far more plants than the reverse, because the afternoon is when heat and drying are strongest.", "Shade from a building is usually brighter than shade under evergreens, which also take water from the soil. Under big conifers, the ground can stay dry all summer even after a wet spring, so choose plants that handle dry shade there."]],
+      ["Make the most of the light", ["Grow leafy crops where you get three to six hours of sun, and keep fruiting crops like tomatoes and squash for your sunniest spot or a pot you can move. Light-colored walls and fences bounce extra light into a shady corner.", "Space plants a little wider than usual. Shady beds stay damp longer, and better airflow helps leaves dry out, which means fewer slugs and less leaf disease."]],
+      ["Expect slower growth", ["In shade, the same crop takes longer to reach harvest size, so plant a little earlier in spring where your dates allow and sow fall greens on the early side. Harvest leaves young and often rather than waiting for big plants.", "Natives that evolved under Northwest forests, like sword fern, salal and Oregon grape, don't mind the lower light at all. Mixing them into the shadiest parts of a yard leaves the brighter spots for food."]]
+    ],
     faq: [
       ["What vegetables grow in shade?", "Leafy crops are the best bet: lettuce, spinach, chard, kale, collards, arugula and mustard greens grow in part shade. Peas and some herbs manage too. Fruiting crops like tomatoes, squash and peppers need full sun."],
       ["How many hours of sun is part shade?", "Usually three to six hours of direct sun a day, or bright, filtered light all day. Under three hours is full shade, where natives like sword fern and salal do better than vegetables."],
@@ -65,6 +70,11 @@ module.exports = [
     ],
     ids: Object.keys(DEER),
     note: c => DEER[c.id],
+    tips: [
+      ["Know your deer", ["West of the Cascades, black-tailed deer often live year-round in town, in greenbelts and along creeks. East of the mountains and in Idaho, mule deer move down from higher ground in winter. Either way, the pressure is usually worst in late summer, when wild forage dries out, and in hard winters.", "Young, tender growth is what deer go for first. Newly planted shrubs, spring shoots and freshly watered beds are at the most risk even when the plant is on the deer-resistant list."]],
+      ["Fence what you can't lose", ["A fence is the only reliable protection for vegetables, berries and young fruit trees. Fencing a single raised bed or a small kitchen garden is cheaper than fencing a whole yard, and a lightweight net on stakes works for a season.", "Wrap the trunks of young trees with a tree guard to stop bucks rubbing their antlers on the bark in fall."]],
+      ["Plant around the edges", ["Put strong-smelling herbs, onion-family crops and daffodils around the outside of a bed or along a path. They won't make a garden deer-proof, but they make it less inviting and keep the edges looking good.", "Repellent sprays can help on a few favorite plants, but they wash off in rain and need reapplying often, which makes them hard to keep up through a wet Northwest spring."]]
+    ],
     faq: [
       ["What vegetables won't deer eat?", "Garlic, onions, leeks, shallots and potatoes are rarely eaten, and rhubarb leaves are poisonous to them. Most other vegetables, especially lettuce, beans and peas, need a fence."],
       ["Are any flowers deer-proof?", "None are fully deer-proof, but daffodils come close because every part is poisonous. Lavender, peonies, snapdragons and marigolds are seldom browsed."],
@@ -105,6 +115,11 @@ module.exports = [
     ],
     pick: (c, g, port) => port.windows.some(w => w.kind === "fall"),
     fallNote: true,
+    tips: [
+      ["Plant into moist, warm soil", ["Late summer soil is warm, which helps seeds sprout fast, but it's also dry. Water the row well before sowing and keep the surface damp until seedlings are up. A board or a little shade cloth over the row for the first few days helps in a hot spell.", "Transplants of kale, cabbage, broccoli and collards get a quicker start than seed in late summer. Set them out in the evening or on a cloudy day and water them in."]],
+      ["Count back from frost", ["Every fall crop needs to be well grown before the days get short and cold. Check your town's first frost date and the window on each plant's page rather than a general calendar, since the coast, the west-side valleys and the high desert can be weeks apart.", "If you're late, choose quick crops like radishes, arugula, spinach and baby greens, or grow under a row cover or cold frame to stretch the season."]],
+      ["Protect what overwinters", ["Garlic, shallots and spring bulbs need nothing more than good drainage and a layer of mulch once the soil is cold. Winter greens last longer under row cover or a simple hoop tunnel, especially in a cold snap.", "Mark where bulbs and garlic went in. By the time shoots appear in late winter it's easy to forget, and a stray spade can slice through a whole row."]]
+    ],
     faq: [
       ["When should I plant garlic in the Northwest?", "From about October to mid-November on the west side, and a few weeks earlier in the high desert. Plant cloves pointed end up, about 2 inches deep."],
       ["What vegetables can I plant in August?", "Kale, collards, lettuce, spinach, arugula, mustard greens, mâche, radishes and turnips sown or set out in August grow into fall. Carrots and beets need to go in a little earlier, by late July or early August."],

@@ -530,8 +530,8 @@ const tipIcon = h => { const t = h.toLowerCase();
   return `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${TIP_ICONS[k]}</svg>`; };
 const tipCards = sections => `<div class="tips">${sections.map(([h, ps], i) => `<section class="tip tip-${i % 3}"><div class="tip-ic">${tipIcon(h)}</div><div><h3>${esc(h)}</h3>${(Array.isArray(ps) ? ps : [ps]).map(t => `<p>${esc(t)}</p>`).join("")}</div></section>`).join("")}</div>`;
 const cropPhoto = id => fs.existsSync(path.join(ROOT, `assets/img/photos/crop-${id}-720.webp`));
-const plantTiles = (rel, list) => `<ul class="ptiles">${list.filter(c => G.crops[c.id]).map(c => { const g = G.crops[c.id];
-  return `<li><a href="../${c.id}/"><span class="pt-img">${cropPhoto(c.id) ? `<img src="${rel}assets/img/photos/crop-${c.id}-720.webp" alt="" width="720" height="480" loading="lazy" decoding="async">` : R.icon(c.id, rel, 64)}</span>
+const plantTiles = (rel, list, href = c => `../${c.id}/`) => `<ul class="ptiles">${list.filter(c => G.crops[c.id]).map(c => { const g = G.crops[c.id];
+  return `<li><a href="${href(c)}"><span class="pt-img">${cropPhoto(c.id) ? `<img src="${rel}assets/img/photos/crop-${c.id}-720.webp" alt="" width="720" height="480" loading="lazy" decoding="async">` : R.icon(c.id, rel, 64)}</span>
 <span class="pt-body"><span class="pt-name">${esc(c.name)}</span>${badge(g.difficulty)}
 <span class="pt-row"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">${TIP_ICONS.sun}</svg>${esc(g.sun.split(";")[0])}</span>
 <span class="pt-row"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 12h18M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg>${esc(g.spacing)}</span></span></a></li>`; }).join("")}</ul>`;
@@ -1425,6 +1425,9 @@ ${x.fallNote ? `<div class="town-line">${townBox({ id: "fall-box", rel, button: 
 ${x.fallNote ? `<section id="fall-now" class="fall-now" aria-live="polite" hidden></section>` : ""}
 <details class="more-fold"><summary>${esc(short.more || "More about these plants")}</summary><div class="prose">${x.intro.slice(1).map(t => `<p>${esc(t)}</p>`).join("\n")}</div></details>
 ${x.fallNote ? fallBody(x, ids, fallPre, rel) : groups.map(([k, cs]) => `<h2>${esc(k.name)}</h2>\n<ul class="pick-list${x.fallNote ? "" : " pick-list-2"}">${cs.map(c => `<li><a href="${rel}${WHEN_INDEX}${c.id}/">${R.icon(c.id, rel, 44)}<span><span class="card-t">${esc(c.name)}</span><span class="card-s"${x.fallNote ? ` data-fall="${c.id}" data-pre="${fallPre(c)}"` : ""}>${esc(note(c))}</span></span></a></li>`).join("")}</ul>`).join("\n")}
+${x.tips ? `<h2>${esc({ "shade-plants": "Gardening in shade", "deer-resistant-plants": "Living with deer", "fall-planting": "Fall planting tips" }[x.slug] || "Tips")}</h2>\n${tipCards(x.tips)}` : ""}
+${(() => { const easy = ids.map(cropById).filter(c => G.crops[c.id] && G.crops[c.id].difficulty === 1 && cropPhoto(c.id)).slice(0, 4);
+  return x.tips && easy.length >= 2 ? `<h2>Easy ones to start with</h2>\n${plantTiles(rel, easy, c => `${rel}${WHEN_INDEX}${c.id}/`)}` : ""; })()}
 ${ad("collection-mid")}
 <h2>Common questions</h2>
 ${faqHtml(x.faq)}
@@ -1516,37 +1519,65 @@ ${chipList(["garlic", "onions", "chives", "rosemary", "lavender", "oregano", "da
 
 /* Beginner's guide */
 const bgb = crumbs("../", [["Beginner's guide", null]]);
+const BEGINNER_FAQ = [
+  ["What is the easiest vegetable to grow in the Northwest?", "Radishes, lettuce, kale, bush beans and zucchini are the most forgiving. Radishes are ready in about a month, and kale keeps producing from spring into winter on the west side."],
+  ["When should a beginner start a garden in Oregon or Washington?", "Build or fill the bed in early spring, plant peas, lettuce and other cool crops as soon as the soil can be worked, and wait for your town's last frost date before tomatoes, beans and squash."],
+  ["Do I need a raised bed?", "No, but it helps in the Northwest. Raised beds drain after heavy rain and warm up sooner in spring. In-ground beds work well in loose, well-drained soil."]
+];
 const starter = [["Raised bed kit (4 × 8 feet)", "raised garden bed kit 4x8"], ["Bagged compost", "organic compost for vegetable garden"], ["Soil thermometer", "soil thermometer garden"], ["Hand trowel and cultivator set", "garden hand tool set"], ["Soaker hose or drip kit", "soaker hose garden"], ["Iron phosphate slug bait", "iron phosphate slug bait"], ["Floating row cover", "floating row cover garden"]];
 write("../", "beginners-guide/index.html", layout({
   rel: "../", canonical: "beginners-guide/", current: "beginners-guide/",
   title: "Vegetable Gardening for Beginners in the Pacific Northwest | Rainline Garden",
   description: "Start your first vegetable garden in Oregon, Washington or Idaho: where to put it, five easy crops, when to plant and how to keep slugs away.",
-  jsonld: [bgb.ld],
+  jsonld: [bgb.ld, faqLd(BEGINNER_FAQ)],
   body: `${bgb.html}
 <section class="hero"><h1>Your first Northwest vegetable garden</h1>
 <p class="lede">Everything a first-timer needs, in plain language. You don't need a big yard or any experience: one small bed and five easy crops is a great first year.</p></section>
-<div class="guide prose">
-<h2><span class="num">1</span> Pick the sunniest spot you have</h2>
+<h2>Your first year at a glance</h2>
+<ul class="year4">
+<li class="y-1"><span class="y-k">Late winter</span><strong>Plan</strong><span>Pick a spot, order seeds, sketch one small bed.</span><a href="../garden-calendar/february/">February jobs</a></li>
+<li class="y-2"><span class="y-k">Spring</span><strong>Build and sow</strong><span>Fill the bed, plant cool crops first, then warm crops after frost.</span><a href="../garden-calendar/april/">April jobs</a></li>
+<li class="y-3"><span class="y-k">Summer</span><strong>Water and pick</strong><span>Deep watering once or twice a week, harvest often.</span><a href="../garden-calendar/july/">July jobs</a></li>
+<li class="y-4"><span class="y-k">Fall</span><strong>Plant again</strong><span>Sow greens in late summer, plant garlic, cover the soil.</span><a href="../garden-calendar/october/">October jobs</a></li>
+</ul>
+<h2>Eight steps to a first garden</h2>
+<ol class="steps">
+<li><h3>Pick the sunniest spot you have</h3>
 <p>Most vegetables need at least six hours of direct sun a day; tomatoes, squash and peppers want eight or more. Watch your yard on a sunny day and note where the light lasts longest. Leafy crops like lettuce, kale and chard can get by with a little less.</p>
-<h2><span class="num">2</span> Start small</h2>
+<p>Close to the house is better than a perfect spot far away. A bed you walk past every day gets watered, weeded and picked; one at the back of the yard gets forgotten by July. Check that a hose reaches it.</p></li>
+<li><h3>Start small</h3>
 <p>A single 4 × 8 foot raised bed, or a few large containers on a patio, is plenty for a first year. Raised beds suit the Northwest well: they drain after heavy rain and warm up faster in spring than the ground does.</p>
-<h2><span class="num">3</span> Feed the soil</h2>
+<p>Four feet is about as wide as you can comfortably reach into from both sides without stepping on the soil, which keeps it loose. If you're growing in pots, bigger is easier: small pots dry out fast in summer.</p></li>
+<li><h3>Feed the soil</h3>
 <p>Fill the bed with a mix of garden soil and compost, or loosen existing soil and mix in two to three inches of compost. Most Northwest soils run acidic, so a soil test (your county Extension office can help) tells you whether to add lime.</p>
-<h2><span class="num">4</span> Grow easy crops first</h2>
+<p>Don't work soil while it's wet. If a squeezed handful stays in a sticky ball, wait a few dry days; if it crumbles, it's ready. Digging wet clay, common west of the Cascades, leaves hard clods for the rest of the year.</p></li>
+<li><h3>Learn your frost dates</h3>
+<p>Your last spring frost date decides when tender crops can go out, and your first fall frost date ends the summer garden. They change a lot across the region:</p>
+${(() => { const towns = ["portland-or", "seattle-wa", "bend-or", "boise-id"].map(sl => P.plan(D, P.findPlace(D, sl)));
+  return `<div class="wx-tiles">${towns.map(t => `<div class="wx-t"><div class="wx-l">${esc(t.place.city)}</div><div class="wx-v">${P.fmt(t.frost.spring50)}</div><div class="wx-s">last frost · ${t.frost.season} frost-free days</div></div>`).join("")}</div>`; })()}
+<p>These are NOAA averages, so half of years see a frost a little later. <a href="../frost-dates/">Find your own town</a> for its dates and full planting calendar.</p></li>
+<li><h3>Grow easy crops first</h3>
 <p>Radishes, lettuce, bush beans, zucchini and kale are forgiving and quick. Leave peppers and big pumpkins for year two.</p>
-</div>
-${beginnerBox("../", null, null, true)}
-<div class="guide prose">
-<h2><span class="num">5</span> Plant on your local dates</h2>
+<p>Buy young plants (starts) for tomatoes and anything slow, and sow seeds directly for quick crops like radishes, beans and lettuce. That way your first harvest comes within a few weeks while the slower plants catch up.</p></li>
+<li><h3>Plant on your local dates</h3>
 <p>The biggest beginner mistake here is planting warm-season crops too early. A sunny April week doesn't mean the soil is warm, and tomatoes or beans planted into cold soil sit and sulk or rot. <a href="../">Enter your ZIP on the home page</a> to get dates for where you live.</p>
-<h2><span class="num">6</span> Water deeply, not daily</h2>
+<p>Cool-season crops like peas, lettuce, spinach and kale are the opposite: they go in early, while it's still chilly, and struggle once summer heat arrives. Getting those two groups in the right order is most of what a planting calendar does.</p></li>
+<li><h3>Water deeply, not daily</h3>
 <p>Once summer dries out, give the garden about an inch of water a week (more east of the Cascades) in one or two deep soakings. A soaker hose or drip line on a timer makes this nearly automatic, and keeping leaves dry helps prevent disease.</p>
-<h2><span class="num">7</span> Stay ahead of slugs</h2>
+<p>A layer of straw, shredded leaves or compost on the soil keeps it moist longer and holds down weeds. Seedlings and new transplants are the exception to "not daily": keep them damp until their roots settle in.</p></li>
+<li><h3>Stay ahead of slugs, and keep notes</h3>
 <p>Slugs are the Northwest gardener's number one pest, especially for seedlings and lettuce. Check after rain and at dusk, and use iron phosphate bait, which is safe around pets and food crops.</p>
-<h2><span class="num">8</span> Keep notes</h2>
-<p>Jot down what you planted and when, and what did well. By your second spring you'll know your own garden better than any chart.</p>
-<p>Stuck on a word? The <a href="../glossary/">glossary</a> explains terms like hardening off, bolting and row cover.</p>
-</div>
+<p>Jot down what you planted and when, and what did well. By your second spring you'll know your own garden better than any chart. Stuck on a word? The <a href="../glossary/">glossary</a> explains terms like hardening off, bolting and row cover.</p></li>
+</ol>
+${beginnerBox("../", null, null, true)}
+<h2>First-year mistakes to skip</h2>
+${tipCards([
+  ["Planting tomatoes in April", "Warm-weather crops planted into cold soil stall or rot. Wait for your town's date, even if a nursery is already selling them."],
+  ["Planting everything at once", "One big planting day means one big harvest and then nothing. Sow lettuce, radishes and beans in small batches a few weeks apart instead."],
+  ["Too big, too soon", "A large garden in year one usually ends up weedy by August. One well-kept bed teaches more and gives more food than three neglected ones."]
+])}
+<h2>Common questions</h2>
+${faqHtml(BEGINNER_FAQ)}
 ${gearBox(starter, "A simple starter kit")}
 ${newsletter()}`
 }), "0.9");

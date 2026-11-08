@@ -2693,3 +2693,18 @@ table.nb tr.me th, table.nb tr.me td { font-weight: 600; }
 .cchips { display: flex; flex-wrap: wrap; gap: 6px; }
 .cchips a { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px 3px 4px; border-radius: 999px; background: var(--leaf); color: var(--fir); text-decoration: none; font-size: .88rem; font-weight: 600; }
 .cchips a img, .cchips a svg { width: 26px; height: 26px; border-radius: 50%; background: var(--paper); }
+
+/* Beginner's guide: year at a glance + step cards */
+.year4 { list-style: none; padding: 0; margin: 12px 0 24px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+@media (min-width: 46rem) { .year4 { grid-template-columns: repeat(4, 1fr); } }
+.year4 li { display: flex; flex-direction: column; gap: 4px; background: var(--paper); border: 1px solid var(--line); border-top: 4px solid var(--moss); border-radius: 12px; padding: 10px 12px; font-size: .9rem; line-height: 1.4; }
+.year4 .y-2 { border-top-color: #7aa95c; } .year4 .y-3 { border-top-color: #d9a441; } .year4 .y-4 { border-top-color: var(--ochre); }
+.y-k { font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 700; }
+.year4 strong { font-size: 1.05rem; color: var(--fir); }
+.year4 a { margin-top: auto; font-size: .85rem; }
+.steps { list-style: none; padding: 0; margin: 12px 0 24px; counter-reset: st; display: grid; gap: 12px; }
+.steps > li { counter-increment: st; position: relative; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 14px 14px 4px 62px; }
+.steps > li::before { content: counter(st); position: absolute; left: 14px; top: 14px; width: 34px; height: 34px; border-radius: 50%; background: var(--moss); color: var(--on-moss); display: grid; place-items: center; font-weight: 800; }
+.steps h3 { margin: 4px 0 8px; font-size: 1.1rem; }
+.steps p { font-size: 1rem; line-height: 1.55; margin: 0 0 10px; }
+.steps .wx-tiles { margin-left: -48px; }
