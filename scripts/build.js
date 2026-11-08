@@ -45,6 +45,8 @@ const SCIENCE = require("./crop-science.js");
 const NOTES = require("./crop-notes.js");
 const CARE_TIPS = require("./care-tips.js");
 const CATEGORY_GUIDES = require("./category-guides.js");
+const MONTH_GUIDES = require("./month-guides.js");
+const CATEGORY_MORE = require("./category-more.js");
 const VARIETIES = require("./varieties.js");
 const VIDEOS = require("./videos.js");
 const AREA_TIPS = require("./area-tips.js");
@@ -112,6 +114,8 @@ const AUTHORS = {
   },
   "elaine-holloway": {
     name: "Elaine Holloway", role: "Soil, native plants and perennials", he: "She", cover: "author-elaine.svg",
+    page: true, kicker: "Soil, perennials and native plants",
+    photo: { img: "elaine-gorge", alt: "The Columbia River Gorge from a stone overlook, the river winding east between green forested hills under a big cloudy sky" },
     facts: ["Born and raised in the Portland area", "Studied environmental science at Portland State", "Focus: soil health, native and pollinator plants"],
     bio: "Elaine Holloway was born and raised in the greater Portland area, where she grew up helping family tend backyard vegetable plots, native plant borders and container gardens. A lifelong gardener, she focuses on regional horticulture: building healthy soil, managing moisture through wet Northwest winters and dry summers, choosing native and climate-adapted plants, and adding pollinator-friendly, low-maintenance plantings to home gardens. She studied environmental science with a focus on horticulture at Portland State University, including plant ecology, sustainable agriculture and native plants. Where Jigmey covers vegetables and planting dates, Elaine covers the soil underneath them and the perennials, herbs and flowers around them.",
     short: "Elaine Holloway was born and raised in the Portland area, has gardened all her life and studied environmental science at Portland State. She writes about soil, moisture, perennials and native and pollinator-friendly plants for Northwest gardens.",
@@ -276,11 +280,11 @@ ${ICON.search}<label for="search-q" class="sr">Search plants, towns and guides</
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(shortTitle(title))}</title>
 <meta name="description" content="${esc(description)}">
-${noindex ? '<meta name="robots" content="noindex, follow">\n' : ""}<link rel="canonical" href="${CONFIG.siteUrl}${canonical}">
+${noindex ? '<meta name="robots" content="noindex, follow">\n' : ""}${canonical == null ? "" : `<link rel="canonical" href="${CONFIG.siteUrl}${canonical}">`}
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:type" content="website">
-<meta property="og:url" content="${CONFIG.siteUrl}${canonical}">
+<meta property="og:url" content="${CONFIG.siteUrl}${canonical == null ? "" : canonical}">
 <meta property="og:image" content="${CONFIG.siteUrl}${image || "assets/img/og.png"}">
 <meta property="og:site_name" content="Rainline Garden">
 <meta name="twitter:card" content="summary_large_image">
@@ -1336,6 +1340,10 @@ ${plantingOrder(list, refs[0], rel)}
 <div class="table-wrap"><table class="plan"><thead><tr><th scope="col">Plant</th>${refs.map(r => `<th scope="col">${esc(r.place.city)}</th>`).join("")}</tr></thead><tbody>${list.map(c => `<tr><th scope="row"><a href="../${c.id}/">${c.name}</a></th>${refs.map(r => `<td data-label="${esc(r.place.city)}">${first(r, c.id)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
 <h2>Growing ${k.name.toLowerCase()} in the Northwest</h2>
 <div class="prose">${CATEGORY_GUIDES[k.id].map(t => `<p>${esc(t)}</p>`).join("\n")}</div>
+${CATEGORY_MORE[k.id] ? `<div class="prose">${CATEGORY_MORE[k.id].map(([h, t]) => `<h3>${esc(h)}</h3>\n<p>${esc(t)}</p>`).join("\n")}</div>` : ""}
+<h2>Side by side</h2>
+<p class="note">How easy each one is, the sun it needs and how far apart to plant, from each plant's growing guide.</p>
+<div class="table-wrap"><table class="plan"><thead><tr><th scope="col">Plant</th><th scope="col">Ease</th><th scope="col">Sun</th><th scope="col">Spacing</th></tr></thead><tbody>${list.filter(c => G.crops[c.id]).map(c => { const g = G.crops[c.id]; return `<tr><th scope="row"><a href="../${c.id}/">${esc(c.name)}</a></th><td data-label="Ease">${["", "Easy", "Some care", "Takes work"][g.difficulty] || "—"}</td><td data-label="Sun">${esc(g.sun || "—")}</td><td data-label="Spacing">${esc(g.spacing || "—")}</td></tr>`; }).join("")}</tbody></table></div>
 ${x.faq ? `<h2>Common questions</h2>\n${faqHtml(x.faq)}` : ""}
 ${(() => { const reads = ARTICLES.filter(a => (a.topic === "crops" || a.topic === "flowers") && k.crops.includes(a.crops[0]))
       .sort((a, b) => k.crops.indexOf(a.crops[0]) - k.crops.indexOf(b.crops[0])).slice(0, 4);
@@ -1855,6 +1863,33 @@ ${ids.map(id => { const cr = cropById(id); return `<tr><th scope="row"><div clas
     : `<p class="mb-lede">How much can go in across the five climate regions. Your region's row is highlighted once you pick a town.</p>`;
   const tasks = CHORE_KINDS.map(([k, label]) => [k, label, (c.tasks[k] || []).filter(([t]) => isJob(t))]).filter(([, , ts]) => ts.length);
   const bc = crumbs(rel, [["Month by month", "garden-calendar/"], [name, null]]);
+  // The month's weather in the same five towns (NOAA 1991-2020 normals): rain this month and the average frost dates.
+  const mi = c.m - 1, inMonth = d => d >= a && d <= b;
+  const wxRows = rows.map(r => ({ r, cl: climateOf(r.town), f: r.pl.frost }));
+  const rainy = wxRows.filter(x => x.cl.mprcp);
+  const frostNotes = [];
+  const lastIn = wxRows.filter(x => inMonth(x.f.spring50)).map(x => x.r.town.city), firstIn = wxRows.filter(x => inMonth(x.f.fall50)).map(x => x.r.town.city);
+  if (lastIn.length) frostNotes.push(`The last spring frost usually comes in ${name} in ${listOf(lastIn)}.`);
+  if (firstIn.length) frostNotes.push(`The first fall frost usually arrives in ${name} in ${listOf(firstIn)}.`);
+  const wettest = rainy.filter(x => x.cl.mprcp.indexOf(Math.max(...x.cl.mprcp)) === mi).map(x => x.r.town.city);
+  const driest = rainy.filter(x => x.cl.mprcp.indexOf(Math.min(...x.cl.mprcp)) === mi).map(x => x.r.town.city);
+  if (wettest.length) frostNotes.push(`${name} is the wettest month of the year in ${listOf(wettest)}.`);
+  if (driest.length) frostNotes.push(`${name} is the driest month of the year in ${listOf(driest)}.`);
+  const wxHtml = rainy.length ? `<h2 id="weather">${name} weather across the region</h2>
+<p class="note">Average rain this month and typical frost dates in the same five towns, from NOAA's 1991–2020 climate normals.</p>
+<div class="table-wrap"><table class="nb"><thead><tr><th scope="col">Region</th><th scope="col">Rain in ${name}</th><th scope="col">Share of the year</th><th scope="col">Last spring frost</th><th scope="col">First fall frost</th></tr></thead><tbody>${wxRows.map(x => `<tr><th scope="row">${esc(x.r.name)}<br><a href="${rel}frost-dates/${x.r.town.slug}/">${esc(x.r.town.city)}</a></th><td>${x.cl.mprcp ? `${x.cl.mprcp[mi].toFixed(1)} in` : "—"}</td><td>${x.cl.mprcp ? `${Math.round(100 * x.cl.mprcp[mi] / x.cl.mprcp.reduce((s2, v) => s2 + v, 0))}%` : "—"}</td><td>${P.fmt(x.f.spring50)}</td><td>${P.fmt(x.f.fall50)}</td></tr>`).join("")}</tbody></table></div>
+${frostNotes.length ? `<p>${frostNotes.join(" ")}</p>` : ""}` : "";
+  // What starts next month in each region, so quiet months still point ahead.
+  const nm = c.m % 12 + 1, na = P.CUM[nm - 1] + 1, nb = nm < 12 ? P.CUM[nm] : 365, nextName = P.MONTHS_LONG[nm - 1];
+  const startsNext = w => w && w.start >= na && w.start <= nb;
+  const ahead = rows.map(r => ({ r, indoor: r.pl.crops.filter(x => startsNext(x.indoor)), out: r.pl.crops.filter(x => x.windows.some(startsNext)) })).filter(x => x.indoor.length || x.out.length);
+  const cropLinks = list => list.map(x => `<a href="${rel}when-to-plant/${x.crop.id}/">${esc(x.crop.name)}</a>`).join(", ");
+  const aheadHtml = `<h2 id="next">Coming up in ${nextName}</h2>
+${ahead.length ? `<p class="note">Plants whose window opens in ${nextName}, in the same five towns.</p>
+<dl class="order">${ahead.map(x => `<div><dt>${esc(x.r.name)}</dt><dd>${x.indoor.length ? `<strong>Start indoors:</strong> ${cropLinks(x.indoor)}` : ""}${x.indoor.length && x.out.length ? "<br>" : ""}${x.out.length ? `<strong>Plant outside:</strong> ${cropLinks(x.out)}` : ""}</dd></div>`).join("")}</dl>
+<p><a href="../${monthSlug(nm)}/">See all of ${nextName}</a></p>` : `<p>No new planting windows open in ${nextName} in any region. <a href="../${monthSlug(nm)}/">See ${nextName}'s jobs</a>.</p>`}`;
+  const guideHtml = MONTH_GUIDES[c.m] ? `<h2 id="guide">A ${name} guide for Northwest gardens</h2>
+<div class="prose">${MONTH_GUIDES[c.m].map(([h, ps]) => `<h3>${esc(h)}</h3>\n${ps.map(t => `<p>${esc(t)}</p>`).join("\n")}`).join("\n")}</div>` : "";
   write(rel, `garden-calendar/${slug}/index.html`, layout({
     rel, canonical: `garden-calendar/${slug}/`, current: "garden-calendar/",
     title: fitTitle(`What to Plant in ${name} in Oregon, Washington and Idaho`, `What to Plant in ${name} in Oregon, Washington & Idaho`),
@@ -1884,6 +1919,9 @@ var zn={};(m.getAttribute("data-zones")||"").split(";").forEach(function(x){x=x.
 var row=document.querySelector('.mb-reg tr[data-zone="'+t[3]+'"]');if(row)row.classList.add("is-mine");
 m.innerHTML='<p><strong>'+t[1]+', '+t[2]+'</strong> is in the '+zn[t[3]]+'.</p><p class="mb-mine-links"><a class="btn" href="${rel}plant-now/">Plant now in '+t[1]+'</a><a href="${rel}frost-dates/'+t[0]+'/">'+t[1]+'’s full calendar</a></p>';m.hidden=false;
 show(tags[t[3]]||"all")})();</script>
+${guideHtml}
+${wxHtml}
+${aheadHtml}
 ${ad("month-mid")}
 ${c.articles.length ? `<h2>Read next</h2>\n${articleCards(rel, c.articles.filter(s => articleBySlug[s]).map(s => articleBySlug[s]))}` : ""}
 <nav class="cm-pager" aria-label="Other months"><a href="../${monthSlug(prev.m)}/">←&nbsp;${P.MONTHS_LONG[prev.m - 1]}</a><a href="../">All months</a><a href="../${monthSlug(next.m)}/">${P.MONTHS_LONG[next.m - 1]}&nbsp;→</a></nav>`,
@@ -1907,7 +1945,7 @@ ${c.articles.length ? `<h2>Read next</h2>\n${articleCards(rel, c.articles.filter
 <section class="hero pnf-hero" id="pn-hero"><p class="eyebrow">Plant now</p><h1>What can I plant this week?</h1>
 <p class="lede">It depends on your town: the coast and the east side can be weeks apart. Pick yours to see what goes in now and what's next.</p></section>
 <section class="pnf-pick" id="pn-pick">${townBox({ id: "pn-box", rel, button: "Show my dates" })}
-<p class="pnf-popular"><span>Or open a town calendar:</span> ${picks.map(x => `<a href="${rel}frost-dates/${x.slug}/">${esc(placeLabel(x))}</a>`).join("")}</p></section>
+<p class="pnf-popular"><span>Or pick a town:</span> ${picks.map(x => `<a href="${rel}frost-dates/${x.slug}/" data-slug="${x.slug}">${esc(placeLabel(x))}</a>`).join("")}</p></section>
 <div id="pn-out" hidden data-photos="${withPhoto.join(" ")}"></div>
 <script>window.RainlineJobs=${JSON.stringify(JOBS)};</script>`,
     scripts: ["data.js", "plan.js", "render.js", "near.js", "townbox.js", "plantnow.js"]
@@ -2022,6 +2060,7 @@ ${avatar(rel, id, "avatar-xl")}
 <p class="profile-role">${esc(a.role)}</p>
 <ul class="profile-facts">${a.facts.map(f => `<li>${esc(f)}</li>`).join("")}</ul>
 <p>${esc(a.bio)}</p>
+${a.results ? resultsGallery(rel, a.results) : ""}
 </div></section>
 <section class="author-reads"><h2 id="articles">Articles by ${esc(first)} <span class="count">${mine.length}</span></h2>
 ${articleCards(rel, mine)}</section>
@@ -2046,7 +2085,13 @@ write("../", "privacy/index.html", layout({
 ${CONFIG.goatcounterCode ? `<h2>Visitor statistics</h2>
 <p>We count page views with GoatCounter, which doesn't use cookies or track you across sites. It records the page, referring site, browser type, screen size and country, never personal information.</p>` : ""}
 <h2>Hosting and fonts</h2>
-<p>The site is hosted on GitHub Pages, which may log visitor IP addresses for security. Fonts are served from this site, not from a third-party font service.</p>
+<p>The site is hosted on Cloudflare Pages. Like any web host, Cloudflare handles your IP address and basic browser details to deliver pages and protect the site from attacks. Fonts are served from this site, not from a third-party font service.</p>
+<h2>Email to us</h2>
+<p>If you email us, we keep your message and address only to answer you and to track the correction or suggestion you sent. We don't add you to any list and don't share your address.</p>
+<h2>Children</h2>
+<p>Rainline Garden is a general gardening site and isn't directed at children under 13. We don't knowingly collect information from children.</p>
+<h2>Changes to this policy</h2>
+<p>If how the site handles information changes, for example a new service or a sign-up form, we'll update this page and the date at the top.</p>
 <h2>Contact</h2>
 <p>Questions about this policy: <a href="mailto:${CONFIG.contactEmail}">${CONFIG.contactEmail}</a>.</p></div>`
 }), "0.2");
@@ -2060,6 +2105,19 @@ write("../", "contact/index.html", layout({
 <p class="lede">Questions, corrections and suggestions are welcome.</p></section>
 <div class="prose"><p>Email <a href="mailto:${CONFIG.contactEmail}">${CONFIG.contactEmail}</a>. We read every message and usually answer within a few days.</p>
 <p>The most helpful notes are corrections: a frost date that doesn't match your experience, a town we should add, or advice that doesn't fit your part of the Northwest. If you write about a date, tell us your town or ZIP code so we can check it against the nearest weather station.</p>
+<h2>Corrections</h2>
+<p>When a reader reports a date that looks wrong, we look up the town's NOAA weather station, compare its 1991–2020 normals with what the page shows, and check the planting timing against regional extension guidance. If the page is wrong, we fix it. If the date is right but your garden runs earlier or later, we'll explain why: a sheltered yard, a hillside or a cold pocket can be a week or two off the nearest station.</p>
+<h2>Good things to include</h2>
+<ul>
+<li>Your town or ZIP code, so we can check the right weather station.</li>
+<li>The page you were on, or a copy of its address.</li>
+<li>What you expected to see and what you saw instead.</li>
+<li>For a plant problem, a photo helps more than a long description.</li>
+</ul>
+<h2>What we can't do</h2>
+<p>We can't visit gardens or identify a plant disease for certain from an email. For a lab diagnosis or a soil test, your county's OSU, WSU or University of Idaho Extension office is the best place to ask; many have Master Gardener help lines.</p>
+<h2>Who you're writing to</h2>
+<p>Messages are read by the people who write the site. See <a href="../about/">About</a> for who they are and how the site is made.</p>
 <p>For advertising or partnership questions, use the same address.</p></div>`
 }), "0.3");
 
@@ -2077,6 +2135,12 @@ write("../", "terms/index.html", layout({
 <p>You're welcome to use the calendars, garden plan and guides for your own garden, and to link to any page. Please don't copy the site's text, illustrations or data tables wholesale onto another website.</p>
 <h2>Links and ads</h2>
 <p>The site shows ads and links to other websites, including affiliate links to stores. We don't control those sites and aren't responsible for their content or products. See the <a href="../privacy/">privacy policy</a> for how ads and links use cookies.</p>
+<h2>Plant safety</h2>
+<p>Some garden plants, including several flowers and the leaves of some vegetables, are toxic to people or pets. Make sure you know what a plant is before you eat it, and check before planting where children or animals play. Follow the label on any product you use in the garden.</p>
+<h2>Accuracy and corrections</h2>
+<p>We check dates against NOAA weather normals and regional extension guidance, and we fix mistakes when we find them or readers report them. If something looks wrong, please <a href="../contact/">tell us</a>.</p>
+<h2>Product links</h2>
+<p>Some links go to stores, such as Amazon search results for a seed variety or tool.${CONFIG.amazonTag ? " We may earn a small commission if you buy, at no extra cost to you." : ""} Store links never decide what we recommend.</p>
 <h2>Changes</h2>
 <p>We may update these terms; the date above shows the latest version. Questions: <a href="mailto:${CONFIG.contactEmail}">${CONFIG.contactEmail}</a>.</p></div>`
 }), "0.2");
@@ -2084,7 +2148,7 @@ write("../", "terms/index.html", layout({
 /* 404 (absolute links because it can be served at any path) */
 const B = CONFIG.basePath;
 write(B, "404.html", layout({
-  rel: B, canonical: "", current: null,
+  rel: B, canonical: null, current: null, noindex: true,
   title: "Page not found | Rainline Garden", description: "That page doesn't exist.",
   body: `<section class="hero prose"><h1>That page doesn't exist.</h1><p class="lede">Try the <a href="${B}">home page</a>, the <a href="${B}what-to-grow/">plant quiz</a>, the <a href="${B}when-to-plant/">plant guides</a> or the <a href="${B}frost-dates/">town calendars</a>.</p></section>
 <script>/* Old one-plant-one-town pages were folded into the plant guides; send visitors to the guide with their town picked. */

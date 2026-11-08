@@ -20,6 +20,18 @@
   function url(id, slug) { return R.cropUrl(id, slug, base); }
 
   var box = RainlineTownBox(boxEl, { onPick: function (p) { show(p); window.scrollTo(0, 0); } });
+  // Popular-town buttons: switch Plant now (and the saved town in the menu bar) to that town instead of leaving the page.
+  // Without JavaScript they still open the town's calendar.
+  pick.querySelectorAll(".pnf-popular a[data-slug]").forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      var pl = P.findPlace(D, a.getAttribute("data-slug"));
+      if (!pl) return;
+      e.preventDefault();
+      try { localStorage.setItem("rainline-place", pl.slug); localStorage.setItem("rainline-place-name", pl.slug + "|" + pl.city + ", " + pl.state); } catch (err) { /* private mode */ }
+      if (window.RainlineHeadTown) window.RainlineHeadTown();
+      show(pl); window.scrollTo(0, 0);
+    });
+  });
 
   function show(place, example) {
     var p = P.plan(D, place), n = P.nowList(p, today), f = p.frost, slug = place.slug, city = place.city;
