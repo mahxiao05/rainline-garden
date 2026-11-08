@@ -210,10 +210,10 @@
   function sp(id) { return SPACE[id] || 12; }
   // Plants per 1 ft square from published square-foot gardening charts (Square Foot Gardening Foundation,
   // Phipps Conservatory, WSU and NC State Extension), where they differ from the plant's own spacing.
-  // Extra-large crops are one per square in the square-foot method; tomatoes staked, peas/pole beans/cucumbers on a trellis.
+  // Extra-large crops are one per square in the square-foot method; peas/pole beans/cucumbers on a trellis. Tomatoes keep a 2 x 2 ft spot (caged, as most gardeners grow them; matches the tomato page).
   var SQ = { peas: 8, "pole-beans": 8, radishes: 16, lettuce: 4, chard: 4, parsley: 4, garlic: 9, cucumbers: 2,
-    kale: 1, broccoli: 1, cabbage: 1, cauliflower: 1, collards: 1, "brussels-sprouts": 1, peppers: 1, eggplant: 1, tomatoes: 1 };
-  var SQ_NOTE = { peas: "on a trellis", "pole-beans": "on a trellis", cucumbers: "on a trellis", tomatoes: "staked" };
+    kale: 1, broccoli: 1, cabbage: 1, cauliflower: 1, collards: 1, "brussels-sprouts": 1, peppers: 1, eggplant: 1 };
+  var SQ_NOTE = { peas: "on a trellis", "pole-beans": "on a trellis", cucumbers: "on a trellis" };
   // Otherwise the square-foot rule: 3 in or closer = 16, 4 in = 9, 6 in = 4, 12 in = 1.
   function perSq(id) { return SQ[id] || (sp(id) <= 17 ? Math.min(16, Math.max(1, Math.pow(Math.floor(12 / sp(id)), 2))) : 0); }
   function spot(id) { return SQ[id] || sp(id) <= 17 ? 1 : Math.round(sp(id) / 12); }
