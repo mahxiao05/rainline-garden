@@ -2248,7 +2248,8 @@ main [id] { scroll-margin-top: 84px; }
 .gp-week .gp-rn-more { margin: .8rem 0 0; font-size: .95rem; }
 /* Frost box: four tiles, a countdown and the calendar alerts */
 .gp-frost { max-width: 52rem; margin-top: 1.5rem; padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--sky); }
-.gp-tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }
+/* Scoped to the frost box: the planner's "browse by group" wrapper is also .gp-tiles. */
+.gp-frost .gp-tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }
 .gp-tile { display: flex; flex-direction: column; gap: 1px; padding: 10px 12px; border-radius: 10px; background: var(--paper); border: 1px solid var(--line); min-width: 0; }
 .gp-tile-k { font-size: .8rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; }
 .gp-tile-v { font-family: var(--serif); font-size: 1.45rem; line-height: 1.15; color: var(--fir); white-space: nowrap; }
@@ -2296,7 +2297,7 @@ details.gp-card .gp-past { margin: 0; flex: none; font-size: .8rem; padding: 2px
 .gp-reset-row .gp-reset { color: var(--hard); font-weight: 700; margin-right: 6px; }
 @media (max-width: 560px) {
   .gp-title-row { margin-top: 1.5rem; }
-  .gp-tiles { grid-template-columns: 1fr 1fr; }
+  .gp-frost .gp-tiles { grid-template-columns: 1fr 1fr; }
   .gp-frost, .gp-journal > .gp-sec { padding: 14px; }
   .gp-tile-v { font-size: 1.3rem; }
   .gp-frost .gp-alert-row .btn { width: 100%; }
@@ -2305,7 +2306,7 @@ details.gp-card .gp-past { margin: 0; flex: none; font-size: .8rem; padding: 2px
 @media print {
   .gp-sharemenu, .gp-reset-row, .gp-journal, .gp-frost .gp-alert-row, .gp-cards-head .linkish, .gp-card-more, details.gp-card > summary::after { display: none !important; }
   .gp-cards-head + .station { display: none; }
-  .gp-tiles { grid-template-columns: repeat(4, 1fr); }
+  .gp-frost .gp-tiles { grid-template-columns: repeat(4, 1fr); }
 }
 
 /* My garden plan colours (option A, 2026-11): solid job tags, lime progress and due-soon tint, Right now + frost box as night cards with lime. */
