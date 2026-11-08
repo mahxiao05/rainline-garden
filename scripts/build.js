@@ -137,7 +137,7 @@ const GARDEN_NOTES = require("./garden-notes.js");
 // A first-hand note from an author's own garden (scripts/garden-notes.js), with their photo and a link to their page.
 const gardenNote = (rel, n) => { const a = AUTHORS[n.author], first = a.name.split(" ")[0];
   return `<aside class="gnote">${avatar(rel, n.author, "avatar-sm")}<div><p class="gnote-k">${esc(n.label || `From ${first}'s garden`)} · ${esc(n.where)}</p>
-<blockquote><p>${esc(n.text)}</p></blockquote><p class="gnote-by"><a href="${rel}${authorPath(n.author)}">${esc(a.name)}</a>, ${esc(a.role.toLowerCase())}</p></div></aside>`; };
+<blockquote><p>${esc(n.text)}</p></blockquote><p class="gnote-by"><a href="${rel}${authorPath(n.author)}">${esc(a.name)}</a></p></div></aside>`; };
 const notesFor = (key, val, rel) => GARDEN_NOTES.filter(n => (n[key] || []).includes(val)).map(n => gardenNote(rel, n)).join("\n");
 // Drop a square photo at assets/img/authors/{id}.jpg and it replaces the initials badge.
 const authorPhoto = id => fs.existsSync(path.join(ROOT, "assets/img/authors", id + ".jpg")) ? `assets/img/authors/${id}.jpg` : null;
