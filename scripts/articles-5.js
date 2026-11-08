@@ -15,6 +15,7 @@ module.exports = [
     body: ({ frost, link }) => {
       const pdx = frost("portland-or"), sea = frost("seattle-wa"), spo = frost("spokane-wa"), boi = frost("boise-id"), bend = frost("bend-or");
       return `
+<p>If you're new to gardening here, or new to the region, the year can feel confusing. People talk about planting in February, harvesting in December and doing nothing in August except watering. Once you see the pattern, though, it makes sense, and it's a big part of what makes gardening in the Northwest so rewarding.</p>
 <p>A Northwest garden doesn't run on one calendar. The same week can be planting time in Seattle and still frost season in Bend, and a crop that thrives in April can sulk in July. Knowing what each season does to your plants, and what it asks of you, is most of the skill. This guide walks through the year and points to the detailed articles for each job.</p>
 <h2>How long your season really is</h2>
 <p>The frost-free season, from the typical last spring frost to the typical first fall frost, is the backbone of every planting date. From NOAA records it runs about ${sea.season} days in Seattle and ${pdx.season} in Portland, but about ${boi.season} in Boise, ${spo.season} in Spokane and only ${bend.season} around Bend and Redmond. That gap is why one region's advice can be wrong in another. Our article on <a href="${link("articles/frost-dates-explained/")}">what your last frost date really means</a> explains how to read these numbers, and your <a href="${link("frost-dates/")}">town calendar</a> has your own.</p>
@@ -65,6 +66,7 @@ module.exports = [
     crops: ["tomatoes", "summer-squash", "kale", "lettuce"],
     published: "2026-11-08",
     body: ({ link }) => `
+<p>If you've ever tried composting and ended up with a slimy, smelly heap in February, or a dry pile of leaves that looked exactly the same in August as it did in October, you're in good company. Composting is simple in principle, but the Northwest's weather has a way of tripping people up.</p>
 <p>Compost is decomposed plant material that feeds soil life, loosens clay, helps sandy soil hold water and slowly releases nutrients. Almost every bed on this site starts with "mix in an inch or two of compost." Making your own is cheap and uses up kitchen scraps and garden waste, but the Northwest's weather makes it a little different from the textbook. West of the Cascades, piles get soaked all winter. East of the Cascades, they dry out all summer.</p>
 <h2>Greens, browns, air and water</h2>
 <p>A compost pile needs four things in balance:</p>
@@ -82,6 +84,10 @@ module.exports = [
 <li>Pet waste from dogs and cats, and charcoal ashes.</li>
 <li>Roots of spreading weeds like bindweed and quackgrass, which can resprout.</li>
 </ul>
+<h2>Choosing a bin</h2>
+<p>You don't need anything fancy, and the right choice depends mostly on how much material you have.</p>
+<p>A simple open bin made of wire fencing, pallets or boards, about 3 feet on each side, handles a typical yard's leaves and garden waste and is easy to turn with a fork. Many cities and counties in the region sell or give away plastic bins with lids, which keep rain off and look tidier in a small yard. Tumblers, barrels on a stand that you rotate, are easy to turn and keep rats out, but they hold less than people expect and work best when filled in batches rather than a little at a time.</p>
+<p>If you don't have a yard at all, a worm bin is worth a look. A plastic tote with holes drilled for air, some shredded newspaper bedding and a pound or so of red wiggler worms (not garden earthworms) will turn kitchen scraps into rich worm castings under a sink or on a balcony. Keep it out of hard frost and summer heat, and don't overfeed it.</p>
 <h2>West of the Cascades: keep the rain off</h2>
 <p>A wet Northwest winter can turn an open pile into a cold, soggy, smelly mass. The fix is simple:</p>
 <ul>
@@ -94,6 +100,7 @@ module.exports = [
 <p>In the drier summers of eastern Oregon and Washington and southern Idaho, the opposite happens: piles dry out and stop. Water the pile when you water the garden, soak dry browns before adding them, and choose a shady or partly shaded spot. A closed bin or a covered pile holds moisture far better than an open heap.</p>
 <h2>Turning and timing</h2>
 <p>Turning the pile with a fork every few weeks mixes in air and speeds things up, and a well-tended pile can be ready in a few months. A pile you never turn still becomes compost, but it can take a year or more. Either works; it's a trade between your time and the pile's.</p>
+<p>A big, well-balanced pile can heat up to 130 to 150°F in the middle within a few days of building it. That's hot composting, and it's fast, and it kills most weed seeds and many disease organisms. It needs a pile at least about 3 feet across and high, built all at once with a good mix of greens and browns, and turned when it starts to cool. Most home piles, built a bucket at a time, never get that hot. That's cold composting: slower, and you shouldn't count on it to kill weed seeds, but it still makes perfectly good compost.</p>
 <p>Compost is ready when it's dark, crumbly and smells like earth, and you can't pick out most of what went in. Sift out any lumps and toss them back in the bin to finish.</p>
 <h2>Fixing a pile that isn't working</h2>
 <ul>
@@ -115,6 +122,7 @@ module.exports = [
     crops: ["basil", "parsley", "thyme", "rosemary", "oregano", "sage", "chives", "mint", "cilantro", "dill"],
     published: "2026-11-08",
     body: ({ link }) => `
+<p>There's no easier way to make your cooking taste better than walking outside with a pair of scissors. A few pots of herbs by the back door save you buying sad little plastic packs at the store, and in a good summer you'll have far more than you can use fresh.</p>
 <p>Most kitchen herbs grow better the more you cut them, as long as you cut them the right way. A basil plant picked properly all summer turns bushy and keeps going; one that's left alone grows tall, flowers and quits. This guide covers how to harvest each common herb so it keeps producing, and how to save the extra before frost. For when to plant each one in your town, see the <a href="${link("when-to-plant/herbs/")}">herbs planting guide</a>.</p>
 <h2>When to pick</h2>
 <ul>
@@ -144,6 +152,8 @@ module.exports = [
 <li><strong>Parsley, cilantro, chives and dill:</strong> chop, pack into ice cube trays, cover with water or oil and freeze. Pop out the cubes and store them in a freezer bag.</li>
 <li><strong>Any herb:</strong> a thin layer of chopped herbs in a flat freezer bag lets you snap off what you need.</li>
 </ul>
+<h2>Herb salt, butter and vinegar</h2>
+<p>A few old-fashioned methods are worth trying with the last of the harvest. For herb salt, blend a packed cup of fresh herbs (rosemary, sage, thyme and parsley are a good mix) with about half a cup of coarse salt, spread it on a tray to dry for a few days, then store it in a jar. For herb butter, mix finely chopped herbs into soft butter, roll it into a log in parchment and freeze it; slice off a coin whenever you need it. Herb vinegar, made by steeping clean sprigs of tarragon, thyme or rosemary in white wine vinegar in the fridge for a couple of weeks, keeps the flavor for salad dressings all winter. Always use fresh, clean, dry herbs, and keep homemade herb oils in the fridge and use them within a few days, since garlic and herbs in oil at room temperature can grow harmful bacteria.</p>
 <h2>Keeping fresh herbs</h2>
 <p>Treat cut basil, parsley and cilantro like flowers: trim the stems and stand them in a glass of water. Basil stays happier on the counter than in the fridge. Parsley and cilantro last longer in the fridge with a loose bag over the top. Woody herbs keep well wrapped in a slightly damp paper towel in the fridge.</p>
 <p>Herbs are also one of the easiest things to grow in pots by the kitchen door; see <a href="${link("articles/container-vegetable-gardening/")}">growing vegetables in containers</a> for soil and watering tips.</p>`

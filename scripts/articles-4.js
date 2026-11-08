@@ -11,6 +11,7 @@ module.exports = [
     crops: ["blueberries", "garlic", "rhubarb", "lettuce"],
     published: "2026-10-23",
     body: ({ link, fig }) => `
+<p>If you have a big tree in your yard, you know the routine. Sometime in late October you rake for an afternoon, fill the yard-waste bin, rake some more, and wonder where you'll put the rest. Here's a better idea: keep them.</p>
 <p>Every fall, Northwest yards and streets fill with maples, oaks and alders dropping their leaves, and plenty of them end up in yard-waste bins. That's a lot of free organic matter leaving the garden. With a little patience, those same leaves turn into leaf mold: a dark, crumbly, earthy-smelling material that holds water like a sponge and makes heavy soil easier to work.</p>
 <p>Leaf mold isn't the same as compost. Compost is made mostly by bacteria, needs a mix of greens and browns, and works best when it heats up. Leaf mold is made slowly by fungi, needs nothing but leaves and water, and never has to be turned. Our wet, mild winters west of the Cascades are close to ideal for it.</p>
 <h2>Which leaves to use</h2>
@@ -28,6 +29,11 @@ module.exports = [
 <li><strong>Wait.</strong> Shredded leaves give a rough, usable leaf mold in about 6 to 12 months. Whole leaves take one to two years to become fine, dark and crumbly. You don't need to turn the pile, though mixing it once in spring speeds things up a little.</li>
 </ol>
 <p>A heap of leaves left in a cold, dry corner can sit unchanged for years. If yours isn't breaking down, it's almost always too dry.</p>
+<p>The opposite problem is rarer but does happen west of the Cascades: a pile of whole, unshredded leaves can pack down into a soggy, airless mat that smells sour instead of earthy. Fork it over once to let some air in, mix in a few armfuls of drier leaves or a little straw, and it will sort itself out.</p>
+<h2>Will oak leaves make my soil acidic?</h2>
+<p>It's a common worry, and mostly a myth. Fresh oak leaves are a bit acidic, but as they break down into leaf mold the result ends up much closer to neutral, and a few inches a year won't noticeably change the pH of your garden soil. Leaf mold from any mix of leaves is safe to use on vegetable beds. If you're curious about your soil, a test tells you far more than the type of leaves on the pile; our <a href="${link("articles/soil-ph-and-lime/")}">soil pH guide</a> explains how.</p>
+<h2>Need more leaves?</h2>
+<p>Once you start making leaf mold, you'll probably want more than your own yard produces. Neighbors are often happy to let you take their bagged leaves, and some will gladly drop them off. Leaves swept from quiet residential streets are usually fine; skip anything from busy roads, parking lots or yards you know are sprayed. If a bag contains a lot of trash, twigs or walnut leaves, pass on it.</p>
 ${fig(1)}
 <h2>Where to use it</h2>
 <ul>
@@ -49,6 +55,7 @@ ${fig(1)}
     crops: ["apples", "pears", "cherries", "plums", "peaches"],
     published: "2026-10-23",
     body: ({ link, fig }) => `
+<p>Maybe you inherited an apple tree with your house. It's tall, tangled and full of upright shoots, and every fall it drops a few small, spotty apples you can't reach. Or maybe you planted a young pear a couple of years ago and aren't sure whether to cut anything at all. Either way, late winter is your chance, and it's less intimidating than it looks.</p>
 <p>Apples and pears are pruned while they're dormant, after the leaves fall and before the buds start to swell. A bare tree is easy to read: you can see every branch, where it's crowded and where it's heading. A little pruning each winter keeps a tree a size you can pick from, lets light and air into the middle, and helps the fruit ripen and stay healthy through our damp springs.</p>
 <h2>When to prune</h2>
 <p>Late winter is best, roughly February to early March. Pruning in fall or early winter isn't harmful in mild west-side gardens, but cuts made just before a hard freeze can be damaged by the cold, so most growers wait until the worst of winter has passed. East of the Cascades and in the high desert, wait until the severe cold is over, then finish before the buds open.</p>
@@ -76,6 +83,14 @@ ${fig(1)}
 <h2>How much to take off</h2>
 <p>Take no more than about a quarter of the live wood in one winter. Heavy pruning doesn't shrink a tree; it triggers a forest of water sprouts the next summer and fewer flowers. An overgrown, neglected tree is best brought back over three winters, a third of the work each year.</p>
 <p>Look for fruiting spurs before you cut. On apples and pears, most fruit grows on short, stubby, knobbly twigs an inch or two long, often on wood that's two years or older. Leave them. Plump, fuzzy buds at the tips of the spurs are flower buds; slim, pointed buds will make leaves.</p>
+<h2>Your first session, step by step</h2>
+<p>If you're standing in front of a tree feeling unsure, try this. First, walk all the way around it and just look for a few minutes. Then remove everything that's clearly dead or broken; that alone often makes the tree easier to read. Next, take out the suckers at the base and the most obvious water sprouts. Step back again. Now pick out the two or three worst problems, such as a big branch growing into the center or two limbs rubbing, and deal with those. Stop there for this year. You'll learn more from watching how the tree responds next summer than from any amount of reading, and you can do a little more next winter.</p>
+<h2>A second, lighter trim in summer</h2>
+<p>Water sprouts always come back after winter pruning; it's the tree's response to losing wood. In early to mid summer, while they're still soft and green, you can rub or snap many of them off by hand. Removing them in summer, rather than waiting for winter, tends to slow the regrowth instead of encouraging it, and it lets more light reach the ripening fruit. It's a quick job: ten minutes with your hands and a pair of pruners.</p>
+<h2>Cleaning up</h2>
+<p>Pick up the prunings when you're done. Branches with cankers or fire blight should go in the yard-waste bin or the trash, not in your compost or a brush pile near the tree. Healthy twigs can be chipped for mulch or stacked in a corner as shelter for birds and beneficial insects.</p>
+<h2>Safety, and when to get help</h2>
+<p>Most home pruning accidents involve ladders. A three-legged orchard ladder is much steadier on soft ground than a regular stepladder; if you're on a stepladder, keep it fully open on level ground and don't reach past your shoulders. For big trees, branches you can't reach from the ground or a short ladder, or anything near power lines, hire a certified arborist. It's also worth asking whether they're familiar with fruit trees, since pruning for fruit is different from pruning a shade tree.</p>
 <h2>Young trees</h2>
 <p>For the first three or four years, pruning is mostly about shape. Most apples and pears are trained to a central leader: one main upright trunk with three or four well-spaced scaffold branches coming off it in a loose spiral, the lowest at about knee to waist height. Choose branches that leave the trunk at a wide angle, since narrow, V-shaped crotches split under fruit later. Our guide to <a href="${link("articles/planting-bare-root-fruit-trees/")}">planting bare-root fruit trees</a> covers the first cut at planting.</p>
 <h2>Why cherries, plums and peaches wait</h2>
@@ -130,6 +145,11 @@ ${fig(1)}
 <li><strong>Use the off-season.</strong> A <a href="${link("articles/winter-cover-crops/")}">winter cover crop</a> or a layer of compost between crops keeps the soil healthy, and its life works against soil-borne diseases.</li>
 <li><strong>Know your trouble spots.</strong> If one family has struggled in a bed, that's the one to move first.</li>
 </ul>
+<h2>What it looks like over four years</h2>
+<p>It's easier to see on paper. Say you have four raised beds, A to D, and start like this: tomatoes and squash in A, peas and beans in B, broccoli and kale in C, carrots, onions and garlic in D. The next year, everything slides one bed along: tomatoes in B, peas in C, broccoli in D, roots and onions in A. The year after that, tomatoes are in C, and so on. In year five, the tomatoes are back in A, which hasn't seen a tomato family plant for three full seasons.</p>
+<p>Real gardens are messier than that, and that's fine. Maybe you grow twice as many tomatoes as anything else, so the tomato family takes two beds. Maybe the garlic goes in the bed that's emptiest in October rather than the one the plan says. The rule that matters most is simple: don't put the same family in the same spot two years running, and try to give the tomato, cabbage and onion families the longest breaks, since they carry the most persistent soil problems.</p>
+<h2>Where perennials fit</h2>
+<p>Asparagus, rhubarb, strawberries and perennial herbs stay put for years, so give them their own beds outside the rotation. Strawberries are the exception worth planning for: they share verticillium wilt with the tomato family, so don't start a new strawberry bed where tomatoes or potatoes have grown recently, and move the patch every three or four years.</p>
 <h2>Write it down</h2>
 <p>The hardest part of rotation is remembering what grew where. A quick sketch of your beds with this year's crops, kept with your seed packets, solves it. When you're ready, the <a href="${link("my-garden/")}">garden planner</a> builds next year's planting dates for your town.</p>`
   },
@@ -144,6 +164,7 @@ ${fig(1)}
     body: ({ frost, link }) => {
       const pdx = frost("portland-or"), spo = frost("spokane-wa");
       return `
+<p>There's a moment every fall when you look at the garden and realize it's over. The tomato vines are black after a cold night, the squash leaves have collapsed, and the beans are hanging limp on the trellis. It's tempting to just shut the back door until March. But a few hours now makes next spring noticeably easier.</p>
 <p>The first fall frost usually reaches Portland around ${pdx.first} and Spokane around ${spo.first}. Once it does, the summer crops are done, and a few hours of work in the garden pays back in spring: fewer diseases, fewer slugs and soil that's ready to plant.</p>
 <p>Fall cleanup in the Northwest is mostly about one thing: the rain. West of the Cascades, bare soil spends the winter being pounded flat and washed of nutrients. East of the mountains the problem is cold and wind. Either way, the goal is the same. Clear out what spreads disease, leave what helps, and cover the ground.</p>
 <h2>Pull out anything that was sick</h2>
@@ -177,6 +198,10 @@ ${fig(1)}
 <li>Send off a soil test. Fall is a good time to add lime if a test says you need it, because it takes months to work.</li>
 <li>Write down what grew well and what didn't, while you still remember.</li>
 </ul>
+<h2>A realistic weekend plan</h2>
+<p>You don't have to do it all at once. If you only have one Saturday, do it in this order. First, pull and bag anything diseased, and dig up the last potatoes. Second, cover every empty bed with leaves, straw or compost. Third, drain the hoses and empty the pots that could crack. Everything else, from sharpening tools to cutting back perennials, can wait for a dry day in December or February. Those first three jobs are the ones that save you real trouble in spring.</p>
+<h2>Keep the compost going</h2>
+<p>Fall is the best time of year for the compost pile, because you suddenly have piles of browns (dry leaves) to balance the greens. Add healthy spent plants, chopped up, along with layers of leaves. West of the Cascades, cover the pile with a tarp or lid through winter so the rain doesn't turn it into a cold, soggy heap and wash the nutrients out. Our guide to <a href="${link("articles/composting-in-a-rainy-climate/")}">composting in a rainy climate</a> has more.</p>
 <p>And if there's still room in a bed, it isn't too late to plant <a href="${link("when-to-plant/garlic/")}">garlic</a>. It's the one crop that goes in just as everything else comes out.</p>`;
     }
   },
@@ -215,6 +240,11 @@ ${fig(1)}
 <h2>After planting</h2>
 <p>Stake only if the site is windy or the tree is top-heavy, with a loose, flexible tie, and remove the stake after a year. Many growers cut a young unbranched tree (a "whip") back to about knee to waist height at planting to encourage low branches; a branched tree only needs any damaged or crossing branches removed.</p>
 <p>The first summer is the hardest. A new tree has a small root system and needs a deep soaking about once a week through dry spells, especially in the long rainless stretch from July to September. In sunny eastern and high desert gardens, painting the trunk with white latex paint diluted half and half with water helps prevent winter sunscald.</p>
+<h2>Protect the trunk</h2>
+<p>Young bark is tempting to animals. Voles and mice chew it at ground level under mulch or grass, rabbits gnaw it in winter, and deer browse the new shoots and rub their antlers on young trunks in fall. A cylinder of hardware cloth or a plastic spiral trunk guard around the base protects against the small chewers; keep mulch pulled back from the trunk so voles don't have cover. Where deer are around, a cage of fencing a few feet out from the tree is the only thing that really works until it's tall enough to grow out of reach.</p>
+<h2>First-year worries</h2>
+<p>Bare-root trees often leaf out later than established trees, sometimes weeks later. As long as a thumbnail scratch on a twig shows green underneath, the tree is alive and just getting its roots settled. Don't overwater a tree that hasn't leafed out yet; soggy soil is more likely to kill it than dryness in early spring.</p>
+<p>Watch for shoots coming up from below the graft union or from the roots. These are the rootstock, not the variety you bought, and they'll take over if you let them. Cut them off flush as soon as you see them.</p>
 <p>Expect a few years before a real harvest: often two to four for dwarf apples and longer for full-size trees. Picking off the first fruits in the first year or two lets the tree put its energy into roots and branches.</p>`
   },
   {
@@ -226,6 +256,7 @@ ${fig(1)}
     crops: ["raspberries"],
     published: "2026-10-23",
     body: ({ link, fig }) => `
+<p>If you've ever picked raspberries warm off the cane on a July afternoon, you know why people grow them. Store-bought raspberries are expensive, fragile and often bland. Homegrown ones are none of those things, and a single short row can give you more than you can eat fresh.</p>
 <p>Raspberries love the Northwest. Cool nights, mild summers and long days suit them so well that northwest Washington grows a large share of the country's red raspberries. A home patch planted well can produce for ten years or more.</p>
 <p>The two things that decide success are drainage and pruning. Get those right and raspberries are one of the most rewarding fruits you can grow here.</p>
 <h2>Summer-bearing or fall-bearing?</h2>
@@ -246,9 +277,13 @@ ${fig(1)}
 <p><strong>Summer-bearing:</strong> right after harvest, cut every cane that just fruited down to the ground. They're easy to spot: grayer, with dried fruiting stems. Leave the green new canes. In late winter, thin those to the strongest canes, about 4 to 6 inches apart, and trim tips that have grown above the trellis.</p>
 <p><strong>Fall-bearing:</strong> in late winter, cut all canes to the ground. You'll get one fall crop on the new growth, with no sorting of old and new canes. (You can instead leave the lower parts of the canes for a small early-summer crop too, but most home growers prefer the simple mow-down.)</p>
 ${fig(1)}
+<h2>Picking</h2>
+<p>A ripe raspberry slides off its core with the lightest tug. If you have to pull, it isn't ready; give it another day. Pick every day or two at the peak of the season, in the cool of the morning when you can, and use a shallow container so the berries on the bottom don't get crushed. Raspberries don't keep long. Eat them within a day or two, or freeze them: spread them in a single layer on a tray, freeze until hard, then tip them into bags. That way they stay separate instead of freezing into a block.</p>
 <h2>Feeding, watering and pests</h2>
 <p>Spread compost along the row each spring. Raspberries are shallow-rooted, so they need steady water from flowering through harvest: a soaker hose or drip line under mulch is ideal, and keeping the leaves dry helps prevent fruit mold.</p>
 <p>The main fruit pest is spotted wing drosophila, a tiny fruit fly that lays eggs in ripening berries. Pick every day or two during harvest, don't leave overripe or fallen berries in the patch, and refrigerate what you pick straight away. Birds are the other thieves; light netting over the row helps in heavy years.</p>
+<h2>When an old patch slows down</h2>
+<p>Even a well-kept patch gets crowded and less productive after many years, or picks up root rot or virus problems that make canes weak and berries crumbly. When that happens, the best answer is usually a fresh start: buy new, certified disease-free plants and put them in a new, well-drained spot rather than replanting into the old row. Taking suckers from a tired patch tends to bring its problems along.</p>
 <p>See the <a href="${link("when-to-plant/raspberries/")}">raspberry planting guide</a> for planting dates in your town.</p>`
   },
   {
@@ -261,12 +296,14 @@ ${fig(1)}
     published: "2026-10-23",
     gardenPhoto: "janelle-red-cabbage-bed",
     body: ({ link, fig }) => `
+<p>You go out to cut a head of broccoli for dinner, rinse it at the sink, and a small green caterpillar floats to the top of the water. Or you pick Brussels sprouts in November and find every one of them packed with gray aphids. Almost everyone who grows cabbage-family crops has a story like this.</p>
 <p>Kale, broccoli, cabbage and their relatives are some of the easiest crops in a Northwest garden, and two pests know it. Green caterpillars chew holes through the leaves in summer, and gray aphids pack the undersides of leaves and the inside of Brussels sprouts by fall. Both are easy to manage if you catch them early.</p>
 <h2>Cabbage worms</h2>
 <p>If small white butterflies are flitting around your garden in summer, they're almost certainly cabbage whites, and they're laying eggs on your cabbage-family plants. The eggs hatch into velvety green caterpillars that match the leaves so well you'll usually see the damage first: ragged holes, chewed edges and small dark green droppings in the leaf joints and broccoli heads. Cabbage loopers, pale green caterpillars that arch their backs as they move, cause the same kind of damage.</p>
+<p>Cabbage whites go through several generations a year, from spring into early fall, so a planting that was clean in June can be covered in caterpillars by August. You may also find small, pale green caterpillars that wriggle wildly and drop on a silk thread when you touch them. Those are diamondback moth larvae. They make many small holes rather than big ones, and the same steps below control them.</p>
 <p><strong>What works:</strong></p>
 <ul>
-<li><strong>Row cover from day one.</strong> A lightweight fabric row cover laid over the plants at planting and tucked in at the edges keeps the butterflies from ever laying eggs. Cabbage-family crops don't need bees to pollinate them, so the cover can stay on all season. This one step prevents most of the problem.</li>
+<li><strong>Row cover from day one.</strong> A lightweight fabric row cover laid over the plants at planting and tucked in at the edges keeps the butterflies from ever laying eggs. Cabbage-family crops don't need bees to pollinate them, so the cover can stay on all season. This one step prevents most of the problem. Leave plenty of slack, or support it on hoops, so the plants can grow underneath, and seal the edges with soil or boards. A single gap is enough for a butterfly to get in, and a covered bed with a caterpillar inside is worse than no cover at all, because the cover also keeps out the birds and wasps that would have eaten it. Lift the cover now and then to check.</li>
 <li><strong>Look and pick.</strong> Check the undersides of leaves and the centers of plants once or twice a week. Squash the caterpillars and the tiny pale yellow, bullet-shaped eggs.</li>
 <li><strong>Bt if needed.</strong> Sprays of Bt (<em>Bacillus thuringiensis</em>, kurstaki strain) are a bacterium that only affects caterpillars that eat treated leaves. It's widely used by organic growers. Spray the leaf undersides, and reapply after rain.</li>
 </ul>

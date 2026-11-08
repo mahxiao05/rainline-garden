@@ -24,10 +24,11 @@ module.exports = [
       const pdx = frostAt(D, P, "portland-or"), oly = frostAt(D, P, "olympia-wa"), bend = frostAt(D, P, "bend-or"), sea = frostAt(D, P, "seattle-wa");
       return `
 <p>Almost every planting chart is built around one number: your last frost date. Seed packets say "sow 2 weeks after last frost" and "start indoors 6 weeks before last frost." But that date is easy to misread, and the misreading is how a lot of tomato plants die in May.</p>
+<p>Maybe you've been there. You looked up your frost date, waited until it had safely passed, planted your tomatoes and basil on a warm weekend, and woke up a week later to blackened leaves. You didn't do anything wrong, exactly. You just trusted a number that was never meant to be a guarantee.</p>
 <h2>It's an average, not a deadline</h2>
 <p>The frost dates on Rainline Garden come from NOAA's U.S. Climate Normals, which summarize 30 years of daily temperature records (1991 to 2020) at official weather stations. For each station, NOAA works out the odds of a freeze, meaning 32°F or colder, after each day in spring.</p>
 <p>The date most charts call the "last frost date" is the median. In half of years the last spring freeze comes before it, and in half of years it comes after. Planting tender crops on that exact day is a coin flip.</p>
-<p>That's why Rainline Garden also shows a safer date: the day after which there's only a 10% chance of another freeze. At Portland International Airport, for example:</p>
+<p>That's why Rainline Garden also shows a safer date: the day after which there's only a 10% chance of another freeze. Put simply, if you plant on that date, you'd expect to get caught by a frost about one spring in ten. At Portland International Airport, for example:</p>
 <ul>
 <li><strong>Median last freeze:</strong> ${pdx.median}</li>
 <li><strong>Only a 10% chance of a freeze after:</strong> ${pdx.safe}</li>
@@ -41,8 +42,15 @@ module.exports = [
 <li><strong>Redmond, for the Bend area:</strong> ${bend.median}</li>
 </ul>
 <p>Your own yard may run earlier or later than the nearest station. A low spot at the bottom of a slope tends to be colder; a bed against a south-facing wall in the city tends to be warmer.</p>
+<p>The Olympia number surprises a lot of people. The airport sits on an open, low prairie south of town, away from the warming effect of Puget Sound, and on clear spring nights cold air settles there. Seattle's airport is closer to the water and surrounded by a big city, both of which keep nights milder. Many towns have a story like this, which is why we show you the station your dates come from.</p>
+<h2>Find out how your yard compares</h2>
+<p>A minimum-maximum thermometer costs about the same as a bag of potting soil, and it's the best way to learn your own garden. Put it in the vegetable bed at about plant height, out of direct sun, and check it each morning through spring. After a few weeks, compare your lows to the forecast and the nearest station. If your yard runs a few degrees colder, push your planting dates later. If it runs warmer, you've earned a head start. Write it down, and next spring you won't have to guess.</p>
 <h2>Frost can form above 32°F</h2>
 <p>Official air temperatures are measured about five feet above the ground. On clear, still nights the ground and the leaves of low plants lose heat fast and can be several degrees colder than that. So a forecast low of 35°F can still leave frost on your lettuce. When the forecast is in the mid-30s, cover tender plants anyway.</p>
+<h2>Not all freezes are equal</h2>
+<p>Weather forecasters sometimes talk about a light freeze, a moderate freeze and a hard (or severe) freeze. Roughly, a light freeze is 29 to 32°F, which kills tender plants like basil, beans and tomatoes but barely bothers peas or kale. A moderate freeze, around 25 to 28°F, damages many leafy crops and fruit blossoms. A hard freeze, 24°F and below, does serious damage to most plants that aren't fully hardy. When you see a frost advisory or freeze warning, the number in the forecast tells you what to protect.</p>
+<h2>Don't forget the fall date</h2>
+<p>The first fall frost works the same way, in reverse. The typical date is a 50/50 point, so in half of years frost arrives earlier. At Portland airport the typical first fall freeze is around ${pdx.fall}; in Bend it's around ${bend.fall}. That's the date to count back from when you plan fall crops, and the date to keep in mind when your tomatoes are still green in September. Frost often comes on the first clear, calm night after a cold front, so watch for those.</p>
 <h2>Frost-free doesn't mean warm enough</h2>
 <p>The last frost date only tells you when freezing becomes unlikely. Tomatoes, peppers, basil, beans and squash also need warm soil and mild nights, which in the Northwest often arrive weeks later. That's why Rainline Garden's planting windows for warm crops start after the frost date, not on it. Read more in <a href="${link("articles/soil-temperature/")}">why to plant by soil temperature</a>.</p>
 <h2>How to use your dates</h2>
@@ -66,7 +74,8 @@ module.exports = [
     body: ({ D, P, link }) => {
       const tom = win(D, P, "portland-or", "tomatoes");
       return `
-<p>Seedlings grown on a windowsill or under lights have lived an easy life: steady temperatures, no wind and gentle light. Move them straight into the garden and many will scorch, wilt or stall for weeks. Hardening off is the process of getting them used to outdoor conditions a little at a time.</p>
+<p>You've spent two months raising tomato seedlings under lights. They're green, stocky and ready. Then you carry them out on the first sunny day in May, plant them, and by evening the leaves have gone white and papery. It's one of the most disheartening moments in gardening, and it's almost always avoidable.</p>
+<p>Seedlings grown on a windowsill or under lights have lived an easy life: steady temperatures, no wind and gentle light. Even bright grow lights are far weaker than the sun. Move them straight into the garden and many will scorch, wilt or stall for weeks. Hardening off is the process of getting them used to outdoor conditions a little at a time.</p>
 <h2>What can go wrong if you skip it</h2>
 <ul>
 <li><strong>Sunscald.</strong> Leaves that have never seen direct sun can turn white or papery in a single afternoon.</li>
@@ -91,6 +100,20 @@ module.exports = [
 <li><strong>Nursery starts need it too.</strong> Plants from a greenhouse are often just as tender as homegrown ones. Give them a few days of the same routine.</li>
 <li><strong>Plant on a cloudy day or in the evening,</strong> and water well right after planting.</li>
 </ul>
+<h2>Short on time? Use a cold frame or row cover</h2>
+<p>If you work all day and can't move trays in and out on a schedule, a <a href="${link("glossary/#cold-frame")}">cold frame</a> makes it much easier. Put the seedlings in the frame, prop the lid open a little more each day, and by the end of the week leave it off entirely. A shady spot under a sheet of row cover on hoops does a similar job: the fabric cuts sun and wind while the plants adjust. Check both on hot days, since a closed frame in the sun overheats quickly.</p>
+<p>Even a weekend version helps. Two or three days of gradual exposure is far better than none.</p>
+<h2>Planting day</h2>
+<ol>
+<li>Water the seedlings well an hour or so before planting, so the root ball holds together and the plant goes in fully hydrated.</li>
+<li>Dig the hole first, and water it if the soil is dry.</li>
+<li>Ease each plant out by tipping the pot and supporting the base of the stem between your fingers. Don't pull by the stem.</li>
+<li>Set it at the same depth it grew in the pot, except tomatoes, which can go deeper (up to the first set of leaves) and will root along the buried stem.</li>
+<li>Firm the soil gently and water again.</li>
+<li>If the next day is forecast to be hot and sunny, shade new transplants with a board, an upturned box or a bit of shade cloth on the sunny side for a day or two.</li>
+</ol>
+<h2>If the leaves still scorch</h2>
+<p>Some white or bleached patches after a sunny day aren't a disaster. The damaged leaves won't recover, but new leaves grow in already adapted to the sun. As long as the growing tip is green, give the plant some shade for a few days, keep it watered and it will usually grow out of it. Leaves that are fully white and crisp can be removed once new growth appears.</p>
 <p>Seeds sown straight into the garden don't need hardening off; they grow up outdoors from the start. For when to start seeds indoors in the first place, see <a href="${link("articles/starting-seeds-indoors/")}">starting seeds indoors</a>.</p>`;
     }
   },
@@ -104,7 +127,9 @@ module.exports = [
     crops: ["blueberries", "potatoes", "broccoli", "cabbage", "kale", "beans"],
     published: "2026-10-14",
     body: ({ link }) => `
+<p>If you've ever stood in a garden center aisle holding a bag of lime and wondering whether you actually need it, this one's for you. Lime is one of the most common things Northwest gardeners add to their soil, and one of the most common things they add without knowing if it helps.</p>
 <p>Soil pH is a measure of how acidic or alkaline your soil is, on a scale from 0 to 14 where 7 is neutral. It matters because pH controls how easily plants can take up nutrients. A soil can be full of nutrients and still grow pale, slow plants if the pH is far off.</p>
+<p>The scale is also steeper than it looks. Each whole step is ten times more acidic or alkaline than the next, so soil at pH 5 is ten times more acidic than soil at pH 6. That's why small changes in the number can make a real difference, and why it takes a fair amount of lime to move it.</p>
 <h2>Why Northwest soils differ</h2>
 <p>West of the Cascades, decades of heavy winter rain wash calcium, magnesium and other basic minerals down through the soil. Over time that leaves many gardens on the acidic side. Soils in Portland, Seattle and the Willamette Valley often test below the range most vegetables prefer.</p>
 <p>East of the Cascades, where rainfall is low, those minerals stay put. Soils there are more often neutral or alkaline, and adding lime would make things worse.</p>
@@ -119,6 +144,10 @@ module.exports = [
 <h2>How to test</h2>
 <p>Home test kits and meters give a rough idea. A lab test is more accurate and also tells you which nutrients are low and how much lime, if any, to add for your soil. To take a sample, dig small amounts from 6 to 8 spots in the bed, about 6 inches deep, mix them in a clean bucket and send in a cup or so of the mix. Test each area you garden differently, for example the vegetable beds separately from the lawn.</p>
 <p>Testing every three or four years is plenty for most home gardens.</p>
+<p>Oregon State and Washington State University Extension both keep lists of soil testing labs that serve the region, and the University of Idaho does the same for Idaho. Lab tests usually cost less than a couple of bags of fertilizer. Tell the lab you're growing vegetables, and the report will usually include a lime recommendation in pounds per 1,000 square feet, which you can scale down to your beds.</p>
+<h2>How to read your results</h2>
+<p>A typical report lists pH first, then nutrients like phosphorus, potassium, calcium and magnesium, and often organic matter. Some labs also give a "buffer pH" or "SMP buffer" number. That second number is what they use to work out how much lime your soil needs: two soils with the same pH can need very different amounts, because clay and soils rich in organic matter resist change more than sandy ones. You don't need to understand the chemistry; just follow the lime rate the lab gives.</p>
+<p>If your pH comes back between about 6.0 and 7.0, you don't need to do anything to it. Spend the money on compost instead.</p>
 <h2>Raising pH with lime</h2>
 <ul>
 <li><strong>Use the amount your test recommends.</strong> The right rate depends on your soil type and how far off it is, and too much is harder to fix than too little.</li>
@@ -127,7 +156,12 @@ module.exports = [
 <li><strong>Wood ash</strong> from a fireplace also raises pH and adds potassium, but it acts faster and is easy to overdo. Use it lightly, and not on blueberries or potatoes.</li>
 </ul>
 <h2>Lowering pH</h2>
-<p>To make soil more acidic, mainly for blueberries, gardeners use elemental sulfur, which soil bacteria slowly turn into acid over a season or more. Again, let a soil test guide the amount. Mixing in plenty of organic matter like compost helps buffer pH swings in either direction.</p>`
+<p>To make soil more acidic, mainly for blueberries, gardeners use elemental sulfur, which soil bacteria slowly turn into acid over a season or more. Again, let a soil test guide the amount. Mixing in plenty of organic matter like compost helps buffer pH swings in either direction.</p>
+<p>Lowering the pH of a whole garden bed is slow and only lasts as long as you keep at it, especially in alkaline east-side soils that contain free lime. There, it's usually easier to grow acid-loving plants like blueberries in raised beds or large containers filled with an acidic mix than to change the native soil.</p>
+<h2>Signs your pH may be off</h2>
+<p>Plants don't always make it obvious, but a few patterns are worth knowing. In very acidic soil, plants can look generally stunted and pale even after fertilizing, and lime-loving crops like spinach, beets and the cabbage family struggle while potatoes and blueberries do fine. In alkaline soil, the classic sign is yellow new leaves with green veins, called iron chlorosis. It shows up first on blueberries, raspberries, and some trees and shrubs. These symptoms have other causes too, which is one more reason to test before you treat.</p>
+<h2>Common mistakes</h2>
+<p>The biggest one is liming by habit, a little every spring "because Northwest soil is acidic." Over a few years that can push a bed past neutral, and it's much harder to bring pH down than up. The second is liming right where potatoes or blueberries are going. And the third is expecting lime to work right away. Spread in spring, it may take most of the season to do much, which is why fall is the better time.</p>`
   },
   {
     slug: "growing-peas-in-the-northwest",
@@ -141,6 +175,7 @@ module.exports = [
       const pdx = win(D, P, "portland-or", "peas"), spo = win(D, P, "spokane-wa", "peas"), bend = win(D, P, "bend-or", "peas"), boi = win(D, P, "boise-id", "peas");
       return `
 <p>Peas are one of the first crops into the ground each spring and one of the best suited to the Northwest. They like cool weather, handle light frost, and stop producing once summer turns hot. A long, mild spring like ours gives them plenty of time.</p>
+<p>They're also one of the best crops to grow if you have kids, or if you've never gardened before. The seeds are big and easy to handle, they come up fast, and a snap pea eaten straight off the vine on a cool May morning is about as good as gardening gets. Plenty of homegrown peas never make it to the kitchen.</p>
 <h2>When to plant</h2>
 <p>Pea seeds sprout in cool soil, from about 40°F, though they come up faster once the soil reaches the 50s. Rainline Garden's planting windows for peas:</p>
 <ul>
@@ -156,6 +191,7 @@ module.exports = [
 <li><strong>Snap peas</strong> have thick, sweet pods you eat whole, peas and all.</li>
 <li><strong>Snow peas</strong> are picked flat, before the peas swell, and are common in stir-fries. Oregon Sugar Pod II is an Oregon-bred snow pea that's widely grown here.</li>
 </ul>
+<p>The Northwest has a long history with peas. Oregon State University's breeding program produced several varieties still sold today, including Oregon Sugar Pod II and the snap pea Cascadia. Many modern varieties are labeled "PMR," for powdery mildew resistance, which is worth looking for if your peas usually turn gray and quit in June.</p>
 <p>Each kind comes in tall, vining varieties that need a 5 to 6 foot trellis, and in short bush varieties that grow 2 to 3 feet tall. Bush types still do better with a little support, like a short fence or twiggy branches.</p>
 <h2>How to plant</h2>
 <ol>
@@ -172,7 +208,15 @@ module.exports = [
 <li><strong>Snow peas:</strong> while the pods are still flat.</li>
 </ul>
 <p>Pick every day or two. The more you pick, the more the plants keep flowering. Peas lose sweetness quickly after picking, so eat or chill them soon.</p>
-<p>Once summer heat arrives, production slows and powdery mildew often coats the leaves. That's the natural end of the season. Cut the plants off at the ground and leave the roots in the soil, then use the space for a <a href="${link("articles/succession-planting/")}">second crop</a>.</p>`;
+<p>Once summer heat arrives, production slows and powdery mildew often coats the leaves. That's the natural end of the season. Cut the plants off at the ground and leave the roots in the soil, then use the space for a <a href="${link("articles/succession-planting/")}">second crop</a>.</p>
+<h2>Why didn't my peas come up?</h2>
+<p>If you sowed a row and only a few plants appeared, the usual suspects are cold, wet soil that rotted the seed before it sprouted; birds or mice digging up and eating the seed; or slugs eating the shoots the moment they broke the surface, which can look like nothing came up at all. Old seed is another possibility; peas generally keep for a few years, but not forever. Next time, wait for soil that crumbles rather than smears, cover the row with row cover or netting until the seedlings are a few inches tall, and put out slug bait the day you sow.</p>
+<h2>A second crop in fall?</h2>
+<p>West of the Cascades, you can sow peas again in mid to late summer for a fall harvest. It's less reliable than spring: seeds can struggle to germinate in hot soil, and powdery mildew is more common in late summer. Choose a mildew-resistant variety, sow in a spot with some afternoon shade, keep the row moist until the seedlings are up, and aim to have them flowering before nights get cold in October.</p>
+<h2>Pea shoots, all winter</h2>
+<p>The tender tips of young pea plants are a delicacy in many kitchens, and they're easy to grow even in winter. Sow pea seeds thickly in a tray of potting mix on a sunny windowsill or under a grow light, and cut the shoots when they're 4 to 6 inches tall. In the garden, you can also pinch a few tips from established plants in spring without hurting the harvest.</p>
+<h2>Keeping the harvest</h2>
+<p>If you grow more than you can eat fresh, peas freeze well. Shell them, blanch in boiling water for a minute or two, cool quickly in ice water, drain, and freeze in bags. Snap and snow peas can be frozen the same way after trimming the ends. Frozen homegrown peas taste much closer to fresh than canned ones.</p>`;
     }
   },
   {
@@ -185,8 +229,11 @@ module.exports = [
     published: "2026-10-14",
     body: ({ link }) => `
 <p>Late blight is the disease behind the Irish potato famine, and it still destroys tomato and potato plants in home gardens today. It loves exactly the weather the Northwest is known for: cool temperatures, rain and long, damp nights. West of the Cascades it most often shows up in late summer and early fall, when rain and heavy dew return.</p>
+<p>If you've grown tomatoes here for a few years, you may already have watched it happen: a perfectly healthy plant loaded with green fruit in early September, a few days of drizzle, and then brown patches spreading across the leaves faster than seems possible. A week later the plant is a blackened skeleton. It's discouraging, but knowing how it works makes it much easier to beat.</p>
 <h2>What causes it</h2>
 <p>Late blight is caused by <em>Phytophthora infestans</em>, a water mold. It spreads by spores that travel on the wind and need wet leaves to infect a plant. In cool, wet weather it moves very fast and can kill whole plants within a week or two.</p>
+<h2>Why some years are worse</h2>
+<p>The spores need water sitting on the leaf for several hours to infect it, and they spread fastest when temperatures are mild, roughly in the 60s, with damp nights. A dry, warm August west of the Cascades usually keeps late blight away, and plants come through fine. An early return of rain in late August, or a stretch of cool nights with heavy dew, gives it the conditions it needs. That's why one year your tomatoes produce into October and the next year they're gone by mid-September, even though you did the same thing both times.</p>
 <h2>How to recognize it</h2>
 <ul>
 <li><strong>Leaves:</strong> large, irregular patches that look gray-green and water-soaked at first, then turn brown. In damp weather a white, fuzzy growth may appear on the underside around the edges of the patches.</li>
@@ -207,14 +254,18 @@ module.exports = [
 <li><strong>Clean up potatoes.</strong> The disease survives the winter in living potato tissue, like tubers left in the ground or in a cull pile, not in bare soil. Dig every potato at harvest and pull any volunteers that come up next spring.</li>
 <li><strong>Buy healthy starts</strong> and check them for spots before planting.</li>
 </ul>
+<h2>A simple rain cover</h2>
+<p>Keeping rain off the leaves is the single most effective step, and it doesn't take a greenhouse. A basic version: set a sturdy post or stake at each end of the tomato row, run a crossbar or tight wire between them a foot or so above the tallest plants, and drape clear plastic sheeting over it like a tent roof, leaving the sides open so air keeps moving. Clip or tie the plastic down so wind doesn't catch it. You only need it from late August to the end of the season. Plants under a roof overhang on the south side of a house get a similar effect for free, and they enjoy the extra warmth.</p>
 <p>Some protective sprays labeled for late blight can slow it if they're applied before symptoms appear and repeated as the label directs. They don't cure plants that are already infected.</p>
 <h2>If your plants get it</h2>
 <ol>
 <li>Remove infected leaves and stems right away, on a dry day.</li>
 <li>If most of the plant is affected, pull the whole plant. Bag it or put it in the yard-debris bin rather than leaving it in the garden, where it keeps releasing spores.</li>
-<li>Pick any unblemished green tomatoes. Many will ripen indoors.</li>
+<li>Pick any unblemished green tomatoes. Many will ripen indoors. Tomatoes with a small blight spot can still be eaten if you cut well around it, but they won't keep, so use them first.</li>
 <li>For potatoes, cut down and remove infected vines, then wait about two weeks before digging so the tubers aren't infected on the way out of the ground.</li>
 </ol>
+<p><h2>Next year</h2>
+<p>Because the disease doesn't live in bare soil, a bad year doesn't doom the bed. Clear out every bit of tomato and potato debris, make sure no potatoes are left in the ground to sprout next spring, and you start fresh. It's still a good idea to plant tomatoes somewhere new each year, since <a href="${link("articles/crop-rotation-for-small-gardens/")}">rotating crops</a> helps with the slower leaf diseases that do overwinter in old plant debris.</p>
 <p>Choosing early varieties also helps, since they ripen most of their crop before fall rains arrive. See <a href="${link("articles/best-tomatoes-for-the-northwest/")}">the best tomatoes for the Northwest</a>.</p>`
   },
   {
@@ -229,6 +280,7 @@ module.exports = [
       const let1 = win(D, P, "portland-or", "lettuce"), letF = win(D, P, "portland-or", "lettuce", "fall"), bean = win(D, P, "portland-or", "beans");
       return `
 <p>Plant a whole packet of lettuce in one day and you'll have more salad than you can eat for two weeks, then none at all. Succession planting fixes that. Instead of planting everything at once, you sow a little at a time, or follow one crop with another, so the garden keeps producing all season.</p>
+<p>It's the difference between a garden that has a big moment in June and a garden you can pick from every week from April to November. And in the Northwest, with a long, mild growing season west of the Cascades, you have more room to do it than gardeners in most of the country.</p>
 <h2>Method 1: Small sowings every few weeks</h2>
 <p>For fast crops that are best picked young, sow a short row on a regular schedule:</p>
 <ul>
@@ -238,6 +290,8 @@ module.exports = [
 <li><strong>Bush beans:</strong> every two to three weeks while the planting window is open.</li>
 </ul>
 <p>Keep each sowing inside the crop's planting window. In Portland, for example, Rainline Garden's spring window for lettuce runs ${let1.range}, with a second fall window of ${letF.range}. Bush beans run ${bean.range}, which leaves room for about three sowings. Your own windows are on your <a href="${link("")}">planting calendar</a>.</p>
+<p>How much to sow each time? Less than you think. For lettuce, a few plants per person per sowing is usually enough for regular salads. For radishes, a row a foot or two long. The point is a small, steady supply, and if a sowing fails or gets eaten by slugs, the next one is only two weeks behind.</p>
+<p>The easiest way to keep it going is to tie it to something you already do. Every other Saturday, or every time you pick the last of one sowing, sow the next. A repeating reminder on your phone works too. Most people who give up on succession planting just forget the third or fourth sowing in the middle of a busy summer.</p>
 <h2>Method 2: Follow one crop with another</h2>
 <p>When an early crop finishes, plant something new in the same space:</p>
 <ul>
@@ -250,6 +304,19 @@ module.exports = [
 <p>Radishes sown in the same row as carrots come up quickly, mark the row, and are harvested before the carrots need the space. Lettuce can grow between young tomato or squash plants and be picked before those plants fill in.</p>
 <h2>Working out the last sowing date</h2>
 <p>For fall harvests, count back from your first fall frost using the days to maturity on the seed packet, then add about two weeks, because plants grow more slowly as days get shorter and cooler. Rainline Garden's fall windows already do this math for the crops that suit fall planting.</p>
+<h2>Summer sowings need extra help</h2>
+<p>Sowing in July and August is different from sowing in April. The soil surface dries out within hours in the sun, and lettuce and spinach seed germinate poorly when the soil is hot. Sow in the evening, water the row well, and lay a board, a strip of shade cloth or a piece of burlap over it to keep it cool and moist. Check it every day and remove the cover as soon as you see seedlings. For lettuce, choose varieties described as slow-bolting or heat-tolerant for summer sowings, and save the delicate ones for spring and fall. The same goes for cilantro: look for "slow-bolt" types.</p>
+<h2>One 4 by 8 foot bed through a west-side year</h2>
+<p>To give you an idea, this is roughly what a single raised bed can do in a typical Portland or Seattle year. Your own dates will vary.</p>
+<ul>
+<li><strong>March:</strong> peas along a trellis on the north side; spinach and radishes in the rest.</li>
+<li><strong>April and May:</strong> lettuce sown every few weeks as the radishes come out.</li>
+<li><strong>June:</strong> spinach finishes and is replaced with bush beans once the soil is warm.</li>
+<li><strong>July:</strong> peas finish; that strip gets kale and broccoli transplants for fall and winter, and a sowing of carrots.</li>
+<li><strong>August:</strong> beans keep going; more lettuce, spinach and radishes as the summer lettuce bolts.</li>
+<li><strong>October:</strong> beans come out and garlic goes in.</li>
+</ul>
+<p>That's eight or nine crops from one small bed, instead of the two or three you'd get planting it once in May.</p>
 <h2>Keep the soil fed</h2>
 <p>A bed that grows two or three crops a year uses more nutrients. Mix in an inch of compost between crops to keep it productive.</p>
 <p>The <a href="${link("my-garden/")}">My garden plan</a> page can help you keep track of what goes in when.</p>`;
@@ -267,6 +334,10 @@ module.exports = [
       const pdx = win(D, P, "portland-or", "dahlias"), spo = win(D, P, "spokane-wa", "dahlias"), bend = win(D, P, "bend-or", "dahlias");
       return `
 <p>Dahlias are some of the most popular flowers in Northwest gardens, and for good reason. Our mild summers suit them, and they bloom from midsummer until the first frost. They come in nearly every color and in sizes from small pompons to blooms as wide as a dinner plate.</p>
+<p>Fair warning: they're addictive. Most people start with three or four tubers and find themselves, a few years later, with a whole bed of them and a box of labeled tubers in the garage every winter. A single plant can give you armfuls of cut flowers from July to October, which is a lot of flowers for the price of one tuber.</p>
+<h2>Picking a type</h2>
+<p>Catalogs sort dahlias by flower form, and it helps to know the main ones. <strong>Ball</strong> and <strong>pompon</strong> dahlias are tight, round globes, great for cutting. <strong>Decorative</strong> dahlias have broad, flat petals and range from small to the giant "dinnerplate" types. <strong>Cactus</strong> and <strong>semi-cactus</strong> dahlias have narrow, pointed, rolled petals that give a spiky look. <strong>Single</strong>, <strong>collarette</strong> and <strong>anemone</strong> types have an open center, which bees can reach.</p>
+<p>The giant dinnerplates are showstoppers but need sturdy staking and tend to produce fewer flowers. Smaller ball, pompon and decorative types usually bloom more, with longer stems for cutting. If you want a lot of flowers for the house, start there.</p>
 <h2>When to plant</h2>
 <p>Dahlias grow from tubers, which rot easily in cold, wet soil. Wait until the soil has warmed, about the same time you'd plant tomatoes. Rainline Garden's planting windows:</p>
 <ul>
@@ -274,6 +345,7 @@ module.exports = [
 <li><strong>Spokane and the inland Northwest:</strong> ${spo.range}.</li>
 <li><strong>Bend and the high desert:</strong> ${bend.range}.</li>
 </ul>
+<p>If you'd like flowers a few weeks earlier, you can start tubers in pots indoors or in a greenhouse about a month before planting time. Use a pot just big enough for the tuber, barely moist potting mix, and a bright spot. Plant them out, sprouts and all, once the soil has warmed. Harden them off first, just as you would vegetable seedlings.</p>
 <h2>How to plant</h2>
 <ol>
 <li><strong>Pick a sunny spot.</strong> Dahlias need at least six hours of sun and bloom best with more.</li>
@@ -291,6 +363,10 @@ ${fig(1)}
 <li><strong>Tie stems to the stake</strong> as they grow.</li>
 <li><strong>Cut often.</strong> Cutting flowers and removing spent blooms keeps new buds coming. Cut in the cool of the morning, and pick blooms that are almost fully open, since dahlias don't open much more once cut.</li>
 </ul>
+<h2>Pests and problems</h2>
+<p>Besides slugs, the most common dahlia pest in the Northwest is the earwig, which chews ragged holes in petals at night and hides inside the flowers by day. Rolled-up newspaper or a short piece of hose laid near the plants traps them; shake them out each morning. In hot, dry spells, especially east of the Cascades, spider mites can make leaves look dull and speckled, with fine webbing underneath. A strong spray of water under the leaves helps. Powdery mildew often coats the leaves late in the season. It looks bad but rarely does much harm that late; give plants space for airflow.</p>
+<h2>Making cut flowers last</h2>
+<p>Dahlias don't last as long in a vase as some flowers, often several days, but you can help. Cut in the cool of the morning, choosing blooms that are almost fully open. Strip the lower leaves and put the stems straight into water. Many growers then stand the cut ends in a few inches of hot water for about an hour before arranging them, which seems to help the stems take up water. Change the vase water every day or two.</p>
 <h2>What to do in winter</h2>
 <p>A frost blackens dahlia foliage and ends the season. What comes next depends on where you live.</p>
 <ul>
@@ -298,6 +374,8 @@ ${fig(1)}
 <li><strong>East of the Cascades:</strong> winters are too cold for tubers in the ground. Dig them after the first frost.</li>
 </ul>
 <p>To store dug tubers, shake off the soil, let them dry for a few days somewhere sheltered, then pack them in slightly damp wood shavings, peat or vermiculite. Keep them somewhere cool but frost-free, around 40 to 50°F, and check them during winter for any that are rotting or shriveling.</p>
+<p>In spring, you can divide large clumps to make more plants. Each piece needs part of the old stem's base (the crown) with at least one eye, a small bump where the new shoot will grow. A tuber without an eye won't sprout, no matter how plump it is. Eyes are easier to see in spring, once they start to swell, than in fall. Use a clean, sharp knife, let the cut surfaces dry for a day, and plant as usual. A single clump often divides into several plants, which is how a few tubers turn into a whole bed.</p>
+<p>Label everything. Every dahlia grower has a box of mystery tubers in the garage. A marker on each tuber, or a tag in each bag, saves a lot of guessing next spring.</p>
 <p>Dahlias also feed bees late in the season, especially the open-centered single types. For more on that, see <a href="${link("articles/native-pollinator-garden/")}">planting for pollinators</a>.</p>`;
     }
   }
