@@ -188,18 +188,13 @@
     var link = '<a href="' + plantUrl(t.crop.id) + '">' + esc(t.crop.name) + ' guide</a>';
     return '<details class="gp-how"><summary>How</summary><p>' + esc(bits.join(" ").replace(/\.\./g, ".")) + (bits.length ? " " : "") + link + '</p></details>';
   }
-  function jobText(t) {
-    var x = esc(t.text); if (!t.crop) return x;
-    var n = esc(lc(t.crop.name)), i = x.toLowerCase().indexOf(n.toLowerCase());
-    return i < 0 ? x : x.slice(0, i) + plantA(t.crop, x.slice(i, i + n.length)) + x.slice(i + n.length);
-  }
   function taskLi(t) {
     var done = !!state.done[t.key], soon = isSoon(t, 14), kd = kindOf(t);
     // Only the box ticks a job, so a tap on the words or "How" can't tick it by accident.
     return '<li class="gp-task gp-k-' + kd[0] + (done ? " is-done" : "") + (soon && !done ? " is-soon" : "") + '">' +
       '<label class="gp-tick"><input type="checkbox" data-key="' + esc(t.key) + '"' + (done ? " checked" : "") + (preview ? " disabled" : "") + '><span class="sr">Done: ' + esc(t.text) + '</span></label>' +
       '<span class="gp-date"><span>' + dateLabel(t) + '</span> <span class="gp-kind">' + kd[1] + '</span></span>' +
-      '<div class="gp-tbody"><span class="gp-text">' + (t.crop ? R.icon(t.crop.id, base, 22) : "") + '<span>' + jobText(t) + '</span></span>' +
+      '<div class="gp-tbody"><span class="gp-text">' + (t.crop ? R.icon(t.crop.id, base, 22) : "") + '<span>' + esc(t.text) + '</span></span>' +
       (preview ? "" : howTo(t)) + '</div></li>';
   }
 
