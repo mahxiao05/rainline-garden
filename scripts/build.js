@@ -508,6 +508,34 @@ const lc = n => n === "Swiss chard" ? n : n.toLowerCase().replace(/^brussels/, "
 const DIFF = { 1: ["Easy", "easy"], 2: ["Moderate", "moderate"], 3: ["Tricky here", "tricky"] };
 const badge = d => `<span class="badge badge-${DIFF[d][1]}">${DIFF[d][0]}</span>`;
 const cropById = id => D.crops.find(c => c.id === id);
+
+/* "Pop" helpers: guide sections as icon tip cards, plants as photo tiles, crop chips. */
+const TIP_ICONS = {
+  water: '<path d="M12 3s-6 7-6 11a6 6 0 0 0 12 0c0-4-6-11-6-11z"/>',
+  mountain: '<path d="M2 20l7-12 4 6 3-4 6 10z"/>',
+  basket: '<path d="M3 10h18l-2 10H5z"/><path d="M8 10l4-6 4 6"/>',
+  bug: '<ellipse cx="12" cy="14" rx="5" ry="6"/><path d="M12 8V5M7 11l-3-2M17 11l3-2M7 16H3M17 16h4"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/>',
+  snow: '<path d="M12 2v20M3 7l18 10M3 17L21 7"/>',
+  calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  scissors: '<circle cx="6" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M8.5 7.5L20 18M8.5 16.5L20 6"/>',
+  seed: '<path d="M12 21c0-6 0-9 0-11M12 10c-4 0-7-2-7-6 4 0 7 2 7 6zM12 13c3 0 6-2 6-5-3 0-6 2-6 5z"/>',
+  tree: '<path d="M12 2l6 9h-3l4 6H5l4-6H6z"/><path d="M12 17v5"/>',
+  bird: '<path d="M3 12c4 0 6-4 10-4 3 0 5 2 8 2-2 2-4 6-9 6-4 0-6-2-9-4z"/>'
+};
+const tipIcon = h => { const t = h.toLowerCase();
+  const k = /water|soil|feed/.test(t) ? "water" : /east|cascade|idaho|regional/.test(t) ? "mountain" : /harvest|curing|fruit|storage/.test(t) ? "basket"
+    : /pest/.test(t) ? "bug" : /heat|sun|warm/.test(t) ? "sun" : /cold|winter|protect|snap/.test(t) ? "snow" : /timing|season|order|plan|patience|look back|calendar/.test(t) ? "calendar"
+    : /prun|cut/.test(t) ? "scissors" : /wildlife/.test(t) ? "bird" : /tree|choosing|spot/.test(t) ? "tree" : "seed";
+  return `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${TIP_ICONS[k]}</svg>`; };
+const tipCards = sections => `<div class="tips">${sections.map(([h, ps], i) => `<section class="tip tip-${i % 3}"><div class="tip-ic">${tipIcon(h)}</div><div><h3>${esc(h)}</h3>${(Array.isArray(ps) ? ps : [ps]).map(t => `<p>${esc(t)}</p>`).join("")}</div></section>`).join("")}</div>`;
+const cropPhoto = id => fs.existsSync(path.join(ROOT, `assets/img/photos/crop-${id}-720.webp`));
+const plantTiles = (rel, list) => `<ul class="ptiles">${list.filter(c => G.crops[c.id]).map(c => { const g = G.crops[c.id];
+  return `<li><a href="../${c.id}/"><span class="pt-img">${cropPhoto(c.id) ? `<img src="${rel}assets/img/photos/crop-${c.id}-720.webp" alt="" width="720" height="480" loading="lazy" decoding="async">` : R.icon(c.id, rel, 64)}</span>
+<span class="pt-body"><span class="pt-name">${esc(c.name)}</span>${badge(g.difficulty)}
+<span class="pt-row"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">${TIP_ICONS.sun}</svg>${esc(g.sun.split(";")[0])}</span>
+<span class="pt-row"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 12h18M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg>${esc(g.spacing)}</span></span></a></li>`; }).join("")}</ul>`;
+const cropChips = (rel, list) => `<span class="cchips">${list.map(x => `<a href="${rel}when-to-plant/${x.crop.id}/">${R.icon(x.crop.id, rel, 26)}${esc(x.crop.name)}</a>`).join("")}</span>`;
 const rowFor = (p, id) => p.crops.find(r => r.crop.id === id);
 const win = (r, kind) => r.windows.find(w => w.kind === kind);
 const shopUrl = q => `https://www.amazon.com/s?k=${encodeURIComponent(q)}${CONFIG.amazonTag ? `&tag=${encodeURIComponent(CONFIG.amazonTag)}` : ""}`;
@@ -1340,10 +1368,10 @@ ${plantingOrder(list, refs[0], rel)}
 <div class="table-wrap"><table class="plan"><thead><tr><th scope="col">Plant</th>${refs.map(r => `<th scope="col">${esc(r.place.city)}</th>`).join("")}</tr></thead><tbody>${list.map(c => `<tr><th scope="row"><a href="../${c.id}/">${c.name}</a></th>${refs.map(r => `<td data-label="${esc(r.place.city)}">${first(r, c.id)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
 <h2>Growing ${k.name.toLowerCase()} in the Northwest</h2>
 <div class="prose">${CATEGORY_GUIDES[k.id].map(t => `<p>${esc(t)}</p>`).join("\n")}</div>
-${CATEGORY_MORE[k.id] ? `<div class="prose">${CATEGORY_MORE[k.id].map(([h, t]) => `<h3>${esc(h)}</h3>\n<p>${esc(t)}</p>`).join("\n")}</div>` : ""}
+${CATEGORY_MORE[k.id] ? tipCards(CATEGORY_MORE[k.id]) : ""}
 <h2>Side by side</h2>
-<p class="note">How easy each one is, the sun it needs and how far apart to plant, from each plant's growing guide.</p>
-<div class="table-wrap"><table class="plan"><thead><tr><th scope="col">Plant</th><th scope="col">Ease</th><th scope="col">Sun</th><th scope="col">Spacing</th></tr></thead><tbody>${list.filter(c => G.crops[c.id]).map(c => { const g = G.crops[c.id]; return `<tr><th scope="row"><a href="../${c.id}/">${esc(c.name)}</a></th><td data-label="Ease">${["", "Easy", "Some care", "Takes work"][g.difficulty] || "—"}</td><td data-label="Sun">${esc(g.sun || "—")}</td><td data-label="Spacing">${esc(g.spacing || "—")}</td></tr>`; }).join("")}</tbody></table></div>
+<p class="note">How easy each one is, the sun it needs and how far apart to plant. Tap one for its dates and growing guide.</p>
+${plantTiles(rel, list)}
 ${x.faq ? `<h2>Common questions</h2>\n${faqHtml(x.faq)}` : ""}
 ${(() => { const reads = ARTICLES.filter(a => (a.topic === "crops" || a.topic === "flowers") && k.crops.includes(a.crops[0]))
       .sort((a, b) => k.crops.indexOf(a.crops[0]) - k.crops.indexOf(b.crops[0])).slice(0, 4);
@@ -1877,7 +1905,10 @@ ${ids.map(id => { const cr = cropById(id); return `<tr><th scope="row"><div clas
   if (driest.length) frostNotes.push(`${name} is the driest month of the year in ${listOf(driest)}.`);
   const wxHtml = rainy.length ? `<h2 id="weather">${name} weather across the region</h2>
 <p class="note">Average rain this month and typical frost dates in the same five towns, from NOAA's 1991–2020 climate normals.</p>
-<div class="table-wrap"><table class="nb"><thead><tr><th scope="col">Region</th><th scope="col">Rain in ${name}</th><th scope="col">Share of the year</th><th scope="col">Last spring frost</th><th scope="col">First fall frost</th></tr></thead><tbody>${wxRows.map(x => `<tr><th scope="row">${esc(x.r.name)}<br><a href="${rel}frost-dates/${x.r.town.slug}/">${esc(x.r.town.city)}</a></th><td>${x.cl.mprcp ? `${x.cl.mprcp[mi].toFixed(1)} in` : "—"}</td><td>${x.cl.mprcp ? `${Math.round(100 * x.cl.mprcp[mi] / x.cl.mprcp.reduce((s2, v) => s2 + v, 0))}%` : "—"}</td><td>${P.fmt(x.f.spring50)}</td><td>${P.fmt(x.f.fall50)}</td></tr>`).join("")}</tbody></table></div>
+<div class="mrain">${(() => { const top = Math.max(...wxRows.map(x => x.cl.mprcp ? x.cl.mprcp[mi] : 0)); return wxRows.map(x => { const v = x.cl.mprcp ? x.cl.mprcp[mi] : null;
+  return `<div class="mr-row"><div class="mr-lab"><strong>${esc(x.r.name)}</strong> <a href="${rel}frost-dates/${x.r.town.slug}/">${esc(x.r.town.city)}</a></div>
+<div class="mr-bar"><span style="width:${v == null ? 0 : Math.max(4, Math.round(100 * v / top))}%"></span><b>${v == null ? "—" : `${v.toFixed(1)} in`}</b></div>
+<div class="mr-frost"><span>Last frost <strong>${P.fmt(x.f.spring50)}</strong></span><span>First frost <strong>${P.fmt(x.f.fall50)}</strong></span><span>${v == null ? "" : `${Math.round(100 * v / x.cl.mprcp.reduce((s2, w) => s2 + w, 0))}% of the year's rain`}</span></div></div>`; }).join(""); })()}</div>
 ${frostNotes.length ? `<p>${frostNotes.join(" ")}</p>` : ""}` : "";
   // What starts next month in each region, so quiet months still point ahead.
   const nm = c.m % 12 + 1, na = P.CUM[nm - 1] + 1, nb = nm < 12 ? P.CUM[nm] : 365, nextName = P.MONTHS_LONG[nm - 1];
@@ -1886,10 +1917,10 @@ ${frostNotes.length ? `<p>${frostNotes.join(" ")}</p>` : ""}` : "";
   const cropLinks = list => list.map(x => `<a href="${rel}when-to-plant/${x.crop.id}/">${esc(x.crop.name)}</a>`).join(", ");
   const aheadHtml = `<h2 id="next">Coming up in ${nextName}</h2>
 ${ahead.length ? `<p class="note">Plants whose window opens in ${nextName}, in the same five towns.</p>
-<dl class="order">${ahead.map(x => `<div><dt>${esc(x.r.name)}</dt><dd>${x.indoor.length ? `<strong>Start indoors:</strong> ${cropLinks(x.indoor)}` : ""}${x.indoor.length && x.out.length ? "<br>" : ""}${x.out.length ? `<strong>Plant outside:</strong> ${cropLinks(x.out)}` : ""}</dd></div>`).join("")}</dl>
+<div class="ahead">${ahead.map(x => `<div class="ah-reg"><h3>${esc(x.r.name)}</h3>${x.indoor.length ? `<p class="ah-k">Start indoors</p>${cropChips(rel, x.indoor)}` : ""}${x.out.length ? `<p class="ah-k">Plant outside</p>${cropChips(rel, x.out)}` : ""}</div>`).join("")}</div>
 <p><a href="../${monthSlug(nm)}/">See all of ${nextName}</a></p>` : `<p>No new planting windows open in ${nextName} in any region. <a href="../${monthSlug(nm)}/">See ${nextName}'s jobs</a>.</p>`}`;
   const guideHtml = MONTH_GUIDES[c.m] ? `<h2 id="guide">A ${name} guide for Northwest gardens</h2>
-<div class="prose">${MONTH_GUIDES[c.m].map(([h, ps]) => `<h3>${esc(h)}</h3>\n${ps.map(t => `<p>${esc(t)}</p>`).join("\n")}`).join("\n")}</div>` : "";
+${tipCards(MONTH_GUIDES[c.m])}` : "";
   write(rel, `garden-calendar/${slug}/index.html`, layout({
     rel, canonical: `garden-calendar/${slug}/`, current: "garden-calendar/",
     title: fitTitle(`What to Plant in ${name} in Oregon, Washington and Idaho`, `What to Plant in ${name} in Oregon, Washington & Idaho`),

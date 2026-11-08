@@ -2659,3 +2659,37 @@ table.nb tr.me th, table.nb tr.me td { font-weight: 600; }
 .pc-fkey li { display: flex; align-items: center; gap: 6px; }
 .pc-fkey .key { width: 18px; height: 10px; }
 .pc-fkey .key.frost-free { border: 1px solid var(--line); }
+
+/* Pop: tip cards, plant tiles, month rain bars, crop chips */
+.tips { display: grid; gap: 12px; margin: 16px 0 24px; }
+@media (min-width: 52rem) { .tips { grid-template-columns: repeat(3, 1fr); } }
+.tip { display: grid; grid-template-columns: 44px 1fr; gap: 12px; align-items: start; background: var(--paper); border: 1px solid var(--line); border-top: 4px solid var(--moss); border-radius: 12px; padding: 14px 14px 6px; }
+.tip-1 { border-top-color: #5b8fb9; } .tip-2 { border-top-color: var(--ochre); }
+.tip-ic { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--moss-soft); color: var(--moss); }
+.tip-1 .tip-ic { background: var(--sky); color: #3d6f97; } .tip-2 .tip-ic { background: var(--sand); color: var(--ochre); }
+.tip h3 { margin: 6px 0 6px; font-size: 1.08rem; }
+.tip p { margin: 0 0 10px; font-size: 1rem; line-height: 1.55; }
+.ptiles { list-style: none; padding: 0; margin: 12px 0 24px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+@media (min-width: 46rem) { .ptiles { grid-template-columns: repeat(4, 1fr); } }
+.ptiles a { display: flex; flex-direction: column; height: 100%; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; text-decoration: none; color: var(--ink); }
+.pt-img { display: grid; place-items: center; aspect-ratio: 3/2; background: var(--leaf); overflow: hidden; }
+.pt-img img { width: 100%; height: 100%; object-fit: cover; }
+.pt-body { display: flex; flex-direction: column; gap: 5px; padding: 9px 10px 11px; align-items: flex-start; }
+.pt-name { font-weight: 700; color: var(--fir); font-size: 1.02rem; }
+.pt-row { display: flex; gap: 6px; align-items: flex-start; font-size: .85rem; color: var(--muted); line-height: 1.3; }
+.pt-row svg { flex: none; margin-top: 1px; color: var(--moss); }
+.mrain { display: grid; gap: 10px; margin: 12px 0 14px; }
+.mr-row { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+.mr-lab { font-size: .95rem; } .mr-lab a { color: var(--muted); font-size: .88rem; }
+.mr-bar { display: flex; align-items: center; gap: 8px; margin: 6px 0; }
+.mr-bar span { display: block; height: 14px; border-radius: 7px; background: linear-gradient(90deg, #8fb7d6, #3d6f97); }
+.mr-bar b { font-size: .95rem; white-space: nowrap; }
+.mr-frost { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .8rem; color: var(--muted); }
+.ahead { display: grid; gap: 10px; margin: 12px 0; }
+@media (min-width: 46rem) { .ahead { grid-template-columns: repeat(3, 1fr); } }
+.ah-reg { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+.ah-reg h3 { margin: 0 0 4px; font-size: 1.02rem; }
+.ah-k { margin: 6px 0 4px; font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 700; }
+.cchips { display: flex; flex-wrap: wrap; gap: 6px; }
+.cchips a { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px 3px 4px; border-radius: 999px; background: var(--leaf); color: var(--fir); text-decoration: none; font-size: .88rem; font-weight: 600; }
+.cchips a img, .cchips a svg { width: 26px; height: 26px; border-radius: 50%; background: var(--paper); }
