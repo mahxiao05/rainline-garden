@@ -2341,3 +2341,6 @@ details.gp-card[open] { border-color: #0F2B22; box-shadow: 0 0 0 2px var(--lime)
   .gp-week *, .gp-frost * { color: #000 !important; }
   #gp-todo-h::after, #gp-chart-h::after, #gp-cards-h::after, #gp-journal-h::after, #gp-beds-sec h2::after { display: none; }
 }
+/* Plant names in My garden plan link to the plant's page: same colour as the text, underlined so they read as links. */
+.gp-pl { color: inherit; text-decoration: underline; text-decoration-color: color-mix(in srgb, currentColor 40%, transparent); text-underline-offset: 2px; }
+.gp-pl:hover, .gp-pl:focus-visible { text-decoration-color: currentColor; }

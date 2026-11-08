@@ -188,13 +188,18 @@
     var link = '<a href="' + plantUrl(t.crop.id) + '">' + esc(t.crop.name) + ' guide</a>';
     return '<details class="gp-how"><summary>How</summary><p>' + esc(bits.join(" ").replace(/\.\./g, ".")) + (bits.length ? " " : "") + link + '</p></details>';
   }
+  function jobText(t) {
+    var x = esc(t.text); if (!t.crop) return x;
+    var n = esc(lc(t.crop.name)), i = x.toLowerCase().indexOf(n.toLowerCase());
+    return i < 0 ? x : x.slice(0, i) + plantA(t.crop, x.slice(i, i + n.length)) + x.slice(i + n.length);
+  }
   function taskLi(t) {
     var done = !!state.done[t.key], soon = isSoon(t, 14), kd = kindOf(t);
     // Only the box ticks a job, so a tap on the words or "How" can't tick it by accident.
     return '<li class="gp-task gp-k-' + kd[0] + (done ? " is-done" : "") + (soon && !done ? " is-soon" : "") + '">' +
       '<label class="gp-tick"><input type="checkbox" data-key="' + esc(t.key) + '"' + (done ? " checked" : "") + (preview ? " disabled" : "") + '><span class="sr">Done: ' + esc(t.text) + '</span></label>' +
       '<span class="gp-date"><span>' + dateLabel(t) + '</span> <span class="gp-kind">' + kd[1] + '</span></span>' +
-      '<div class="gp-tbody"><span class="gp-text">' + (t.crop ? R.icon(t.crop.id, base, 22) : "") + '<span>' + esc(t.text) + '</span></span>' +
+      '<div class="gp-tbody"><span class="gp-text">' + (t.crop ? R.icon(t.crop.id, base, 22) : "") + '<span>' + jobText(t) + '</span></span>' +
       (preview ? "" : howTo(t)) + '</div></li>';
   }
 
@@ -304,7 +309,7 @@
         (items.length ? '<ul class="sq-list">' + items.map(function (it) {
           var c = it.c, ps = perSq(c.id), tot = units(c, auto);
           var how = ps > 1 ? pl(it.n * ps) + ' · ' + ps + ' per square' : ps === 1 ? pl(it.n) + ' · one per square' : 'each needs a ' + spot(c.id) + ' × ' + spot(c.id) + ' ft spot';
-          return '<li class="pc' + col[c.id] + '" data-pid="' + c.id + '"><span class="sq-sw" aria-hidden="true"></span>' + eico(c.id, 32) + '<span class="bd-pn"><strong>' + esc(c.name) + '</strong><span>' + how + '</span></span>' +
+          return '<li class="pc' + col[c.id] + '" data-pid="' + c.id + '"><span class="sq-sw" aria-hidden="true"></span>' + eico(c.id, 32) + '<span class="bd-pn"><strong>' + plantA(c) + '</strong><span>' + how + '</span></span>' +
             (preview ? '<span class="sq-n">' + (ps ? sqs(it.n) : pl(it.n)) + '</span>' :
             '<span class="bd-step"><button type="button" data-act="sq" data-id="' + c.id + '" data-b="' + i + '" data-d="-1" aria-label="Less ' + esc(lc(c.name)) + ' in bed ' + (i + 1) + '"' + (tot <= 1 ? ' disabled' : '') + '>−</button>' +
             '<output>' + it.n + '<small>' + (ps ? (it.n === 1 ? 'square' : 'squares') : (it.n === 1 ? 'plant' : 'plants')) + '</small></output><button type="button" data-act="sq" data-id="' + c.id + '" data-b="' + i + '" data-d="1" aria-label="More ' + esc(lc(c.name)) + ' in bed ' + (i + 1) + '">+</button></span>' +
@@ -312,10 +317,10 @@
         }).join("") + '</ul>' : '<p class="bd-empty">Nothing in this bed yet. Drag a plant here, or tap “Optimize my beds”.</p>') + '</div></div></article>';
     }).join("");
     var loose = L.loose.length ? '<div class="sq-loose"><h3>Doesn\'t fit yet</h3><ul>' + L.loose.map(function (it) {
-      return '<li>' + eico(it.c.id, 28) + '<span><strong>' + esc(it.c.name) + '</strong> needs ' + it.sq + (it.sq === 1 ? ' more square' : ' more squares') + '. Add a bed, use less of something else, or take it out.</span>' +
+      return '<li>' + eico(it.c.id, 28) + '<span><strong>' + plantA(it.c) + '</strong> needs ' + it.sq + (it.sq === 1 ? ' more square' : ' more squares') + '. Add a bed, use less of something else, or take it out.</span>' +
         (preview ? '' : '<button type="button" class="gp-x" data-act="sqrm" data-crop="' + it.c.id + '" aria-label="Remove ' + esc(lc(it.c.name)) + ' from my plan" title="Remove from my plan">×</button>') + '</li>'; }).join("") + '</ul></div>' : '';
     var gr = ground.length ? '<div class="sq-ground"><h3>Plant in the ground</h3><p>Trees, shrubs, bushes, vines and canes get too big for a raised bed. Give each one this much room:</p><ul>' + ground.map(function (c) {
-      return '<li data-pid="' + c.id + '">' + eico(c.id, 28) + '<span><strong>' + esc(c.name) + '</strong> ' + spTxt(c.id) + ' apart</span>' +
+      return '<li data-pid="' + c.id + '">' + eico(c.id, 28) + '<span><strong>' + plantA(c) + '</strong> ' + spTxt(c.id) + ' apart</span>' +
         (preview ? '' : '<button type="button" class="gp-x" data-act="sqrm" data-crop="' + c.id + '" aria-label="Remove ' + esc(lc(c.name)) + ' from my plan" title="Remove from my plan">×</button>') + '</li>'; }).join("") + '</ul></div>' : '';
     return head + '<div class="sq-cards">' + cards + '</div>' + loose + gr;
   }
@@ -429,7 +434,7 @@
     var meta = [shortSun(g.sun), g.spacing ? g.spacing.replace(/\.$/, "").split(/[;(]/)[0].trim() : ""].filter(Boolean).join(" · ");
     var ev = state.repeat[c.id] || 0;
     var h = '<details class="gp-card" data-card="' + c.id + '"' + (openCards[c.id] ? " open" : "") + '><summary>' + R.icon(c.id, base, 36) +
-      '<span class="gp-card-t"><b>' + esc(c.name) + '</b><span>' + esc(meta) + '</span></span>' +
+      '<span class="gp-card-t"><b>' + plantA(c) + '</b><span>' + esc(meta) + '</span></span>' +
       (past ? '<span class="gp-past gp-past-' + rate[past] + '">' + past + ': ' + label[rate[past]] + '</span>' : '') + '</summary><div class="gp-card-b">';
     h += '<dl>' + rows.filter(function (r) { return r[1]; }).map(function (r) { return '<dt>' + r[0] + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join("") + '</dl>';
     if (REPEAT.indexOf(c.id) >= 0) {
@@ -447,7 +452,7 @@
     if (hs.length) bits.push(hs.length + (hs.length === 1 ? " harvest" : " harvests"));
     if (state.cropNotes[c.id]) bits.push(esc(state.cropNotes[c.id].length > 28 ? state.cropNotes[c.id].slice(0, 26) + "…" : state.cropNotes[c.id]));
     return '<details class="gp-jrow" data-mine="' + c.id + '"' + (openNotes[c.id] ? " open" : "") + '><summary>' + R.icon(c.id, base, 28) +
-      '<b>' + esc(c.name) + '</b><span class="gp-jrow-s">' + (bits.length ? bits.join(" · ") : "Add notes") + '</span></summary><div class="gp-jrow-b">' +
+      '<b>' + plantA(c) + '</b><span class="gp-jrow-s">' + (bits.length ? bits.join(" · ") : "Add notes") + '</span></summary><div class="gp-jrow-b">' +
       '<label class="gp-mini">Variety and where I planted it<input type="text" data-crop="' + c.id + '" value="' + esc(state.cropNotes[c.id]) + '" maxlength="140" placeholder="Sungold, back bed"></label>' +
       '<div class="gp-rate" role="group" aria-label="How did ' + esc(lc(c.name)) + ' do in ' + YEAR + '?"><span>How did it do in ' + YEAR + '?</span><div>' +
       RATINGS.map(function (r) { return '<button type="button" class="gp-chip gp-chip-' + r[0] + '" data-act="rate" data-crop="' + c.id + '" data-v="' + r[0] + '" aria-pressed="' + (rate[YEAR] === r[0]) + '">' + r[1] + '</button>'; }).join("") +
@@ -474,7 +479,7 @@
         return '<h4 class="gp-month">' + y + ' <span class="gp-count">' + byYear[y].length + (byYear[y].length === 1 ? " harvest" : " harvests") + '</span></h4><ul class="gp-log">' +
           byYear[y].map(function (h) {
             var c = cropOf(h.crop);
-            return '<li><span class="gp-date">' + short(fromIso(h.date)) + '</span><span class="gp-text">' + (c ? R.icon(c.id, base, 22) + esc(c.name) : "") + (h.note ? ' <span class="gp-log-n">' + esc(h.note) + '</span>' : '') + '</span>' +
+            return '<li><span class="gp-date">' + short(fromIso(h.date)) + '</span><span class="gp-text">' + (c ? R.icon(c.id, base, 22) + plantA(c) : "") + (h.note ? ' <span class="gp-log-n">' + esc(h.note) + '</span>' : '') + '</span>' +
               '<button type="button" class="gp-x" data-act="rmlog" data-id="' + esc(h.id) + '" aria-label="Remove this harvest">×</button></li>';
           }).join("") + '</ul>';
       }).join("") : '<p class="empty">No harvests yet.</p>') + '</section>';
@@ -485,7 +490,7 @@
     hs.forEach(function (h) { if (h.date.slice(0, 4) !== y || !cropOf(h.crop)) return; if (!n[h.crop]) { n[h.crop] = 0; order.push(h.crop); } n[h.crop]++; });
     if (!order.length) return "";
     order.sort(function (a, b) { return n[b] - n[a]; });
-    return '<p class="gp-htot"><b>' + y + ' so far</b> ' + order.map(function (id) { return '<span class="gp-htot-i">' + R.icon(id, base, 20) + esc(cropOf(id).name) + ' <b>×' + n[id] + '</b></span>'; }).join("") + '</p>';
+    return '<p class="gp-htot"><b>' + y + ' so far</b> ' + order.map(function (id) { return '<span class="gp-htot-i">' + R.icon(id, base, 20) + plantA(cropOf(id)) + ' <b>×' + n[id] + '</b></span>'; }).join("") + '</p>';
   }
 
   // Days until a day-of-year comes round next (today counts as 0).
@@ -594,6 +599,8 @@
 
   // A plant's guide page, opened with your town so its "Your dates" card shows straight away.
   function plantUrl(id) { return base + "when-to-plant/" + id + "/" + (state.place ? "?town=" + state.place : ""); }
+  // Every plant name in the plan links to that plant's page (with your town), except the tick boxes in the picker.
+  function plantA(c, inner) { return '<a class="gp-pl" href="' + plantUrl(c.id) + '">' + (inner == null ? esc(c.name) : inner) + '</a>'; }
   // The next job for one plant in your town: the window that's open now, or the next one coming up.
   function nextJob(id) {
     var place = P.findPlace(D, state.place); if (!place) return "";
