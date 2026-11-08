@@ -2576,3 +2576,7 @@ details.gp-card[open] { border-color: #0F2B22; box-shadow: 0 0 0 2px var(--lime)
 .hz-mine > div { flex: 1 1 auto; min-width: 0; }
 .cm-pager a { overflow-wrap: normal; }
 .cm-pager a:first-child, .cm-pager a:last-child { white-space: nowrap; }
+/* iPhone: Safari gives date boxes a fixed minimum width, so they poked out of the harvest log. Let them shrink to fit. */
+input[type=date] { -webkit-appearance: none; appearance: none; display: block; min-width: 0; max-width: 100%; box-sizing: border-box; }
+input[type=date]::-webkit-date-and-time-value { text-align: left; margin: 0; }
+.gp-logform .field { min-width: 0; }
