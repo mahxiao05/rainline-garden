@@ -161,6 +161,8 @@ module.exports = {
   "crop:lavender": { src: "pexels:4242688", alt: "Rows of purple lavender in bloom" },
   "crop:tomatillos": { src: "pexels:35525515", alt: "Green tomatillos in their papery husks" },
   "crop:zinnias": { src: "pexels:23615938", alt: "Coral-pink zinnias blooming in a garden bed" },
+  "crop:kinnikinnick": { src: "pexels:17808124.png", drawnIcon: true, alt: "Small, leathery green leaves of kinnikinnick (bearberry) on trailing stems" },
+  "crop:tarragon": { src: "pexels:6156462", alt: "Narrow bright green leaves of a tarragon plant" },
   "crop:peonies": { src: "pexels:1260753", alt: "Coral-pink peonies blooming on a leafy bush" },
   "crop:collards": { src: "pexels:29829320", alt: "Hands cupping a young collard plant with broad, veined leaves" },
   "crop:parsnips": { src: "pexels:28797269", alt: "Freshly pulled parsnips with their leafy tops" },

@@ -15,7 +15,7 @@
   function wrap(d) { return d > 365 ? d - 365 : d; }
   function hasPhoto(id) { return photos.indexOf(id) >= 0; }
   function pic(id, size) {
-    return hasPhoto(id) ? '<img src="' + base + 'assets/img/photos/crop-' + id + '-720.webp" alt="" loading="lazy" decoding="async">' : R.icon(id, base, size);
+    return hasPhoto(id) ? '<img src="' + base + 'assets/img/photos/crop-' + id + '-480x480.webp" alt="" loading="lazy" decoding="async">' : R.icon(id, base, size);
   }
   function url(id, slug) { return R.cropUrl(id, slug, base); }
 

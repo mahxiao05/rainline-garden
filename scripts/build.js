@@ -531,7 +531,7 @@ const tipIcon = h => { const t = h.toLowerCase();
 const tipCards = sections => `<div class="tips">${sections.map(([h, ps], i) => `<section class="tip tip-${i % 3}"><h3><span class="tip-ic">${tipIcon(h)}</span>${esc(h)}</h3>${(Array.isArray(ps) ? ps : [ps]).map(t => `<p>${esc(t)}</p>`).join("")}</section>`).join("")}</div>`;
 const cropPhoto = id => fs.existsSync(path.join(ROOT, `assets/img/photos/crop-${id}-720.webp`));
 const plantTiles = (rel, list, href = c => `../${c.id}/`) => `<ul class="ptiles">${list.filter(c => G.crops[c.id]).map(c => { const g = G.crops[c.id];
-  return `<li><a href="${href(c)}"><span class="pt-img">${cropPhoto(c.id) ? `<img src="${rel}assets/img/photos/crop-${c.id}-720.webp" alt="" width="720" height="480" loading="lazy" decoding="async">` : R.icon(c.id, rel, 64)}</span>
+  return `<li><a href="${href(c)}"><span class="pt-img">${cropPhoto(c.id) ? `<img src="${rel}assets/img/photos/crop-${c.id}-720x480.webp" alt="" width="720" height="480" loading="lazy" decoding="async">` : R.icon(c.id, rel, 64)}</span>
 <span class="pt-body"><span class="pt-name">${esc(c.name)}</span>${badge(g.difficulty)}
 <span class="pt-row"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">${TIP_ICONS.sun}</svg>${esc(g.sun.split(";")[0])}</span>
 <span class="pt-row"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 12h18M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg>${esc(g.spacing)}</span></span></a></li>`; }).join("")}</ul>`;
