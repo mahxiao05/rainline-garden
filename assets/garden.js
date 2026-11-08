@@ -208,15 +208,23 @@
   function inGround(c) { return /tree|shrub|bush|vine|cane/.test(c.how || ""); }
   // Plants up to 17 in apart: how many fit in one 1 ft square. Bigger plants take a k × k ft spot (k = spacing in feet, rounded).
   function sp(id) { return SPACE[id] || 12; }
-  function perSq(id) { return sp(id) <= 17 ? Math.max(1, Math.pow(Math.floor(12 / sp(id)), 2)) : 0; }
-  function spot(id) { return sp(id) <= 17 ? 1 : Math.round(sp(id) / 12); }
+  // Plants per 1 ft square from published square-foot gardening charts (Square Foot Gardening Foundation,
+  // Phipps Conservatory, WSU and NC State Extension), where they differ from the plant's own spacing.
+  // Extra-large crops are one per square in the square-foot method; tomatoes staked, peas/pole beans/cucumbers on a trellis.
+  var SQ = { peas: 8, "pole-beans": 8, radishes: 16, lettuce: 4, chard: 4, parsley: 4, garlic: 9, cucumbers: 2,
+    kale: 1, broccoli: 1, cabbage: 1, cauliflower: 1, collards: 1, "brussels-sprouts": 1, peppers: 1, eggplant: 1, tomatoes: 1 };
+  var SQ_NOTE = { peas: "on a trellis", "pole-beans": "on a trellis", cucumbers: "on a trellis", tomatoes: "staked" };
+  // Otherwise the square-foot rule: 3 in or closer = 16, 4 in = 9, 6 in = 4, 12 in = 1.
+  function perSq(id) { return SQ[id] || (sp(id) <= 17 ? Math.min(16, Math.max(1, Math.pow(Math.floor(12 / sp(id)), 2))) : 0); }
+  function spot(id) { return SQ[id] || sp(id) <= 17 ? 1 : Math.round(sp(id) / 12); }
   function sqPer(id) { return spot(id) * spot(id); }
   function bedSq(b) { return Math.round(+b.w || 0) * Math.round(+b.l || 0); }
   // A good first amount: one square of crops that pack in 9 or more, two of mid-size ones, four of one-per-square plants, a couple of big ones.
   // The rest of the bed stays free for sowing again later; + or Optimize fills it.
-  function capOf(id) { var n = perSq(id); return n ? (n >= 9 ? 1 : n >= 4 ? 2 : 4) : Math.max(1, Math.round(typical(id) / sqPer(id))); }
+  function capOf(id) { var n = perSq(id); return n ? (n >= 9 ? 1 : n >= 2 ? 2 : 4) : Math.max(1, Math.round(typical(id) / sqPer(id))); }
   // How a plant sits in a bed, said the same way in the beds and the cheat sheet.
-  function bedTxt(id) { var n = perSq(id), k = spot(id); return n > 1 ? n + " per 1 ft square (" + sp(id) + " in apart each way)" : n === 1 ? "one per 1 ft square" : "one per " + k + " × " + k + " ft spot"; }
+  function bedTxt(id) { var n = perSq(id), k = spot(id), note = SQ_NOTE[id] ? ", " + SQ_NOTE[id] : "";
+    return n > 1 ? n + " per 1 ft square" + (SQ[id] || 12 / sp(id) > 4 ? note : " (" + sp(id) + " in apart each way)") : n === 1 ? "one per 1 ft square" + note : "one per " + k + " × " + k + " ft spot"; }
   // Each plant in the beds gets its own colour, so the squares match the list.
   var PCOLS = 8;
   function colorMap(list) { var m = {}; list.forEach(function (c, i) { m[c.id] = i % PCOLS; }); return m; }
