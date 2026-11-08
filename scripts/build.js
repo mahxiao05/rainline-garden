@@ -1451,7 +1451,7 @@ write("../", "articles/index.html", layout({
   description: "Practical guides for vegetable gardening in Oregon, Washington and Idaho: varieties that ripen here, winter gardens, short seasons, slugs and soil temperature.",
   jsonld: [ib.ld],
   body: `${ib.html}
-<section class="hero"><p class="eyebrow">${ARTICLES.length} guides · Oregon · Washington · Idaho</p><h1>Guides for Northwest gardeners</h1>
+<section class="hero hub-hero"><p class="eyebrow">${ARTICLES.length} guides · Oregon · Washington · Idaho</p><h1>Guides for Northwest gardeners</h1>
 <p class="lede">Advice for what makes gardening here different: cool summers, wet winters, short seasons and slugs.</p></section>
 <nav class="topic-nav" aria-label="Article topics"><ul class="chips">${ARTICLE_TOPICS.map(([id, name]) => `<li><a href="#${id}">${name} <span class="count">${ARTICLES.filter(a => a.topic === id).length}</span></a></li>`).join("")}</ul></nav>
 ${ARTICLE_TOPICS.map(([id, name, blurb]) => `<section class="topic-sec" id="${id}"><h2>${name}</h2><p class="topic-blurb">${blurb}</p>
