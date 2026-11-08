@@ -2590,3 +2590,11 @@ input[type=date]::-webkit-date-and-time-value { text-align: left; margin: 0; }
 .replant-sow .replant-badge svg { color: var(--teal); }
 .replant-back { border-left-color: var(--ochre); }
 .replant-back .replant-badge svg { color: var(--ochre); }
+
+/* Plant pages: your town's row in the dates table and your region's note (PLANT_TOWN_JS in build.js) */
+table.plan tr.is-mine > * { background: var(--teal-soft); }
+table.plan tr.is-mine .mine-tag, .region-card .mine-tag { display: inline-block; font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--fir); background: var(--teal-soft); border-radius: 999px; padding: 2px 10px; margin: 0 0 6px; }
+table.plan tr.is-mine .mine-tag { display: block; width: max-content; background: var(--paper); }
+.region-card.is-mine { border: 2px solid var(--fir); }
+.region-others { margin-top: 1rem; }
+.region-others > .region-cards { padding: 4px 0 0; }

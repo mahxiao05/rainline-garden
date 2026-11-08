@@ -420,7 +420,7 @@ const nearbyOf = (place, n = 6) => {
 function groupedRows(plans, dates) {
   const groups = new Map();
   plans.forEach(p => { const k = dates(p); if (!groups.has(k)) groups.set(k, []); groups.get(k).push(p); });
-  return [...groups].map(([k, ps]) => `<tr><th scope="row">${ps.map(p => `<a href="../../frost-dates/${p.place.slug}/" data-slug="${p.place.slug}">${esc(placeLabel(p.place))}</a>`).join(", ")}</th>${k}</tr>`).join("");
+  return [...groups].map(([k, ps]) => `<tr><th scope="row">${ps.map(p => `<a href="../../frost-dates/${p.place.slug}/" data-slug="${p.place.slug}" data-zone="${p.place.zone}">${esc(placeLabel(p.place))}</a>`).join(", ")}</th>${k}</tr>`).join("");
 }
 // "Your dates": the town box under a plant page's heading fills a card with one town's dates and an
 // "Is it too late to plant?" check. It reads the dates from that town's row in the every-town template lower down,
@@ -445,10 +445,10 @@ var tpl=document.getElementById("all-town-rows"),rows=tpl?tpl.content:document;
 function show(slug){if(!/^[a-z0-9-]+$/.test(slug||""))return false;var a=rows.querySelector('.area-groups a[data-slug="'+slug+'"]');if(!a)return false;
 var label=a.textContent,tds=[].slice.call(a.closest("tr").querySelectorAll("td")),v=verdict(tds,label.replace(/, [A-Z]{2}$/,""));
 var h=tds.map(function(td){return '<p><b>'+td.innerHTML+'</b> <span>'+td.getAttribute("data-label")+'</span></p>'}).join("");
-nameEl.textContent=label;out.innerHTML=(v?'<p class="pick-now"><span>Is it too late to plant?</span> '+v+'</p>':'')+h+'<a href="'+a.getAttribute("href")+'">Full '+label+' calendar &rarr;</a>';card.hidden=false;return true}
+nameEl.textContent=label;try{document.dispatchEvent(new CustomEvent("rainline:town",{detail:{slug:slug,label:label,zone:a.getAttribute("data-zone"),tds:tds}}))}catch(e){}out.innerHTML=(v?'<p class="pick-now"><span>Is it too late to plant?</span> '+v+'</p>':'')+h+'<a href="'+a.getAttribute("href")+'">Full '+label+' calendar &rarr;</a>';card.hidden=false;return true}
 var box=RainlineTownBox(boxEl,{onPick:function(p){if(show(p.slug))box.collapse(p,"Not your town?")}});
 var t=(location.search.match(/[?&]town=([a-z-]+)/)||[])[1],s="";try{s=localStorage.getItem("rainline-place")||""}catch(e){}
-if(t&&show(t)){box.collapse(null,"Not your town?");try{localStorage.setItem("rainline-place",t)}catch(e){}}else if(s&&show(s))box.collapse(null,"Not your town?")})</script>`;
+if(t&&show(t)){box.collapse(null,"Not your town?");try{localStorage.setItem("rainline-place",t)}catch(e){}}else if(s&&show(s))box.collapse(null,"Not your town?");else{var hl=document.querySelector(".hero-crop .lede");if(hl)hl.hidden=false}})</script>`;
 // "Add to my garden plan" under a plant page's intro: opens My garden plan with this plant already picked
 // (garden.js reads ?add=). If the plant is already in the saved plan, it turns into a quiet "Open my plan" link.
 const PLUS_SVG = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>';
@@ -642,7 +642,8 @@ ${gearBox(g.gear)}
 ${faqHtml(sci.faq)}
 ${relatedArticles("../../", c.id, 4)}
 ${plantTags(c, g, port)}
-${PHONE_FOLD_JS}`;
+${PHONE_FOLD_JS}
+${PLANT_TOWN_JS}`;
 }
 // "What to plant after": annual vegetables still in their planting window (around Portland) in the month this crop's
 // first harvest ends or the month after, from a different plant family so the bed also rotates. Built from the dates.
@@ -659,7 +660,7 @@ function plantAfter(c, ex, port) {
   return `<h2 id="after">What to plant after ${lc(c.name)}</h2>
 <p class="lede-sm">Around Portland, the ${singular(c.name)} harvest wraps up around ${P.MONTHS_LONG[last]}. These crops can still go into the same bed, and they come from a different plant family, which helps with rotation.</p>
 <ul class="chips">${picks.map(([o, w]) => `<li><a href="../${o.id}/">${R.icon(o.id, "../../", 24)}${esc(o.name)} <span class="chip-d">${P.fmtRange(w.start, w.end)}</span></a></li>`).join("")}</ul>
-<p class="note">Portland dates. Pick your town at the top of the page for yours.</p>`;
+<p class="note after-note">Portland dates. Pick your town at the top of the page for yours.</p>`;
 }
 // "Saving seed" (scripts/seed-saving.js), for plants whose seed is easy to save at home.
 function seedSaving(c) {
@@ -668,6 +669,47 @@ function seedSaving(c) {
   return phoneFold("seed", `Saving ${singular(c.name)} seed`, `<div class="sci-cards"><section class="sci-card"><h3>Will it come true?</h3><p>${esc(s[0])}</p></section>
 <section class="sci-card"><h3>How to save it</h3><p>${esc(s[1])}</p></section></div>`, true);
 }
+/* Once a town is showing in "Your dates" (saved, linked with ?town= or just picked), the rest of the plant page follows it:
+ * the five-city hero line steps aside, your town's row tops the dates table, the year strip and month links use your
+ * town's planting months, and "Growing X in your part of the Northwest" opens on your region's note with the others folded.
+ * Climate zones map to the note keys one to one, except "inland" (Spokane, north and eastern Idaho...): the notes have no
+ * group of their own for it, and it sits between "east" and "high", so both of those come first rather than picking one.
+ * Harvest months stay Portland's: there's no per-town harvest data. */
+const REGION_LABELS = [["west", "West-side valleys", "Willamette Valley, Puget Sound, southern Oregon"], ["coast", "Coast", "Oregon and Washington coast"], ["east", "East of the Cascades", "Columbia Basin, Yakima, Boise, Spokane, north Idaho"], ["high", "High desert and mountain towns", "Central Oregon, high eastern Oregon valleys, McCall, Salmon"]];
+const REGION_NOTE_KEY = { west: ["west"], coast: ["coast"], east: ["east"], inland: ["east", "high"], high: ["high"] };
+const PLANT_TOWN_JS = `<script>(function(){var KEY=${JSON.stringify(REGION_NOTE_KEY)},NAME=${JSON.stringify(Object.fromEntries(REGION_LABELS.map(([k, h]) => [k, h])))};
+var C=[0,31,59,90,120,151,181,212,243,273,304,334],ML=["January","February","March","April","May","June","July","August","September","October","November","December"];
+function mo(n){n=((n-1)%365+365)%365+1;var m=11;while(n<=C[m])m--;return m}
+function months(ws){var o={};ws.forEach(function(w){var e=w.e<w.s?w.e+365:w.e;for(var d=w.s;d<=e;d+=7)o[mo(d)]=1;o[mo(e)]=1});return o}
+function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+document.addEventListener("rainline:town",function(ev){var d=ev.detail,town=d.label,short=town.replace(/, [A-Z]{2}$/,"");
+var hl=document.querySelector(".hero-crop .lede");if(hl)hl.hidden=true;
+/* dates table: your town on top */
+var tb=document.querySelector("#dates ~ .table-wrap table.plan tbody");
+if(tb){[].forEach.call(tb.querySelectorAll("tr.is-mine-add"),function(r){r.remove()});[].forEach.call(tb.querySelectorAll("tr.is-mine"),function(r){r.classList.remove("is-mine")});
+var own=tb.querySelector('a[data-slug="'+d.slug+'"]'),tr;
+if(own){tr=own.closest("tr")}else{tr=document.createElement("tr");tr.className="is-mine-add";tr.innerHTML='<th scope="row"></th>';var a0=document.getElementById("all-town-rows").content.querySelector('a[data-slug="'+d.slug+'"]');if(a0)tr.firstChild.appendChild(a0.cloneNode(true));d.tds.forEach(function(td){tr.appendChild(td.cloneNode(true))})}
+tr.classList.add("is-mine");var lab=tr.querySelector(".mine-tag")||document.createElement("span");lab.className="mine-tag";lab.textContent="Your town";tr.firstChild.insertBefore(lab,tr.firstChild.firstChild);tb.insertBefore(tr,tb.firstChild)}
+/* year strip + month links: your planting months */
+var w=d.tds.filter(function(td){return td.hasAttribute("data-s")}).map(function(td){return {k:td.getAttribute("data-k"),s:+td.getAttribute("data-s"),e:+td.getAttribute("data-e")}});
+var ind=months(w.filter(function(x){return x.k==="indoor"})),pl=months(w.filter(function(x){return x.k!=="indoor"}));
+function paint(row,set){var r=document.querySelector('tr[data-yr="'+row+'"]');if(!r)return;[].forEach.call(r.querySelectorAll("td"),function(td,i){var on=!!set[i];td.className=on?"on "+row:"";td.innerHTML=on?'<span class="sr-only">'+ML[i]+"</span>":""})}
+if(w.length){paint("plant",pl);paint("in",ind);var yn=document.querySelector(".yr-note");if(yn){yn.innerHTML=(document.querySelector('tr[data-yr="pick"],tr[data-yr="bloom"]')?"<strong>Planting months for "+esc(town)+".</strong> Harvest and bloom months are for Portland; in a colder town they come later.":"<strong>Planting months for "+esc(town)+".</strong>")}
+var all={},k;for(k in ind)all[k]=1;for(k in pl)all[k]=1;var ms=Object.keys(all).map(Number).sort(function(a,b){return a-b}),ml=document.querySelector(".month-links");
+if(ml&&ms.length){var n=ms.map(function(i){return '<a href="../../garden-calendar/'+ML[i].toLowerCase()+'/">'+ML[i]+"</a>"});ml.innerHTML="See what else to plant in "+(n.length<2?n[0]:n.slice(0,-1).join(", ")+" or "+n[n.length-1])+"."}}
+var an=document.querySelector(".after-note");if(an)an.textContent="These are Portland dates. Tap a plant to see its dates for "+town+".";
+/* regional notes: yours first, the rest folded */
+var sec=document.getElementById("regions"),keys=KEY[d.zone];if(!sec||!keys)return;var grid=sec.querySelector(".region-cards"),lede=sec.querySelector(".region-lede");
+var old=sec.querySelector(".region-others");if(old){[].forEach.call(old.querySelectorAll(".region-card"),function(c){grid.appendChild(c)});old.remove()}
+var cards=[].slice.call(sec.querySelectorAll(".region-card"));cards.forEach(function(c){c.classList.remove("is-mine");var t=c.querySelector(".mine-tag");if(t)t.remove()});
+var mine=keys.map(function(k){return grid.querySelector('.region-card[data-k="'+k+'"]')}).filter(Boolean),rest=cards.filter(function(c){return mine.indexOf(c)<0});
+mine.slice().reverse().forEach(function(c){c.classList.add("is-mine");var tag=document.createElement("p");tag.className="mine-tag";tag.textContent=(keys.length>1?"Closest to ":"Your area: ")+town;c.insertBefore(tag,c.firstChild);grid.insertBefore(c,grid.firstChild)});
+var nm=keys.map(function(k){return "\u201c"+NAME[k]+"\u201d"}).join(" and ");
+if(keys.length>1)lede.textContent=short+" is in the Inland Northwest, which falls between our "+nm+" groups, so both notes come first.";
+else if(mine.length)lede.textContent=short+" is in our "+nm+" group, so that note comes first.";
+else lede.textContent="There's no separate "+nm+" note for this plant, so the growing steps above apply in "+short+". Notes for other parts of the Northwest:";
+if(mine.length&&rest.length){var f=document.createElement("details");f.className="more-fold region-others";f.innerHTML="<summary>Other parts of the Northwest ("+rest.length+")</summary>";var g=document.createElement("div");g.className="sci-cards region-cards";rest.forEach(function(c){g.appendChild(c)});f.appendChild(g);sec.appendChild(f)}
+sec.open=true})})()</script>`;
 // Long sections that start closed on phones (open on wider screens); "On this page" links open them.
 // closed = starts closed on every screen size (long extras like the science notes).
 const phoneFold = (id, title, body, closed) => `<details class="fold" id="${id}" data-phone-fold${closed ? "" : " open"}><summary><h2>${title}</h2></summary>
@@ -720,8 +762,8 @@ function yearStrip(c, ex, port) {
   const perennial = ["berries-and-perennials", "perennial-vegetables", "fruit-trees", "native-plants"].includes(c.cat);
   return `<h2 id="year">${singular(c.name).replace(/^./, x => x.toUpperCase())} year at a glance</h2>
 <div class="table-wrap"><table class="year"><thead><tr><th scope="col"><span class="sr-only">Task</span></th>${M.map(m => `<th scope="col"><abbr title="${m}">${m[0]}</abbr></th>`).join("")}</tr></thead>
-<tbody>${rows.map(([label, cls, set]) => `<tr><th scope="row">${label}</th>${M.map((m, i) => set.has(i) ? `<td class="on ${cls}"><span class="sr-only">${m}</span></td>` : "<td></td>").join("")}</tr>`).join("")}</tbody></table></div>
-<p class="note">Around Portland. Colder towns, especially east of the Cascades, run a few weeks later; the table above has your town's planting dates.${perennial && ex.pick ? " Harvest months are for an established plant." : ""}</p>`;
+<tbody>${rows.map(([label, cls, set]) => `<tr data-yr="${cls}"><th scope="row">${label}</th>${M.map((m, i) => set.has(i) ? `<td class="on ${cls}"><span class="sr-only">${m}</span></td>` : "<td></td>").join("")}</tr>`).join("")}</tbody></table></div>
+<p class="note yr-note">Around Portland. Colder towns, especially east of the Cascades, run a few weeks later; the table above has your town's planting dates.${perennial && ex.pick ? " Harvest months are for an established plant." : ""}</p>`;
 }
 function howMany(c, ex) {
   const flower = c.cat === "flowers";
@@ -745,13 +787,12 @@ const faqHtml = qas => `<div class="faq">${qas.map(([q, a]) => `<details><summar
 const sideCard = (g, note, noPests) => `<aside class="side-card"><h3>Top picks for here</h3><ul class="vars">${g.varieties.map(v => `<li>${esc(v)}</li>`).join("")}</ul>
 ${noPests ? "" : `<h3>Watch out for</h3><p>${esc(g.problem)}</p>`}${note ? `<p class="note">${esc(note)}</p>` : ""}</aside>`;
 // How the plant does in each part of the Northwest (scripts/regional-notes.js).
-const REGION_LABELS = [["west", "West-side valleys", "Willamette Valley, Puget Sound, southern Oregon"], ["coast", "Coast", "Oregon and Washington coast"], ["east", "East of the Cascades", "Columbia Basin, Yakima, Boise, Spokane, north Idaho"], ["high", "High desert and mountain towns", "Central Oregon, high eastern Oregon valleys, McCall, Salmon"]];
 function regionalNotes(c) {
   const r = REGIONAL[c.id];
   if (!r) throw new Error(`scripts/regional-notes.js has no entry for ${c.id}`);
   const parts = REGION_LABELS.filter(([k]) => r[k]);
-  return phoneFold("regions", `Growing ${lc(c.name)} in your part of the Northwest`, `<p class="lede-sm">The same plant behaves differently on the wet west side, the foggy coast and the dry, colder east side.</p>
-<div class="sci-cards region-cards">${parts.map(([k, h, where]) => `<section class="sci-card region-card region-${k}"><h3>${h}</h3><p class="region-where">${where}</p><p>${esc(r[k])}</p></section>`).join("\n")}</div>`);
+  return phoneFold("regions", `Growing ${lc(c.name)} in your part of the Northwest`, `<p class="lede-sm region-lede">The same plant behaves differently on the wet west side, the foggy coast and the dry, colder east side.</p>
+<div class="sci-cards region-cards">${parts.map(([k, h, where]) => `<section class="sci-card region-card region-${k}" data-k="${k}"><h3>${h}</h3><p class="region-where">${where}</p><p>${esc(r[k])}</p></section>`).join("\n")}</div>`);
 }
 // Popular variety cards from scripts/varieties.js, shown on each plant's main page.
 function varietyCards(c) {
@@ -1124,6 +1165,7 @@ D.crops.forEach(c => {
 <p class="eyebrow">Oregon · Washington · Idaho</p>
 <h1>When to plant ${lc(c.name)}</h1>
 <p class="lede">${g.fall ? hubLede(c, ledeTowns, "fall") : hubLede(c, ledeTowns)}</p>
+<script>try{if(/^[a-z0-9-]+$/.test(localStorage.getItem("rainline-place")||""))document.currentScript.previousElementSibling.hidden=true}catch(e){}</script>
 ${yourDates()}</div></section>
 <p class="plant-intro">${esc(INTROS[c.id])}</p>
 ${replantNote(c)}
