@@ -154,7 +154,8 @@
     return Object.keys(by).map(function (d) {
       var n = by[d], all = n.length === rows.length;
       var list = n.length === 1 ? n[0] : n.slice(0, -1).join(", ") + " and " + n[n.length - 1];
-      return '<p class="pc-gfrost">Frost possible until about ' + P.fmt(+d) + ': keep frost cover handy' + (all ? '.' : ' for ' + list + '.') + '</p>';
+      var who = all ? 'These plants go' : list.charAt(0).toUpperCase() + list.slice(1) + (n.length === 1 ? ' goes' : ' go');
+      return '<p class="pc-gfrost"><span aria-hidden="true">❄</span> ' + who + ' in before frost is over. If a frost is forecast before ' + P.fmt(+d) + ', cover ' + (n.length === 1 && !all ? 'it' : 'them') + '.</p>';
     }).join("");
   }
   function townCal(p, base, photo) {
@@ -171,20 +172,21 @@
           (src ? '<img src="' + src + '" width="480" height="240" alt="" loading="lazy" decoding="async">' : "") +
           '<b>' + g.k.name + '</b><small>' + plants(g.rows.length) + '</small></button></li>';
       }).join("") + '</ul></div>' +
-      '<div class="pc-frost"><span>Frost</span><div class="pc-ftrk">' +
+      '<div class="pc-frost"><span>Frost</span><div><div class="pc-ftrk">' +
       '<i class="band frost-hard" style="' + span(1, f.spring50) + '"></i>' +
       '<i class="band frost-risk" style="' + span(f.spring50, f.spring10) + '"></i>' +
       '<i class="band frost-free" style="' + span(f.spring10, Math.min(f.fall10, 366)) + '"></i>' +
       (f.fall10 < 366 ? '<i class="band frost-risk" style="' + span(f.fall10, Math.min(f.fall50, 366)) + '"></i>' : "") +
       (f.fall50 < 366 ? '<i class="band frost-hard" style="' + span(f.fall50, 366) + '"></i>' : "") +
-      '</div></div>' +
+      '</div><div class="pc-mo" aria-hidden="true">' + '<span></span>'.repeat(12) + '</div>' +
+      '<ul class="pc-fkey"><li><i class="key frost-hard"></i>Frost likely</li><li><i class="key frost-risk"></i>Frost possible</li><li><i class="key frost-free"></i>Frost-free</li></ul></div></div>' +
       groups.map(function (g, i) {
         return '<div class="pc-group' + (i === 0 ? ' is-on' : '') + '" data-g="' + g.k.id + '"><h3 class="pc-gh">' + g.k.name + ' <span>' + plants(g.rows.length) + '</span></h3>' + groupFrost(g.rows) +
           '<ul class="pc-cards">' + g.rows.map(function (r) { return calCard(p, r, base); }).join("") + '</ul></div>';
       }).join("") +
       '<p class="pc-none" role="status" aria-live="polite"></p>' +
       '<ul class="legend pc-legend"><li><i class="key bar-in"></i>Start seeds indoors</li><li><i class="key bar-spring"></i>Plant in the garden</li><li><i class="key bar-fall"></i>Plant again for fall</li>' +
-      '<li class="pc-key-now" hidden><i class="key key-today"></i>Today</li><li><i class="key frost-risk"></i>Frost possible</li><li><i class="key frost-hard"></i>Frost likely</li></ul>';
+      '<li class="pc-key-now" hidden><i class="key key-today"></i>Today</li></ul>';
   }
   // Marks today on each card's year bar.
   function calToday(el, today) {

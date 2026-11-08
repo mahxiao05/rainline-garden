@@ -2650,4 +2650,12 @@ table.nb thead th { font-size: .75rem; color: var(--muted); text-transform: uppe
 table.nb tbody th { font-weight: 400; }
 table.nb tr.me { background: var(--moss-soft, rgba(120,150,60,.12)); }
 table.nb tr.me th, table.nb tr.me td { font-weight: 600; }
-.pc-gfrost { font-size: .88rem; color: var(--warn); margin: 0 0 .6rem; }
+.pc-gfrost { font-size: .9rem; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-left: 4px solid #5b8fb9; border-radius: 8px; padding: 8px 12px; margin: 0 0 .7rem; }
+.pc-gfrost span { color: #5b8fb9; margin-right: 2px; }
+.pc-frost { align-items: start; }
+.pc-frost > span { line-height: 12px; }
+.pc-frost .pc-mo { margin-top: 3px; }
+.pc-fkey { list-style: none; padding: 0; margin: 6px 0 0; display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .78rem; }
+.pc-fkey li { display: flex; align-items: center; gap: 6px; }
+.pc-fkey .key { width: 18px; height: 10px; }
+.pc-fkey .key.frost-free { border: 1px solid var(--line); }
