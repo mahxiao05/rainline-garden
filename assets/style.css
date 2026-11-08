@@ -2727,3 +2727,13 @@ table.nb tr.me th, table.nb tr.me td { font-weight: 600; }
 .beginner-rows .card-s { margin: 0; align-self: start; }
 .year4 li { padding: 10px 12px 12px; }
 #easy + .ptiles { margin-bottom: 16px; }
+
+/* First-hand notes from an author's garden (scripts/garden-notes.js) */
+.gnote { display: flex; gap: 14px; align-items: flex-start; max-width: 44rem; margin: 1.25rem 0 1.5rem; padding: 16px 18px; background: #fff; border: 1px solid var(--line, #e6e0d2); border-left: 5px solid var(--moss); border-radius: 14px; }
+.gnote .avatar { width: 52px; height: 52px; }
+.gnote-k { margin: 0 0 .3rem; font-size: .8rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--moss); }
+.gnote blockquote { margin: 0; padding: 0; border: 0; }
+.gnote blockquote p { margin: 0; font-size: 1.08rem; line-height: 1.55; font-style: italic; }
+.gnote-by { margin: .45rem 0 0; font-size: .92rem; }
+.gnote-list { padding-left: 1.2rem; }
+.gnote-list li { margin: .4rem 0; font-style: italic; }

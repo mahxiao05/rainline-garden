@@ -108,7 +108,7 @@ const AUTHORS = {
     // page: has its own profile page at about/{id}/. photo: header picture in assets/img/authors/{photo}-800/-1280 (.jpg + .webp, 3:2, metadata stripped).
     page: true, kicker: "Vegetables and planting dates",
     photo: { img: "jigmey-river", alt: "A calm green river lined with tall fir trees under a clear blue summer sky, with maple leaves overhead and mossy rocks along the bank" },
-    facts: ["Grew up in Oregon", "Years of growing vegetables at home", "Checks dates against NOAA weather records"],
+    facts: ["Grew up in Oregon", "Gardens in Happy Valley, Oregon", "Years of growing vegetables at home", "Checks dates against NOAA weather records"],
     bio: "Jigmey Dorjee grew up in Oregon, where gardening means working with the weather: cold, wet springs, dry summers and long, mild falls. He's an experienced home gardener who has grown his own vegetables for years, and he knows firsthand that a Northwest garden runs on a different calendar than the national planting charts. He writes about vegetables and planting timing for Rainline Garden and checks the advice against NOAA weather records and university research.",
     short: "Jigmey Dorjee grew up in Oregon and has grown his own vegetables at home for years. He writes about vegetables and planting timing, and checks the advice against NOAA weather records and university research."
   },
@@ -133,6 +133,12 @@ const AUTHORS = {
   }
 };
 const DEFAULT_AUTHOR = "jigmey-dorjee";
+const GARDEN_NOTES = require("./garden-notes.js");
+// A first-hand note from an author's own garden (scripts/garden-notes.js), with their photo and a link to their page.
+const gardenNote = (rel, n) => { const a = AUTHORS[n.author], first = a.name.split(" ")[0];
+  return `<aside class="gnote">${avatar(rel, n.author, "avatar-sm")}<div><p class="gnote-k">${esc(n.label || `From ${first}'s garden`)} · ${esc(n.where)}</p>
+<blockquote><p>${esc(n.text)}</p></blockquote><p class="gnote-by"><a href="${rel}${authorPath(n.author)}">${esc(a.name)}</a>, ${esc(a.role.toLowerCase())}</p></div></aside>`; };
+const notesFor = (key, val, rel) => GARDEN_NOTES.filter(n => (n[key] || []).includes(val)).map(n => gardenNote(rel, n)).join("\n");
 // Drop a square photo at assets/img/authors/{id}.jpg and it replaces the initials badge.
 const authorPhoto = id => fs.existsSync(path.join(ROOT, "assets/img/authors", id + ".jpg")) ? `assets/img/authors/${id}.jpg` : null;
 const avatar = (rel, id, cls) => authorPhoto(id)
@@ -1278,6 +1284,7 @@ D.crops.forEach(c => {
 <script>try{if(/^[a-z0-9-]+$/.test(localStorage.getItem("rainline-place")||""))document.currentScript.previousElementSibling.hidden=true}catch(e){}</script>
 ${yourDates()}</div></section>
 <p class="plant-intro">${esc(INTROS[c.id])}</p>
+${notesFor("crops", c.id, "../../")}
 ${replantNote(c)}
 ${planAdd(c)}
 ${sci ? scienceBody(c, g, sci, { head, dates, plans: sorted, port }) : `${quickFacts(c, g)}
@@ -1634,6 +1641,7 @@ ARTICLES.forEach(a => {
 <p class="byline">${byAvatar(rel, a.author || DEFAULT_AUTHOR)}<span>By ${byName(rel, a.author || DEFAULT_AUTHOR)}<br><span class="byline-d">Posted ${stamp(dt.published)}${dt.updated && monthYear(dt.updated) !== monthYear(dt.published) ? ` · Updated ${stamp(dt.updated)}` : ""}</span></span></p></div></header>
 ${toc.nav}
 <div class="prose">${toc.html}</div>
+${notesFor("articles", a.slug, rel)}
 ${SPROUT_DIVIDER}
 ${a.gardenPhoto ? gardenGrid(rel, GARDEN_PHOTOS.filter(r => r.img === a.gardenPhoto)) : ""}
 ${byBox(rel, a.author || DEFAULT_AUTHOR)}
@@ -1982,6 +1990,7 @@ var zn={};(m.getAttribute("data-zones")||"").split(";").forEach(function(x){x=x.
 var row=document.querySelector('.mb-reg tr[data-zone="'+t[3]+'"]');if(row)row.classList.add("is-mine");
 m.innerHTML='<p><strong>'+t[1]+', '+t[2]+'</strong> is in the '+zn[t[3]]+'.</p><p class="mb-mine-links"><a class="btn" href="${rel}plant-now/">Plant now in '+t[1]+'</a><a href="${rel}frost-dates/'+t[0]+'/">'+t[1]+'’s full calendar</a></p>';m.hidden=false;
 show(tags[t[3]]||"all")})();</script>
+${notesFor("months", c.m, rel)}
 ${guideHtml}
 ${wxHtml}
 ${aheadHtml}
@@ -2124,6 +2133,7 @@ ${avatar(rel, id, "avatar-xl")}
 <ul class="profile-facts">${a.facts.map(f => `<li>${esc(f)}</li>`).join("")}</ul>
 <p>${esc(a.bio)}</p>
 ${a.results ? resultsGallery(rel, a.results) : ""}
+${GARDEN_NOTES.some(n => n.author === id) ? `<h2 id="notes">From ${esc(first)}'s garden</h2>\n<ul class="gnote-list">${GARDEN_NOTES.filter(n => n.author === id).map(n => `<li>${esc(n.text)}</li>`).join("")}</ul>` : ""}
 </div></section>
 <section class="author-reads"><h2 id="articles">Articles by ${esc(first)} <span class="count">${mine.length}</span></h2>
 ${articleCards(rel, mine)}</section>
