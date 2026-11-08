@@ -135,8 +135,7 @@
   function calFlag(r) {
     if (r.season === "short") return "Short season here: use transplants, a fast variety and row cover.";
     if (r.season === "tight") return "Tight season: choose an early variety.";
-    if (r.cover) return "Frost possible until about " + P.fmt(r.coverUntil) + ": keep frost cover handy.";
-    return "";
+    return ""; // frost cover: said once per group (groupFrost), not on every card
   }
   function calCard(p, r, base) {
     var bars = (r.indoor ? '<i class="bar bar-in" style="' + span(r.indoor.start, r.indoor.end) + '"></i>' : "") +
@@ -147,6 +146,16 @@
       '<div class="pc-yr" aria-hidden="true"><div class="pc-trk">' + bars + '</div><div class="pc-mo">' +
       '<span></span>'.repeat(12) + '</div></div>' +
       '<ul class="pc-dates">' + calDates(r) + '</ul>' + (f ? '<p class="pc-flag">' + f + '</p>' : '') + '</li>';
+  }
+  // One line per plant group instead of the same frost warning on every card.
+  function groupFrost(rows) {
+    var by = {};
+    rows.forEach(function (r) { if (r.cover && r.season !== "short" && r.season !== "tight") (by[r.coverUntil] = by[r.coverUntil] || []).push(r.crop.name.toLowerCase()); });
+    return Object.keys(by).map(function (d) {
+      var n = by[d], all = n.length === rows.length;
+      var list = n.length === 1 ? n[0] : n.slice(0, -1).join(", ") + " and " + n[n.length - 1];
+      return '<p class="pc-gfrost">Frost possible until about ' + P.fmt(+d) + ': keep frost cover handy' + (all ? '.' : ' for ' + list + '.') + '</p>';
+    }).join("");
   }
   function townCal(p, base, photo) {
     var f = p.frost;
@@ -170,7 +179,7 @@
       (f.fall50 < 366 ? '<i class="band frost-hard" style="' + span(f.fall50, 366) + '"></i>' : "") +
       '</div></div>' +
       groups.map(function (g, i) {
-        return '<div class="pc-group' + (i === 0 ? ' is-on' : '') + '" data-g="' + g.k.id + '"><h3 class="pc-gh">' + g.k.name + ' <span>' + plants(g.rows.length) + '</span></h3>' +
+        return '<div class="pc-group' + (i === 0 ? ' is-on' : '') + '" data-g="' + g.k.id + '"><h3 class="pc-gh">' + g.k.name + ' <span>' + plants(g.rows.length) + '</span></h3>' + groupFrost(g.rows) +
           '<ul class="pc-cards">' + g.rows.map(function (r) { return calCard(p, r, base); }).join("") + '</ul></div>';
       }).join("") +
       '<p class="pc-none" role="status" aria-live="polite"></p>' +

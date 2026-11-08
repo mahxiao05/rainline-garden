@@ -49,6 +49,7 @@ const VARIETIES = require("./varieties.js");
 const VIDEOS = require("./videos.js");
 const AREA_TIPS = require("./area-tips.js");
 const TOWN_NOTES = require("./town-notes.js");
+const CLIMATE = require("./climate-normals.js");
 const REGIONAL = require("./regional-notes.js");
 const INTROS = require("./plant-intros.js");
 const REPLANT = require("./replant-notes.js");
@@ -949,6 +950,55 @@ function townCompare(p) {
   return phoneFold("compare", `How the season in ${city} compares`, `<div class="prose">${out.map(t => `<p>${t}</p>`).join("\n")}</div>`);
 }
 
+// Rain and warmth for the town, from NOAA's 1991-2020 climate normals for its station (scripts/climate-normals.js).
+// Any number NOAA doesn't have for that station is left out, and the card is skipped without rain by month.
+const MONTHS_LONG = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+function climateOf(place) { return CLIMATE[place.station] || {}; }
+function rainFacts(place) {
+  const c = climateOf(place);
+  if (!c.mprcp || c.prcp == null) return null;
+  const m = c.mprcp, wet = m.indexOf(Math.max(...m)), dry = m.indexOf(Math.min(...m));
+  const summer = m[5] + m[6] + m[7];
+  return { c, m, wet, dry, summer, pct: Math.round(100 * summer / c.prcp) };
+}
+function townClimate(p) {
+  const place = p.place, city = esc(place.city), r = rainFacts(place);
+  if (!r) return "";
+  const { c, m, wet, dry, summer, pct } = r;
+  const tiles = [["Rain a year", `${Math.round(c.prcp)} in`, "counting melted snow"]];
+  if (c.snow != null) tiles.push(["Snow a year", `${Math.round(c.snow)} in`, ""]);
+  if (c.julHigh != null) tiles.push(["July high", `${Math.round(c.julHigh)}°F`, "average afternoon"]);
+  if (c.janLow != null) tiles.push(["January low", `${Math.round(c.janLow)}°F`, "average night"]);
+  const top = Math.max(...m);
+  const bars = m.map((v, i) => `<div class="wx-b${i === dry ? " wx-dry" : ""}"><span style="height:${Math.max(3, Math.round(100 * v / top))}%"></span><em>${MONTHS_LONG[i][0]}</em></div>`).join("");
+  const out = [`The wettest month is ${MONTHS_LONG[wet]} (${m[wet].toFixed(1)} in) and the driest is ${MONTHS_LONG[dry]} (${m[dry].toFixed(1)} in). June to August bring ${summer.toFixed(1)} in, ${pct}% of the year's total, ` +
+    (pct <= 20 ? "so plan to water through summer." : "so summer storms help, but young plants still need watering in dry spells.")];
+  if (c.gdd != null) {
+    const all = ALL_PLANS.map(x => climateOf(x.place).gdd).filter(x => x != null).sort((a, b) => b - a);
+    const rank = all.indexOf(c.gdd) + 1, n = all.length;
+    out.push(rank <= n / 3 ? `Summers here are among the warmest we cover (${ordinal(rank)} of ${n} towns for summer heat). Tomatoes, peppers and melons do well once they're in.`
+      : rank > 2 * n / 3 ? `Summers here are cool (${ordinal(rank)} of ${n} towns for summer heat). Tomatoes, peppers and melons ripen slowly, so pick early varieties and your warmest, sunniest spot.`
+      : `Summer warmth is middle of the pack (${ordinal(rank)} of ${n} towns). Most warm crops ripen, but long-season ones need a quick start.`);
+  }
+  const st = D.stations[place.station].name;
+  return `<section class="wx" id="weather"><h2>Rain and warmth in ${city}</h2>
+<div class="wx-tiles${tiles.length === 3 ? " wx-3" : ""}">${tiles.map(([a, b, s]) => `<div class="wx-t"><div class="wx-l">${a}</div><div class="wx-v">${b}</div>${s ? `<div class="wx-s">${s}</div>` : ""}</div>`).join("")}</div>
+<div class="wx-chart" role="img" aria-label="Average rain by month in ${city}: ${m.map((v, i) => `${MONTHS_LONG[i].slice(0, 3)} ${v.toFixed(1)} in`).join(", ")}"><div class="wx-cap">Rain by month <span>(driest month in tan)</span></div><div class="wx-bars" aria-hidden="true">${bars}</div></div>
+<div class="prose">${out.map(t => `<p>${t}</p>`).join("\n")}</div>
+<p class="station">Source: NOAA 1991–2020 climate normals, ${esc(st)}${/Station/.test(st) ? "" : " station"}.</p></section>`;
+}
+// The town and its nearest towns side by side: last frost, frost-free days and rain.
+function nearbyTable(p, nearby) {
+  const row = (x, me) => {
+    const xp = ALL_PLANS.find(q => q.place.slug === x.slug), c = climateOf(x);
+    const name = me ? esc(x.city) : `<a href="../${x.slug}/">${esc(x.city)}</a>${x.state !== p.place.state ? `, ${x.state}` : ""}`;
+    return `<tr${me ? ' class="me"' : ""}><th scope="row">${name}</th><td>${P.fmt(xp.frost.spring50)}</td><td>${xp.frost.season}</td><td>${c.prcp != null ? `${Math.round(c.prcp)} in` : "—"}</td></tr>`;
+  };
+  return `<h2>Nearby areas with similar weather</h2>
+<div class="table-wrap"><table class="nb"><thead><tr><th scope="col">Town</th><th scope="col">Last frost</th><th scope="col">Frost-free days</th><th scope="col">Rain a year</th></tr></thead><tbody>${row(p.place, true)}${nearby.slice(0, 4).map(x => row(x)).join("")}</tbody></table></div>
+<p class="station">Typical dates and yearly rain, NOAA 1991–2020 normals. More nearby: ${nearby.slice(4).map(x => `<a href="../${x.slug}/">${esc(placeLabel(x))}</a>`).join(" · ")}.</p>`;
+}
+
 // A short fact note about the town (scripts/town-notes.js), as a pin card under the frost dates.
 function townNote(place) {
   const note = TOWN_NOTES[place.slug];
@@ -1010,6 +1060,7 @@ function townQuestions(p) {
   const city = p.place.city, f = p.frost;
   const tom = rowFor(p, "tomatoes"), sp = win(tom, "spring"), garlic = win(rowFor(p, "garlic"), "fall");
   const rank = ALL_PLANS.slice().sort((a, b) => b.frost.season - a.frost.season).findIndex(x => x.frost.season <= f.season) + 1;
+  const rf = rainFacts(p.place);
   const where = rank <= 10 ? "one of the longest" : rank > ALL_PLANS.length - 10 ? "one of the shortest" : rank <= ALL_PLANS.length / 2 ? "longer than most" : "shorter than most";
   return [
     [`When is the last frost in ${city}?`, `${P.fmtLong(f.spring50)} in a typical year. Frost is over by ${P.fmtLong(f.spring10)} in 9 years out of 10. Tender plants like tomatoes wait longer than that, for warm soil: see the tomato question below.`],
@@ -1018,7 +1069,8 @@ function townQuestions(p) {
       (tom.cover ? ` Keep frost cover handy until about ${P.fmt(tom.coverUntil)}.` : "") + (tom.season === "short" || tom.season === "tight" ? " The season is short here, so pick an early variety." : "")],
     [`When should I plant garlic in ${city}?`, `Plant garlic cloves ${P.fmtRange(garlic.start, garlic.end)}, and harvest next summer when the lower leaves turn brown.`],
     ...(p.place.hz ? [[`What growing zone is ${city} in?`, `USDA hardiness zone ${p.place.hz}${p.place.hz.includes("–") ? ", depending on your ZIP code" : ""}, on the 2023 USDA map: the coldest winter night is usually ${p.place.hzT.replace(/-/g, "−")}°F. The zone tells you which perennials, shrubs and trees survive the winter; for vegetables, go by the frost dates and planting calendar instead.`]] : []),
-    [`How long is the growing season in ${city}?`, `About ${f.season} frost-free days, ${where} of the ${ALL_PLANS.length} Oregon, Washington and Idaho towns we cover.`]
+    [`How long is the growing season in ${city}?`, `About ${f.season} frost-free days, ${where} of the ${ALL_PLANS.length} Oregon, Washington and Idaho towns we cover.`],
+    ...(rf ? [[`How much rain does ${city} get?`, `About ${Math.round(rf.c.prcp)} inches a year, counting melted snow. ${MONTHS_LONG[rf.wet]} is the wettest month and ${MONTHS_LONG[rf.dry]} the driest, with ${rf.summer.toFixed(1)} inches from June to August (NOAA 1991–2020 normals).`]] : [])
   ];
 }
 
@@ -1059,6 +1111,7 @@ ${townNote(place)}
 <p class="plan-link"><a class="btn btn-ghost" href="../../my-garden/?place=${place.slug}">Make a garden plan for ${esc(place.city)}</a> Pick your plants and get a dated, printable to-do list.</p>
 ${townLocal(p)}
 ${townCompare(p)}
+${townClimate(p)}
 <section class="pc" id="calendar"><h2>Planting calendar</h2>
 <p class="pc-sub">Pick a group to see when each plant goes in, or search for one.</p>
 ${R.townCal(p, "../../", id => PHOTOS["cat:" + id] ? "../../" + photoFile("cat:" + id, "thumb", "webp") : "")}
@@ -1069,8 +1122,7 @@ ${stationBox(p)}
 <h2 id="faq">Common questions about frost in ${esc(place.city)}</h2>
 ${faqHtml(qas)}
 ${newsletter(place.city)}
-<h2>Nearby areas with similar weather</h2>
-<ul class="places">${nearby.map(x => `<li><a href="../${x.slug}/">${esc(placeLabel(x))}</a></li>`).join("")}</ul>
+${nearbyTable(p, nearby)}
 <p><a href="../">All town calendars</a> or <a href="../../">look up your ZIP</a>.</p>
 ${PHONE_FOLD_JS}`,
     scripts: SCRIPTS

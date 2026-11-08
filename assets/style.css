@@ -2625,3 +2625,29 @@ table.plan tr.is-mine .mine-tag { display: block; width: max-content; background
 .gl-has-pic { overflow: hidden; }
 .gl-pic { float: right; width: 72px; height: 72px; object-fit: cover; border-radius: 10px; margin: 4px 0 6px 14px; }
 :root[data-theme="dark"] .rg-land { fill: #34443C; }
+
+/* Town pages: rain and warmth card, nearby towns table, one frost line per plant group (2026-11-08) */
+.wx { margin: 28px 0; }
+.wx-tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 12px 0; }
+@media (min-width: 40rem) { .wx-tiles { grid-template-columns: repeat(4, 1fr); } }
+.wx-tiles.wx-3 { grid-template-columns: repeat(3, 1fr); }
+.wx-3 .wx-s { display: none; }
+.wx-t { background: var(--paper); border: 1px solid var(--line); border-left: 4px solid var(--moss); border-radius: 8px; padding: 8px 10px; }
+.wx-l { font-size: .78rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+.wx-v { font-size: 1.3rem; font-weight: 700; line-height: 1.2; }
+.wx-s { font-size: .8rem; color: var(--muted); }
+.wx-chart { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px 6px; margin: 8px 0 12px; }
+.wx-cap { font-weight: 600; font-size: .95rem; }
+.wx-cap span { font-weight: 400; color: var(--muted); font-size: .85rem; }
+.wx-bars { display: flex; align-items: flex-end; gap: 4px; height: 90px; margin-top: 8px; }
+.wx-b { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; }
+.wx-b span { display: block; width: 100%; background: #5b8fb9; border-radius: 3px 3px 0 0; }
+.wx-b.wx-dry span { background: #c9a26b; }
+.wx-b em { font-style: normal; font-size: .72rem; color: var(--muted); margin-top: 3px; }
+table.nb { width: 100%; border-collapse: collapse; font-size: .92rem; margin: 8px 0; }
+table.nb th, table.nb td { padding: 8px 6px; border-bottom: 1px solid var(--line); text-align: left; }
+table.nb thead th { font-size: .75rem; color: var(--muted); text-transform: uppercase; font-weight: 600; }
+table.nb tbody th { font-weight: 400; }
+table.nb tr.me { background: var(--moss-soft, rgba(120,150,60,.12)); }
+table.nb tr.me th, table.nb tr.me td { font-weight: 600; }
+.pc-gfrost { font-size: .88rem; color: var(--warn); margin: 0 0 .6rem; }
