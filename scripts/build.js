@@ -51,6 +51,19 @@ const AREA_TIPS = require("./area-tips.js");
 const TOWN_NOTES = require("./town-notes.js");
 const REGIONAL = require("./regional-notes.js");
 const INTROS = require("./plant-intros.js");
+const REPLANT = require("./replant-notes.js");
+// "After harvest" line under the plant intro: does it need replanting? Left off when a plant has no entry.
+const REPLANT_ICON = {
+  year: '<path d="M12 21v-8"/><path d="M12 13c0-3.5 2.5-6 6-6 0 3.5-2.5 6-6 6Z"/><path d="M12 15c0-3-2-5-5-5 0 3 2 5 5 5Z"/><path d="M5 21h14"/>',
+  sow: '<path d="M4 12a8 8 0 0 1 14-5.3L20 9"/><path d="M20 4v5h-5"/><path d="M20 12a8 8 0 0 1-14 5.3L4 15"/><path d="M4 20v-5h5"/>',
+  back: '<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 8v4l3 2"/>',
+};
+const REPLANT_LABEL = { year: "Replant each year", back: "Comes back every year" };
+function replantNote(c) {
+  const r = REPLANT[c.id]; if (!r) return "";
+  const [type, text, badge] = r;
+  return `<p class="replant replant-${type}"><span class="replant-badge"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${REPLANT_ICON[type] || REPLANT_ICON.back}</svg>${esc(badge || REPLANT_LABEL[type])}</span> <span class="replant-text">${esc(text)}</span></p>`;
+}
 D.crops.forEach(c => { if (!INTROS[c.id]) throw new Error(`Plant ${c.id} needs an intro in scripts/plant-intros.js`); });
 const SEED_SAVING = require("./seed-saving.js");
 const STATION_CHECK = require("./station-check.js");
@@ -332,7 +345,7 @@ const toMonthYear = s => s.replace(/(Updated|Last updated) (\d{4}-\d\d-\d\d)\./g
 const GL_LINKS = G.glossaryLinks.map(([id, re]) => [id, new RegExp(`(^|[^\\w-])(${re})(?![\\w-])`, "i")]);
 const GL_SKIP = new Set(["a", "button", "h1", "h2", "h3", "h4", "h5", "h6", "summary", "table", "nav", "script", "style", "label", "select", "textarea", "figcaption", "dt", "svg", "form", "noscript", "template", "blockquote", "aside"]);
 // Picture-calendar tiles, legends and page intros stay plain; the words get linked in the page's sentences instead.
-const GL_SKIP_CLASS = /class="[^"]*\b(hz-line|lede|plant-intro|eyebrow|crumbs|count|station|owner|pc-card|pc-legend|legend|author-box|byline|th-list|th-key|th-pop)\b/;
+const GL_SKIP_CLASS = /class="[^"]*\b(hz-line|lede|plant-intro|replant|eyebrow|crumbs|count|station|owner|pc-card|pc-legend|legend|author-box|byline|th-list|th-key|th-pop)\b/;
 const GL_TRACK = new Set(["p", "li", "dd", "ul", "ol", "div", "section"]);
 const GL_MAX = 12;
 function glossaryLinks(html, rel) {
@@ -1113,6 +1126,7 @@ D.crops.forEach(c => {
 <p class="lede">${g.fall ? hubLede(c, ledeTowns, "fall") : hubLede(c, ledeTowns)}</p>
 ${yourDates()}</div></section>
 <p class="plant-intro">${esc(INTROS[c.id])}</p>
+${replantNote(c)}
 ${planAdd(c)}
 ${sci ? scienceBody(c, g, sci, { head, dates, plans: sorted, port }) : `${quickFacts(c, g)}
 <p class="callout">${esc(c.note)}</p>

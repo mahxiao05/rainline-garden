@@ -2580,3 +2580,13 @@ details.gp-card[open] { border-color: #0F2B22; box-shadow: 0 0 0 2px var(--lime)
 input[type=date] { -webkit-appearance: none; appearance: none; display: block; min-width: 0; max-width: 100%; box-sizing: border-box; }
 input[type=date]::-webkit-date-and-time-value { text-align: left; margin: 0; }
 .gp-logform .field { min-width: 0; }
+/* After-harvest note on plant pages */
+.plant-intro + .replant { margin-top: -.5rem; }
+.replant { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; max-width: 44rem; margin: 0 0 1.5rem; padding: 10px 14px; background: var(--paper); border: 1px solid var(--line); border-left: 4px solid var(--moss); border-radius: 10px; font-size: .98rem; line-height: 1.5; }
+.replant-badge { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--fir); white-space: nowrap; }
+.replant-badge svg { flex: none; color: var(--moss); position: relative; top: 3px; align-self: flex-start; }
+.replant-text { color: var(--ink); }
+.replant-sow { border-left-color: var(--teal); }
+.replant-sow .replant-badge svg { color: var(--teal); }
+.replant-back { border-left-color: var(--ochre); }
+.replant-back .replant-badge svg { color: var(--ochre); }
