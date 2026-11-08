@@ -10,7 +10,7 @@ module.exports = [
     author: "elaine-holloway",
     title: "Improving Heavy Clay Soil in a Northwest Garden",
     seoTitle: "How to Improve Clay Soil in the Northwest | Rainline Garden",
-    description: "Sticky in winter, hard as brick in August: clay is the most common garden soil west of the Cascades. How to tell if you have it, and how to make it easier to grow in.",
+    description: "Sticky in winter, hard as brick in August: clay is a common garden soil west of the Cascades. How to tell if you have it, and how to make it easier to grow in.",
     crops: ["kale", "summer-squash", "potatoes", "carrots"],
     published: "DRAFT",
     body: ({ link }) => `
