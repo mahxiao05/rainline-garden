@@ -257,7 +257,7 @@
     keyOn = li && li !== keyOn ? li : null;
     Array.prototype.forEach.call(root.querySelectorAll(".tm-key li[data-k]"), function (x) { x.classList.toggle("is-on", x === keyOn); x.setAttribute("aria-pressed", String(x === keyOn)); });
     root.classList.toggle("tm-hl", !!keyOn);
-    Array.prototype.forEach.call(root.querySelectorAll(".tm-dots circle"), function (c) {
+    Array.prototype.forEach.call(root.querySelectorAll(".tm-dots circle, .tm-areas path"), function (c) {
       c.classList.toggle("is-hl", !!keyOn && c.getAttribute("data-" + keyOn.getAttribute("data-k")) === keyOn.getAttribute("data-v"));
     });
   }

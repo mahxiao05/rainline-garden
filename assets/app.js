@@ -130,20 +130,6 @@
     if (history.replaceState) history.replaceState(null, "", "?place=" + place.slug);
     seasonNow(place);
     typeDates(p);
-    quickLinks(place);
-  }
-
-  // Under the search box: example towns on a first visit; once a town is picked, shortcuts to that town's Plant now page and a plan (its calendar is already linked in the result).
-  var HQ = (location.search.match(/[?&]hq=([abc])/i) || [])[1]; HQ = HQ ? HQ.toUpperCase() : "C"; // DEMO switch, removed after max picks
-  var tryEl = document.getElementById("quick-try"), quickEl = document.getElementById("quick");
-  if (tryEl && HQ === "A") tryEl.hidden = true;
-  function quickLinks(place) {
-    if (tryEl) tryEl.hidden = true;
-    if (!quickEl || HQ !== "C") return;
-    var c = place.city.split(" and ")[0], links = [
-      ["plant-now/", "Plant now in " + c], ["my-garden/?place=" + place.slug, "My " + c + " plan"]];
-    quickEl.innerHTML = links.map(function (l) { return '<li><a href="' + base + l[0] + '">' + l[1] + '<span aria-hidden="true"> &rarr;</span></a></li>'; }).join("");
-    quickEl.hidden = false;
   }
 
   // The plant-type tiles below open each group's plants. Once a town is picked, each list becomes that
@@ -173,13 +159,6 @@
   function go(place, viaZip) { show(place, viaZip); scrollToResult(); }
 
   var box = RainlineTownBox(boxEl, { onPick: go });
-  // "Or try" towns fill in the result here instead of leaving the page (the links still work without scripts).
-  if (tryEl) tryEl.addEventListener("click", function (e) {
-    var a = e.target.closest("a"), m = a && a.getAttribute("href").match(/frost-dates\/([^/]+)\//), pl = m && P.findPlace(D, m[1]);
-    if (!pl) return;
-    e.preventDefault(); go(pl, false); box.collapse(pl);
-  });
-
   var params = new URLSearchParams(location.search);
   var q = params.get("place") || store("rainline-place");
   var start = q && P.findPlace(D, q);
