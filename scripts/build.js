@@ -1154,18 +1154,35 @@ function zipNote(place) {
 function townQuestions(p) {
   const city = p.place.city, f = p.frost;
   const tom = rowFor(p, "tomatoes"), sp = win(tom, "spring"), garlic = win(rowFor(p, "garlic"), "fall");
+  const peas = win(rowFor(p, "peas"), "spring");
   const rank = ALL_PLANS.slice().sort((a, b) => b.frost.season - a.frost.season).findIndex(x => x.frost.season <= f.season) + 1;
   const rf = rainFacts(p.place);
   const where = rank <= 10 ? "one of the longest" : rank > ALL_PLANS.length - 10 ? "one of the shortest" : rank <= ALL_PLANS.length / 2 ? "longer than most" : "shorter than most";
+  const weeks = n => { const w = Math.round(n / 7); return w <= 1 ? "about a week" : `about ${w} weeks`; };
+  const twice = p.crops.filter(r => r.windows.some(w => w.kind === "spring") && r.windows.some(w => w.kind === "fall"));
+  const twiceEx = twice.slice(0, 3).map(r => lc(r.crop.name));
+  const afterFrost = sp.start - f.spring50;
   return [
-    [`When is the last frost in ${city}?`, `${P.fmtLong(f.spring50)} in a typical year. Frost is over by ${P.fmtLong(f.spring10)} in 9 years out of 10. Tender plants like tomatoes wait longer than that, for warm soil: see the tomato question below.`],
-    [`When is the first frost in ${city}?`, `Around ${P.fmtLong(f.fall50)}. It comes as early as ${P.fmtLong(f.fall10)} in 1 year out of 10.`],
-    [`When can I plant tomatoes in ${city}?`, `Set out tomato plants ${P.fmtRange(sp.start, sp.end)}${tom.indoor ? `, after starting seeds indoors ${P.fmtRange(tom.indoor.start, tom.indoor.end)}` : ""}.` +
-      (tom.cover ? ` Keep frost cover handy until about ${P.fmt(tom.coverUntil)}.` : "") + (tom.season === "short" || tom.season === "tight" ? " The season is short here, so pick an early variety." : "")],
-    [`When should I plant garlic in ${city}?`, `Plant garlic cloves ${P.fmtRange(garlic.start, garlic.end)}, and harvest next summer when the lower leaves turn brown.`],
-    ...(p.place.hz ? [[`What growing zone is ${city} in?`, `USDA hardiness zone ${p.place.hz}${p.place.hz.includes("–") ? ", depending on your ZIP code" : ""}, on the 2023 USDA map: the coldest winter night is usually ${p.place.hzT.replace(/-/g, "−")}°F. The zone tells you which perennials, shrubs and trees survive the winter; for vegetables, go by the frost dates and planting calendar instead.`]] : []),
-    [`How long is the growing season in ${city}?`, `About ${f.season} frost-free days, ${where} of the ${ALL_PLANS.length} Oregon, Washington and Idaho towns we cover.`],
-    ...(rf ? [[`How much rain does ${city} get?`, `About ${Math.round(rf.c.prcp)} inches a year, counting melted snow. ${MONTHS_LONG[rf.wet]} is the wettest month and ${MONTHS_LONG[rf.dry]} the driest, with ${rf.summer.toFixed(1)} inches from June to August (NOAA 1991–2020 normals).`]] : [])
+    [`When is the last frost in ${city}?`, `${P.fmtLong(f.spring50)} in a typical year, and frost is over by ${P.fmtLong(f.spring10)} in 9 years out of 10. ` +
+      (peas.start < f.spring50 - 7 ? `Peas and other cool crops don't need to wait for it: peas can go in from ${P.fmtLong(peas.start)}. ` : `Peas and other cool crops go in from ${P.fmtLong(peas.start)}. `) +
+      `Tomatoes, beans and squash wait longer than the frost date, until the soil warms (see the tomato question below).`],
+    [`When is the first frost in ${city}?`, `Around ${P.fmtLong(f.fall50)} in a typical year, and as early as ${P.fmtLong(f.fall10)} in 1 year out of 10. ` +
+      `From about ${P.fmt(f.fall10)} on, watch the forecast and pick or cover tomatoes, peppers, squash and basil before a cold night. ` +
+      `Kale, carrots, leeks and cabbage handle a light frost fine and keep going.`],
+    [`When can I plant tomatoes in ${city}?`, `Set out tomato plants ${P.fmtRange(sp.start, sp.end)}. ` +
+      (afterFrost > 10 ? `That's ${weeks(afterFrost)} after the typical last frost, because tomatoes sit and sulk in cold soil until it reaches about 60°F. ` : `Wait for soil around 60°F and nights near 50°F; tomatoes stall in cold soil. `) +
+      (tom.indoor ? `To grow your own from seed, start them indoors ${P.fmtRange(tom.indoor.start, tom.indoor.end)}, or buy young plants at planting time.` : "") +
+      (tom.cover ? ` Keep frost cover handy until about ${P.fmt(tom.coverUntil)}.` : "") +
+      (tom.season === "short" || tom.season === "tight" || f.season < 130 ? " The season is short here, so pick an early variety (under 70 days)." : "")],
+    [`When should I plant garlic in ${city}?`, `Plant garlic cloves ${P.fmtRange(garlic.start, garlic.end)}, pointy end up, in a sunny bed. ` +
+      `The cloves need a winter of cold to split into a full bulb, which is why fall planting works and spring planting often gives one small round bulb. ` +
+      `Dig the next summer, once the lower leaves have turned brown.`],
+    ...(p.place.hz ? [[`What growing zone is ${city} in?`, `USDA hardiness zone ${p.place.hz}${p.place.hz.includes("–") ? ", depending on your ZIP code" : ""}, on the 2023 USDA map: the coldest winter night is usually ${p.place.hzT.replace(/-/g, "−")}°F. The zone tells you which perennials, shrubs and trees survive the winter. For vegetables it matters much less: go by the frost dates and planting calendar on this page instead.`]] : []),
+    [`How long is the growing season in ${city}?`, `About ${f.season} frost-free days, from ${P.fmtLong(f.spring50)} to ${P.fmtLong(f.fall50)} in a typical year. That's ${where} of the ${ALL_PLANS.length} Oregon, Washington and Idaho towns we cover. ` +
+      (twice.length ? `${twice.length} plants on the calendar get a second planting for fall here, including ${listOf(twiceEx)}.` : "")],
+    ...(rf ? [[`How much rain does ${city} get?`, `About ${Math.round(rf.c.prcp)} inches a year, counting melted snow. ${MONTHS_LONG[rf.wet]} is the wettest month and ${MONTHS_LONG[rf.dry]} the driest. ` +
+      (rf.c.prcp < 15 ? `That's dry country, so plan to water all summer; June to August brings just ${rf.summer.toFixed(1)} inches.` : rf.pct <= 15 ? `Only ${rf.summer.toFixed(1)} inches (${rf.pct}% of the year) falls from June to August, so plan to water through summer even though the year is wet overall.` : `June to August brings ${rf.summer.toFixed(1)} inches, ${rf.pct}% of the year's total, so most summers still need some watering.`) +
+      ` Figures are NOAA 1991–2020 normals.`]] : [])
   ];
 }
 
