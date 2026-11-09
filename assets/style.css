@@ -2773,3 +2773,35 @@ table.nb tr.me th, table.nb tr.me td { font-weight: 600; }
 .prose .pcards { display: grid; gap: 10px; margin: 1.25rem 0; }
 .prose .pcards > p { margin: 0; padding: 14px 16px; background: #fff; border: 1px solid var(--line, #e6e0d2); border-left: 5px solid var(--moss); border-radius: 14px; }
 .prose .pcards > p > strong:first-child { font-size: 1.05rem; color: var(--moss); }
+
+/* Your town card on Town calendars: light card, three dates as tiles, one clear button (Nov 2026). */
+.yt { max-width: 40rem; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px 18px; box-shadow: 0 10px 24px -18px rgba(0,0,0,.35); }
+.yt-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.yt-name { margin: 0; font-size: 1.35rem; font-weight: 700; color: var(--ink); }
+.yt-change { font-size: .95rem; color: var(--muted); white-space: nowrap; }
+.yt-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0 14px; }
+.yt-stats > div { background: var(--moss-soft); border-radius: 10px; padding: 10px 12px; }
+.yt-stats dt { font-size: .8rem; color: var(--muted); line-height: 1.25; }
+.yt-stats dd { margin: 2px 0 0; font-size: 1.25rem; font-weight: 700; color: var(--ink); }
+.yt .th-bar { display: block; height: 8px; border-radius: 4px; }
+.yt .th-bar i { border-radius: 4px; }
+.yt-months { display: flex; justify-content: space-between; margin: 4px 0 14px; font-size: .75rem; color: var(--muted); }
+.yt-go { display: block; text-align: center; width: 100%; }
+@media (max-width: 26rem) { .yt-stats { gap: 6px; } .yt-stats > div { padding: 8px 9px; } .yt-stats dd { font-size: 1.1rem; } }
+
+/* Monthly email box: smaller heading, form stacked with full-width fields and button (Nov 2026). */
+.signup { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: start; padding: 26px 28px; }
+.signup h2 { margin: 0 0 .5rem; font-size: clamp(1.5rem, 2.4vw, 1.9rem); line-height: 1.15; }
+.signup > div:first-child p { margin: 0; max-width: 32rem; line-height: 1.55; }
+.signup-form { flex-direction: column; flex-wrap: nowrap; gap: 10px; }
+.signup-form input, .signup-form select { flex: none; width: 100%; font-size: 1rem; }
+.signup-form > .nl-zip-wrap, .signup-form > .nl-town-wrap { flex: none; }
+.signup-form .btn { width: 100%; min-height: 48px; font-size: 1.05rem; }
+.signup .nl-status { margin: 0; font-size: .9rem; }
+.signup .nl-status:empty { display: none; }
+.signup-fine { font-size: .8rem; line-height: 1.45; margin-top: .75rem; }
+@media (max-width: 44rem) {
+  .signup { grid-template-columns: 1fr; gap: 16px; padding: 22px 18px; }
+  .signup h2 { font-size: 1.45rem; }
+  .signup > div:first-child p { font-size: .98rem; }
+}

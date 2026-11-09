@@ -22,7 +22,7 @@
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <link rel="manifest" href="../site.webmanifest">
 <link rel="stylesheet" href="../assets/fonts/fonts.css?v=0146e8b9">
-<link rel="stylesheet" href="../assets/style.css?v=dae75997">
+<link rel="stylesheet" href="../assets/style.css?v=e221d1e7">
 
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://rainlinegarden.org/"},{"@type":"ListItem","position":2,"name":"Town calendars"}]}</script>
@@ -76,7 +76,8 @@
 <script>(function(){var root=document.querySelector(".th-all"),tabs=root.querySelector(".th-tabs"),sts=[].slice.call(root.querySelectorAll(".th-st")),inp=root.querySelector(".th-filter input"),none=root.querySelector(".th-none"),cur="OR";
 var slug=null;try{slug=localStorage.getItem("rainline-place")}catch(e){}
 var mine=slug&&/^[a-z0-9-]+$/.test(slug)&&root.querySelector('li[data-slug="'+slug+'"]');if(mine){cur=mine.closest(".th-st").getAttribute("data-st");var you=document.getElementById("th-you"),c=mine.cloneNode(true);
-you.innerHTML='<h2>Your town</h2><div class="th-card"><ul class="th-list">'+c.outerHTML+'</ul><p class="th-safe">Safe date for tomatoes: <b>'+mine.getAttribute("data-safe")+'</b></p><p class="th-acts"><a class="btn" href="'+slug+'/">Open my calendar</a> <a href="../?change=1#where">Change town</a></p></div>';}
+var bs=mine.querySelectorAll(".th-dates b"),nm=mine.querySelector(".th-name").textContent,bar=mine.querySelector(".th-bar").outerHTML;
+you.innerHTML='<h2>Your town</h2><div class="yt"><div class="yt-top"><p class="yt-name">'+nm+'</p><a class="yt-change" href="../?change=1#where">Change town</a></div><dl class="yt-stats"><div><dt>Last frost</dt><dd>'+bs[0].textContent+'</dd></div><div><dt>First frost</dt><dd>'+bs[1].textContent+'</dd></div><div><dt>Safe for tomatoes</dt><dd>'+mine.getAttribute("data-safe")+'</dd></div></dl>'+bar+'<p class="yt-months" aria-hidden="true"><span>Jan</span><span>Apr</span><span>Jul</span><span>Oct</span><span>Dec</span></p><a class="btn yt-go" href="'+slug+'/">Open '+nm+'’s planting calendar</a></div>';}
 function show(){var q=inp.value.trim().toLowerCase(),any=0;sts.forEach(function(d){var on=q?1:d.getAttribute("data-st")===cur,n=0;[].forEach.call(d.querySelectorAll("li"),function(li){var m=!q||li.getAttribute("data-name").indexOf(q)>=0;li.hidden=!m;if(m)n++});d.hidden=!on||!n;if(on&&n)any=1});
 tabs.hidden=!!q;none.hidden=!!any;[].forEach.call(tabs.children,function(b){b.setAttribute("aria-selected",b.getAttribute("data-st")===cur)});}
 tabs.hidden=false;root.classList.add("is-live");tabs.addEventListener("click",function(e){var b=e.target.closest("button");if(b){cur=b.getAttribute("data-st");show()}});inp.addEventListener("input",show);show();})();</script>

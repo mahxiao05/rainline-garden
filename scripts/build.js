@@ -692,6 +692,23 @@ function banner(key, rel) {
 <img src="${rel}${photoFile(key, "banner")}" width="${SIZES.wide.w}" height="${SIZES.wide.h}" alt="${esc(p.alt)}" fetchpriority="high" decoding="async"></picture></figure>`;
 }
 
+// Guide pages that used to have a text-only dark header borrow a photo the site already has (same files, no new downloads).
+const PAGE_PHOTOS = {
+  "beginners-guide": "article:raised-beds-for-rainy-gardens",
+  "garden-calendar": "article:gardening-through-the-seasons",
+  "fall-planting": "article:fall-and-winter-vegetable-garden",
+  "container-plants": "article:container-vegetable-gardening",
+  "deer-resistant-plants": "cat:onion-family",
+  "month-1": "article:winter-pruning-apple-and-pear-trees", "month-2": "article:planting-bare-root-fruit-trees",
+  "month-3": "article:starting-seeds-indoors", "month-4": "article:growing-peas-in-the-northwest",
+  "month-5": "article:best-tomatoes-for-the-northwest", "month-6": "article:growing-strawberries-in-the-northwest",
+  "month-7": "article:growing-blueberries-in-the-northwest", "month-8": "article:harvesting-and-preserving-herbs",
+  "month-9": "article:fall-and-winter-vegetable-garden", "month-10": "article:planting-garlic-in-the-northwest",
+  "month-11": "article:leaf-mold-from-fall-leaves", "month-12": "article:putting-the-garden-to-bed",
+};
+const pageCls = id => PAGE_PHOTOS[id] && PHOTOS[PAGE_PHOTOS[id]] ? " has-photo page-photo" : "";
+const pageBanner = (id, rel) => PAGE_PHOTOS[id] ? banner(PAGE_PHOTOS[id], rel) : "";
+
 function articleCards(rel, list) {
   const pic = a => PHOTOS["article:" + a.slug] ? `<img class="card-photo" src="${rel}${photoFile("article:" + a.slug, "bannerSm", "webp")}" width="720" height="300" alt="" loading="lazy" decoding="async">` : articleIcon(a, rel, 48);
   return `<ul class="reads-grid">${list.map(a => `<li><a class="card${PHOTOS["article:" + a.slug] ? " has-photo" : ""}" href="${rel}articles/${a.slug}/">${pic(a)}<span class="card-t">${esc(a.title)}</span> <span class="card-s">${esc(a.description)}</span></a></li>`).join("")}</ul>`;
@@ -1463,7 +1480,7 @@ COLLECTIONS.forEach(x => {
     rel, canonical: `${x.slug}/`, current: WHEN_INDEX, noFallBar: !!x.fallNote,
     title: x.title, description: x.description, jsonld: [cb.ld],
     body: `${cb.html}
-<section class="hero"><p class="eyebrow">${x.fallNote ? "Oregon · Washington · Idaho" : `Northwest gardens · ${ids.length} plants`}</p><h1>${esc(short.h1 || x.h1)}</h1>
+<section class="hero${pageCls(x.slug)}">${pageBanner(x.slug, rel)}<p class="eyebrow">${x.fallNote ? "Oregon · Washington · Idaho" : `Northwest gardens · ${ids.length} plants`}</p><h1>${esc(short.h1 || x.h1)}</h1>
 <p class="lede">${esc(x.intro[0])}</p>
 ${x.fallNote ? `<div class="town-line">${townBox({ id: "fall-box", rel, button: "Show" })}</div>` : ""}</section>
 ${x.fallNote ? `<section id="fall-now" class="fall-now" aria-live="polite" hidden></section>` : ""}
@@ -1576,7 +1593,7 @@ write("../", "beginners-guide/index.html", layout({
   description: "Start your first vegetable garden in Oregon, Washington or Idaho: where to put it, five easy crops, when to plant and how to keep slugs away.",
   jsonld: [bgb.ld, faqLd(BEGINNER_FAQ)],
   body: `${bgb.html}
-<section class="hero"><h1>Your first Northwest vegetable garden</h1>
+<section class="hero${pageCls("beginners-guide")}">${pageBanner("beginners-guide", "../")}<h1>Your first Northwest vegetable garden</h1>
 <p class="lede">Everything a first-timer needs, in plain language. You don't need a big yard or any experience: one small bed and five easy crops is a great first year.</p></section>
 <nav class="jump" aria-label="On this page"><span>Jump to:</span><a href="#year">Year at a glance</a><a href="#steps">8 steps</a><a href="#easy-crops">Easy crops</a><a href="#mistakes">Mistakes</a><a href="#faq">Questions</a></nav>
 <h2 id="year">Your first year at a glance</h2>
@@ -1814,7 +1831,8 @@ ${STATES.map(([k, n]) => `<div class="th-st" data-st="${k}"><h3>${n}</h3><ul cla
 <script>(function(){var root=document.querySelector(".th-all"),tabs=root.querySelector(".th-tabs"),sts=[].slice.call(root.querySelectorAll(".th-st")),inp=root.querySelector(".th-filter input"),none=root.querySelector(".th-none"),cur="OR";
 var slug=null;try{slug=localStorage.getItem("rainline-place")}catch(e){}
 var mine=slug&&/^[a-z0-9-]+$/.test(slug)&&root.querySelector('li[data-slug="'+slug+'"]');if(mine){cur=mine.closest(".th-st").getAttribute("data-st");var you=document.getElementById("th-you"),c=mine.cloneNode(true);
-you.innerHTML='<h2>Your town</h2><div class="th-card"><ul class="th-list">'+c.outerHTML+'</ul><p class="th-safe">Safe date for tomatoes: <b>'+mine.getAttribute("data-safe")+'</b></p><p class="th-acts"><a class="btn" href="'+slug+'/">Open my calendar</a> <a href="../?change=1#where">Change town</a></p></div>';}
+var bs=mine.querySelectorAll(".th-dates b"),nm=mine.querySelector(".th-name").textContent,bar=mine.querySelector(".th-bar").outerHTML;
+you.innerHTML='<h2>Your town</h2><div class="yt"><div class="yt-top"><p class="yt-name">'+nm+'</p><a class="yt-change" href="../?change=1#where">Change town</a></div><dl class="yt-stats"><div><dt>Last frost</dt><dd>'+bs[0].textContent+'</dd></div><div><dt>First frost</dt><dd>'+bs[1].textContent+'</dd></div><div><dt>Safe for tomatoes</dt><dd>'+mine.getAttribute("data-safe")+'</dd></div></dl>'+bar+'<p class="yt-months" aria-hidden="true"><span>Jan</span><span>Apr</span><span>Jul</span><span>Oct</span><span>Dec</span></p><a class="btn yt-go" href="'+slug+'/">Open '+nm+'\u2019s planting calendar</a></div>';}
 function show(){var q=inp.value.trim().toLowerCase(),any=0;sts.forEach(function(d){var on=q?1:d.getAttribute("data-st")===cur,n=0;[].forEach.call(d.querySelectorAll("li"),function(li){var m=!q||li.getAttribute("data-name").indexOf(q)>=0;li.hidden=!m;if(m)n++});d.hidden=!on||!n;if(on&&n)any=1});
 tabs.hidden=!!q;none.hidden=!!any;[].forEach.call(tabs.children,function(b){b.setAttribute("aria-selected",b.getAttribute("data-st")===cur)});}
 tabs.hidden=false;root.classList.add("is-live");tabs.addEventListener("click",function(e){var b=e.target.closest("button");if(b){cur=b.getAttribute("data-st");show()}});inp.addEventListener("input",show);show();})();</script>`;
@@ -1919,7 +1937,7 @@ write("../", "garden-calendar/index.html", layout({
   description: "Month-by-month garden calendar for Oregon, Washington and Idaho: what to plant, start indoors, harvest and prune, for the coast, west side and east side.",
   jsonld: [crumbs("../", [["Month by month", null]]).ld],
   body: `
-<section class="hero"><p class="eyebrow">Month by month · Oregon · Washington · Idaho</p><h1>Month by month</h1>
+<section class="hero${pageCls("garden-calendar")}">${pageBanner("garden-calendar", "../")}<p class="eyebrow">Month by month · Oregon · Washington · Idaho</p><h1>Month by month</h1>
 <p class="lede">Pick a month to see what to plant there in your region, or tick off this month's jobs below.</p></section>
 <nav class="mb-pick" aria-label="Pick a month">${CHORES.map(c => `<a href="${monthSlug(c.m)}/" data-m="${c.m}"><b>${P.MONTHS[c.m - 1]}</b><span>${P.MONTHS_LONG[c.m - 1]}</span></a>`).join("")}</nav>
 <script>(function(){var a=document.querySelector('.mb-pick a[data-m="'+(new Date().getMonth()+1)+'"]');if(a){a.classList.add("is-now");a.setAttribute("aria-current","date");}})();</script>
@@ -2020,7 +2038,7 @@ ${tipCards(MONTH_GUIDES[c.m])}` : "";
       `What to plant in ${name} in Oregon, Washington and Idaho, with dates by region and ${name}'s garden jobs.`),
     jsonld: [bc.ld],
     body: `${bc.html}
-<section class="hero"><p class="eyebrow">Month by month · Oregon · Washington · Idaho</p><h1>${name} in the garden</h1>
+<section class="hero${pageCls("month-" + c.m)}">${pageBanner("month-" + c.m, rel)}<p class="eyebrow">Month by month · Oregon · Washington · Idaho</p><h1>${name} in the garden</h1>
 <p class="lede">${esc(c.intro)}</p></section>
 <div class="mb-mine" id="mb-mine" hidden data-towns="${esc(D.places.map(x => `${x.slug}|${x.city}|${x.state}|${x.zone}`).join(";"))}" data-zones="${esc(Object.keys(D.zones).map(z => `${z}|${D.zones[z].name}`).join(";"))}"></div>
 <h2>What to plant in ${name}</h2>
