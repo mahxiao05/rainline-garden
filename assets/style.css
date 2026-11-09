@@ -2808,3 +2808,8 @@ table.nb tr.me th, table.nb tr.me td { font-weight: 600; }
   .signup h2 { font-size: 1.45rem; }
   .signup > div:first-child p { font-size: .98rem; }
 }
+
+/* "Pictured: ..." line on landscape header photos (town pages, Town calendars, Hardiness zones) */
+.hero-pic { margin: .9rem 0 0; font-size: .8rem; color: var(--night-soft); opacity: .85; }
+.hero.has-photo .hero-pic { color: rgba(255,255,255,.78); text-shadow: 0 1px 2px rgba(0,0,0,.5); }
+@media (max-width: 720px) { .hero.has-photo.page-photo { padding-top: 11rem !important; } }

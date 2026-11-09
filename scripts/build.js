@@ -699,6 +699,7 @@ const PAGE_PHOTOS = {
   "fall-planting": "article:fall-and-winter-vegetable-garden",
   "container-plants": "article:container-vegetable-gardening",
   "deer-resistant-plants": "cat:onion-family",
+  "frost-dates": "page:frost-dates", "hardiness-zones": "page:hardiness-zones",
   "month-1": "article:winter-pruning-apple-and-pear-trees", "month-2": "article:planting-bare-root-fruit-trees",
   "month-3": "article:starting-seeds-indoors", "month-4": "article:growing-peas-in-the-northwest",
   "month-5": "article:best-tomatoes-for-the-northwest", "month-6": "article:growing-strawberries-in-the-northwest",
@@ -708,6 +709,8 @@ const PAGE_PHOTOS = {
 };
 const pageCls = id => PAGE_PHOTOS[id] && PHOTOS[PAGE_PHOTOS[id]] ? " has-photo page-photo" : "";
 const pageBanner = (id, rel) => PAGE_PHOTOS[id] ? banner(PAGE_PHOTOS[id], rel) : "";
+// Landscape photos that aren't of the page's own subject say where they were taken.
+const pictured = key => PHOTOS[key] && PHOTOS[key].where ? `<p class="hero-pic">Pictured: ${esc(PHOTOS[key].where)}</p>` : "";
 
 function articleCards(rel, list) {
   const pic = a => PHOTOS["article:" + a.slug] ? `<img class="card-photo" src="${rel}${photoFile("article:" + a.slug, "bannerSm", "webp")}" width="720" height="300" alt="" loading="lazy" decoding="async">` : articleIcon(a, rel, 48);
@@ -1190,9 +1193,9 @@ D.places.forEach(place => {
       `Last frost date in ${placeLabel(place)}: ${P.fmtLong(f.spring50)} on average. First fall frost: ${P.fmtLong(f.fall50)}. When to plant ${D.crops.length} crops there.`),
     jsonld: [bc.ld, faqLd(qas)],
     body: `${bc.html}
-<section class="hero" id="live" data-place="${place.slug}">
+<section class="hero${PHOTOS["area:" + place.area] ? " has-photo page-photo" : ""}" id="live" data-place="${place.slug}">${banner("area:" + place.area, "../../")}
 <p class="eyebrow">Frost dates and planting calendar</p><h1>${esc(place.city)}, ${place.state}</h1>
-<p class="lede">The typical last spring frost in ${esc(place.city)} is ${P.fmtLong(f.spring50)}, and the first fall frost is around ${P.fmtLong(f.fall50)}. Plant peas from ${P.fmt(peas.start)}; plant tomatoes from ${P.fmt(tomato.start)}.</p>
+<p class="lede">The typical last spring frost in ${esc(place.city)} is ${P.fmtLong(f.spring50)}, and the first fall frost is around ${P.fmtLong(f.fall50)}. Plant peas from ${P.fmt(peas.start)}; plant tomatoes from ${P.fmt(tomato.start)}.</p>${pictured("area:" + place.area)}
 </section>
 ${R.frostFacts(p, "../../")}
 <p class="station town-src">NOAA 1991–2020 frost normals, ${esc(D.stations[place.station].name)}${/Station/.test(D.stations[place.station].name) ? "" : " station"}. <a href="#station">Where these dates come from</a></p>
@@ -1843,9 +1846,9 @@ write("../", "frost-dates/index.html", layout({
   description: `Last spring and first fall frost dates for ${D.places.length} Oregon, Washington and Idaho towns from NOAA records, with a map and a free planting calendar for each.`,
   jsonld: [crumbs("../", [["Town calendars", null]]).ld],
   body: `
-<section class="hero"><p class="eyebrow">${D.places.length} towns · NOAA frost records</p><h1>Town calendars</h1>
+<section class="hero${pageCls("frost-dates")}">${pageBanner("frost-dates", "../")}<p class="eyebrow">${D.places.length} towns · NOAA frost records</p><h1>Town calendars</h1>
 <p class="lede">Frost dates and a year-round planting calendar for your town. Town not listed? Type your ZIP and we'll use the closest one.</p>
-${townBox({ id: "town-box", rel: "../", button: "Show my dates", lite: true, savedLine: false })}</section>
+${townBox({ id: "town-box", rel: "../", button: "Show my dates", lite: true, savedLine: false })}${pictured("page:frost-dates")}</section>
 ${townHub()}
 ${townMap()}
 <div id="town-lists" hidden>
@@ -1901,8 +1904,8 @@ ${STATES.map(([s, n]) => `<details class="hz-state"><summary>${n} <small>${D.pla
     description: `USDA hardiness zones for ${D.places.length} Oregon, Washington and Idaho towns from the 2023 map, zone ${coldest.hz} to ${warmest.hz}, and what your zone does and doesn't tell you.`,
     jsonld: [hb.ld, faqLd(qas)],
     body: `${hb.html}
-<section class="hero"><p class="eyebrow">2023 USDA map · ${D.places.length} towns</p><h1>Hardiness zones</h1>
-<p class="lede">Find your zone to see which perennials, shrubs and trees can survive your winter.</p></section>
+<section class="hero${pageCls("hardiness-zones")}">${pageBanner("hardiness-zones", rel)}<p class="eyebrow">2023 USDA map · ${D.places.length} towns</p><h1>Hardiness zones</h1>
+<p class="lede">Find your zone to see which perennials, shrubs and trees can survive your winter.</p>${pictured("page:hardiness-zones")}</section>
 ${body}
 <h2>Common questions</h2>
 ${faqHtml(qas)}

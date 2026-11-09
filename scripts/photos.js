@@ -173,5 +173,26 @@ module.exports = {
   "crop:honeyberries": { src: "pexels:10097289", alt: "A handful of elongated blue honeyberries" },
   "crop:currants": { src: "pexels:8734194", alt: "Strings of ripe red currants hanging on the bush" },
   "crop:gooseberries": { src: "pexels:8971015", alt: "Green gooseberries ripening on a leafy branch" },
-  "crop:elderberries": { src: "pexels:39209291", alt: "Clusters of ripe dark elderberries among green leaves" }
+  "crop:elderberries": { src: "pexels:39209291", alt: "Clusters of ripe dark elderberries among green leaves" },
+
+  // Town page headers: one nature photo per area (data.js `areas`), taken in or near that area. `where` is shown as "Pictured: ...".
+  "area:portland": { src: "pexels:40849766", alt: "Snow-capped Mount Hood above forested ridges on a clear summer day", where: "Mount Hood, Oregon" },
+  "area:willamette": { src: "pexels:19188854", alt: "Looking up at tall evergreen trees against a blue sky", where: "Evergreens in Eugene, Oregon" },
+  "area:southern-or": { src: "pexels:10154131", alt: "The Rogue River winding between dry hills under a cloudy sky", where: "The Rogue River near McLeod, Oregon" },
+  "area:or-coast": { src: "pexels:30446888", alt: "Haystack Rock reflected on the wet sand at low tide", where: "Haystack Rock, Cannon Beach, Oregon" },
+  "area:central-or": { src: "pexels:16972835", alt: "Snow-streaked Cascade peaks lit by the setting sun", where: "Cascade peaks near Bend, Oregon" },
+  "area:eastern-or": { src: "pexels:34751440", alt: "Red, tan and gold striped hills in a dry valley", where: "Painted Hills, John Day Fossil Beds, Oregon" },
+  "area:puget": { src: "pexels:30314950", alt: "Snowy Olympic Mountains across the blue water of Puget Sound", where: "The Olympic Mountains from Seattle" },
+  "area:north-sound": { src: "pexels:30471128", alt: "Snow-covered Mount Baker rising behind a wooded shoreline", where: "Mount Baker from Anacortes, Washington" },
+  "area:olympic": { src: "pexels:29464811", alt: "Big-leaf maple branches hung with thick green moss", where: "Rainforest near Forks, Washington" },
+  "area:sw-wa": { src: "pexels:8932019", alt: "Mount St. Helens and its open crater under a deep blue sky", where: "Mount St. Helens, Washington" },
+  "area:ncw": { src: "pexels:16288153", alt: "A river curving through a green valley under dramatic evening clouds", where: "Wenatchee River Valley, Washington" },
+  "area:basin": { src: "pexels:6568466", alt: "Aerial view of a river winding through fall brush and wetlands", where: "The Yakima River, Washington" },
+  "area:spokane": { src: "pexels:31193463", alt: "Rolling green wheat fields with a white barn in late sun", where: "Wheat fields near Pullman, Washington" },
+  "area:north-id": { src: "pexels:34055364", alt: "A pebble beach and pine-covered point on a wide blue lake", where: "Lake Coeur d'Alene, Idaho" },
+  "area:lewiston-id": { src: "pexels:37902330", alt: "A lone tree on snow-covered rolling hills", where: "The Palouse in winter" },
+  "area:boise-id": { src: "pexels:9715774", alt: "A blue river winding through a dry canyon", where: "The Boise River canyon, Idaho" },
+  "area:eastern-id": { src: "pexels:17782016", alt: "Shoshone Falls pouring over a wide basalt cliff", where: "Shoshone Falls, Twin Falls, Idaho" },
+  "page:frost-dates": { src: "pexels:5645463", alt: "Jagged Cascade peaks above an autumn meadow at sunset", where: "The Cascades near Mount Rainier, Washington" },
+  "page:hardiness-zones": { src: "pexels:5714418", alt: "Cascade peaks rising above a sea of fog at sunrise", where: "The Cascades near Ashford, Washington" }
 };
