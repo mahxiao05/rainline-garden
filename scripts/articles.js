@@ -167,6 +167,11 @@ ${fig(1)}
     description: "Gray garden slugs do most of the damage in Northwest beds. When they hatch, how to tell their damage apart, and which controls are pet-safe.",
     crops: ["lettuce", "strawberries", "beans", "dahlias"],
     published: "2026-10-13",
+    quick: () => [
+      ["Best control", "Iron phosphate bait, considered safe around pets, wildlife and food crops when used as directed."],
+      ["When", "Spring, from the day you sow, and again when the fall rains bring them back."],
+      ["Skip", "Salt. It kills slugs, but it also damages your soil and plants."]
+    ],
     body: ({ link, fig }) => `
 <p>You sow a row of lettuce on a mild April afternoon. A few days later, little green loops are showing all down the row. The next morning half of them are gone, and all that's left is a few stubs and a silver trail glinting across the soil. If you garden west of the Cascades, you've probably lived some version of this.</p>
 <p>The mild, damp climate that makes the Northwest so green suits slugs perfectly, and they're most active exactly when your seedlings are smallest: on cool, wet spring nights. You won't get rid of them. But once you know which slugs you're dealing with and when they breed, you can keep the damage small with surprisingly little effort.</p>

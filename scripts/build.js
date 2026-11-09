@@ -683,8 +683,7 @@ ${neighbors(c, ex)}
 ${pestCards(c, ex)}
 ${seedSaving(c)}
 ${gearBox(g.gear)}
-<h2 id="faq">Common questions about growing ${lc(c.name)}</h2>
-${faqHtml(sci.faq)}
+${phoneFold("faq", `Common questions about growing ${lc(c.name)}`, faqHtml(sci.faq))}
 ${relatedArticles("../../", c.id, 4)}
 ${plantTags(c, g, port)}
 ${PHONE_FOLD_JS}
@@ -819,9 +818,8 @@ function howMany(c, ex) {
 function neighbors(c, ex) {
   const fam = FAMILY_OF[c.id];
   const list = (h, xs, cls) => xs && xs.length ? `<section class="nb-card ${cls}"><h3>${h}</h3><ul>${xs.map(([p, why]) => `<li><strong>${esc(p)}.</strong> ${esc(why)}</li>`).join("")}</ul></section>` : "";
-  return `<h2 id="neighbors">Good neighbors${fam ? " and crop rotation" : ""}</h2>
-<div class="nb-grid">${list(c.cat === "native-plants" ? "Grows well with" : "Good neighbors", ex.good, "nb-good")}${list("Keep apart", ex.avoid, "nb-avoid")}</div>
-${fam ? `<p class="care-tip"><strong>${esc(fam.name)}:</strong> ${esc(fam.text)}</p>` : ""}`;
+  return phoneFold("neighbors", `Good neighbors${fam ? " and crop rotation" : ""}`, `<div class="nb-grid">${list(c.cat === "native-plants" ? "Grows well with" : "Good neighbors", ex.good, "nb-good")}${list("Keep apart", ex.avoid, "nb-avoid")}</div>
+${fam ? `<p class="care-tip"><strong>${esc(fam.name)}:</strong> ${esc(fam.text)}</p>` : ""}`);
 }
 // Small square photo on a pest card or glossary term when the site already has a photo of that thing (scripts/small-photos.js).
 const SMALL = require("./small-photos.js");
@@ -1596,6 +1594,15 @@ const frostFor = slug => { const f = P.plan(D, P.findPlace(D, slug)).frost; retu
 const articleH1 = t => t.replace(/ in (Oregon, Washington and Idaho|the Pacific Northwest|the Northwest)$/, "");
 const slugify = t => t.toLowerCase().replace(/&[a-z]+;/g, "").replace(/<[^>]+>/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 // Gives each h2 in an article an id and returns an "On this page" row (articles with three or more sections).
+// "The short answer" box at the top of an article (article.quick), three labeled rows with icons.
+const QUICK_IC = { when: "calendar", how: "seed", harvest: "basket", "best control": "bug", skip: "snow" };
+const quickBox = rows => `<aside class="quick" aria-label="The short answer"><p class="quick-k">The short answer</p><dl>${rows.map(([k, v]) => `<div><dt><span class="tip-ic">${`<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${TIP_ICONS[QUICK_IC[k.toLowerCase()] || "seed"]}</svg>`}</span>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl></aside>`;
+// Break up long article text without changing a word: numbered lists become step cards (CSS), lists whose items all
+// start with a bold label become cards, and runs of two or more "<strong>Label</strong> ..." paragraphs become a card grid.
+function proseCards(html) {
+  html = html.replace(/<ul>((?:\s*<li><strong>[\s\S]*?<\/li>)+)\s*<\/ul>/g, (m, inner) => `<ul class="pcard-list">${inner}</ul>`);
+  return html.replace(/(?:<p><strong>[^<]+<\/strong>[\s\S]*?<\/p>\s*){2,}/g, m => `<div class="pcards">${m.trim()}</div>\n`);
+}
 function articleToc(html) {
   const seen = {}, items = [];
   html = html.replace(/<h2(\s[^>]*)?>([\s\S]*?)<\/h2>/g, (m, attrs = "", inner) => {
@@ -1639,8 +1646,9 @@ ARTICLES.forEach(a => {
 <article class="article">
 <header class="hero hero-crop${PHOTOS["article:" + a.slug] ? " has-photo" : ""}">${banner("article:" + a.slug, rel)}${PHOTOS["article:" + a.slug] ? "" : articleIcon(a, rel, 120)}<div><p class="eyebrow">${topic} · Oregon · Washington · Idaho</p><h1>${esc(articleH1(a.title))}</h1><p class="lede">${esc(a.description)}</p>
 <p class="byline">${byAvatar(rel, a.author || DEFAULT_AUTHOR)}<span>By ${byName(rel, a.author || DEFAULT_AUTHOR)}<br><span class="byline-d">Posted ${stamp(dt.published)}${dt.updated && monthYear(dt.updated) !== monthYear(dt.published) ? ` · Updated ${stamp(dt.updated)}` : ""}</span></span></p></div></header>
+${a.quick ? quickBox(a.quick({ D, P })) : ""}
 ${toc.nav}
-<div class="prose">${toc.html}</div>
+<div class="prose">${proseCards(toc.html)}</div>
 ${notesFor("articles", a.slug, rel)}
 ${SPROUT_DIVIDER}
 ${a.gardenPhoto ? gardenGrid(rel, GARDEN_PHOTOS.filter(r => r.img === a.gardenPhoto)) : ""}

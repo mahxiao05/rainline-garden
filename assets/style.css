@@ -2737,3 +2737,25 @@ table.nb tr.me th, table.nb tr.me td { font-weight: 600; }
 .gnote-by { margin: .45rem 0 0; font-size: .92rem; }
 .gnote-list { padding-left: 1.2rem; }
 .gnote-list li { margin: .4rem 0; font-style: italic; }
+
+/* Article "short answer" box (article.quick) */
+.quick { max-width: 44rem; margin: 1.5rem 0 1.75rem; padding: 16px 18px 6px; background: var(--sky, #eaf2ec); border-radius: 16px; }
+.quick-k { margin: 0 0 .6rem; font-size: .8rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--moss); }
+.quick dl { margin: 0; }
+.quick dl > div { display: grid; grid-template-columns: 7.5rem 1fr; gap: 10px; padding: 10px 0; border-top: 1px solid rgba(0,0,0,.07); }
+.quick dl > div:first-child { border-top: 0; }
+.quick dt { display: flex; align-items: center; gap: 8px; font-weight: 700; align-self: start; }
+.quick dt .tip-ic { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #fff; color: var(--moss); flex: none; }
+.quick dd { margin: 0; line-height: 1.5; padding-top: 5px; }
+@media (max-width: 30rem) { .quick dl > div { grid-template-columns: 1fr; gap: 4px; } .quick dd { padding-top: 0; } }
+
+/* Article text broken into cards (proseCards in build.js); the words are unchanged */
+.prose ol { list-style: none; counter-reset: step; padding: 0; margin: 1.25rem 0; }
+.prose ol > li { counter-increment: step; position: relative; padding: 14px 16px 14px 60px; margin: 0 0 10px; background: #fff; border: 1px solid var(--line, #e6e0d2); border-radius: 14px; }
+.prose ol > li::before { content: counter(step); position: absolute; left: 14px; top: 12px; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: var(--moss); color: #fff; font-weight: 700; font-size: .95rem; }
+.prose ul.pcard-list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 10px; margin: 1.25rem 0; }
+.prose ul.pcard-list > li { margin: 0; padding: 14px 16px; background: #fff; border: 1px solid var(--line, #e6e0d2); border-top: 4px solid var(--moss); border-radius: 14px; }
+.prose ul.pcard-list > li > strong:first-child { display: block; margin-bottom: .25rem; }
+.prose .pcards { display: grid; gap: 10px; margin: 1.25rem 0; }
+.prose .pcards > p { margin: 0; padding: 14px 16px; background: #fff; border: 1px solid var(--line, #e6e0d2); border-left: 5px solid var(--moss); border-radius: 14px; }
+.prose .pcards > p > strong:first-child { font-size: 1.05rem; color: var(--moss); }

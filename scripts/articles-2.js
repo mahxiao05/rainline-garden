@@ -15,6 +15,12 @@ module.exports = [
     description: "Garlic goes in around October and comes out the next July. Planting dates by region, hardneck or softneck, and curing the harvest.",
     crops: ["garlic", "shallots"],
     published: "2026-10-14",
+    // The short answer box at the top: [label, text], taken from the article itself.
+    quick: ({ D, P }) => [
+      ["When", `In fall, a few weeks before the ground freezes. Around Portland: ${win(D, P, "portland-or", "garlic", "fall").range}.`],
+      ["How", "Cloves pointed end up, 2 inches deep and 6 inches apart, then a few inches of mulch."],
+      ["Harvest", "Next summer, once the lower third of the leaves have turned brown."]
+    ],
     body: ({ D, P, link, fig }) => {
       const pdx = win(D, P, "portland-or", "garlic", "fall"), spo = win(D, P, "spokane-wa", "garlic", "fall"), bend = win(D, P, "bend-or", "garlic", "fall"), boi = win(D, P, "boise-id", "garlic", "fall");
       return `
