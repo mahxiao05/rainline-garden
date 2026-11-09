@@ -800,7 +800,7 @@ var all={},k;for(k in ind)all[k]=1;for(k in pl)all[k]=1;var ms=Object.keys(all).
 if(ml&&ms.length){var n=ms.map(function(i){return '<a href="../../garden-calendar/'+ML[i].toLowerCase()+'/">'+ML[i]+"</a>"});ml.innerHTML="See what else to plant in "+(n.length<2?n[0]:n.slice(0,-1).join(", ")+" or "+n[n.length-1])+"."}}
 var an=document.querySelector(".after-note");if(an)an.textContent="These are Portland dates. Tap a plant to see its dates for "+town+".";
 /* regional notes: yours first, the rest folded */
-var sec=document.getElementById("regions"),keys=KEY[d.zone];if(!sec||!keys)return;var grid=sec.querySelector(".region-cards"),lede=sec.querySelector(".region-lede");
+var sec=document.getElementById("regions"),keys=KEY[d.zone];if(!sec||!keys)return;var grid=sec.querySelector(".region-cards"),lede=sec.querySelector(".region-lede");if(!lede){lede=document.createElement("p");lede.className="lede-sm region-lede";grid.parentNode.insertBefore(lede,grid)}
 var old=sec.querySelector(".region-others");if(old){[].forEach.call(old.querySelectorAll(".region-card"),function(c){grid.appendChild(c)});old.remove()}
 var cards=[].slice.call(sec.querySelectorAll(".region-card"));cards.forEach(function(c){c.classList.remove("is-mine");var t=c.querySelector(".mine-tag");if(t)t.remove()});
 var mine=keys.map(function(k){return grid.querySelector('.region-card[data-k="'+k+'"]')}).filter(Boolean),rest=cards.filter(function(c){return mine.indexOf(c)<0});
