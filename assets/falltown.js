@@ -25,7 +25,7 @@
     var link = function (x) { return base + "when-to-plant/" + x.c.id + "/?town=" + place.slug + "#your-town"; };
     var row = function (x) {
       return '<li class="fr' + (x.s ? " fr-" + x.s : "") + '"><a href="' + link(x) + '">' + R.icon(x.c.id, base, 36) +
-        '<span class="fr-t"><span class="fr-n">' + esc(x.c.name) + '</span><span class="fr-d">' + esc(x.pre) + " " + P.fmtRange(x.w.start, x.w.end) + '</span></span>' +
+        '<span class="fr-t"><span class="fr-n">' + esc(x.c.name) + '</span> <span class="fr-d">' + esc(x.pre) + " " + P.fmtRange(x.w.start, x.w.end) + '</span></span>' +
         (x.s ? '<span class="fr-s">' + tag[x.s] + '</span>' : "") + '</a></li>';
     };
     var months = [];

@@ -17,11 +17,11 @@
   function frostFacts(p, base) {
     var f = p.frost;
     return '<div class="facts">' +
-      '<div class="fact"><span class="fact-k">Last spring frost</span><span class="fact-v">' + P.fmtLong(f.spring50) + '</span>' +
+      '<div class="fact"><span class="fact-k">Last spring frost</span> <span class="fact-v">' + P.fmtLong(f.spring50) + '</span>' +
       '<span class="fact-s">Typical date. Frost is over by ' + P.fmt(f.spring10) + ' in 9 years out of 10.</span></div>' +
-      '<div class="fact"><span class="fact-k">First fall frost</span><span class="fact-v">' + P.fmtLong(f.fall50) + '</span>' +
+      '<div class="fact"><span class="fact-k">First fall frost</span> <span class="fact-v">' + P.fmtLong(f.fall50) + '</span>' +
       '<span class="fact-s">Typical date. Comes as early as ' + P.fmt(f.fall10) + ' in 1 year out of 10.</span></div>' +
-      '<div class="fact"><span class="fact-k">Frost-free season</span><span class="fact-v">' + f.season + ' days</span>' +
+      '<div class="fact"><span class="fact-k">Frost-free season</span> <span class="fact-v">' + f.season + ' days</span>' +
       '<span class="fact-s">Your growing season for frost-tender crops like tomatoes and squash.</span></div>' +
       '</div>' + hardiness(p, base);
   }

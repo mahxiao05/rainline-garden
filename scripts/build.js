@@ -565,7 +565,7 @@ function beginnerBox(rel, slug, where, onGuide) {
   const cards = G.beginner.map(id => {
     const c = cropById(id);
     const href = slug ? `${rel}when-to-plant/${id}/?town=${slug}#your-town` : `${rel}when-to-plant/${id}/`;
-    return `<li><a class="card" href="${href}">${R.icon(id, rel, 64)}<span class="card-t">${c.name}</span><span class="card-s">${G.beginnerWhy[id]}</span></a></li>`;
+    return `<li><a class="card" href="${href}">${R.icon(id, rel, 64)}<span class="card-t">${c.name}</span> <span class="card-s">${G.beginnerWhy[id]}</span></a></li>`;
   }).join("");
   return `<section class="beginner${onGuide ? " beginner-rows" : ""}" id="easy-crops"><h2>New to gardening? Start with these 5 easy crops</h2>
 <p>They're forgiving, quick and hard to kill${where ? ` in ${esc(where)}` : ""}. Tap one for planting dates and step-by-step instructions${onGuide ? "" : `, or read the <a href="${rel}beginners-guide/">beginner's guide</a>`}.</p>
@@ -654,7 +654,7 @@ function banner(key, rel) {
 
 function articleCards(rel, list) {
   const pic = a => PHOTOS["article:" + a.slug] ? `<img class="card-photo" src="${rel}${photoFile("article:" + a.slug, "bannerSm", "webp")}" width="720" height="300" alt="" loading="lazy" decoding="async">` : articleIcon(a, rel, 48);
-  return `<ul class="reads-grid">${list.map(a => `<li><a class="card${PHOTOS["article:" + a.slug] ? " has-photo" : ""}" href="${rel}articles/${a.slug}/">${pic(a)}<span class="card-t">${esc(a.title)}</span><span class="card-s">${esc(a.description)}</span></a></li>`).join("")}</ul>`;
+  return `<ul class="reads-grid">${list.map(a => `<li><a class="card${PHOTOS["article:" + a.slug] ? " has-photo" : ""}" href="${rel}articles/${a.slug}/">${pic(a)}<span class="card-t">${esc(a.title)}</span> <span class="card-s">${esc(a.description)}</span></a></li>`).join("")}</ul>`;
 }
 
 function faqLd(qas) {
@@ -879,7 +879,7 @@ function videoBox(c) {
 function scienceParts(sci, c) {
   const tip = CARE_TIPS[c.id];
   return `<h2 id="numbers">Key numbers</h2>
-<ul class="keys">${sci.keys.map(([l, v]) => `<li><span class="k-v">${esc(v)}</span><span class="k-l">${esc(l)}</span></li>`).join("")}</ul>${tip ? `
+<ul class="keys">${sci.keys.map(([l, v]) => `<li><span class="k-v">${esc(v)}</span> <span class="k-l">${esc(l)}</span></li>`).join("")}</ul>${tip ? `
 <p class="care-tip"><strong>Top care tip:</strong> ${esc(tip)}</p>` : ""}
 ${phoneFold("science", sci.notes ? "Growing notes" : "The plant science", `<p class="lede-sm">${sci.notes ? "What makes the difference in Northwest gardens, in plain language." : "The plant biology behind the advice above, in plain language."}</p>
 <div class="sci-cards">${sci.sections.map(([h, ...ps]) => `<section class="sci-card"><h3>${esc(h)}</h3>${ps.map(p => `<p>${esc(p)}</p>`).join("")}</section>`).join("\n")}</div>`, true)}`;
@@ -901,7 +901,7 @@ function cropGrid(rel, linkFor) {
 // pick(k) swaps the plant links for other drop contents (the garden planner's tick boxes).
 function categoryTiles(rel, drops, pick) {
   const drop = k => !drops ? "" : pick ? `<li class="cat-drop gp-group" id="drop-${k.id}" hidden>${pick(k)}</li>` : `<li class="cat-drop" id="drop-${k.id}" hidden><div class="cat-drop-head"><span class="cat-drop-t">${k.name}</span><a href="${rel}${WHEN_INDEX}${k.id}/">Planting order for ${lc(k.name)} &rarr;</a></div><ul class="drop-rows">${k.crops.map(id => { const c = cropById(id); return `<li><a href="${rel}${WHEN_INDEX}${id}/">${R.icon(id, rel, 32)}<span class="drop-n">${c.name}</span>${badge(G.crops[id].difficulty)}</a></li>`; }).join("")}</ul></li>`;
-  return `<ul class="cat-tiles${drops ? " cat-tiles-drop" : ""}">${D.categories.map(k => `<li><a class="cat-tile" href="${rel}${WHEN_INDEX}${k.id}/"${drops ? ` data-drop="drop-${k.id}" aria-controls="drop-${k.id}"` : ""}>${PHOTOS["cat:" + k.id] ? `<img class="cat-photo" src="${rel}${photoFile("cat:" + k.id, "thumb", "webp")}" width="480" height="240" alt="${esc(PHOTOS["cat:" + k.id].alt)}" aria-hidden="true" loading="lazy" decoding="async">` : ""}<span class="cat-icons">${k.crops.slice(0, 3).map(id => R.icon(id, rel, 40)).join("")}</span><span class="card-t">${k.name}</span><span class="card-s${pick ? " gp-group-n" : ""}"${pick ? ` data-g="drop-${k.id}"` : ""}>${k.crops.length} plants</span></a></li>${drop(k)}`).join("")}</ul>`;
+  return `<ul class="cat-tiles${drops ? " cat-tiles-drop" : ""}">${D.categories.map(k => `<li><a class="cat-tile" href="${rel}${WHEN_INDEX}${k.id}/"${drops ? ` data-drop="drop-${k.id}" aria-controls="drop-${k.id}"` : ""}>${PHOTOS["cat:" + k.id] ? `<img class="cat-photo" src="${rel}${photoFile("cat:" + k.id, "thumb", "webp")}" width="480" height="240" alt="${esc(PHOTOS["cat:" + k.id].alt)}" aria-hidden="true" loading="lazy" decoding="async">` : ""}<span class="cat-icons">${k.crops.slice(0, 3).map(id => R.icon(id, rel, 40)).join("")}</span> <span class="card-t">${k.name}</span> <span class="card-s${pick ? " gp-group-n" : ""}"${pick ? ` data-g="drop-${k.id}"` : ""}>${k.crops.length} plants</span></a></li>${drop(k)}`).join("")}</ul>`;
 }
 
 /* Home */
@@ -1431,7 +1431,7 @@ ${x.tips ? `<nav class="jump" aria-label="On this page"><span>Jump to:</span><a 
 ${(() => { const easy = ids.map(cropById).filter(c => G.crops[c.id] && G.crops[c.id].difficulty === 1 && cropPhoto(c.id)).slice(0, 4);
   return x.tips && easy.length >= 2 ? `<h2 id="easy">Easy ones to start with</h2>\n${plantTiles(rel, easy, c => `${rel}${WHEN_INDEX}${c.id}/`)}` : ""; })()}
 <details class="more-fold" id="all"><summary>${esc(short.more || "More about these plants")}</summary><div class="prose">${x.intro.slice(1).map(t => `<p>${esc(t)}</p>`).join("\n")}</div></details>
-${x.fallNote ? fallBody(x, ids, fallPre, rel) : groups.map(([k, cs]) => `<h2>${esc(k.name)}</h2>\n<ul class="pick-list${x.fallNote ? "" : " pick-list-2"}">${cs.map(c => `<li><a href="${rel}${WHEN_INDEX}${c.id}/">${R.icon(c.id, rel, 44)}<span><span class="card-t">${esc(c.name)}</span><span class="card-s"${x.fallNote ? ` data-fall="${c.id}" data-pre="${fallPre(c)}"` : ""}>${esc(note(c))}</span></span></a></li>`).join("")}</ul>`).join("\n")}
+${x.fallNote ? fallBody(x, ids, fallPre, rel) : groups.map(([k, cs]) => `<h2>${esc(k.name)}</h2>\n<ul class="pick-list${x.fallNote ? "" : " pick-list-2"}">${cs.map(c => `<li><a href="${rel}${WHEN_INDEX}${c.id}/">${R.icon(c.id, rel, 44)}<span><span class="card-t">${esc(c.name)}</span> <span class="card-s"${x.fallNote ? ` data-fall="${c.id}" data-pre="${fallPre(c)}"` : ""}>${esc(note(c))}</span></span></a></li>`).join("")}</ul>`).join("\n")}
 ${x.tips ? `<h2 id="tips">${esc({ "shade-plants": "Gardening in shade", "deer-resistant-plants": "Living with deer", "fall-planting": "Fall planting tips" }[x.slug] || "Tips")}</h2>\n${tipCards(x.tips)}` : ""}
 ${ad("collection-mid")}
 <h2 id="faq">Common questions</h2>
@@ -2052,9 +2052,9 @@ write("../", "how-it-works/index.html", layout({
 <section class="hero prose"><p class="eyebrow">Where the dates come from</p><h1>How it works</h1>
 <p class="lede">Every date on this site comes from public data and a rule you can check. Here are both.</p></section>
 <div class="facts how-facts">
-<div class="fact"><span class="fact-k">Towns</span><span class="fact-v">${D.places.length}</span><span class="fact-s">Each one with its own named NOAA weather station.</span></div>
-<div class="fact"><span class="fact-k">Frost records</span><span class="fact-v">1991–2020</span><span class="fact-s">NOAA climate normals: 30-year averages, not a forecast.</span></div>
-<div class="fact"><span class="fact-k">Closest station</span><span class="fact-v">${HOW_CLOSEST} of ${D.places.length}</span><span class="fact-s">Towns that use the closest station with NOAA frost records.</span></div>
+<div class="fact"><span class="fact-k">Towns</span> <span class="fact-v">${D.places.length}</span> <span class="fact-s">Each one with its own named NOAA weather station.</span></div>
+<div class="fact"><span class="fact-k">Frost records</span> <span class="fact-v">1991–2020</span> <span class="fact-s">NOAA climate normals: 30-year averages, not a forecast.</span></div>
+<div class="fact"><span class="fact-k">Closest station</span> <span class="fact-v">${HOW_CLOSEST} of ${D.places.length}</span> <span class="fact-s">Towns that use the closest station with NOAA frost records.</span></div>
 </div>
 <nav class="jump" aria-label="On this page"><span>On this page:</span><a href="#frost">Frost dates</a><a href="#stations">Stations</a><a href="#rain-line">The rain line</a><a href="#planting">Planting dates</a><a href="#regions">Regional dates</a><a href="#station-data">Station data</a></nav>
 <div class="prose">
