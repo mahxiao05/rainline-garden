@@ -323,7 +323,7 @@ ${ld}
 <div class="town-chip-wrap"><button type="button" class="town-chip" aria-expanded="false" aria-controls="town-pop">${ICON.pin}<span class="tc-name">Set your town</span>${ICON.chev}</button>
 <div class="town-pop" id="town-pop" hidden></div></div>
 <a class="head-cta" href="${base}my-garden/"${cur("my-garden/")}>${ICON.plan}<span class="cta-long">My garden plan</span><span class="cta-short">My plan</span></a>
-<a class="plan-btn" href="${base}my-garden/" aria-label="My garden plan"${cur("my-garden/")}>${ICON.plan.replace(/18/g, "20")}</a>
+<a class="plan-btn" href="${base}my-garden/" aria-label="My garden plan"${cur("my-garden/")}>${ICON.plan.replace(/18/g, "20")}<span>Plan</span></a>
 <button type="button" class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="site-menu">${ICON.menu}</button>
 </div>
 ${menu}
@@ -483,7 +483,7 @@ b.querySelector(".plan-add-note").textContent=${JSON.stringify(lc(c.name).replac
 // The town box and dates card that sit under a plant page's heading.
 const yourDates = () => `<div class="your-dates" id="your-town">
 <div class="yd-card" hidden><h2>Your dates in <span class="yd-town"></span></h2><div class="town-pick-out" aria-live="polite"></div></div>
-${townBox({ id: "yd-box", rel: "../../", button: "Show dates", lite: true })}</div>`;
+${townBox({ id: "yd-box", rel: "../../", button: "Show my dates", lite: true })}</div>`;
 // Every town's dates, folded under one toggle and grouped by area.
 // Six main towns are shown; every town's row sits in a <template> (not shown, and not read as page text) that the
 // "Your dates" card reads, so each plant page isn't mostly one long table of town names that every plant page repeats.
@@ -503,7 +503,7 @@ ${TOWN_PICK_JS}`;
 // (data.js, plan.js, near.js) only when someone types a ZIP or taps "Use my location".
 const SEARCH_SVG = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
 const PIN_SVG = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg>';
-function townBox({ id, rel, button = "Show dates", label = "Town or ZIP", browse = false, lite = false, savedLine = true, cls = "" }) {
+function townBox({ id, rel, button = "Show my dates", label = "Town or ZIP", browse = false, lite = false, savedLine = true, cls = "" }) {
   const lazy = lite ? ` data-lazy="${["data.js", "plan.js", "near.js"].map(f => `${rel}assets/${f}?v=${ver(f)}`).join("|")}" data-towns="${esc(D.places.map(p => `${p.slug}|${placeLabel(p)}`).join(";"))}"` : "";
   return `<div class="tbox${cls ? " " + cls : ""}" id="${id}"${lazy}>
 <form class="home-find" novalidate><div class="home-find-box"><label class="home-find-in" for="${id}-in">${SEARCH_SVG}<span class="sr">${label}</span><input id="${id}-in" type="text" autocomplete="off" spellcheck="false" enterkeyhint="go" placeholder="${label}" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="${id}-list"></label><button class="btn" type="submit">${button}</button></div>
@@ -1089,7 +1089,7 @@ function nearbyTable(p, nearby) {
     const name = me ? esc(x.city) : `<a href="../${x.slug}/">${esc(x.city)}</a>${x.state !== p.place.state ? `, ${x.state}` : ""}`;
     return `<tr${me ? ' class="me"' : ""}><th scope="row">${name}</th><td>${P.fmt(xp.frost.spring50)}</td><td>${xp.frost.season}</td><td>${c.prcp != null ? `${Math.round(c.prcp)} in` : "—"}</td></tr>`;
   };
-  return `<h2>Nearby areas with similar weather</h2>
+  return `<h2 id="nearby">Nearby areas with similar weather</h2>
 <div class="table-wrap"><table class="nb"><thead><tr><th scope="col">Town</th><th scope="col">Last frost</th><th scope="col">Frost-free days</th><th scope="col">Rain a year</th></tr></thead><tbody>${row(p.place, true)}${nearby.slice(0, 4).map(x => row(x)).join("")}</tbody></table></div>
 <p class="station">Typical dates and yearly rain, NOAA 1991–2020 normals. More nearby: ${nearby.slice(4).map(x => `<a href="../${x.slug}/">${esc(placeLabel(x))}</a>`).join(" · ")}.</p>`;
 }
@@ -1208,6 +1208,7 @@ D.places.forEach(place => {
     description: fitDesc(`${placeLabel(place)}'s last frost is ${P.fmtLong(f.spring50)} on average; frost is over by ${P.fmtLong(f.spring10)} in 9 years out of 10. First fall frost: ${P.fmtLong(f.fall50)}. Dates for ${D.crops.length} crops.`,
       `Last frost in ${placeLabel(place)}: ${P.fmtLong(f.spring50)} on average, over by ${P.fmtLong(f.spring10)} in 9 years out of 10. First fall frost: ${P.fmtLong(f.fall50)}.`,
       `Last frost date in ${placeLabel(place)}: ${P.fmtLong(f.spring50)} on average. First fall frost: ${P.fmtLong(f.fall50)}. When to plant ${D.crops.length} crops there.`),
+    image: PHOTOS["area:" + place.area] && photoFile("area:" + place.area, "banner"),
     jsonld: [bc.ld, faqLd(qas)],
     body: `${bc.html}
 <section class="hero${PHOTOS["area:" + place.area] ? " has-photo page-photo" : ""}" id="live" data-place="${place.slug}">${banner("area:" + place.area, "../../")}
@@ -1215,10 +1216,11 @@ D.places.forEach(place => {
 <p class="lede">The typical last spring frost in ${esc(place.city)} is ${P.fmtLong(f.spring50)}, and the first fall frost is around ${P.fmtLong(f.fall50)}. Plant peas from ${P.fmt(peas.start)}; plant tomatoes from ${P.fmt(tomato.start)}.</p>${pictured("area:" + place.area)}
 </section>
 ${R.frostFacts(p, "../../")}
+<nav class="jump town-jump" aria-label="On this page"><span>Jump to:</span><a href="#plant-now">Plant now</a><a href="#calendar">Planting calendar</a><a href="#risk">Frost chances</a><a href="#faq">Questions</a><a href="#nearby">Nearby towns</a></nav>
 <p class="station town-src">NOAA 1991–2020 frost normals, ${esc(D.stations[place.station].name)}${/Station/.test(D.stations[place.station].name) ? "" : " station"}. <a href="#station">Where these dates come from</a></p>
 ${townNote(place)}
 <section class="risk-card" id="risk">${R.frostRisk(p)}</section>
-<h2>What to plant now</h2>
+<h2 id="plant-now">What to plant now</h2>
 <div id="now"><p class="empty">Turn on JavaScript to see what's in season today. The full calendar is below.</p></div>
 <p class="plan-link"><a class="btn btn-ghost" href="../../my-garden/?place=${place.slug}">Make a garden plan for ${esc(place.city)}</a> Pick your plants and get a dated, printable to-do list.</p>
 ${townLocal(p)}
@@ -1231,8 +1233,7 @@ ${R.townCal(p, "../../", id => PHOTOS["cat:" + id] ? "../../" + photoFile("cat:"
 <p class="station">New to this? Read the <a href="../../beginners-guide/">beginner's guide</a> or look up a term in the <a href="../../glossary/">glossary</a>.</p>
 ${zipNote(place)}
 ${stationBox(p)}
-<h2 id="faq">Common questions about frost in ${esc(place.city)}</h2>
-${faqHtml(qas)}
+${phoneFold("faq", `Common questions about frost in ${esc(place.city)}`, faqHtml(qas))}
 ${newsletter(place.city, place.slug)}
 ${nearbyTable(p, nearby)}
 <p><a href="../">All town calendars</a> or <a href="../../">look up your ZIP</a>.</p>
@@ -1534,7 +1535,7 @@ write("../", "my-garden/index.html", layout({
 <p>Your town, the plants you pick, the boxes you tick and your notes are kept in your browser's local storage, right on this device. That's why they're still here when you close the site and come back. There's no account and nothing is sent to us, so your plan stays private.</p>
 <p>It only lives in this browser on this device. Another phone, computer or browser starts with a blank plan, a private or incognito window forgets it when you close the window, and clearing your browsing data deletes it. To keep a copy, print the plan or save it as a PDF.</p></details></section>
 <h2 class="gp-step"><span class="gp-step-n" aria-hidden="true">1</span>Your town</h2>
-${townBox({ id: "gp-box", rel: "../", button: "Use this town" })}
+${townBox({ id: "gp-box", rel: "../", button: "Show my dates" })}
 <p id="gp-msg" class="msg" role="status" aria-live="polite"></p>
 <section id="gp-share" class="gp-share" hidden aria-live="polite"></section>
 <details id="gp-pick" class="gp-pick" open><summary><span class="gp-step-n" aria-hidden="true">2</span><span>What do you want to grow?</span> <span id="gp-count" class="gp-count"></span></summary>
@@ -1603,7 +1604,7 @@ ${chipList(["garlic", "onions", "chives", "rosemary", "lavender", "oregano", "da
 const bgb = crumbs("../", [["Beginner's guide", null]]);
 const BEGINNER_FAQ = [
   ["What is the easiest vegetable to grow in the Northwest?", "Radishes, lettuce, kale, bush beans and zucchini are the most forgiving. Radishes are ready in about a month, and kale keeps producing from spring into winter on the west side."],
-  ["When should a beginner start a garden in Oregon or Washington?", "Build or fill the bed in early spring, plant peas, lettuce and other cool crops as soon as the soil can be worked, and wait for your town's last frost date before tomatoes, beans and squash."],
+  ["When should a beginner start a garden in Oregon or Washington?", "Start in early spring. Build or fill the bed, then plant peas, lettuce and other cool crops as soon as the soil is dry enough to crumble in your hand. Wait for your town's last frost date, and usually a few weeks past it, before tomatoes, beans and squash."],
   ["Do I need a raised bed?", "No, but it helps in the Northwest. Raised beds drain after heavy rain and warm up sooner in spring. In-ground beds work well in loose, well-drained soil."]
 ];
 const starter = [["Raised bed kit (4 × 8 feet)", "raised garden bed kit 4x8"], ["Bagged compost", "organic compost for vegetable garden"], ["Soil thermometer", "soil thermometer garden"], ["Hand trowel and cultivator set", "garden hand tool set"], ["Soaker hose or drip kit", "soaker hose garden"], ["Iron phosphate slug bait", "iron phosphate slug bait"], ["Floating row cover", "floating row cover garden"]];
