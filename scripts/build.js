@@ -1595,8 +1595,12 @@ const articleH1 = t => t.replace(/ in (Oregon, Washington and Idaho|the Pacific 
 const slugify = t => t.toLowerCase().replace(/&[a-z]+;/g, "").replace(/<[^>]+>/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 // Gives each h2 in an article an id and returns an "On this page" row (articles with three or more sections).
 // "The short answer" box at the top of an article (article.quick), three labeled rows with icons.
-const QUICK_IC = { when: "calendar", how: "seed", harvest: "basket", "best control": "bug", skip: "snow" };
-const quickBox = rows => `<aside class="quick" aria-label="The short answer"><p class="quick-k">The short answer</p><dl>${rows.map(([k, v]) => `<div><dt><span class="tip-ic">${`<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${TIP_ICONS[QUICK_IC[k.toLowerCase()] || "seed"]}</svg>`}</span>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl></aside>`;
+const quickIc = k => { const t = k.toLowerCase();
+  return /nest/.test(t) ? "bird" : /prun|cut|remove/.test(t) ? "scissors" : /east side|west side/.test(t) ? "mountain"
+    : /worm|aphid|defense|control|watch|sign|prevent|hits|skip/.test(t) ? "bug" : /harvest|pick|saving|^use/.test(t) ? "basket"
+    : /winter|frost|cold|protect|freeze|cool/.test(t) ? "snow" : /sun|light|warm|summer/.test(t) ? "sun"
+    : /water|soil|mix|fill|lime|target|test|measure/.test(t) ? "water" : /when|season|spring|first|then|sowing|follow/.test(t) ? "calendar" : "seed"; };
+const quickBox = rows => `<aside class="quick" aria-label="The short answer"><p class="quick-k">The short answer</p><dl>${rows.map(([k, v]) => `<div><dt><span class="tip-ic">${`<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${TIP_ICONS[quickIc(k)]}</svg>`}</span>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl></aside>`;
 // Break up long article text without changing a word: numbered lists become step cards (CSS), lists whose items all
 // start with a bold label become cards, and runs of two or more "<strong>Label</strong> ..." paragraphs become a card grid.
 function proseCards(html) {

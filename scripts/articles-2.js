@@ -72,6 +72,11 @@ ${fig(1)}
     description: "Onions in late winter, peppers next, tomatoes last. A Northwest seed-starting timeline and the light setup that keeps seedlings stocky.",
     crops: ["tomatoes", "peppers", "eggplant", "broccoli", "cabbage", "lettuce", "kale"],
     published: "2026-10-14",
+    quick: () => [
+      ["When", "Count back from your planting-out date, not the last frost, and don't start too early."],
+      ["Worth it", "Tomatoes, peppers, eggplant, onions and leeks. Sow root crops, peas and beans outside."],
+      ["Light", "LED shop lights a few inches above the seedlings, 14 to 16 hours a day."]
+    ],
     body: ({ D, P, link, fig }) => {
       const t = win(D, P, "portland-or", "tomatoes"), pe = win(D, P, "portland-or", "peppers"), b = win(D, P, "portland-or", "broccoli");
       const tb = win(D, P, "bend-or", "tomatoes"), ts = win(D, P, "seattle-wa", "tomatoes");
@@ -126,6 +131,11 @@ ${fig(1)}
     description: "Acidic, rainy west-side soil is close to what blueberries want. Choosing two varieties that pollinate each other, planting, and pruning.",
     crops: ["blueberries"],
     published: "2026-10-14",
+    quick: () => [
+      ["Soil", "Acidic, about pH 4.5 to 5.5, well drained, with 2 to 3 inches of wood mulch."],
+      ["Plant", "Two or more varieties, 4 to 5 feet apart in full sun, in fall or early spring."],
+      ["Pick", "A few days after berries turn blue, when they roll off into your hand."]
+    ],
     body: ({ link }) => `
 <p>If there's one fruit made for Northwest gardens, it's the blueberry. Many of our soils are naturally acidic, winters are mild enough west of the Cascades, and summer brings the long, bright days the berries need to ripen. Oregon and Washington are among the country's biggest blueberry-growing states for good reason. A few well-placed bushes can feed a family for 30 years or more.</p>
 <h2>Get the soil right first</h2>
@@ -175,6 +185,11 @@ ${fig(1)}
     description: "June-bearers give one big crop, everbearers a trickle all summer. Planting, mulching against rot, and renewing an old patch.",
     crops: ["strawberries"],
     published: "2026-10-14",
+    quick: () => [
+      ["Which type", "June-bearing for one big crop; day-neutral for smaller crops into fall."],
+      ["Plant", "Early spring, full sun, good drainage, with the crown right at the soil surface."],
+      ["Watch out", "Gray mold in wet springs. Straw under the plants and frequent picking help."]
+    ],
     body: ({ link }) => `
 <p>Northwest strawberries have a reputation, and they've earned it. The mild summers and cool nights produce berries with deep flavor, and Northwest plant breeders have developed varieties suited to this climate for decades. A small patch is easy to start and, with a little care, keeps producing for several years.</p>
 <h2>Choose your type</h2>
@@ -218,6 +233,11 @@ ${fig(1)}
     description: "Red-flowering currant in March, asters in October: Northwest natives that keep bees and hummingbirds fed from late winter to fall.",
     crops: ["sunflowers", "dahlias"],
     published: "2026-10-14",
+    quick: () => [
+      ["Plant", "Natives that bloom from late winter to fall, like red-flowering currant, yarrow and Douglas aster."],
+      ["When", "In fall, so winter rain settles them in. Water through the first summer."],
+      ["Nests", "Leave some bare soil and standing stems, and keep insecticides off flowers."]
+    ],
     body: ({ link }) => `
 <p>A garden full of pollinators is a garden full of fruit. Bees, flies, butterflies and hummingbirds move pollen for squash, berries, apples and many other crops. The Northwest is home to hundreds of native bee species, and native plants are what they evolved with. Even a small border of natives next to the vegetable bed makes a difference.</p>
 <h2>Who's actually visiting your garden</h2>
@@ -265,6 +285,11 @@ ${fig(1)}
     description: "Crimson clover, fava beans or cereal rye sown in early fall hold bare soil through the winter rain and feed it by spring.",
     crops: ["fava-beans", "garlic"],
     published: "2026-10-14",
+    quick: () => [
+      ["What", "Crimson clover, Austrian winter peas, fava beans or cereal rye."],
+      ["When", "Late summer to about early October west of the Cascades; earlier on the east side."],
+      ["Spring", "Cut when legumes start to flower, then wait two to three weeks before planting."]
+    ],
     body: ({ link }) => `
 <p>West of the Cascades, a bare vegetable bed spends the winter getting pounded by rain. That rain compacts the surface, washes away fine soil and leaches nutrients down past where roots can reach. A cover crop sown in early fall protects that bed all winter, and in spring you turn it into food for the soil.</p>
 <h2>What a cover crop does</h2>
@@ -305,6 +330,11 @@ ${fig(1)}
     description: "Northwest summers are close to rainless from July to September. How much vegetables need each week, and drip, soaker hose or hand watering.",
     crops: ["tomatoes", "summer-squash", "beans", "lettuce", "cucumbers"],
     published: "2026-10-14",
+    quick: () => [
+      ["How much", "About an inch a week, rain included; more in heat, sandy soil and wind."],
+      ["How", "Deep soaks once or twice a week, at the base of the plants, in the morning."],
+      ["Save water", "2 to 3 inches of mulch once the soil has warmed."]
+    ],
     body: ({ link }) => `
 <p>If you've just moved to the Northwest, summer is a surprise. You spend November to May wondering if it will ever stop raining, and then sometime in early July it just does. July and August are usually among the driest months of the year, west of the Cascades and even more so east of them, and your vegetables are growing their fastest exactly when the rain disappears.</p>
 <p>If you've gardened here a while, you probably know the other side of it too: the tomato that cracked after a heavy soak, the lettuce that bolted in a week of heat, the squash leaves flopping at 4 p.m. and perking up by morning. Most of those come down to how, and how evenly, the garden gets watered.</p>
@@ -351,6 +381,11 @@ ${fig(1)}
     crops: ["tomatoes", "carrots", "lettuce", "garlic", "strawberries"],
     published: "2026-10-14",
     gardenPhoto: "janelle-raised-beds",
+    quick: () => [
+      ["Size", "No wider than 4 feet, 10 to 12 inches deep, with paths at least 2 feet wide."],
+      ["Fill", "A topsoil and compost blend, not pure compost or bagged potting mix."],
+      ["Build", "Untreated cedar or metal. Skip railroad ties and creosote-treated wood."]
+    ],
     body: ({ link }) => `
 <p>Ask Northwest gardeners for one piece of advice and many will say: build raised beds. If you've ever tried to dig a vegetable bed in April and pulled up a spadeful of cold, gray clay that stuck to your boots, you already know why. Our long, wet winters and springs leave ordinary garden soil soggy and cold for weeks. A raised bed drains faster and warms sooner, which can mean planting earlier and losing fewer seeds to rot.</p>
 <p>They're also just easier on you. Less bending, fewer weeds, a clear edge between "garden" and "lawn," and soil that stays loose enough to plant with your hands.</p>
@@ -399,6 +434,11 @@ ${fig(1)}
     description: "Seed potatoes, cutting and curing them, hilling, and digging both new potatoes and keepers in Oregon, Washington and Idaho.",
     crops: ["potatoes"],
     published: "2026-10-14",
+    quick: () => [
+      ["When", "In spring, a few weeks before the last frost, once the soil isn't soggy."],
+      ["How", "Certified seed potatoes, 4 inches deep and 12 inches apart. Hill soil up as they grow."],
+      ["Harvest", "New potatoes after flowering; storage potatoes about two weeks after the vines die back."]
+    ],
     body: ({ D, P, link }) => {
       const pdx = win(D, P, "portland-or", "potatoes"), spo = win(D, P, "spokane-wa", "potatoes"), bend = win(D, P, "bend-or", "potatoes"), boi = win(D, P, "boise-id", "potatoes");
       return `
@@ -454,6 +494,11 @@ ${fig(1)}
     description: "A balcony is enough for herbs, greens and cherry tomatoes. Pot sizes, potting mix and the summer watering that pots need.",
     crops: ["tomatoes", "lettuce", "basil", "peppers", "strawberries", "kale"],
     published: "2026-10-14",
+    quick: () => [
+      ["Sun", "Six to eight hours for tomatoes, peppers and cucumbers; four to six for greens and herbs."],
+      ["Pots", "At least 5 gallons per tomato, with drainage holes and bagged potting mix, not garden soil."],
+      ["Water", "Often. In a heat wave a big tomato in a pot may need water every day."]
+    ],
     body: ({ link }) => `
 <p>You don't need a yard to grow food. If you live in an apartment in Seattle, a townhouse in Portland or a rental where you can't dig up the lawn, a sunny balcony, a patio or a strip of driveway can still produce a surprising amount of salad greens, herbs and tomatoes. There's something about stepping outside your door and cutting lettuce for dinner that never gets old.</p>
 <p>Containers even have some advantages in the Northwest: they drain well in a wet spring, dark pots warm up faster than garden soil, and you can move them to follow the sun or dodge a cold night.</p>

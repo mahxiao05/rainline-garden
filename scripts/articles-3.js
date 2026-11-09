@@ -20,6 +20,11 @@ module.exports = [
     description: "A 'last frost date' is an average, and in half of years frost comes later. What the number means and how much margin to give tomatoes.",
     crops: ["tomatoes", "peppers", "basil", "beans"],
     published: "2026-10-14",
+    quick: () => [
+      ["What it means", "The usual last frost date is a median: in half of years the last freeze comes later."],
+      ["Hardy crops", "Peas, spinach and kale can go in around the median date or even before it."],
+      ["Tender crops", "Wait for the 10% date and warm soil, with covers handy."]
+    ],
     body: ({ D, P, link }) => {
       const pdx = frostAt(D, P, "portland-or"), oly = frostAt(D, P, "olympia-wa"), bend = frostAt(D, P, "bend-or"), sea = frostAt(D, P, "seattle-wa");
       return `
@@ -71,6 +76,11 @@ module.exports = [
     description: "Indoor seedlings scorch or stall if they go straight outside. A day-by-day routine for getting them used to sun, wind and cold nights.",
     crops: ["tomatoes", "peppers", "broccoli", "cabbage", "lettuce", "basil"],
     published: "2026-10-14",
+    quick: () => [
+      ["What", "Getting indoor seedlings used to sun, wind and cool nights over 7 to 10 days."],
+      ["How", "Start with an hour or two in shade, then add more time and sun each day."],
+      ["Watch out", "Bring tomatoes, peppers and basil in on nights forecast below about 50°F."]
+    ],
     body: ({ D, P, link }) => {
       const tom = win(D, P, "portland-or", "tomatoes");
       return `
@@ -126,6 +136,11 @@ module.exports = [
     description: "Rain-washed west-side soils run acidic and east-side soils alkaline. Testing your pH and when lime or sulfur is worth adding.",
     crops: ["blueberries", "potatoes", "broccoli", "cabbage", "kale", "beans"],
     published: "2026-10-14",
+    quick: () => [
+      ["Test first", "West-side soils often run acidic and east-side soils alkaline. A soil test tells you which you have."],
+      ["Target", "Most vegetables like pH 6.0 to 7.0; blueberries 4.5 to 5.5."],
+      ["Lime", "Only what the test recommends, in fall, and never on blueberry or potato beds."]
+    ],
     body: ({ link }) => `
 <p>Many vegetable beds west of the Cascades are acidic enough to benefit from lime, but not all of them, and east of the Cascades most soils don't need it at all. Lime is one of the most common things Northwest gardeners add to their soil, and one of the most common things they add without knowing if it helps. A soil test answers the question for a few dollars.</p>
 <p>Soil pH is a measure of how acidic or alkaline your soil is, on a scale from 0 to 14 where 7 is neutral. It matters because pH controls how easily plants can take up nutrients. A soil can be full of nutrients and still grow pale, slow plants if the pH is far off.</p>
@@ -171,6 +186,11 @@ module.exports = [
     description: "Peas go in as soon as the soil can be worked and quit in summer heat. Sowing dates by region, snap vs. shelling, and trellising.",
     crops: ["peas", "sweet-peas", "fava-beans"],
     published: "2026-10-14",
+    quick: () => [
+      ["When", "Early spring. The earlier part of your town's window is best."],
+      ["How", "1 inch deep and 1 to 2 inches apart, at the base of a trellis you put up first."],
+      ["Harvest", "Every day or two. The more you pick, the more they flower."]
+    ],
     body: ({ D, P, link }) => {
       const pdx = win(D, P, "portland-or", "peas"), spo = win(D, P, "spokane-wa", "peas"), bend = win(D, P, "bend-or", "peas"), boi = win(D, P, "boise-id", "peas");
       return `
@@ -227,6 +247,11 @@ module.exports = [
     description: "Late blight arrives with cool, wet late-summer weather and can kill tomatoes in a week. Spotting it early and keeping it out of next year's garden.",
     crops: ["tomatoes", "potatoes"],
     published: "2026-10-14",
+    quick: () => [
+      ["Signs", "Large gray-green to brown leaf patches, dark stem lesions and greasy brown blotches on fruit."],
+      ["Prevent", "Keep leaves dry with drip watering or a simple rain cover from late August."],
+      ["If it hits", "Remove infected parts on a dry day, bag badly hit plants, and pick sound green fruit."]
+    ],
     body: ({ link }) => `
 <p>Late blight is the disease behind the Irish potato famine, and it still destroys tomato and potato plants in home gardens today. It loves exactly the weather the Northwest is known for: cool temperatures, rain and long, damp nights. West of the Cascades it most often shows up in late summer and early fall, when rain and heavy dew return.</p>
 <p>If you've grown tomatoes here for a few years, you may already have watched it happen: a perfectly healthy plant loaded with green fruit in early September, a few days of drizzle, and then brown patches spreading across the leaves faster than seems possible. A week later the plant is a blackened skeleton. It's discouraging, but knowing how it works makes it much easier to beat.</p>
@@ -276,6 +301,11 @@ module.exports = [
     description: "Small sowings of lettuce, beans and carrots every few weeks, and a fall crop after the spring one, keep a small bed producing longer.",
     crops: ["lettuce", "radishes", "beans", "cilantro", "carrots", "peas"],
     published: "2026-10-14",
+    quick: () => [
+      ["Small sowings", "Radishes every one to two weeks; lettuce every two to three weeks."],
+      ["Follow-ons", "Peas then beans, garlic then fall greens, summer crops then a cover crop."],
+      ["Last sowing", "Count back from the first fall frost: days to maturity plus about two weeks."]
+    ],
     body: ({ D, P, link }) => {
       const let1 = win(D, P, "portland-or", "lettuce"), letF = win(D, P, "portland-or", "lettuce", "fall"), bean = win(D, P, "portland-or", "beans");
       return `
@@ -330,6 +360,11 @@ module.exports = [
     description: "Dahlia tubers rot in cold, wet soil, so timing matters more than anything. Planting, staking, and digging or mulching in winter.",
     crops: ["dahlias", "sunflowers", "sweet-peas"],
     published: "2026-10-14",
+    quick: () => [
+      ["When", "Once the soil has warmed, about when you'd plant tomatoes."],
+      ["How", "Tubers 4 to 6 inches deep on their side, stake in first, and no water until shoots appear."],
+      ["Winter", "West side: leave them in well-drained ground under mulch. East side: dig them after the first frost."]
+    ],
     body: ({ D, P, link, fig }) => {
       const pdx = win(D, P, "portland-or", "dahlias"), spo = win(D, P, "spokane-wa", "dahlias"), bend = win(D, P, "bend-or", "dahlias");
       return `

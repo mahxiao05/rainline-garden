@@ -12,6 +12,11 @@ module.exports = [
     description: "From pea sowing in March to garlic in October: what a year in a Northwest vegetable garden looks like, season by season.",
     crops: ["peas", "lettuce", "tomatoes", "beans", "kale", "garlic"],
     published: "2026-11-08",
+    quick: () => [
+      ["Spring", "Cool crops first. Warm crops wait until after the last frost and once the soil has warmed."],
+      ["Summer", "Water deeply, and plant fall and winter crops in midsummer."],
+      ["Fall and winter", "Plant garlic, cover bare soil, pick hardy greens and plan next year."]
+    ],
     body: ({ frost, link }) => {
       const pdx = frost("portland-or"), sea = frost("seattle-wa"), spo = frost("spokane-wa"), boi = frost("boise-id"), bend = frost("bend-or");
       return `
@@ -65,6 +70,11 @@ module.exports = [
     description: "West-side piles get soaked in winter and east-side piles dry out in summer. Bins, the green-brown mix, and fixing a slimy or stalled pile.",
     crops: ["tomatoes", "summer-squash", "kale", "lettuce"],
     published: "2026-11-08",
+    quick: () => [
+      ["Mix", "Two to three buckets of browns, like leaves and straw, for every bucket of greens, like scraps and clippings."],
+      ["West side", "Cover the pile in winter and add a layer of leaves with every load of scraps."],
+      ["East side", "Water the pile when you water the garden, and give it some shade."]
+    ],
     body: ({ link }) => `
 <p>Compost piles in the Northwest have two seasonal problems: too much water in winter and too little in summer. A pile left open to the rain from November to April turns slimy and smelly, and the same pile in a dry August can sit unchanged for months. Covering it in winter and watering it in summer solves most of both.</p>
 <p>Compost is decomposed plant material that feeds soil life, loosens clay, helps sandy soil hold water and slowly releases nutrients. Almost every bed on this site starts with "mix in an inch or two of compost." Making your own is cheap and uses up kitchen scraps and garden waste, but the Northwest's weather makes it a little different from the textbook. West of the Cascades, piles get soaked all winter. East of the Cascades, they dry out all summer.</p>
@@ -121,6 +131,11 @@ module.exports = [
     description: "Cutting basil, parsley and thyme so they keep regrowing, and whether drying or freezing works better for each one.",
     crops: ["basil", "parsley", "thyme", "rosemary", "oregano", "sage", "chives", "mint", "cilantro", "dill"],
     published: "2026-11-08",
+    quick: () => [
+      ["When", "In the morning, before flowering, taking no more than a third of the plant."],
+      ["Before frost", "Pick all the basil before your first frost. Most other herbs handle cold better."],
+      ["Saving", "Dry oregano, thyme, rosemary, sage, mint and dill. Freeze basil, parsley, cilantro and chives."]
+    ],
     body: ({ link }) => `
 <p>There's no easier way to make your cooking taste better than walking outside with a pair of scissors. A few pots of herbs by the back door save you buying sad little plastic packs at the store, and in a good summer you'll have far more than you can use fresh.</p>
 <p>Most kitchen herbs grow better the more you cut them, as long as you cut them the right way. A basil plant picked properly all summer turns bushy and keeps going; one that's left alone grows tall, flowers and quits. This guide covers how to harvest each common herb so it keeps producing, and how to save the extra before frost. For when to plant each one in your town, see the <a href="${link("when-to-plant/herbs/")}">herbs planting guide</a>.</p>

@@ -10,6 +10,11 @@ module.exports = [
     description: "Fall leaves left in a pile for a year turn into crumbly leaf mold. Which leaves break down best and where to use it.",
     crops: ["blueberries", "garlic", "rhubarb", "lettuce"],
     published: "2026-10-23",
+    quick: () => [
+      ["What", "Fall leaves kept damp in a pile until they turn dark and crumbly. No turning needed."],
+      ["How", "Shred with a mower, pile in a wire ring or holed bags, and keep them wet."],
+      ["Use", "As mulch, worked into beds, or sifted into seed-starting mix."]
+    ],
     body: ({ link, fig }) => `
 <p>Fall leaves left in a pile for a year or two turn into leaf mold, a dark, crumbly material that holds water like a sponge and makes a good mulch and soil conditioner. It costs nothing and takes almost no work, which makes it a better use for a big tree's leaves than the yard-waste bin.</p>
 <p>Every fall, Northwest yards and streets fill with maples, oaks and alders dropping their leaves, and plenty of them end up in yard-waste bins. That's a lot of free organic matter leaving the garden. With a little patience, those same leaves turn into leaf mold: a dark, crumbly, earthy-smelling material that holds water like a sponge and makes heavy soil easier to work.</p>
@@ -54,6 +59,11 @@ ${fig(1)}
     description: "Apples and pears are pruned while dormant in late winter; cherries and plums aren't. Which cuts to make and how much to remove.",
     crops: ["apples", "pears", "cherries", "plums", "peaches"],
     published: "2026-10-23",
+    quick: () => [
+      ["When", "Late winter, roughly February to early March, on a dry day."],
+      ["Remove first", "Dead, broken and diseased wood, then suckers, water sprouts and crossing branches."],
+      ["Cuts", "Mostly thinning cuts back to the branch collar; few heading cuts."]
+    ],
     body: ({ link, fig }) => `
 <p>Maybe you inherited an apple tree with your house. It's tall, tangled and full of upright shoots, and every fall it drops a few small, spotty apples you can't reach. Or maybe you planted a young pear a couple of years ago and aren't sure whether to cut anything at all. Either way, late winter is your chance, and it's less intimidating than it looks.</p>
 <p>Apples and pears are pruned while they're dormant, after the leaves fall and before the buds start to swell. A bare tree is easy to read: you can see every branch, where it's crowded and where it's heading. A little pruning each winter keeps a tree a size you can pick from, lets light and air into the middle, and helps the fruit ripen and stay healthy through our damp springs.</p>
@@ -106,6 +116,11 @@ ${fig(1)}
     crops: ["tomatoes", "potatoes", "broccoli", "cabbage", "peas", "beans", "garlic", "onions"],
     published: "2026-10-23",
     gardenPhoto: "janelle-raised-beds",
+    quick: () => [
+      ["The rule", "Don't put the same plant family in the same spot two years running."],
+      ["How", "Rotate by family, not by crop. Tomatoes and potatoes are relatives."],
+      ["Simple plan", "Four beds, with each family moving one bed along every year."]
+    ],
     body: ({ link }) => `
 <p>A rainy winter evening is a good time to sketch next year's garden. Before you decide what goes where, think about what grew in each bed this year. Planting the same family of vegetables in the same spot year after year lets their soil pests and diseases build up. Moving them around, called crop rotation, is one of the simplest ways to keep a garden healthy without sprays.</p>
 <h2>Rotate by family, not by crop</h2>
@@ -161,6 +176,11 @@ ${fig(1)}
     description: "What to pull, what to leave standing for birds and insects, and how to cover soil before winter rain or a hard eastern freeze.",
     crops: ["tomatoes", "potatoes", "dahlias", "rhubarb", "asparagus", "strawberries"],
     published: "2026-10-23",
+    quick: () => [
+      ["First", "Pull and bag diseased plants, and dig the last potatoes."],
+      ["Then", "Cover every empty bed with leaves, straw, compost or a cover crop."],
+      ["Before the freeze", "Drain hoses and empty or move pots that could crack."]
+    ],
     body: ({ frost, link }) => {
       const pdx = frost("portland-or"), spo = frost("spokane-wa");
       return `
@@ -213,6 +233,11 @@ ${fig(1)}
     description: "Bare-root trees arrive in late winter with no soil on the roots. Keeping them alive until planting day and setting the graft at the right height.",
     crops: ["apples", "pears", "plums", "cherries", "peaches"],
     published: "2026-10-23",
+    quick: () => [
+      ["When", "While dormant: roughly late January to March west of the Cascades."],
+      ["How", "A hole twice as wide as the roots, graft union above the soil, backfilled with the soil you dug out."],
+      ["After", "A deep soak about once a week through the first dry summer."]
+    ],
     body: ({ link, fig }) => `
 <p>Every late winter, nurseries across the Northwest fill with bundles of leafless young trees with their roots wrapped in damp sawdust. These bare-root trees are the cheapest way to start an orchard, there's a far bigger choice of varieties than in summer, and they often establish faster than potted trees because their roots go straight into your soil.</p>
 <p>The catch is timing. A bare-root tree has to be planted while it's dormant, so the season is short: roughly late January to March west of the Cascades, and from when the ground thaws until early spring east of the mountains.</p>
@@ -255,6 +280,11 @@ ${fig(1)}
     description: "Raspberry canes drown in soggy winter soil. Choosing summer- or fall-bearing types, planting on a raised row, and which canes to cut.",
     crops: ["raspberries"],
     published: "2026-10-23",
+    quick: () => [
+      ["Which type", "Summer-bearing for one big July crop; fall-bearing for a late crop and easier pruning."],
+      ["Plant", "In early spring, in a raised row 8 to 12 inches high so roots never sit in winter wet."],
+      ["Prune", "Summer-bearing: cut fruited canes after harvest. Fall-bearing: cut all canes in late winter."]
+    ],
     body: ({ link, fig }) => `
 <p>Raspberries are one of the easiest fruits to grow in the Northwest, and one of the most worth growing, since store-bought berries are expensive and fragile. A single short row of canes can give more than you can eat fresh.</p>
 <p>Raspberries love the Northwest. Cool nights, mild summers and long days suit them so well that northwest Washington grows a large share of the country's red raspberries. A home patch planted well can produce for ten years or more.</p>
@@ -295,6 +325,11 @@ ${fig(1)}
     crops: ["kale", "broccoli", "cabbage", "brussels-sprouts", "collards", "cauliflower"],
     published: "2026-10-23",
     gardenPhoto: "janelle-red-cabbage-bed",
+    quick: () => [
+      ["Best defense", "Row cover from planting day, sealed at the edges. Cabbage-family crops don't need bees, so it can stay on."],
+      ["Worms", "Check leaf undersides once or twice a week and pick off caterpillars and eggs. Bt if needed."],
+      ["Aphids", "Check weekly from midsummer, knock them off with a hard spray of water, and go easy on nitrogen."]
+    ],
     body: ({ link, fig }) => `
 <p>Imported cabbage worms and cabbage aphids are the two pests most likely to show up on broccoli, cabbage, kale and Brussels sprouts in Northwest gardens. Most gardeners first meet them as a caterpillar in the rinse water or a sprout full of aphids.</p>
 <p>Kale, broccoli, cabbage and their relatives are some of the easiest crops in a Northwest garden, and two pests know it. Green caterpillars chew holes through the leaves in summer, and gray aphids pack the undersides of leaves and the inside of Brussels sprouts by fall. Both are easy to manage if you catch them early.</p>

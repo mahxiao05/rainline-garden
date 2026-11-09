@@ -11,6 +11,11 @@ module.exports = [
     description: "Big slicers often stay green in a cool Northwest summer. These are the tomatoes that do ripen in Portland, Seattle and on the coast.",
     crops: ["tomatoes"],
     published: "2026-10-13",
+    quick: () => [
+      ["Pick", "Fast varieties that set fruit in cool nights: Stupice, Early Girl, Sungold, Oregon Spring or Legend."],
+      ["When", "Once the soil is warm and nights are mild. In Portland that usually means mid-May."],
+      ["Help them", "The warmest spot you have, black plastic, wall-o-water rings, and less water in August."]
+    ],
     body: ({ frost, link, fig }) => {
       const pdx = frost("portland-or"), sea = frost("seattle-wa"), ast = frost("astoria-or");
       return `
@@ -58,6 +63,11 @@ ${fig(1)}
     description: "West of the Cascades, kale, leeks and carrots keep going through most winters. The catch is planting them in July and August.",
     crops: ["kale", "carrots", "garlic", "spinach", "broccoli", "cabbage", "lettuce"],
     published: "2026-10-13",
+    quick: () => [
+      ["When", "Mid to late summer. Start broccoli, cabbage and kale in July and set them out in August."],
+      ["Best crops", "Kale, carrots, beets, leeks, spinach and fall-planted garlic."],
+      ["Protect", "Row cover for nights in the low 20s, and beds that drain."]
+    ],
     body: ({ frost, link }) => {
       const pdx = frost("portland-or"), sea = frost("seattle-wa"), spo = frost("spokane-wa");
       return `
@@ -92,14 +102,6 @@ ${fig(1)}
 <p>Harvest on mild days, not when the plants are frozen. Frozen leaves bruise and turn to mush if you handle them, but the same leaves are fine once they thaw on the plant. Take the lower, outer leaves of kale, chard and collards and leave the growing center so the plant keeps producing. Pull leeks and dig carrots as you need them rather than all at once: the soil keeps them fresher than your fridge does. If the ground is likely to freeze hard, dig a few days' worth ahead of time.</p>
 <h2>Winter pests aren't gone</h2>
 <p>Slugs stay active on mild, wet winter nights, and they lay eggs in fall, so a little bait or hand-picking in October and November pays off next spring (see <a href="${link("articles/slugs/")}">controlling slugs</a>). Gray, waxy cabbage aphids can build up on kale and Brussels sprouts in fall; a hard spray of water knocks them back, and frost usually finishes them. Cabbage worms slow down when it gets cold, but check brassicas you plant out in August, when the white butterflies are still laying eggs. Row cover keeps them off.</p>
-<h2>A simple spring routine</h2>
-<ol>
-<li>From March on, take a morning reading once or twice a week in your main beds and write it down.</li>
-<li>Sow cool-season crops once soil holds near 40°F and the soil is workable (it crumbles rather than staying in a sticky ball).</li>
-<li>Two weeks before you plan to plant warm crops, lay black plastic or set up a cloche or tunnel over that bed.</li>
-<li>Plant beans and corn when mornings hold at 60°F, and tomatoes, squash and peppers at 65°F or a little above, with cover ready for cold nights.</li>
-<li>Once the soil is warm, mulch to keep moisture in for summer.</li>
-</ol>
 <h2>East of the Cascades</h2>
 <p>Inland, fall gardening is shorter and winter harvesting is harder. Spokane's typical first frost is around ${spo.first}, and the ground can freeze solid in December. You can still grow a good fall crop of kale, carrots, spinach and lettuce by planting a few weeks earlier than the west-side dates above, and carrots and leeks mulched with a thick layer of straw can often be dug into early winter. For greens through the coldest months, a cold frame or a hoop tunnel helps a lot. Check <a href="${link("frost-dates/")}">your town's first frost date</a> and count back from there.</p>
 <p>See what's in season this month on the <a href="${link("garden-calendar/")}">monthly chores page</a>.</p>`;
@@ -113,6 +115,11 @@ ${fig(1)}
     description: "Bend and Redmond can see frost in June and again in September. What still grows well there, and how gardeners stretch the season.",
     crops: ["tomatoes", "peas", "lettuce", "potatoes", "kale", "summer-squash"],
     published: "2026-10-13",
+    quick: () => [
+      ["The season", "About 97 frost-free days at Redmond, the station closest to Bend."],
+      ["Grow", "Frost-hardy crops like peas, kale, carrots and potatoes as the backbone."],
+      ["Warm crops", "Fast transplants (60 days or less) with wall-o-waters and row cover ready."]
+    ],
     body: ({ frost, link, fig }) => {
       const bend = frost("bend-or"), kf = frost("klamath-falls-or");
       return `
@@ -215,6 +222,11 @@ ${fig(1)}
     description: "Beans and squash rot in cold soil even after the last frost. A cheap soil thermometer settles when it's warm enough to plant.",
     crops: ["tomatoes", "beans", "corn", "summer-squash", "cucumbers", "peppers"],
     published: "2026-10-13",
+    quick: () => [
+      ["Cool crops", "Peas, spinach and lettuce sprout from about 40°F."],
+      ["Warm crops", "Beans and corn at 60°F; tomatoes, peppers and squash at 65 to 70°F."],
+      ["Measure", "A soil thermometer 4 inches deep, in the morning, several days in a row."]
+    ],
     body: ({ frost, link }) => {
       const pdx = frost("portland-or");
       return `
@@ -246,6 +258,14 @@ ${fig(1)}
 <p>Cold soil doesn't just slow warm-season crops down. Bean, corn and squash seeds absorb water but can't grow, so they rot. Tomato and pepper transplants stop growing, and their leaves can turn purplish underneath because cold roots struggle to take up phosphorus. Plants set back this way often catch up only weeks after ones planted later into warm soil, so planting early rarely gains anything.</p>
 <h2>Too warm matters too</h2>
 <p>Soil temperature cuts both ways. Lettuce and spinach seed germinate poorly once soil goes much above about 80°F, which is why late-summer sowings for fall can come up patchy. Sow them in the cool of the evening, water the row well, and shade it with a board or a bit of shade cloth until the seedlings appear.</p>
+<h2>A simple spring routine</h2>
+<ol>
+<li>From March on, take a morning reading once or twice a week in your main beds and write it down.</li>
+<li>Sow cool-season crops once soil holds near 40°F and the soil is workable (it crumbles rather than staying in a sticky ball).</li>
+<li>Two weeks before you plan to plant warm crops, lay black plastic or set up a cloche or tunnel over that bed.</li>
+<li>Plant beans and corn when mornings hold at 60°F, and tomatoes, squash and peppers at 65°F or a little above, with cover ready for cold nights.</li>
+<li>Once the soil is warm, mulch to keep moisture in for summer.</li>
+</ol>
 <h2>East of the Cascades</h2>
 <p>In the drier inland valleys, soil warms faster in spring than on the west side, so the gap between frost dates and planting dates is shorter. But frost comes later and nights stay cold, so a warm afternoon reading can mislead. Check in the morning there, too, and keep frost cover handy after planting.</p>
 <p>Rainline Garden's planting dates already build in this soil-temperature delay for each region. <a href="${link("")}">Enter your ZIP</a> to see yours.</p>`;
