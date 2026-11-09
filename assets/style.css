@@ -464,6 +464,20 @@ table.plan { width: 100%; border-collapse: collapse; font-size: 1rem; background
 .signup-form { display: flex; gap: 8px; flex-wrap: wrap; }
 .signup-form input { flex: 1 1 12rem; font: inherit; padding: 10px 12px; min-height: 48px; border-radius: 6px; border: 0; }
 .signup .btn { background: var(--moss); color: var(--on-moss); }
+.signup-form select { flex: 1 1 12rem; font: inherit; padding: 10px 12px; min-height: 48px; border-radius: 6px; border: 0; background: #fff; color: #1b1b1b; }
+.signup-fine { font-size: .85rem; opacity: .85; margin: .6rem 0 0; }
+.signup-fine a, .signup-done { color: var(--bg); }
+.signup-done { font-weight: 600; margin: 0; }
+.signup > div { min-width: 0; }
+.signup-form input, .signup-form select { min-width: 0; max-width: 100%; background: #fff; color: #1b1b1b; }
+.signup-form input::placeholder { color: #6b6b6b; }
+.nl-zip-wrap, .nl-town-wrap { display: flex; flex: 1 1 12rem; min-width: 0; }
+.nl-zip-wrap > input, .nl-town-wrap > select { flex: 1 1 auto; }
+.nl-zip-wrap[hidden], .nl-town-wrap[hidden] { display: none; }
+.nl-status { flex: 1 1 100%; margin: 0; font-size: .92rem; }
+.nl-status:empty { display: none; }
+.nl-status.nl-warn { font-weight: 600; }
+.nl-change { font: inherit; font-weight: 600; color: inherit; background: none; border: 0; padding: 0; text-decoration: underline; cursor: pointer; }
 .guide h2 { display: flex; align-items: center; gap: 12px; }
 .num { flex: none; width: 36px; height: 36px; border-radius: 50%; background: var(--moss); color: var(--paper); display: grid; place-items: center; font-family: var(--sans); font-size: 1.05rem; }
 .glossary { margin: 0; padding: 0 4px 4px 19px; }
