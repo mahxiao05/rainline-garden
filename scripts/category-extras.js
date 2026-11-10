@@ -64,8 +64,8 @@ module.exports = {
     title: "When to Plant Berries in Oregon, Washington and Idaho",
     faq: [
       ["When is the best time to plant berries in the Northwest?", "Late winter to early spring, from bare-root or potted plants, while the weather is cool and moist. Potted plants can also go in during fall west of the Cascades."],
-      ["Do blueberries need two varieties?", "They'll fruit alone, but planting two or more varieties that bloom at the same time usually gives bigger crops."],
-      ["How long until berries produce?", "Strawberries crop the year after planting, raspberries in the second summer, and blueberries take three or four years to give a real harvest."]
+      ["Do blueberries need two varieties?", "They'll fruit alone, but planting two or more varieties that bloom at the same time usually gives bigger crops and larger berries. Bees carry pollen between the bushes, so plant them near each other. Pairing an early, a mid-season and a late variety also spreads the harvest over several weeks."],
+      ["How long until berries produce?", "Strawberries crop the year after planting, raspberries in the second summer, and blueberries take three or four years to give a real harvest. Pinching off strawberry flowers the first year and blueberry flowers for the first two puts that energy into roots instead. After that, a healthy blueberry bush keeps producing for decades."]
     ]
   },
   "perennial-vegetables": {
@@ -96,7 +96,7 @@ module.exports = {
     faq: [
       ["When is the best time to plant native plants?", "Fall and early winter on the west side, so winter rain waters them in while the roots grow. Early spring works too, and is safer east of the Cascades where the ground freezes hard."],
       ["Which natives have edible berries?", "Huckleberries, serviceberry, thimbleberry, salmonberry, salal and Oregon grape all have edible fruit. Oregon grape is very tart and best cooked."],
-      ["Which natives attract hummingbirds?", "Red-flowering currant and salmonberry bloom in early spring as hummingbirds return, and western columbine feeds them in late spring and summer."]
+      ["Which natives attract hummingbirds?", "Red-flowering currant and salmonberry bloom in early spring as hummingbirds return, and western columbine feeds them in late spring and summer. Planting all three gives them something in flower for months. Hummingbirds go for red and tube-shaped flowers most."]
     ]
   },
   flowers: {

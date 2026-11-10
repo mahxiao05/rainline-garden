@@ -2813,3 +2813,33 @@ table.nb tr.me th, table.nb tr.me td { font-weight: 600; }
 .hero-pic { margin: .9rem 0 0; font-size: .8rem; color: var(--night-soft); opacity: .85; }
 .hero.has-photo .hero-pic { color: rgba(255,255,255,.78); text-shadow: 0 1px 2px rgba(0,0,0,.5); }
 @media (max-width: 720px) { .hero.has-photo.page-photo { padding-top: 11rem !important; } }
+/* UI batch 2026-11-09: section headings in normal case (page titles stay in capitals) */
+h2, .why-dates h2, .fall-now-h { text-transform: none; letter-spacing: 0; line-height: 1.12; }
+/* Phone header: the plan button says "Plan" next to its icon */
+.plan-btn { width: auto; gap: 5px; padding: 0 11px; grid-auto-flow: column; align-items: center; font: 700 .9rem var(--sans); text-decoration: none; }
+@media (max-width: 720px) {
+  /* Shorter photo headers on phones, so the dates sit on the first screen */
+  .hero.has-photo { padding-top: 3.25rem !important; }
+  .hero.has-photo.page-photo { padding-top: 4rem !important; }
+  /* Fall reminder: one slim line on phones */
+  .fall-bar .wrap { padding-top: 5px; padding-bottom: 5px; }
+  .fall-bar .fb-ico { width: 24px; height: 24px; }
+  .fall-bar .fb-t span { display: none; }
+  .fall-bar .fb-t strong { font-size: .92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fall-bar .fb-go { padding: 5px 10px; font-size: .8rem; }
+  .fall-bar button { width: 30px; height: 30px; }
+}
+@media (max-width: 430px) {
+  /* Room for the "Plan" word: tighter brand spacing on small phones */
+  .site-head .wrap { column-gap: 8px; }
+  .site-head .brand, .site-head .brand span { letter-spacing: .14em; }
+  .site-head .brand { gap: 8px; margin-right: auto; }
+  .plan-btn { padding: 0 9px; }
+}
+@media (max-width: 385px) {
+  .site-head .brand span { font-size: .84rem; letter-spacing: .06em; }
+  .site-head .brand img { width: 28px; height: 28px; }
+  .plan-btn { padding: 0 7px; gap: 3px; }
+}
+@media (max-width: 370px) { .site-head .wrap { padding-left: 12px; padding-right: 12px; column-gap: 6px; } .site-head .brand span { font-size: .78rem; } }
+.town-jump { margin-top: 14px; }

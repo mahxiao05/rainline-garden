@@ -1051,7 +1051,7 @@ const notes = {
     faq: [
       ["Can you eat raw elderberries?", "No. Raw berries can cause stomach upset. Cook them first, and remove all stems and leaves."],
       ["Is the native red elderberry edible?", "Its berries are not recommended for eating. Grow blue elderberry or a fruiting variety like York or Adams if you want berries."],
-      ["Do I need two elderberry plants?", "Most set some fruit alone, but you'll get much bigger crops with two different varieties planted near each other."]
+      ["Do I need two elderberry plants?", "Most set some fruit alone, but you'll get much bigger crops with two different varieties planted near each other. Insects carry the pollen between them. Two plants of the same named variety don't count, since they're clones of each other."]
     ]
   },
   peonies: {
@@ -1164,7 +1164,7 @@ const notes = {
     ],
     faq: [
       ["When do you plant horseradish?", "In early spring, as soon as the soil can be worked. In mild west-side gardens you can also plant in fall."],
-      ["How do I stop horseradish from spreading?", "Grow it in a big tub or a bottomless barrel sunk into the ground, and dig every piece of root at harvest."],
+      ["How do I stop horseradish from spreading?", "Grow it in a big tub or a bottomless barrel sunk into the ground, and dig every piece of root at harvest. Even a small broken piece left in the soil grows into a new plant. Keep it away from beds you dig often, because a rototiller chops the roots up and spreads them."],
       ["Can I eat the leaves?", "Young leaves are edible and peppery, used in small amounts like a green. The root is the main harvest."]
     ]
   },
@@ -1222,7 +1222,7 @@ const notes = {
     faq: [
       ["Can I grow French tarragon from seed?", "No. French tarragon rarely sets viable seed. Seed sold as tarragon is usually Russian tarragon. Buy a plant instead."],
       ["Why did my tarragon disappear in winter?", "It dies back to the ground every winter and regrows in spring. If nothing comes back by May, the roots likely rotted in wet soil."],
-      ["Does tarragon need full sun?", "It does best in full sun but tolerates some afternoon shade, which can help in hot eastern summers."]
+      ["Does tarragon need full sun?", "It does best in full sun but tolerates some afternoon shade, which can help in hot eastern summers. Good drainage matters more than sun: in heavy, wet west-side soil the roots tend to rot over winter. A raised bed or a large pot fixes that."]
     ]
   },
   cosmos: {
@@ -1240,7 +1240,7 @@ const notes = {
     ],
     faq: [
       ["Why are my cosmos all leaves and no flowers?", "Too much fertilizer or rich soil. Cosmos bloom best in lean soil. Stop feeding, and plant next year's in a less fertile spot."],
-      ["Do cosmos come back every year?", "They're annuals, killed by frost, but they often reseed if you let some flowers drop seed."],
+      ["Do cosmos come back every year?", "No, they're annuals and the first frost kills them. They often reseed, though, if you leave some flowers to dry on the plant. The seedlings come up in late spring once the soil warms, so don't weed out the feathery little plants by mistake."],
       ["When should I plant cosmos in the Northwest?", "Sow outdoors after the soil warms, usually late May on the west side. Where summers are short, start seeds indoors in April and transplant after the last frost."]
     ]
   },
@@ -1260,7 +1260,7 @@ const notes = {
     faq: [
       ["Are nasturtiums edible?", "Yes. The flowers, leaves and green seed pods are edible and peppery. Don't eat flowers that have been sprayed."],
       ["Why are my nasturtiums all leaves?", "The soil is too rich, or they were fertilized. Nasturtiums flower best in poor soil."],
-      ["Do nasturtiums come back?", "They're annuals here and die at the first frost, but dropped seeds sometimes sprout the next spring."]
+      ["Do nasturtiums come back?", "No, they're annuals here and the first frost kills them. Dropped seeds sometimes sprout the next spring, mostly in milder west-side gardens. The big seeds are easy to collect in fall and sow again after your last frost."]
     ]
   },
   marigolds: {
@@ -1392,7 +1392,7 @@ const notes = {
     ],
     faq: [
       ["Can you eat quince raw?", "Most varieties are too hard and sour. Cook them. A few, like Aromatnaya, soften enough to eat fresh when fully ripe."],
-      ["When is quince ready to pick?", "In October, when the fruit turns from green to fully yellow and smells strongly fragrant."],
+      ["When is quince ready to pick?", "In October, when the fruit turns from green to fully yellow and smells strongly fragrant. Pick before a hard freeze. Quince is too hard and sour to eat raw, so it's cooked into jelly, paste or baked dishes, where it turns pink and soft."],
       ["Does quince need a pollinator?", "No. Quince is self-fertile, so one tree fruits on its own."]
     ]
   },
@@ -1410,7 +1410,7 @@ const notes = {
         "Prune in late winter to keep the tree a size you can pick and net. Mulberries bleed sap if pruned in spring, which is harmless but messy."]
     ],
     faq: [
-      ["Do mulberries need a pollinator?", "Most fruiting varieties, including Illinois Everbearing, set fruit without a second tree."],
+      ["Do mulberries need a pollinator?", "Most fruiting varieties, including Illinois Everbearing, set fruit without a second tree. One tree is plenty for a family. Plant it away from patios, cars and paths, since dropped berries stain everything they land on."],
       ["Will mulberries stain my patio?", "Yes. Dropped fruit stains paving and cars. Plant the tree over lawn or mulch."],
       ["Which mulberry is best for the Northwest?", "Illinois Everbearing is the safest pick: hardy, productive and sweet. Gerardi Dwarf suits small spaces."]
     ]
@@ -1449,7 +1449,7 @@ const notes = {
     ],
     faq: [
       ["Are salmonberries edible?", "Yes. They're juicy and mild. Flavor varies a lot from plant to plant."],
-      ["When does salmonberry bloom?", "From late winter into spring, often starting in February in western Oregon and Washington."],
+      ["When does salmonberry bloom?", "From late winter into spring, often starting in February in western Oregon and Washington. The pink-magenta flowers are among the first nectar sources for hummingbirds returning in spring. Berries follow in May and June."],
       ["Will salmonberry grow in dry soil?", "Not well. It needs moist soil and suits low spots, stream banks and shady, damp areas."]
     ]
   },
@@ -1506,7 +1506,7 @@ const notes = {
     ],
     faq: [
       ["Does western columbine attract hummingbirds?", "Yes. The red, spurred flowers are made for hummingbirds."],
-      ["Does columbine come back every year?", "Plants live a few years and reseed, so a patch keeps going if you let some seed drop."],
+      ["Does columbine come back every year?", "Plants live a few years and reseed, so a patch keeps going if you let some seed drop. Individual plants often fade after a few years. The seedlings are easy to move in fall or early spring while they're small."],
       ["Why are there white lines in my columbine leaves?", "Leaf miners, small larvae that tunnel inside the leaves. It's cosmetic. Cut damaged leaves back after flowering."]
     ]
   },
@@ -1524,7 +1524,7 @@ const notes = {
         "Cutting stems back by about a third in early June makes shorter, bushier plants that flop less. Leave seed heads standing for finches and cut stems down in late winter."]
     ],
     faq: [
-      ["When does Douglas aster bloom?", "From midsummer into early fall, usually July through September."],
+      ["When does Douglas aster bloom?", "From midsummer into early fall, usually July through September. That late bloom is its main value: it feeds bees and butterflies when most spring natives have finished. Cutting the stems back by a third in early June gives bushier plants with more flowers."],
       ["Does Douglas aster spread?", "Yes, by underground stems. It forms a patch over a few years."],
       ["Is Douglas aster good for a rain garden?", "Yes. It likes moist soil and handles wet winters, which suits the lower zones of a rain garden."]
     ]
@@ -1544,7 +1544,7 @@ const notes = {
     ],
     faq: [
       ["Why did my Oregon sunshine die?", "Usually too much water or soil that's too rich. It needs full sun, lean soil and dry summers."],
-      ["Is Oregon sunshine a sunflower?", "It's in the same daisy family, but it's a low perennial, not a tall annual sunflower."],
+      ["Is Oregon sunshine a sunflower?", "No. It's in the same daisy family, but it's a low perennial, not a tall annual sunflower. It grows into a silvery mound about a foot tall covered in small yellow flowers in early summer. Once it's settled in, it handles dry, sunny spots with little or no water."],
       ["Can I grow Oregon sunshine from seed?", "Yes. Sow on the surface in fall so the seed gets a cold, wet winter before it sprouts."]
     ]
   },
@@ -1562,7 +1562,7 @@ const notes = {
         "Cut a few of the oldest stems to the ground in late winter to keep it full and keep the peeling bark on younger stems visible."]
     ],
     faq: [
-      ["How big does Pacific ninebark get?", "Usually 6 to 12 feet tall and nearly as wide."],
+      ["How big does Pacific ninebark get?", "Usually 6 to 12 feet tall and nearly as wide. That makes it better as a hedge or the back of a border than for a small bed. It takes pruning well, so you can cut a few of the oldest stems to the ground every year or two to keep it smaller."],
       ["Is Pacific ninebark the same as the purple ninebarks at garden centers?", "No. Purple-leaved varieties like Diabolo are eastern North American ninebark. Pacific ninebark is the Northwest native."],
       ["Does ninebark grow in wet soil?", "Yes. It grows wild along streams and handles wet winter soil, which makes it good for rain gardens."]
     ]
@@ -1600,7 +1600,7 @@ const notes = {
         "Trim old, dead leaves in late winter. It needs no fertilizer."]
     ],
     faq: [
-      ["When does Oregon iris bloom?", "From April to June, depending on elevation and how warm the spring is."],
+      ["When does Oregon iris bloom?", "From April to June, depending on elevation and how warm the spring is. Plants in low, mild spots bloom first, and higher ones can still be flowering in June. Each clump flowers for a few weeks, and the evergreen leaves stay tidy the rest of the year."],
       ["Can I divide Oregon iris?", "Yes, but only in fall after the rains start, when new roots are growing. Divisions made in spring or summer often fail."],
       ["Does Oregon iris need water in summer?", "Not once established. It's adapted to dry summers, and summer watering can rot it."]
     ]
