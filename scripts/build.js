@@ -700,6 +700,8 @@ const PAGE_PHOTOS = {
   "container-plants": "article:container-vegetable-gardening",
   "deer-resistant-plants": "cat:onion-family",
   "frost-dates": "page:frost-dates", "hardiness-zones": "page:hardiness-zones",
+  "when-to-plant": "page:when-to-plant", "plant-now": "page:plant-now", "my-garden": "page:my-garden", "what-to-grow": "page:what-to-grow",
+  "articles": "page:articles", "shade-plants": "page:shade-plants", "about": "page:about",
   "month-1": "article:winter-pruning-apple-and-pear-trees", "month-2": "article:planting-bare-root-fruit-trees",
   "month-3": "article:starting-seeds-indoors", "month-4": "article:growing-peas-in-the-northwest",
   "month-5": "article:best-tomatoes-for-the-northwest", "month-6": "article:growing-strawberries-in-the-northwest",
@@ -1393,7 +1395,7 @@ write("../", "when-to-plant/index.html", layout({
   description: `Planting dates for ${D.crops.length} vegetables, herbs, berries and flowers in ${D.places.length} Oregon, Washington and Idaho towns, with beginner-friendly growing guides.`,
   jsonld: [wb.ld],
   body: `${wb.html}
-<section class="hero"><p class="eyebrow">${D.crops.length} plants · Oregon · Washington · Idaho</p><h1>When to plant</h1>
+<section class="hero${pageCls("when-to-plant")}">${pageBanner("when-to-plant", "../")}<p class="eyebrow">${D.crops.length} plants · Oregon · Washington · Idaho</p><h1>When to plant</h1>
 <p class="lede">Every plant has its dates for your town and a guide to growing it. New to this? Start with the ones marked Easy.</p>
 <form class="home-find plant-find" role="search" onsubmit="return false"><div class="home-find-box"><label class="home-find-in" for="plant-q">${SEARCH_SVG}<span class="sr">Find a plant</span><input id="plant-q" type="search" autocomplete="off" spellcheck="false" placeholder="Find a plant, like beans or basil"></label></div></form>
 <p id="plant-none" class="msg" role="status" aria-live="polite"></p></section>
@@ -1529,7 +1531,7 @@ write("../", "my-garden/index.html", layout({
   description: "Free garden planner for Oregon, Washington and Idaho. Pick your town and plants to get a dated 12-month to-do list you can print or add to your calendar.",
   jsonld: [gpb.ld],
   body: `${gpb.html}
-<section class="hero"><p class="eyebrow">Free planner</p><h1>My garden plan</h1>
+<section class="hero${pageCls("my-garden")}">${pageBanner("my-garden", "../")}<p class="eyebrow">Free planner</p><h1>My garden plan</h1>
 <p class="lede">Pick your town and your plants. You get a dated to-do list for the year that saves as you go and prints on one page.</p>
 <details class="gp-privacy"><summary>Your plan is saved in this browser. How does that work?</summary>
 <p>Your town, the plants you pick, the boxes you tick and your notes are kept in your browser's local storage, right on this device. That's why they're still here when you close the site and come back. There's no account and nothing is sent to us, so your plan stays private.</p>
@@ -1576,7 +1578,7 @@ write("../", "what-to-grow/index.html", layout({
   description: "Answer eight quick questions about your space, sun and time to find the vegetables, herbs, fruit and flowers that suit your Northwest garden.",
   jsonld: [qzb.ld],
   body: `${qzb.html}
-<section class="hero"><p class="eyebrow">Plant quiz · 2 minutes</p><h1>What should I grow?</h1>
+<section class="hero${pageCls("what-to-grow")}">${pageBanner("what-to-grow", "../")}<p class="eyebrow">Plant quiz · 2 minutes</p><h1>What should I grow?</h1>
 <p class="lede">Eight quick questions. You get plants that suit your garden and a one-tap plan.</p></section>
 <template id="quiz-tbox">${townBox({ id: "quiz-box", rel: "../", button: "Next" })}</template>
 <section id="quiz" class="quiz" aria-live="polite"><noscript><p>The quiz needs JavaScript. You can still <a href="../when-to-plant/">browse every plant</a> or read the <a href="../beginners-guide/">beginner's guide</a>.</p></noscript></section>
@@ -1752,7 +1754,7 @@ write("../", "articles/index.html", layout({
   description: "Practical guides for vegetable gardening in Oregon, Washington and Idaho: varieties that ripen here, winter gardens, short seasons, slugs and soil temperature.",
   jsonld: [ib.ld],
   body: `${ib.html}
-<section class="hero hub-hero"><p class="eyebrow">${ARTICLES.length} guides · Oregon · Washington · Idaho</p><h1>Guides for Northwest gardeners</h1>
+<section class="hero hub-hero${pageCls("articles")}">${pageBanner("articles", "../")}<p class="eyebrow">${ARTICLES.length} guides · Oregon · Washington · Idaho</p><h1>Guides for Northwest gardeners</h1>
 <p class="lede">Advice for what makes gardening here different: cool summers, wet winters, short seasons and slugs.</p></section>
 <nav class="topic-nav" aria-label="Article topics"><ul class="chips">${ARTICLE_TOPICS.map(([id, name]) => `<li><a href="#${id}">${name} <span class="count">${ARTICLES.filter(a => a.topic === id).length}</span></a></li>`).join("")}</ul></nav>
 ${ARTICLE_TOPICS.map(([id, name, blurb]) => `<section class="topic-sec" id="${id}"><h2>${name}</h2><p class="topic-blurb">${blurb}</p>
@@ -2105,7 +2107,7 @@ ${c.articles.length ? `<h2>Read next</h2>\n${articleCards(rel, c.articles.filter
     title: "Plant Now: What to Plant This Week in Your Town",
     description: "What you can plant this week in your Oregon, Washington or Idaho town, what's coming up next, and this month's garden jobs.",
     body: `${crumbs(rel, [["Plant now", null]]).html}
-<section class="hero pnf-hero" id="pn-hero"><p class="eyebrow">Plant now</p><h1>What can I plant this week?</h1>
+<section class="hero pnf-hero${pageCls("plant-now")}" id="pn-hero">${pageBanner("plant-now", rel)}<p class="eyebrow">Plant now</p><h1>What can I plant this week?</h1>
 <p class="lede">It depends on your town: the coast and the east side can be weeks apart. Pick yours to see what goes in now and what's next.</p></section>
 <section class="pnf-pick" id="pn-pick">${townBox({ id: "pn-box", rel, button: "Show my dates" })}
 <p class="pnf-popular"><span>Or pick a town:</span> ${picks.map(x => `<a href="${rel}frost-dates/${x.slug}/" data-slug="${x.slug}">${esc(placeLabel(x))}</a>`).join("")}</p></section>
@@ -2173,8 +2175,8 @@ write("../", "about/index.html", layout({
   title: "About Rainline Garden",
   description: "Rainline Garden is a free planting calendar and set of growing guides made for gardeners in Oregon, Washington and Idaho.",
   jsonld: [{ "@context": "https://schema.org", "@type": "AboutPage", name: "About Rainline Garden", url: CONFIG.siteUrl + "about/", publisher: OWNER_LD, mainEntity: Object.keys(AUTHORS).map(id => ({ ...authorLd(id), description: AUTHORS[id].bio })) }],
-  body: `<section class="hero prose"><h1>About Rainline Garden</h1>
-<p class="lede">A free planting calendar and growing guides built for Pacific Northwest gardens, not adapted from a national chart.</p></section>
+  body: `<section class="hero${pageCls("about") || " prose"}">${pageBanner("about", "../")}<h1>About Rainline Garden</h1>
+<p class="lede">A free planting calendar and growing guides built for Pacific Northwest gardens, not adapted from a national chart.</p>${pictured("page:about")}</section>
 <div class="prose"><p>National planting guides treat the whole country the same way. The Northwest doesn't cooperate: coastal gardens rarely frost but never get hot, west-side valleys have long seasons and cold spring soil, and the high desert can frost in July. Rainline Garden gives each area its own dates, built from NOAA weather records and regional growing research.</p>
 <h2 id="towns">${D.places.length} towns, each with its own dates</h2>
 <p>Rainline Garden covers only the Northwest, and covers it closely, with ${HOW_STATES}, from Astoria to Idaho Falls. Every town gets its own NOAA frost dates and planting calendar, with notes on the local soil, weather and pests, so Hillsboro, Bend and Pocatello each get dates that fit them instead of a state average. <a href="../frost-dates/">Find your town</a>.</p>
