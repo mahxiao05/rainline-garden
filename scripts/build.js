@@ -334,7 +334,7 @@ ${noFallBar ? "" : `<script src="${base}assets/fallbar.js?v=${ver("fallbar.js")}
 ${body}
 </main>
 <footer class="site-foot"><div class="wrap">
-<p><strong class="foot-brand">Rainline Garden</strong><br>Free planting calendars for Oregon, Washington and Idaho gardens.<br>Frost data from NOAA climate normals. Updated ${stamp(CONFIG.updated)}.${CONFIG.amazonTag ? "<br>As an Amazon Associate, Rainline Garden earns from qualifying purchases." : ""}</p>
+<p><strong class="foot-brand">Rainline Garden</strong><br>Free planting calendars and growing guides for Oregon, Washington and Idaho gardens.<br>Frost data from NOAA climate normals. Updated ${stamp(CONFIG.updated)}.${CONFIG.amazonTag ? "<br>As an Amazon Associate, Rainline Garden earns from qualifying purchases." : ""}</p>
 <nav aria-label="Footer"><a href="${base}garden-calendar/">Month by month</a><a href="${base}fall-planting/">Fall planting</a><a href="${base}what-to-grow/">Plant quiz</a><a href="${base}glossary/">Glossary</a><a href="${base}how-it-works/">How it works</a><a href="${base}about/">About</a><a href="${base}contact/">Contact</a><a href="${base}privacy/">Privacy</a><a href="${base}terms/">Terms</a></nav>
 <p class="owner">&copy; ${YEAR} ${CONFIG.owner}. Rainline Garden is owned and operated by ${CONFIG.owner}.</p>
 </div></footer>
@@ -968,23 +968,23 @@ function categoryTiles(rel, drops, pick) {
 write("", "index.html", layout({
   rel: "", canonical: "", current: "",
   title: "Oregon, Washington & Idaho Planting Calendar | Rainline Garden",
-  description: "When to plant vegetables in Oregon, Washington and Idaho. Enter your ZIP for local frost dates and a planting calendar built from NOAA data.",
-  jsonld: [{ "@context": "https://schema.org", "@type": "WebSite", name: "Rainline Garden", url: CONFIG.siteUrl, publisher: OWNER_LD }],
+  description: `When to plant and how to grow ${D.crops.length} vegetables, herbs, fruits and flowers in Oregon, Washington and Idaho. Local frost dates from NOAA for your ZIP.`,
+  jsonld: [{ "@context": "https://schema.org", "@type": "WebSite", name: "Rainline Garden", url: CONFIG.siteUrl, description: `Frost dates, planting calendars and growing guides for ${D.crops.length} plants in Oregon, Washington and Idaho.`, publisher: OWNER_LD }],
   body: `
 <section class="home-hero">
 ${photo("hero", "", { big: "hero", small: "heroSm", cls: "home-photo", sizes: "100vw", eager: true, phone: true })}
 <div class="hero">
 <p class="eyebrow">Oregon · Washington · Idaho</p>
 <h1>Plant on Northwest time.</h1>
-<p class="lede">Local frost dates and a year-round planting calendar for your town, on either side of the Cascades.</p>
+<p class="lede">Local frost dates, a year-round planting calendar and growing guides for ${D.crops.length} plants, on either side of the Cascades.</p>
 ${townBox({ id: "where", rel: "", button: "Show my dates", browse: true })}
-<ul class="trust"><li>${D.places.length} towns</li><li>NOAA frost records</li><li>Free, no sign-up</li></ul>
+<ul class="trust"><li>${D.places.length} towns</li><li>${D.crops.length} growing guides</li><li>NOAA frost records</li><li>Free, no sign-up</li></ul>
 </div>
 </section>
 <section id="result" aria-live="polite"></section>
 <section id="season-now" class="home-sec season-now" aria-live="polite" hidden></section>
 <section id="plant-types" class="home-sec"><div class="sec-head"><h2>Browse by plant type</h2><a href="${WHEN_INDEX}">All ${D.crops.length} plants</a></div>
-<p class="sec-sub" id="plant-types-sub">Tap a plant type to see its plants.</p>
+<p class="sec-sub" id="plant-types-sub">Tap a plant type to see its plants. Each one has its planting dates and a guide to growing it.</p>
 ${categoryTiles("", true)}
 </section>
 <section class="home-sec plan-cta"><div><h2>Plan your garden</h2>
@@ -1354,7 +1354,7 @@ D.crops.forEach(c => {
     jsonld: sci ? [hb.ld, faqLd(sci.faq)] : [hb.ld],
     body: `${hb.html}
 <section class="hero hero-crop${PHOTOS["crop:" + c.id] ? " has-photo" : ""}">${banner("crop:" + c.id, "../../")}${PHOTOS["crop:" + c.id] ? "" : R.icon(c.id, "../../", 120)}<div>
-<p class="eyebrow">Oregon · Washington · Idaho</p>
+<p class="eyebrow">Planting dates and growing guide</p>
 <h1>When to plant ${lc(c.name)}</h1>
 <p class="lede">${g.fall ? hubLede(c, ledeTowns, "fall") : hubLede(c, ledeTowns)}</p>
 <script>try{if(/^[a-z0-9-]+$/.test(localStorage.getItem("rainline-place")||""))document.currentScript.previousElementSibling.hidden=true}catch(e){}</script>
@@ -1394,7 +1394,7 @@ write("../", "when-to-plant/index.html", layout({
   jsonld: [wb.ld],
   body: `${wb.html}
 <section class="hero"><p class="eyebrow">${D.crops.length} plants · Oregon · Washington · Idaho</p><h1>When to plant</h1>
-<p class="lede">Pick a plant for its dates in your town and how to grow it. New to this? Start with the ones marked Easy.</p>
+<p class="lede">Every plant has its dates for your town and a guide to growing it. New to this? Start with the ones marked Easy.</p>
 <form class="home-find plant-find" role="search" onsubmit="return false"><div class="home-find-box"><label class="home-find-in" for="plant-q">${SEARCH_SVG}<span class="sr">Find a plant</span><input id="plant-q" type="search" autocomplete="off" spellcheck="false" placeholder="Find a plant, like beans or basil"></label></div></form>
 <p id="plant-none" class="msg" role="status" aria-live="polite"></p></section>
 <div class="idx-browse">${categoryTiles("../", true)}
@@ -2171,13 +2171,15 @@ ${RAIN_LINE_ART}
 write("../", "about/index.html", layout({
   rel: "../", canonical: "about/", current: "about/",
   title: "About Rainline Garden",
-  description: "Rainline Garden is a free planting calendar made for gardeners in Oregon, Washington and Idaho.",
+  description: "Rainline Garden is a free planting calendar and set of growing guides made for gardeners in Oregon, Washington and Idaho.",
   jsonld: [{ "@context": "https://schema.org", "@type": "AboutPage", name: "About Rainline Garden", url: CONFIG.siteUrl + "about/", publisher: OWNER_LD, mainEntity: Object.keys(AUTHORS).map(id => ({ ...authorLd(id), description: AUTHORS[id].bio })) }],
   body: `<section class="hero prose"><h1>About Rainline Garden</h1>
-<p class="lede">A free planting calendar built for Pacific Northwest gardens, not adapted from a national chart.</p></section>
+<p class="lede">A free planting calendar and growing guides built for Pacific Northwest gardens, not adapted from a national chart.</p></section>
 <div class="prose"><p>National planting guides treat the whole country the same way. The Northwest doesn't cooperate: coastal gardens rarely frost but never get hot, west-side valleys have long seasons and cold spring soil, and the high desert can frost in July. Rainline Garden gives each area its own dates, built from NOAA weather records and regional growing research.</p>
 <h2 id="towns">${D.places.length} towns, each with its own dates</h2>
 <p>Rainline Garden covers only the Northwest, and covers it closely, with ${HOW_STATES}, from Astoria to Idaho Falls. Every town gets its own NOAA frost dates and planting calendar, with notes on the local soil, weather and pests, so Hillsboro, Bend and Pocatello each get dates that fit them instead of a state average. <a href="../frost-dates/">Find your town</a>.</p>
+<h2 id="guides">A growing guide for every plant</h2>
+<p>Each of the ${D.crops.length} plants has its own page: when to plant it in your town, how to plant it, spacing, varieties that do well here, the pests to watch for and answers to common questions. <a href="../when-to-plant/">Browse the plants</a>.</p>
 <h2 id="name">Why "Rainline"?</h2>
 <p>The Cascade Mountains draw a line through Oregon and Washington. West of it, Pacific storms drop their rain: winters are wet and mild, summers are dry, and the soil stays cold into May. East of it sits the rain shadow, with little rain, hot summers and hard winters, and it runs on across Idaho: Boise's hot valley, the short seasons of the Snake River Plain and north Idaho's cooler lake country. That rain line is the biggest reason a planting date for Portland is wrong for Bend, and it's why this site gives every town its own dates. The rain also sets the garden's rhythm on both sides: when the spring rains ease, when the summer dry spell means watering, and when the fall rains return.</p>
 <h2>Who writes Rainline Garden</h2>
