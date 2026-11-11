@@ -41,7 +41,9 @@
 
     // Header: town, season and the two frost dates that frame the year.
     // example: no town saved yet, so Portland is shown as a sample (like the home page) with a clear way to pick yours.
-    hero.innerHTML = '<p class="eyebrow">Plant now · ' + (example ? 'Showing ' : '') + esc(city + ", " + place.state) + ' <button type="button" class="link-btn pn-change">' + (example ? 'Pick your town' : 'Change') + '</button></p>' +
+    // Keep the header photo (figure.photo-banner) when the text is swapped in.
+    var heroPic = hero.querySelector(".photo-banner");
+    hero.innerHTML = (heroPic ? heroPic.outerHTML : '') + '<p class="eyebrow">Plant now · ' + (example ? 'Showing ' : '') + esc(city + ", " + place.state) + ' <button type="button" class="link-btn pn-change">' + (example ? 'Pick your town' : 'Change') + '</button></p>' +
       '<h1>Plant now in ' + esc(city) + '</h1><ul class="pnf-facts"><li class="tag">' + tag + '</li><li>Last spring frost <strong>' + P.fmt(f.spring50) +
       '</strong></li><li>First fall frost <strong>' + P.fmt(wrap(f.fall50)) + '</strong></li></ul>';
     document.title = "Plant Now in " + city + ", " + place.state + " | Rainline Garden";
