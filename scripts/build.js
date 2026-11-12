@@ -931,8 +931,7 @@ function trickyParts(c) {
   return `${phoneFold("tricky", `Why ${name} are tricky here`, `<ul class="tricky-why">${t.why.map(w => `<li>${esc(w)}</li>`).join("")}</ul>
 <h3 class="tricky-h">Stretching the season, step by step</h3>
 <ol class="stretch">${t.stretch.map(([when, what]) => `<li><span class="stretch-when">${esc(when)}</span><p>${esc(what)}</p></li>`).join("")}</ol>`)}
-${phoneFold("warning-signs", "Signs something's going wrong", `<p class="lede-sm">What to look for at each stage, what usually causes it and what to do.</p>
-${t.stages.map(([stage, rows]) => `<section class="sign-stage"><h3>${esc(stage)}</h3>${rows.map(([see, why, what]) => `<div class="sign"><p class="sign-see">${esc(see)}</p><p><strong>Likely cause:</strong> ${esc(why)}</p><p><strong>What to do:</strong> ${fix(what)}</p></div>`).join("")}</section>`).join("\n")}`)}`;
+${phoneFold("warning-signs", "Signs something's going wrong", `${t.stages.map(([stage, rows]) => `<section class="sign-stage"><h3>${esc(stage)}</h3>${rows.map(([see, why, what]) => `<div class="sign"><p class="sign-see">${esc(see)}</p><p><strong>Cause:</strong> ${esc(why)}. <strong>Fix:</strong> ${fix(what)}</p></div>`).join("")}</section>`).join("\n")}`)}`;
 }
 // Popular variety cards from scripts/varieties.js, shown on each plant's main page.
 function varietyCards(c) {

@@ -2857,6 +2857,6 @@ h2, .why-dates h2, .fall-now-h { text-transform: none; letter-spacing: 0; line-h
 .sign-stage { margin-bottom: 1.25rem; }
 .sign-stage h3 { font-size: 1.05rem; margin: 0 0 .5rem; text-transform: none; }
 .sign { background: var(--paper); border: 1px solid var(--line); border-left: 4px solid var(--ochre); border-radius: 10px; padding: 12px 16px 2px; margin-bottom: 10px; }
-.sign p { margin: 0 0 .6rem; line-height: 1.55; font-size: 1rem; }
+.sign p { margin: 0 0 .5rem; line-height: 1.55; font-size: 1rem; }
 .sign .sign-see { font-weight: 700; }
 @media (min-width: 52rem) { .sign-stage { display: grid; grid-template-columns: 11rem 1fr; gap: 0 1.25rem; } .sign-stage h3 { padding-top: 12px; } .sign-stage .sign { grid-column: 2; } .sign-stage h3 { grid-row: 1 / span 9; } }
