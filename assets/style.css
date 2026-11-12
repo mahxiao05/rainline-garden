@@ -2865,3 +2865,8 @@ h2, .why-dates h2, .fall-now-h { text-transform: none; letter-spacing: 0; line-h
 .tricky-words dl { margin: .25rem 0 0; }
 .tricky-words dt { font-weight: 700; margin-top: .6rem; }
 .tricky-words dd { margin: .15rem 0 0; line-height: 1.55; }
+.ti-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+.stretch li.has-ico::before { content: none; }
+.stretch .st-ico { position: absolute; left: -1.15rem; top: -.3rem; width: 2.2rem; height: 2.2rem; border-radius: 50%; background: var(--moss); color: var(--on-moss, #fff); display: grid; place-items: center; }
+.stretch .st-ico svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.stretch li.has-ico { padding-left: 2.8rem; }

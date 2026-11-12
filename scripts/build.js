@@ -924,6 +924,53 @@ function regionalNotes(c) {
   return phoneFold("regions", `Growing ${lc(c.name)} in your part of the Northwest`, `<div class="sci-cards region-cards">${parts.map(([k, h, where]) => `<section class="sci-card region-card region-${k}" data-k="${k}">${miniMap(k)}<h3>${h}</h3><p class="region-where">${where}</p><p>${esc(r[k])}</p></section>`).join("\n")}</div>
 ${regionShared()}`);
 }
+// Small line icons for the season steps (one per step, picked from its words; calendar when nothing fits).
+// Drawn for this site: stroke-only, 24x24, colored by CSS. Order matters: the first match wins.
+const STEP_ICONS = {
+  sprout: '<path d="M12 20v-8"/><path d="M12 13c0-3.5-2.5-6-6-6 0 3.5 2.5 6 6 6z"/><path d="M12 11c0-3.5 2.5-6 6-6 0 3.5-2.5 6-6 6z"/><path d="M5 20h14"/>',
+  plastic: '<circle cx="12" cy="6" r="2.5"/><path d="M12 1.5v1M6.5 6h1M16.5 6h1M8.3 2.8l.7.7M15 3.5l.7-.7"/><path d="M3 14h18v5H3z"/><path d="M8 14v-2M16 14v-2"/>',
+  cover: '<path d="M3 19c0-7 4-11 9-11s9 4 9 11"/><path d="M2 19h20"/><path d="M8 19v-3M12 19v-4M16 19v-3"/>',
+  wall: '<path d="M6 19V8M10 19V6M14 19V6M18 19V8"/><path d="M4 19h16"/><path d="M12 6V3"/><path d="M12 4c-1.5 0-2.5-1-2.5-2M12 4c1.5 0 2.5-1 2.5-2"/>',
+  water: '<path d="M4 10h10v9H4z"/><path d="M14 13l6-4"/><path d="M19 7l2 3"/><path d="M7 10V7h4v3"/>',
+  thermo: '<path d="M10 14V4a2 2 0 0 1 4 0v10a4 4 0 1 1-4 0z"/><path d="M12 9v8"/>',
+  pinch: '<circle cx="6" cy="7" r="2.5"/><circle cx="6" cy="17" r="2.5"/><path d="M8 8.5l12 8M8 15.5l12-8"/>',
+  basket: '<path d="M3 10h18l-2.5 9h-13z"/><path d="M8 10a4 4 0 0 1 8 0"/><path d="M9 13v3M15 13v3"/>',
+  frost: '<path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9"/><path d="M10 5l2 2 2-2M10 19l2-2 2 2"/>',
+  net: '<path d="M4 4h16v16H4z"/><path d="M4 9.3h16M4 14.6h16M9.3 4v16M14.6 4v16"/>',
+  shade: '<path d="M3 11a9 7 0 0 1 18 0z"/><path d="M12 11v9"/><path d="M12 20a2 2 0 0 1-2-2"/>',
+  flower: '<circle cx="12" cy="10" r="2"/><circle cx="12" cy="5.5" r="2.5"/><circle cx="16.5" cy="10" r="2.5"/><circle cx="12" cy="14.5" r="2.5"/><circle cx="7.5" cy="10" r="2.5"/><path d="M12 17v4"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  calendar: '<path d="M4 6h16v14H4z"/><path d="M4 10h16M9 3v5M15 3v5"/>',
+  spade: '<path d="M12 2v11"/><path d="M8 13h8v4a4 4 0 0 1-8 0z"/><path d="M9 2h6"/>',
+  feed: '<path d="M6 7h12l-1 13H7z"/><path d="M8 7l1-3h6l1 3"/><circle cx="10" cy="13" r=".8"/><circle cx="14" cy="12" r=".8"/><circle cx="12" cy="16" r=".8"/>'
+};
+// Steps the word rules above would get wrong: "crop|step label" -> icon.
+const STEP_ICON_FIX = {
+  "peppers|The week before planting": "sun", "melons|Pick the variety": "sprout", "eggplant|No warm bed?": "sun",
+  "cauliflower|The week before planting": "sun", "cauliflower|About a month after planting": "feed", "cauliflower|Head the size of an egg": "calendar", "cauliflower|Midsummer": "sprout",
+  "celery|Your town's start-indoors dates": "sprout", "celery|The week before planting": "sun",
+  "pumpkins|Planting day": "spade", "corn|Knee high": "feed", "corn|About 3 weeks after silking": "basket",
+  "broccoli|The week before planting": "sun", "broccoli|About a month after planting": "feed", "broccoli|Midsummer": "sprout",
+  "cabbage|The week before planting": "sun", "brussels-sprouts|Late May to June (west side)": "spade", "brussels-sprouts|Late summer": "feed",
+  "onions|Early spring": "sprout", "onions|Spring to early summer": "feed", "onions|Bulbs start to swell": "feed",
+  "carrots|Before sowing": "spade", "carrots|Seedlings a couple of inches tall": "pinch", "beets|A couple of inches tall": "pinch",
+  "parsnips|Before sowing": "spade", "parsnips|After a few frosts": "basket", "spinach|Before sowing": "spade", "spinach|Late August to September": "sprout",
+  "dahlias|Planting day": "thermo", "dahlias|Summer": "water", "snapdragons|8 to 10 weeks before your last frost": "sprout", "snapdragons|A few weeks before the last frost": "sun",
+  "ranunculus|Optional head start": "sprout", "ranunculus|Early spring": "spade"
+};
+const STEP_ICON_RULES = [
+  ["wall", /wall-o-water/], ["plastic", /lay black plastic|cover the bed with plastic/], ["flower", /pollinat|covers? off|cover off/],
+  ["frost", /frost cloth|cold snap|cold nights|cold spells/], ["shade", /shade cloth|afternoon shade/], ["net", /insect netting|netting or row cover|netting over the bed/],
+  ["cover", /row cover|low hoops|tunnel/], ["pinch", /pinch|tips of the main|growing tips/], ["sun", /\bcure\b/],
+  ["basket", /\bpick |\bpull |\bdig |cut (?:heads|when|flowers|the main|with)|harvest/], ["water", /water|soaker|moist/],
+  ["thermo", /°f/], ["sprout", /seed|sow|slips|tubers|corms|starts|indoors/]
+];
+function stepIcon(when, what) {
+  const t = `${when} ${what}`.toLowerCase();
+  const r = STEP_ICON_RULES.find(([, re]) => re.test(t));
+  return r ? r[0] : "calendar";
+}
+const STEP_ICON_DEFS = `<svg class="ti-defs" width="0" height="0" aria-hidden="true" focusable="false"><defs>${Object.entries(STEP_ICONS).map(([k, d]) => `<symbol id="ti-${k}" viewBox="0 0 24 24">${d}</symbol>`).join("")}</defs></svg>`;
 // Deeper help for crops that are hard to ripen here (scripts/tricky-crops.js): why it's tricky, season stretchers in order,
 // and warning signs by stage. A fix ending in "#pests" links to the Pests and problems section instead of repeating it.
 function trickyParts(c) {
@@ -949,7 +996,7 @@ function trickyParts(c) {
   const fix = f => f.endsWith("#pests") ? `<a href="#pests">${esc(f.slice(0, -6))}</a>` : gl(f);
   return `${phoneFold("tricky", `Why ${name} ${/s$/.test(name) ? "are" : "is"} tricky here`, `<ul class="tricky-why">${t.why.map(w => `<li>${gl(w)}</li>`).join("")}</ul>
 <h3 class="tricky-h">${esc(t.steps || "Stretching the season, step by step")}</h3>
-<ol class="stretch">${t.stretch.map(([when, what]) => `<li><span class="stretch-when">${esc(when)}</span><p>${gl(what)}</p></li>`).join("")}</ol>
+${STEP_ICON_DEFS}<ol class="stretch">${t.stretch.map(([when, what]) => { const ic = STEP_ICON_FIX[`${c.id}|${when}`] || stepIcon(when, what); return `<li class="has-ico"><span class="st-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20"><use href="#ti-${ic}"/></svg></span><span class="stretch-when">${esc(when)}</span><p>${gl(what)}</p></li>`; }).join("")}</ol>
 ${words()}`)}
 ${phoneFold("warning-signs", "Signs something's going wrong", `${(used.length = 0, "")}${t.stages.map(([stage, rows]) => `<section class="sign-stage"><h3>${esc(stage)}</h3>${rows.map(([see, why, what]) => `<div class="sign"><p class="sign-see">${esc(see)}</p><p><strong>Cause:</strong> ${gl(why)}. <strong>Fix:</strong> ${fix(what)}</p></div>`).join("")}</section>`).join("\n")}
 ${words()}`)}`;
