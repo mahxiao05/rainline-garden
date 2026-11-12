@@ -43,6 +43,7 @@ var el=s&&s.nextElementSibling;if(el&&/fall-bar/.test(el.className))el.querySele
 const PHOTOS = require("./photos.js");
 const SCIENCE = require("./crop-science.js");
 const NOTES = require("./crop-notes.js");
+const TRICKY = require("./tricky-crops.js");
 const CARE_TIPS = require("./care-tips.js");
 const CATEGORY_GUIDES = require("./category-guides.js");
 const MONTH_GUIDES = require("./month-guides.js");
@@ -726,7 +727,7 @@ function faqLd(qas) {
 // Cleaner layout for crops with notes in scripts/crop-science.js (in depth) or scripts/crop-notes.js (shorter).
 function scienceBody(c, g, sci, { head, dates, plans, port }) {
   const ex = EXTRAS[c.id];
-  return `${jump(sci, VARIETIES[c.id])}
+  return `${jump(sci, VARIETIES[c.id], c)}
 ${quickFacts(c, g)}
 <p class="callout">${esc(c.note)}</p>
 <h2 id="dates">${singular(c.name).replace(/^./, x => x.toUpperCase())} planting dates</h2>
@@ -737,6 +738,7 @@ ${ad("crop-mid")}
 <div class="grow-grid"><div>${stepsForHub(c, g, port)}</div>
 ${sideCard(g, null, true)}</div>${videoBox(c)}
 ${regionalNotes(c)}
+${trickyParts(c)}
 ${cropGarden("../../", c)}${varietyCards(c)}
 ${howMany(c, ex)}
 ${plantAfter(c, ex, port)}
@@ -821,7 +823,7 @@ sec.open=true})})()</script>`;
 const phoneFold = (id, title, body, closed) => `<details class="fold" id="${id}" data-phone-fold${closed ? "" : " open"}><summary><h2>${title}</h2></summary>
 ${body}</details>`;
 const PHONE_FOLD_JS = `<script>(function(){var f=document.querySelectorAll("details[data-phone-fold]");if(matchMedia("(max-width: 40rem)").matches)f.forEach(function(d){if("#"+d.id!==location.hash)d.open=false});function show(){var d=location.hash&&document.getElementById(location.hash.slice(1));if(d&&d.matches("details[data-phone-fold]"))d.open=true}addEventListener("hashchange",show);show()})()</script>`;
-const jump = (sci, vars) => `<nav class="jump" aria-label="On this page"><span>On this page:</span><a href="#dates">Planting dates</a><a href="#grow">How to grow</a><a href="#regions">By region</a>${vars ? '<a href="#varieties">Varieties</a>' : ""}<a href="#how-many">How much to grow</a><a href="#numbers">Key numbers</a><a href="#science">${sci.notes ? "Growing notes" : "The science"}</a><a href="#neighbors">Neighbors</a><a href="#pests">Pests</a><a href="#faq">Questions</a></nav>`;
+const jump = (sci, vars, c) => `<nav class="jump" aria-label="On this page"><span>On this page:</span><a href="#dates">Planting dates</a><a href="#grow">How to grow</a><a href="#regions">By region</a>${TRICKY[c.id] ? '<a href="#tricky">Why it\'s tricky</a><a href="#warning-signs">Warning signs</a>' : ""}${vars ? '<a href="#varieties">Varieties</a>' : ""}<a href="#how-many">How much to grow</a><a href="#numbers">Key numbers</a><a href="#science">${sci.notes ? "Growing notes" : "The science"}</a><a href="#neighbors">Neighbors</a><a href="#pests">Pests</a><a href="#faq">Questions</a></nav>`;
 
 /* Plant-page extras from scripts/plant-extras.js and scripts/collections.js */
 // Tags linking to the "Plants for..." pages this plant appears on.
@@ -918,6 +920,19 @@ function regionalNotes(c) {
   const parts = REGION_LABELS.filter(([k]) => r[k]);
   return phoneFold("regions", `Growing ${lc(c.name)} in your part of the Northwest`, `<div class="sci-cards region-cards">${parts.map(([k, h, where]) => `<section class="sci-card region-card region-${k}" data-k="${k}">${miniMap(k)}<h3>${h}</h3><p class="region-where">${where}</p><p>${esc(r[k])}</p></section>`).join("\n")}</div>
 ${regionShared()}`);
+}
+// Deeper help for crops that are hard to ripen here (scripts/tricky-crops.js): why it's tricky, season stretchers in order,
+// and warning signs by stage. A fix ending in "#pests" links to the Pests and problems section instead of repeating it.
+function trickyParts(c) {
+  const t = TRICKY[c.id];
+  if (!t) return "";
+  const name = lc(c.name);
+  const fix = f => f.endsWith("#pests") ? `<a href="#pests">${esc(f.slice(0, -6))}</a>` : esc(f);
+  return `${phoneFold("tricky", `Why ${name} are tricky here`, `<ul class="tricky-why">${t.why.map(w => `<li>${esc(w)}</li>`).join("")}</ul>
+<h3 class="tricky-h">Stretching the season, step by step</h3>
+<ol class="stretch">${t.stretch.map(([when, what]) => `<li><span class="stretch-when">${esc(when)}</span><p>${esc(what)}</p></li>`).join("")}</ol>`)}
+${phoneFold("warning-signs", "Signs something's going wrong", `<p class="lede-sm">What to look for at each stage, what usually causes it and what to do.</p>
+${t.stages.map(([stage, rows]) => `<section class="sign-stage"><h3>${esc(stage)}</h3>${rows.map(([see, why, what]) => `<div class="sign"><p class="sign-see">${esc(see)}</p><p><strong>Likely cause:</strong> ${esc(why)}</p><p><strong>What to do:</strong> ${fix(what)}</p></div>`).join("")}</section>`).join("\n")}`)}`;
 }
 // Popular variety cards from scripts/varieties.js, shown on each plant's main page.
 function varietyCards(c) {
