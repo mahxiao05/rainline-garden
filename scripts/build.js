@@ -372,7 +372,9 @@ const GL_SKIP = new Set(["a", "button", "h1", "h2", "h3", "h4", "h5", "h6", "sum
 const GL_SKIP_CLASS = /class="[^"]*\b(hz-line|lede|plant-intro|replant|eyebrow|crumbs|count|station|owner|pc-card|pc-legend|legend|author-box|byline|th-list|th-key|th-pop|tricky-words)\b/;
 const GL_TRACK = new Set(["p", "li", "dd", "ul", "ol", "div", "section"]);
 const GL_MAX = 12;
-function glossaryLinks(html, rel) {
+function glossaryLinks(html, rel, file = "") {
+  // "day-neutral" also describes onions; only strawberry pages get the strawberry-types definition.
+  const skipIds = /strawberr/.test(file) ? [] : ["strawberry-types"];
   const m = html.indexOf("<main"), e = html.lastIndexOf("</main>");
   if (m < 0 || e < m) return html;
   const skip = {}, stack = { }, done = new Set();
@@ -396,7 +398,7 @@ function glossaryLinks(html, rel) {
     if (n >= GL_MAX || inText <= 0 || off > 0 || Object.values(skip).some(v => v > 0)) return tok;
     const hits = [];
     for (const [id, re] of GL_LINKS) {
-      if (done.has(id)) continue;
+      if (done.has(id) || skipIds.includes(id)) continue;
       const r = re.exec(tok);
       if (r) hits.push({ id, at: r.index + r[1].length, word: r[2] });
     }
@@ -416,7 +418,7 @@ function glossaryLinks(html, rel) {
 const unGlossary = h => h.replace(/<a class="gl" href="[^"]*" data-gl="[^"]*">([^<]*)<\/a>/g, "$1");
 
 function write(rel, file, html, priority, lastmod) {
-  if (file !== "glossary/index.html") html = glossaryLinks(html, rel);
+  if (file !== "glossary/index.html") html = glossaryLinks(html, rel, file);
   const out = path.join(ROOT, file);
   fs.mkdirSync(path.dirname(out), { recursive: true });
   const old = fs.existsSync(out) ? fs.readFileSync(out, "utf8") : null;
@@ -934,7 +936,7 @@ function trickyParts(c) {
   const gl = text => {
     let h = esc(text);
     for (const [id, re] of GL_LINKS) {
-      if (used.includes(id)) continue;
+      if (used.includes(id) || (id === "strawberry-types" && c.id !== "strawberries")) continue;
       const r = re.exec(h);
       if (!r || /<a [^>]*$/.test(h.slice(0, r.index + r[1].length)) || /^[^<]*<\/a>/.test(h.slice(r.index + r[1].length))) continue;
       const g = GL_TERMS[id], at = r.index + r[1].length;
@@ -946,7 +948,7 @@ function trickyParts(c) {
   const words = () => used.length ? `<details class="tricky-words"><summary>Words used here (${used.length})</summary><dl>${used.map(id => `<dt>${esc(GL_TERMS[id][0])}</dt><dd>${esc(GL_TERMS[id][2])}</dd>`).join("")}</dl></details>` : "";
   const fix = f => f.endsWith("#pests") ? `<a href="#pests">${esc(f.slice(0, -6))}</a>` : gl(f);
   return `${phoneFold("tricky", `Why ${name} ${/s$/.test(name) ? "are" : "is"} tricky here`, `<ul class="tricky-why">${t.why.map(w => `<li>${gl(w)}</li>`).join("")}</ul>
-<h3 class="tricky-h">Stretching the season, step by step</h3>
+<h3 class="tricky-h">${esc(t.steps || "Stretching the season, step by step")}</h3>
 <ol class="stretch">${t.stretch.map(([when, what]) => `<li><span class="stretch-when">${esc(when)}</span><p>${gl(what)}</p></li>`).join("")}</ol>
 ${words()}`)}
 ${phoneFold("warning-signs", "Signs something's going wrong", `${(used.length = 0, "")}${t.stages.map(([stage, rows]) => `<section class="sign-stage"><h3>${esc(stage)}</h3>${rows.map(([see, why, what]) => `<div class="sign"><p class="sign-see">${esc(see)}</p><p><strong>Cause:</strong> ${gl(why)}. <strong>Fix:</strong> ${fix(what)}</p></div>`).join("")}</section>`).join("\n")}
