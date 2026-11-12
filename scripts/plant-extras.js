@@ -171,7 +171,7 @@ Object.assign(X, {
   "winter-squash": { pick: "9-10",
     many: "For a family of four, 3 to 6 plants. Grow two or three varieties for different uses.",
     yield: "About 2 to 5 squash per plant, depending on size.",
-    store: "Cure in a warm room for two weeks, then store at 50 to 55°F. Butternut and hubbard keep four to six months; delicata and acorn two to three.",
+    store: "Butternut and hubbard keep four to six months; delicata and acorn two to three.",
     good: [["Corn", "Squash vines shade the soil and keep weeds down."], ["Pole beans", "Climb nearby corn or a trellis while the squash runs below."]],
     pests: [["Powdery mildew", "White coating on the leaves in late summer.", "Resistant varieties and room for airflow. Fruit set before it spreads still ripens."],
       ["Squash that won't ripen", "Pale, soft-rinded squash at the first frost.", "Pick early, smaller varieties and remove late flowers after mid-August."],

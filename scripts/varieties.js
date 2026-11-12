@@ -296,7 +296,7 @@ module.exports = {
     {"name":"Purple Podded Pole","type":"Heirloom, purple snap","days":"65 days","where":"Both sides","note":"Deep purple pods that are easy to spot when picking and turn green when cooked. A vigorous, productive heirloom that handles cool weather fairly well."}
   ],
   "fava-beans": [
-    {"name":"Broad Windsor","type":"Large-seeded, spring","days":"85 days","where":"Both sides","note":"The classic fava with large, flat beans, about three to five per pod. Sow as early in spring as the soil can be worked; it thrives in cool weather."},
+    {"name":"Broad Windsor","type":"Large-seeded, spring","days":"85 days","where":"Both sides","note":"The classic fava with large, flat beans, about three to five per pod."},
     {"name":"Aquadulce Claudia","type":"Overwintering, large-seeded","days":"Sow fall, pick late spring","where":"West side","note":"An old Spanish variety known for winter hardiness. Sown in fall west of the Cascades, it gives one of the earliest harvests of the year."},
     {"name":"Vroma","type":"Large-seeded, upright","days":"","where":"Both sides","note":"Upright plants with long pods packed with large green beans. A reliable producer from early spring sowings. Sow it as early in spring as the soil can be worked, since favas like cool weather."},
     {"name":"Sweet Lorane","type":"Small-seeded, very hardy","days":"Sow fall or spring","where":"West side","note":"Named for Lorane, Oregon, with small, sweet beans. Very cold hardy, it is popular as an overwintering cover crop that also yields good dry beans."}
@@ -407,7 +407,7 @@ module.exports = {
     {"name":"Comice","type":"European, needs partner","days":"Ripens late September","where":"Both sides","note":"Considered the finest-flavored pear, with sweet, melting, aromatic flesh. It needs a pollinator such as Bartlett and benefits from a few weeks of cold storage before ripening."},
     {"name":"Seckel","type":"Small European dessert pear","days":"Ripens September","where":"Both sides","note":"Small, russeted pears with spicy, intensely sweet flavor, ideal for snacking and preserving. The tree is compact and has good resistance to fire blight."},
     {"name":"Shinseiki","type":"Asian pear, partly self-fertile","days":"Ripens August","where":"Both sides","note":"Round, crisp, juicy yellow fruit that ripens on the tree. It bears young and heavily, and it also pollinates other Asian and many European pears."},
-    {"name":"Bosc","type":"European, russeted","days":"Ripens September to October","where":"Both sides","note":"Long-necked brown pears with dense, sweet, spicy flesh that holds its shape when baked or poached. It needs another pear for pollination and stores well."},
+    {"name":"Bosc","type":"European, russeted","days":"Ripens September to October","where":"Both sides","note":"Long-necked brown pears with dense, sweet, spicy flesh that holds its shape when baked or poached."},
     {"name":"D'Anjou","type":"European, long-storing","days":"Ripens late September","where":"Both sides","note":"Mild, sweet and juicy, with fruit that keeps in cold storage for months. Plant it with another pear variety for good crops."},
     {"name":"Chojuro","type":"Asian pear, russeted","days":"Ripens late August to September","where":"Both sides","note":"Golden-brown Asian pears with a rich, almost butterscotch flavor and crisp texture. It stores well for an Asian pear and needs another Asian or European pear for pollination."}
   ],
@@ -518,7 +518,7 @@ module.exports = {
     {"name":"Munstead","type":"English, compact","days":"Blooms June to July","where":"Both sides","note":"Lavender-blue flowers on an early-blooming, compact plant. Cold-hardy and fragrant, it is a classic for low hedges and culinary use."},
     {"name":"Grosso","type":"Lavandin, tall","days":"Blooms July","where":"Both sides","note":"A large, vigorous lavandin with long stems of very fragrant purple flowers. It is the top choice for oil, sachets and big dried bundles."},
     {"name":"Phenomenal","type":"Lavandin, hardy","days":"Blooms June to July","where":"Both sides","note":"A silvery, mounding lavandin known for handling both cold and wet winters better than most. Fragrant purple spikes on a uniform, tough plant."},
-    {"name":"Provence","type":"Lavandin, fragrant","days":"Blooms July","where":"Both sides","note":"A tall lavandin with pale purple, very fragrant flowers on long stems. Popular for drying and crafts, and a sweeter-scented option for cooking than most lavandins."},
+    {"name":"Provence","type":"Lavandin, fragrant","days":"Blooms July","where":"Both sides","note":"Popular for drying and crafts, and a sweeter-scented option for cooking than most lavandins."},
     {"name":"Folgate","type":"English, culinary","days":"Blooms June","where":"Both sides","note":"Blue-violet flowers with a sweet, mild fragrance that make it a favorite for culinary lavender. Compact and cold-hardy, it blooms early."}
   ],
   "tomatillos": [
@@ -722,7 +722,7 @@ module.exports = {
     {"name":"Wood's Compact","type":"Compact selection","days":"Evergreen","where":"Both sides","note":"Slower and tighter-growing, for small spaces and rock gardens."}
   ],
   "western-columbine": [
-    {"name":"Western columbine","type":"Native perennial (Aquilegia formosa)","days":"Blooms May to July","where":"Both sides","note":"Sold as plants and seed by native plant nurseries. Red and yellow nodding flowers that hummingbirds love."}
+    {"name":"Western columbine","type":"Native perennial (Aquilegia formosa)","days":"Blooms May to July","where":"Both sides","note":"Sold as plants and seed by native plant nurseries."}
   ],
   "douglas-aster": [
     {"name":"Douglas aster","type":"Native perennial (Symphyotrichum subspicatum)","days":"Blooms July to September","where":"West side","note":"Sold as the wild species by native plant nurseries. Lavender daisies late in the season for bees and butterflies."}

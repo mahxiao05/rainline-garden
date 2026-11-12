@@ -231,7 +231,7 @@ module.exports = {
     high: "Cold nights make melons a gamble. Use black plastic, row cover and the earliest varieties."
   },
   tomatillos: {
-    west: "Tomatillos tolerate cooler weather better than tomatoes and set fruit freely once summer warms. Grow at least two plants so they cross-pollinate.",
+    west: "Tomatillos tolerate cooler weather better than tomatoes and set fruit freely once summer warms.",
     coast: "Tomatillos may ripen on the coast if planted in a sunny, sheltered spot, though yields are lower in cool summers.",
     east: "Tomatillos love the heat and often produce more than you need. Plants sprawl, so give them space and support.",
     high: "Start indoors and plant out after frost. Tomatillos often self-seed in warmer spots."
@@ -316,7 +316,7 @@ module.exports = {
     high: "French tarragon is hardy here with good drainage."
   },
   sorrel: {
-    west: "Sorrel greens up very early in spring and keeps going into fall. Cut off flower stalks so it keeps making leaves.",
+    west: "Sorrel greens up very early in spring and keeps going into fall.",
     east: "Sorrel likes afternoon shade and steady water in hot summers.",
     high: "Sorrel is very hardy and one of the first greens of spring."
   },
@@ -388,7 +388,7 @@ module.exports = {
   calendula: {
     west: "Calendula blooms from spring through fall and sometimes into winter in mild years. Powdery mildew shows up late in the season.",
     coast: "Calendula does well in the cool coastal climate and self-seeds freely.",
-    east: "Summer heat stops calendula blooming. Sow in early spring and again in late summer for fall flowers.",
+    east: "Summer heat stops calendula blooming.",
     high: "Calendula blooms through the cool summers and handles light frost."
   },
   ranunculus: {
