@@ -945,7 +945,7 @@ function trickyParts(c) {
   };
   const words = () => used.length ? `<details class="tricky-words"><summary>Words used here (${used.length})</summary><dl>${used.map(id => `<dt>${esc(GL_TERMS[id][0])}</dt><dd>${esc(GL_TERMS[id][2])}</dd>`).join("")}</dl></details>` : "";
   const fix = f => f.endsWith("#pests") ? `<a href="#pests">${esc(f.slice(0, -6))}</a>` : gl(f);
-  return `${phoneFold("tricky", `Why ${name} are tricky here`, `<ul class="tricky-why">${t.why.map(w => `<li>${gl(w)}</li>`).join("")}</ul>
+  return `${phoneFold("tricky", `Why ${name} ${/s$/.test(name) ? "are" : "is"} tricky here`, `<ul class="tricky-why">${t.why.map(w => `<li>${gl(w)}</li>`).join("")}</ul>
 <h3 class="tricky-h">Stretching the season, step by step</h3>
 <ol class="stretch">${t.stretch.map(([when, what]) => `<li><span class="stretch-when">${esc(when)}</span><p>${gl(what)}</p></li>`).join("")}</ol>
 ${words()}`)}
