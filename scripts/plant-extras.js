@@ -70,7 +70,7 @@ Object.assign(X, {
   onions: { pick: "7-9",
     many: "For a family of four, 80 to 100 onions from sets or starts covers most of the fall and winter.",
     yield: "One bulb per plant; about a pound per foot of row for large storage types.",
-    store: "Cure for two weeks, then store in mesh bags somewhere cool, dark and dry. Storage varieties keep four to eight months; sweet onions only a few weeks.",
+    store: "Cure for 6 to 10 days, until the outer skin is dry and papery, then store in mesh bags somewhere cool, dark and dry. Storage varieties keep four to eight months; sweet onions only a few weeks.",
     good: [["Carrots", "Narrow onion leaves and feathery carrot tops share a bed well."], ["Lettuce", "Fills the gaps between young onions and is picked before the bulbs swell."]],
     avoid: [["Large, leafy crops", "Onions have thin leaves and can't compete; squash or potatoes next to them shade them out."]],
     pests: [["Onion maggots", "Plants wilt and yellow; white maggots in the bulb base.", "Rotate beds and cover young plants with row cover."],

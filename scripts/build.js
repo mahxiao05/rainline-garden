@@ -826,7 +826,7 @@ sec.open=true})})()</script>`;
 const phoneFold = (id, title, body, closed) => `<details class="fold" id="${id}" data-phone-fold${closed ? "" : " open"}><summary><h2>${title}</h2></summary>
 ${body}</details>`;
 const PHONE_FOLD_JS = `<script>(function(){var f=document.querySelectorAll("details[data-phone-fold]");if(matchMedia("(max-width: 40rem)").matches)f.forEach(function(d){if("#"+d.id!==location.hash)d.open=false});function show(){var d=location.hash&&document.getElementById(location.hash.slice(1));if(d&&d.matches("details[data-phone-fold]"))d.open=true}addEventListener("hashchange",show);show()})()</script>`;
-const jump = (sci, vars, c) => `<nav class="jump" aria-label="On this page"><span>On this page:</span><a href="#dates">Planting dates</a><a href="#grow">How to grow</a><a href="#regions">By region</a>${TRICKY[c.id] ? '<a href="#tricky">Why it\'s tricky</a><a href="#warning-signs">Warning signs</a>' : ""}${vars ? '<a href="#varieties">Varieties</a>' : ""}<a href="#how-many">How much to grow</a><a href="#numbers">Key numbers</a><a href="#science">${sci.notes ? "Growing notes" : "The science"}</a><a href="#neighbors">Neighbors</a><a href="#pests">Pests</a><a href="#faq">Questions</a></nav>`;
+const jump = (sci, vars, c) => `<nav class="jump" aria-label="On this page"><span>On this page:</span><a href="#dates">Planting dates</a><a href="#grow">How to grow</a><a href="#regions">By region</a>${TRICKY[c.id] ? '<a href="#tricky">Why it\'s tricky</a>' + (TRICKY[c.id].stages.length ? '<a href="#warning-signs">Warning signs</a>' : "") : ""}${vars ? '<a href="#varieties">Varieties</a>' : ""}<a href="#how-many">How much to grow</a><a href="#numbers">Key numbers</a><a href="#science">${sci.notes ? "Growing notes" : "The science"}</a><a href="#neighbors">Neighbors</a><a href="#pests">Pests</a><a href="#faq">Questions</a></nav>`;
 
 /* Plant-page extras from scripts/plant-extras.js and scripts/collections.js */
 // Tags linking to the "Plants for..." pages this plant appears on.
@@ -958,8 +958,8 @@ function stepIcon(when, what) {
   return r ? r[0] : "calendar";
 }
 const STEP_ICON_DEFS = `<svg class="ti-defs" width="0" height="0" aria-hidden="true" focusable="false"><defs>${Object.entries(STEP_ICONS).map(([k, d]) => `<symbol id="ti-${k}" viewBox="0 0 24 24">${d}</symbol>`).join("")}</defs></svg>`;
-// One real search question per tricky crop, answered from one of its warning-sign rows (matched by the "what you see" text).
-// It's added to the page's questions (and FAQ data), and its short form leads the search description.
+// One real search problem per tricky crop. The short form (third item) goes in the search description; the answer is the
+// matching warning-sign row (second item) on the page, so it isn't repeated as a question.
 const TRICKY_Q = {
   tomatoes: ["Why are my tomato flowers falling off?", "Flowers dry up and fall off", "why flowers fall off"],
   peppers: ["Why are my pepper flowers falling off?", "Flowers and tiny peppers drop", "why flowers drop"],
@@ -980,7 +980,7 @@ const TRICKY_Q = {
   parsnips: ["Why won't my parsnip seeds come up?", "Few or no seedlings after a month", "why seed won't come up"],
   spinach: ["Why is my spinach bolting?", "Plants stretch tall and leaves get small", "why it bolts"],
   radicchio: ["Why is my radicchio not turning red?", "Heads still green in September", "why heads stay green"],
-  basil: ["Why are my basil leaves turning yellow?", "Yellowing leaves with purplish-brown fuzz underneath", "why leaves turn yellow"],
+  basil: ["Why does my basil lose its flavor?", "Leaves lose their flavor", "why leaves lose their flavor"],
   dahlias: ["Why didn't my dahlia tubers sprout?", "Tubers never sprout and turn mushy", "why tubers don't sprout"],
   "sweet-peas": ["Why have my sweet peas stopped blooming?", "Blooming slows down", "why blooming stops"],
   cherries: ["Why are my cherries rotting on the tree?", "Fruit rots on the tree as harvest nears", "why fruit rots on the tree"],
@@ -992,18 +992,11 @@ const TRICKY_Q = {
   persimmons: ["Why does my persimmon make my mouth pucker?", "Fruit puckers your mouth", "why fruit puckers your mouth"],
   "asian-pears": ["Why are my Asian pear blossoms turning black?", "Blossoms and young shoots blacken and die back", "why blossoms blacken"]
 };
-const capFirst = s => s.charAt(0).toUpperCase() + s.slice(1);
-function trickyFaq(c) {
-  const q = TRICKY_Q[c.id], t = TRICKY[c.id];
-  if (!q || !t) return [];
-  const row = t.stages.flatMap(([, rows]) => rows).find(r => r[0] === q[1]);
-  if (!row || row[2].endsWith("#pests")) throw new Error(`TRICKY_Q for ${c.id} doesn't match a warning sign with its own fix`);
-  return [[q[0], `${capFirst(row[1])}. ${capFirst(row[2])} The warning signs section on this page lists what else to watch for, season by season.`]];
-}
+for (const [id, q] of Object.entries(TRICKY_Q)) if (!TRICKY[id] || !TRICKY[id].stages.some(([, rows]) => rows.some(r => r[0] === q[1]))) throw new Error(`TRICKY_Q for ${id} doesn't match a warning sign`);
 // Crops that share troubles, linked from the bottom of each other's warning signs.
 const TRICKY_KIN = [["tomatoes", "peppers", "eggplant"], ["cucumbers", "melons", "winter-squash", "pumpkins"], ["cauliflower", "broccoli", "cabbage", "brussels-sprouts"],
   ["carrots", "beets", "parsnips"], ["cherries", "peaches"], ["apples", "asian-pears"], ["grapes", "hardy-kiwi"]];
-const trickyKin = c => (TRICKY_KIN.find(g => g.includes(c.id)) || []).filter(id => id !== c.id && TRICKY[id]);
+const trickyKin = c => (TRICKY_KIN.find(g => g.includes(c.id)) || []).filter(id => id !== c.id && TRICKY[id] && TRICKY[id].stages.length);
 // Month pages: the tricky-crop steps that fall in a month, read from each step's "when" ("Mid-August", "December to February").
 const MONTH_RE = /\b(January|February|March|April|May|June|July|August|September|October|November|December)\b/g;
 function trickyMonths(when) {
@@ -1040,7 +1033,7 @@ ${t.pollination ? `<h3 class="tricky-h">Pollination partners</h3>
 ` : ""}<h3 class="tricky-h">${esc(t.steps || "Stretching the season, step by step")}</h3>
 ${STEP_ICON_DEFS}<ol class="stretch">${t.stretch.map(([when, what, icon]) => { const ic = icon || stepIcon(when, what); return `<li class="has-ico"><span class="st-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20"><use href="#ti-${ic}"/></svg></span><span class="stretch-when">${esc(when)}</span><p>${gl(what)}</p></li>`; }).join("")}</ol>
 ${words()}`)}
-${phoneFold("warning-signs", "Signs something's going wrong", `${(used.length = 0, "")}${t.stages.map(([stage, rows]) => `<section class="sign-stage"><h3>${esc(stage)}</h3>${rows.map(([see, why, what]) => `<div class="sign"><p class="sign-see">${esc(see)}</p><p><strong>Cause:</strong> ${gl(why)}. <strong>Fix:</strong> ${fix(what)}</p></div>`).join("")}</section>`).join("\n")}
+${!t.stages.length ? "" : phoneFold("warning-signs", "Signs something's going wrong", `${(used.length = 0, "")}${t.stages.map(([stage, rows]) => `<section class="sign-stage"><h3>${esc(stage)}</h3>${rows.map(([see, why, what]) => `<div class="sign"><p class="sign-see">${esc(see)}</p><p><strong>Cause:</strong> ${gl(why)}. <strong>Fix:</strong> ${fix(what)}</p></div>`).join("")}</section>`).join("\n")}
 ${words()}${trickyKin(c).length ? `\n<p class="tricky-kin">Related troubles: ${trickyKin(c).map(id => `<a href="../${id}/#warning-signs">${esc(cropById(id).name)} warning signs</a>`).join(" · ")}</p>` : ""}`)}`;
 }
 // Popular variety cards from scripts/varieties.js, shown on each plant's main page.
@@ -1462,7 +1455,7 @@ D.crops.forEach(c => {
   const ledeTowns = [["Portland", port], ["Seattle", sea], ["Spokane", spo], ["Boise", boi], ["Bend", bend]];
   const hb = crumbs("../../", [["When to plant", WHEN_INDEX], [catById(c.cat).name, `${WHEN_INDEX}${c.cat}/`], [c.name, null]]);
   const sci0 = SCIENCE[c.id] || NOTES[c.id];
-  const sci = sci0 && sci0.faq ? { ...sci0, faq: whenQuestion(c, g, ledeTowns).concat(trickyFaq(c), sci0.faq) } : sci0;
+  const sci = sci0 && sci0.faq ? { ...sci0, faq: whenQuestion(c, g, ledeTowns).concat(sci0.faq) } : sci0;
   const dk = g.fall ? "fall" : "spring", lead = n => cityDates(c, ledeTowns.slice(0, n), dk);
   write("../../", `when-to-plant/${c.id}/index.html`, layout({
     rel: "../../", canonical: `when-to-plant/${c.id}/`, current: WHEN_INDEX,
@@ -1866,7 +1859,8 @@ ${ad("article-bottom")}
 <h2>Plants in this article</h2>
 <ul class="chips">${a.crops.map(id => `<li><a href="${rel}when-to-plant/${id}/">${R.icon(id, rel, 24)}${cropById(id).name}</a></li>`).join("")}</ul>
 ${a.crops.some(id => TRICKY[id]) ? `<h2>When it goes wrong</h2>
-<ul class="trouble-links">${a.crops.filter(id => TRICKY[id]).slice(0, 4).map(id => `<li><a href="${rel}when-to-plant/${id}/#warning-signs">${esc(cropById(id).name)}: signs something's going wrong</a> <span>and <a href="${rel}when-to-plant/${id}/#tricky">why ${esc(lc(cropById(id).name))} ${/s$/.test(cropById(id).name) ? "are" : "is"} tricky here</a></span></li>`).join("")}</ul>` : ""}
+<ul class="trouble-links">${a.crops.filter(id => TRICKY[id]).slice(0, 4).map(id => { const nm = cropById(id).name, why = `why ${esc(lc(nm))} ${/s$/.test(nm) ? "are" : "is"} tricky here`;
+  return TRICKY[id].stages.length ? `<li><a href="${rel}when-to-plant/${id}/#warning-signs">${esc(nm)}: signs something's going wrong</a> <span>and <a href="${rel}when-to-plant/${id}/#tricky">${why}</a></span></li>` : `<li><a href="${rel}when-to-plant/${id}/#tricky">${esc(nm)}: ${why}</a></li>`; }).join("")}</ul>` : ""}
 ${newsletter()}
 <h2>More guides</h2>
 ${articleCards(rel, others.slice(0, 3))}`

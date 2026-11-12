@@ -404,7 +404,7 @@ module.exports = {
       ["Soil and water",
         "Onions have shallow roots, so they need loose, fertile soil with a pH of about 6.0 to 7.0 and steady moisture, about an inch a week, until the bulbs size up. Stop watering once the tops start to fall over. Onion thrips, tiny insects that leave silvery streaks on the leaves, are worst in hot, dry weather east of the Cascades."],
       ["Harvest, curing and storage",
-        "When about half the tops have flopped over, pull the onions. Cure them in a dry, airy, shaded spot for two to three weeks, until the necks are completely dry and tight. A properly dried neck seals out neck rot, the main cause of onions rotting in storage. Store storage onions cool and dry, ideally just above freezing with low humidity."]
+        "When most of the tops have fallen over, pull the onions. Cure them in a dry, airy, shaded spot for 6 to 10 days, until the necks are completely dry and tight. A properly dried neck seals out neck rot, the main cause of onions rotting in storage. Store storage onions cool and dry, ideally just above freezing with low humidity."]
     ],
     faq: [
       ["Why are my onions so small?", "Usually the plants had too few leaves when bulbing started, because they went in late, were crowded or had to compete with weeds. The wrong day-length type can also cause it: grow long-day varieties in the Northwest."],

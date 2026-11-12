@@ -92,7 +92,6 @@ module.exports = {
         ["Tiny cucumbers turn yellow and shrivel","not pollinated","get covers off once female flowers open. Cold or rainy weeks keep bees away."]
       ]],
       ["Fruit", [
-        ["Cucumbers taste bitter","stress from cold, heat, dry soil or poor feeding","peel them; the bitterness is in the skin. It passes when the weather evens out."],
         ["The vine stops making new cucumbers","an old, yellowing cucumber left on the vine","pick it, and keep picking every other day."]
       ]]
     ]
@@ -127,8 +126,7 @@ module.exports = {
   eggplant: {
     why: [
       "Eggplant is frost-tender and needs real heat. In short-season areas, small or miniature varieties do best.",
-      "Transplants shouldn't go out until the soil stays above 70°F.",
-      "Flea beetles chew small pits and holes in the leaves, and young plants take it hardest."
+      "Transplants shouldn't go out until the soil stays above 70°F."
     ],
     stretch: [
       ["8 to 10 weeks before planting","Start seeds indoors."],
@@ -157,8 +155,7 @@ module.exports = {
       ["Before planting","Harden plants off over a week or two so the move outside doesn't stall them.","sun"],
       ["Planting day","Cover with floating row cover right away and leave it on until harvest. It keeps off cabbageworms and loopers."],
       ["Once plants are 4 inches tall","Feed with a balanced fertilizer every 3 to 4 weeks and keep the soil evenly moist.","feed"],
-      ["Head starts to form","Pull the outer leaves together over it and clip them shut so the sun doesn't discolor it.","calendar"],
-      ["Harvest","Cut the head while it's still tight and dense."]
+      ["Head starts to form","Pull the outer leaves together over it and clip them shut so the sun doesn't discolor it.","calendar"]
     ],
     stages: [
       ["First weeks in the ground", [
@@ -185,12 +182,8 @@ module.exports = {
       ["Summer (west side)","Plant more starts for fall. West-side valleys can transplant broccoli as late as August."]
     ],
     stages: [
-      ["First weeks in the ground", [
-        ["Young plants wilt during the day","often root maggots feeding on the roots","see the root maggot notes#pests"]
-      ]],
       ["Heading", [
-        ["The head loosens and opens into yellow flowers","hot weather or waiting too long","cut while the buds are small and tight, and time plantings to head in cool weather."],
-        ["Holes in the leaves and green caterpillars","cabbageworms","pick them off by hand and keep row cover on."]
+        ["The head loosens and opens into yellow flowers","hot weather or waiting too long","cut while the buds are small and tight, and time plantings to head in cool weather."]
       ]]
     ]
   },
@@ -229,15 +222,11 @@ module.exports = {
       ["6 to 8 weeks before planting","Start seeds indoors."],
       ["Late spring to early summer","Set plants out 16 to 18 inches apart.","spade"],
       ["Planting day","Cover with floating row cover against cabbageworms and loopers."],
-      ["Summer","Brussels sprouts need plenty of nitrogen. Check under leaves and between sprouts for aphids.","feed"],
-      ["Fall and winter","Pick from the bottom of the stalk up, once sprouts are about an inch across."]
+      ["Summer","Brussels sprouts need plenty of nitrogen. Check under leaves and between sprouts for aphids.","feed"]
     ],
     stages: [
       ["Summer", [
         ["Young plants wilt during the day","often root maggots feeding on the roots","put row cover or stem collars on from planting day."]
-      ]],
-      ["Fall", [
-        ["Gray aphid clusters inside the sprouts","cabbage aphids","see the aphid notes#pests"]
       ]]
     ]
   },
@@ -297,7 +286,6 @@ module.exports = {
     stretch: [
       ["Picking seed","Check the days to harvest and choose a variety that fits your season.","sprout"],
       ["3 to 4 weeks before planting","Start seeds indoors in pots, if you want a head start."],
-      ["Before planting","Lay plastic mulch to warm the soil.","plastic"],
       ["Planting day","Plant in hills 4 to 5 feet apart, two plants per hill. Rocks, a wall or row cover help hold heat at night.","spade"],
       ["At bloom","Take covers off so bees can reach the flowers, and avoid spraying insecticides."],
       ["Harvest","Pick once the skin is hard and you can't dent it with a fingernail. Leave about 3 inches of stem and cure it in a warm, dry spot before storing.","basket"]
@@ -314,7 +302,6 @@ module.exports = {
   },
   pumpkins: {
     why: [
-      "Most pumpkins need about 90 to 110 days, so for Halloween they should be in the ground by early June.",
       "Big pumpkins may not ripen in short-season or high gardens. Small, bush or compact types are safer there.",
       "Several days over 90°F can make flower buds drop or block pollination, and bees are slow in cool, wet weather."
     ],
@@ -323,7 +310,6 @@ module.exports = {
       ["Before planting","Lay plastic mulch to warm the soil.","plastic"],
       ["Planting day","Plant one or two plants in a hill of mounded soil, which warms up sooner. Space hills about 4 to 6 feet apart."],
       ["At bloom","Take covers off so bees can reach the flowers. If few bees are around, hand-pollinate."],
-      ["Harvest","Cut pumpkins when the rind is fully colored and too hard to dent with a fingernail, leaving 3 to 4 inches of stem."],
       ["Before a hard frost","Bring them all in and cure them somewhere warm and dry."]
     ],
     stages: [
@@ -349,8 +335,7 @@ module.exports = {
       ["Or from seed","Start seed indoors 4 to 8 weeks ahead and plant out when seedlings are 3 inches tall."],
       ["Spring and summer","Keep the soil evenly moist and weed often, since onions compete poorly with weeds. Mulch helps with both."],
       ["Feeding","Onions need plenty of nitrogen, but too much gives soft bulbs, thick necks and poor storage.","feed"],
-      ["Most tops have fallen over","Pull them and dry them in the shade with good airflow. Don't knock the tops down yourself; it bruises the neck."],
-      ["After harvest","Cure 6 to 10 days, until the outer skin is dry and papery, then store in mesh bags somewhere cool and dry."]
+      ["Most tops have fallen over","Pull them and dry them in the shade with good airflow. Don't knock the tops down yourself; it bruises the neck."]
     ],
     stages: [
       ["Early summer", [
@@ -366,7 +351,6 @@ module.exports = {
   carrots: {
     steps: "Step by step through the season",
     why: [
-      "Carrot seed is slow, taking 7 to 21 days to sprout, and the seedbed has to stay moist the whole time.",
       "Many western Oregon soils form a crust after rain or sprinkling, and tiny carrot seedlings can't push through it.",
       "Carrot rust fly larvae tunnel into the roots, and they lay eggs in mid to late summer, when fall carrots are sown."
     ],
@@ -384,7 +368,6 @@ module.exports = {
         ["Nothing comes up, or only a few","the seedbed dried out or crusted","resow, cover with potting mix and keep it moist."]
       ]],
       ["Roots", [
-        ["Brown tunnels in the roots","carrot rust fly larvae","see the rust fly notes#pests"],
         ["Split, forked or hairy roots","too much nitrogen","go easy on fertilizer. Root crops need little nitrogen."]
       ]]
     ]
@@ -401,8 +384,7 @@ module.exports = {
       ["Until sprouts appear","Keep the soil evenly moist; don't let it dry out and rewet."],
       ["Spring","Use floating row cover to keep leafminer flies from laying eggs on the leaves."],
       ["A few leaves up","Thin so each root has room, and eat the thinnings in salads.","pinch"],
-      ["Mid-July to early August (west side)","Sow again for a fall harvest.","sprout"],
-      ["Harvest","Pull them when the shoulder pokes above the soil, between golf ball and tennis ball size."]
+      ["Mid-July to early August (west side)","Sow again for a fall harvest.","sprout"]
     ],
     stages: [
       ["Seedlings", [
@@ -412,14 +394,13 @@ module.exports = {
         ["Pale, papery tunnels and blotches in the leaves","leafminers","floating row cover in spring."]
       ]],
       ["Roots", [
-        ["Tough, stringy roots","left too long, or uneven watering","pick at golf ball to tennis ball size and keep moisture even."]
+        ["Tough, stringy roots","left too long, or uneven watering","pick sooner next time and keep moisture even."]
       ]]
     ]
   },
   parsnips: {
     steps: "Step by step through the season",
     why: [
-      "Parsnip seed takes 20 to 25 days to sprout, so the bed has to stay moist for weeks.",
       "The seed only keeps about a year. Old seed often doesn't come up at all.",
       "Seedlings are slow and don't compete with weeds."
     ],
@@ -448,9 +429,7 @@ module.exports = {
       "Seed sprouts best in cool soil, about 45 to 75°F, so late-summer sowings in warm soil are slow."
     ],
     stretch: [
-      ["Before sowing","If spinach has struggled before, test the soil and lime it if the pH is below 6.0."],
       ["Spring","Sow as soon as the soil can be worked. For late spring and summer harvests, choose slow-bolting varieties.","sprout"],
-      ["Spring harvest","Pick outer leaves often, and harvest whole plants once they start to stretch upward."],
       ["August to September","Sow again for fall. Fast-growing varieties suit fall, winter and early spring harvests.","sprout"],
       ["Winter","Row cover, a cloche or a cold frame helps fall plants through cold spells."]
     ],
@@ -473,7 +452,6 @@ module.exports = {
     stretch: [
       ["June","Sow outdoors, or start in trays to transplant."],
       ["July (west side)","Set out transplants for fall and winter heads.","spade"],
-      ["Summer","Keep the soil evenly moist so the plants keep growing."],
       ["Fall and winter","Harvest heads as they firm up. A hard freeze can kill the outer leaves, but the head inside is fine once trimmed."]
     ],
     stages: [
@@ -498,8 +476,7 @@ module.exports = {
     ],
     stages: [
       ["Summer", [
-        ["Square clusters of leaves stacked at the stem tips","the plant is getting ready to flower","cut back at least 6 leaf nodes for a flush of new leaves."],
-        ["Yellowing leaves with purplish-brown fuzz underneath","downy mildew","pull infected plants and keep the leaves of the rest dry."]
+        ["Square clusters of leaves stacked at the stem tips","the plant is getting ready to flower","cut back at least 6 leaf nodes for a flush of new leaves."]
       ]],
       ["Fall", [
         ["Leaves lose their flavor","nights below 50°F","harvest heavily before cold nights, or use row cover."]
@@ -519,7 +496,7 @@ module.exports = {
       ["Until two leaves show","Don't water. The tuber is most likely to rot now."],
       ["Two weeks after planting","Start slug bait or traps and keep it up all season."],
       ["Young plants","Pinch out the sprout between the top pair of leaves so the plant branches."],
-      ["Summer","Keep the soil evenly moist but never soggy, and use a low-nitrogen fertilizer. Stop feeding by mid-August."],
+      ["Summer","Keep the soil evenly moist but never soggy. Stop feeding by mid-August."],
       ["After frost","Dig the clumps, wash and dry them, and store them somewhere dark that won't freeze, ideally 34 to 40°F."]
     ],
     stages: [
@@ -579,7 +556,6 @@ module.exports = {
       ["Late winter","While the tree is bare, dormant oil helps with aphid and mite eggs and scale.","calendar"],
       ["About Memorial Day","Cherry fruit flies come out about now. Hang traps so you know when they arrive."],
       ["As fruit starts to color","Put netting over the tree, or just the lower limbs, before birds find it. Spotted wing drosophila starts laying eggs now too.","net"],
-      ["Harvest","Pick sweet cherries when they taste ripe, and pick up every dropped fruit.","basket"],
       ["After harvest, in dry weather","Cut out branches with canker and get rid of the wood.","pinch"],
       ["Leaf fall","Rake up and destroy fallen leaves and any shriveled fruit. Don't use them as mulch near the tree.","calendar"]
     ],
@@ -588,7 +564,6 @@ module.exports = {
         ["Branches die back","bacterial canker or Cytospora canker","cut out the infected wood after harvest, in dry weather."]
       ]],
       ["Summer", [
-        ["Maggots in ripe fruit","cherry fruit fly or spotted wing drosophila","see the fruit fly notes#pests"],
         ["Fruit rots on the tree as harvest nears","brown rot, worst when it rains in the last two weeks before picking","pick promptly and clear away rotten fruit."]
       ]],
       ["Fall", [
@@ -613,7 +588,6 @@ module.exports = {
       ["Late February","One more leaf curl spray. Dormant oil for aphid and mite eggs and scale goes on separately, not mixed in.","calendar"],
       ["Before buds open","Remove any shriveled fruit left in or under the tree.","calendar"],
       ["Bloom","Brown rot can blight the blossoms in wet springs. The usual control is a spray once a week from first pink to petal fall.","flower"],
-      ["Within 30 days after bloom","Thin young fruit to 6 to 8 inches apart. Trees drop some fruit on their own in early June, so leave a few extra.","pinch"],
       ["Early July","Check the base of the trunk for peach tree borers. Young trees are hit hardest.","calendar"],
       ["Until harvest","Pick up fallen or rotting fruit often so brown rot doesn't spread.","basket"],
       ["As leaves start to fall","Leaf curl spray again. West of the Cascades, do every one of these spray timings.","calendar"]
@@ -621,9 +595,6 @@ module.exports = {
     stages: [
       ["Bloom", [
         ["Blossoms wilt and the rot moves into the shoots","brown rot blossom blight","spray once a week from first pink to petal fall next spring, and clear out shriveled fruit in winter."]
-      ]],
-      ["Spring", [
-        ["Red, puckered leaves","peach leaf curl","see the leaf curl notes#pests"]
       ]],
       ["Summer", [
         ["Branches die back","Cytospora canker or bacterial canker","cut out and destroy infected wood in winter."],
@@ -635,8 +606,7 @@ module.exports = {
     steps: "Care through the year",
     why: [
       "Codling moth is in every apple-growing area here and gives wormy apples unless you control it.",
-      "West of the Cascades, apple scab is common in wet springs. Delicious is especially prone; Liberty, Prima, Akane and Chehalis resist it.",
-      "Rootstock sets the tree's size, from about 5 to 10 feet across on dwarf roots to 30 to 40 feet on vigorous ones. Dwarf trees need a stake or trellis."
+      "West of the Cascades, apple scab is common in wet springs. Delicious is especially prone; Liberty, Prima, Akane and Chehalis resist it."
     ],
     pollination: [
       "Most apples need pollen from another tree, often a different variety, blooming nearby.",
@@ -656,7 +626,6 @@ module.exports = {
         ["Blossoms and shoots blacken and die","fire blight, which is rare in the Willamette Valley and Coast Range","cut 12 inches below the damage and dip pruners in 10% bleach or 70% alcohol between cuts."]
       ]],
       ["Summer", [
-        ["Tunnels to the core with brown crumbs at the hole","codling moth","see the codling moth notes#pests"],
         ["Lots of small apples, then few flowers next spring","too much fruit left on the tree","thin earlier next year, one apple per spur."]
       ]]
     ]
@@ -676,17 +645,12 @@ module.exports = {
       ["January or February","Prune while dormant to open up the middle and keep the tree under about 8 feet.","pinch"],
       ["Spring, as leaves come out","Check last year's small figs. Black ones are dead; cut those tips back to push new growth for the second crop.","pinch"],
       ["Each year","Top-dress with compost instead of synthetic fertilizer, and don't feed in summer.","feed"],
-      ["Dry spells","Once the tree is established, about 1 inch of water every couple of weeks is plenty.","water"],
-      ["August on","Pick figs as soon as they droop and soften.","basket"],
-      ["Hard freezes","Protect young trees with mulch or wraps. A frozen tree often grows back from the lower stems in two or three years.","frost"]
+      ["Dry spells","Once the tree is established, about 1 inch of water every couple of weeks is plenty.","water"]
     ],
     stages: [
       ["Spring", [
         ["Overwintered fruit has turned black","the first crop froze","cut those tips off early so the second crop has time to ripen."],
         ["Branches dead back toward the base","a cold snap near 0°F","cut out the dead wood; trees regrow to fruiting size in two or three years."]
-      ]],
-      ["Fall", [
-        ["Green figs at the end of the season","a late variety or a cool spot","see the late figs notes#pests"]
       ]]
     ]
   },
@@ -712,7 +676,6 @@ module.exports = {
         ["Stunted shoots that grow in a zig-zag","zinc or boron shortage, weed killer, frost or mites","test the soil and look for nearby spraying."]
       ]],
       ["Summer", [
-        ["Yellow-brown patches on leaves, gray netting on berries","powdery mildew","see the powdery mildew notes#pests"],
         ["Fuzzy spots under the leaves","grape erineum mite","nothing to do; it doesn't hurt the vine or the fruit."]
       ]],
       ["Fall and winter", [
@@ -758,7 +721,6 @@ module.exports = {
     steps: "Care through the year",
     why: [
       "They're very sensitive to poor drainage. Roots need soil at least 2 feet, ideally 3, above the water table, which usually means a raised bed.",
-      "Spotted wing drosophila lays eggs in ripening berries and builds up as summer goes on, so fall-bearing kinds get hit hardest.",
       "They like soil pH 5.6 to 6.5, often higher than native soils on the coast."
     ],
     stretch: [
@@ -769,12 +731,7 @@ module.exports = {
       ["After the summer crop","Cut the canes that fruited at the base. Do it right away if they look diseased; otherwise you can wait until fall.","pinch"]
     ],
     stages: [
-      ["Spring", [
-        ["Canes wilt and die in wet ground","root rot","see the root rot notes#pests"]
-      ]],
-      ["Summer", [
-        ["Soft berries with tiny larvae","spotted wing drosophila","see the drosophila notes#pests"]
-      ]]
+
     ]
   },
   persimmons: {
@@ -794,9 +751,6 @@ module.exports = {
       ["November","Harvest. Fruit that isn't soft yet can finish ripening in a box in a clean, dry place like a garage.","basket"]
     ],
     stages: [
-      ["Summer", [
-        ["Young fruit drops","dry soil","see the fruit drop notes#pests"]
-      ]],
       ["Fall", [
         ["Fruit puckers your mouth","an astringent type that isn't soft-ripe yet","let it get fully soft before eating, or grow Fuyu."],
         ["Fruit still hard as frost arrives","too few warm days this year","pick it and let it ripen in a box in the garage."]
@@ -814,17 +768,15 @@ module.exports = {
       "Plant at least two or three varieties, such as Shinseiki, Kosui, Hosui, Chojuro and Nijisseiki."
     ],
     stretch: [
-      ["Late winter","Prune to open the tree. Remove diseased branches, fallen leaves and any fruit left from last year.","pinch"],
+      ["Late winter","Remove diseased branches, fallen leaves and any fruit left from last year.","pinch"],
       ["Before buds open","A fixed copper spray helps prevent blossom blast.","calendar"],
       ["Before bloom","Hang codling moth pheromone traps in the upper third of the tree.","calendar"],
       ["Within about 20 days of petal fall","Leave one fruit per spur, about one every 6 inches of branch.","pinch"],
-      ["Summer","Light summer pruning helps cut branch dieback from blossom blast.","pinch"],
-      ["August to September","Pick when ripe. Unlike European pears, Asian pears ripen on the tree and are crisp like apples.","basket"]
+      ["Summer","Light summer pruning helps cut branch dieback from blossom blast.","pinch"]
     ],
     stages: [
       ["Spring", [
-        ["Blossoms and young shoots blacken and die back","bacterial blossom blast (Pseudomonas)","copper before buds open next year, and summer pruning."],
-        ["Blackened, curled shoot tips","fire blight","see the fire blight notes#pests"]
+        ["Blossoms and young shoots blacken and die back","bacterial blossom blast (Pseudomonas)","copper before buds open next year, and summer pruning."]
       ]],
       ["Summer", [
         ["Worms tunneling to the core","codling moth","use pheromone traps before bloom to time control, and pick up damaged fruit."]
