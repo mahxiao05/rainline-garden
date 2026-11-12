@@ -44,6 +44,7 @@ const PHOTOS = require("./photos.js");
 const SCIENCE = require("./crop-science.js");
 const NOTES = require("./crop-notes.js");
 const TRICKY = require("./tricky-crops.js");
+const GL_TERMS = Object.fromEntries(G.glossary.map(g => [g[1], g]));
 const CARE_TIPS = require("./care-tips.js");
 const CATEGORY_GUIDES = require("./category-guides.js");
 const MONTH_GUIDES = require("./month-guides.js");
@@ -368,7 +369,7 @@ const toMonthYear = s => s.replace(/(Updated|Last updated) (\d{4}-\d\d-\d\d)\./g
 const GL_LINKS = G.glossaryLinks.map(([id, re]) => [id, new RegExp(`(^|[^\\w-])(${re})(?![\\w-])`, "i")]);
 const GL_SKIP = new Set(["a", "button", "h1", "h2", "h3", "h4", "h5", "h6", "summary", "table", "nav", "script", "style", "label", "select", "textarea", "figcaption", "dt", "svg", "form", "noscript", "template", "blockquote", "aside"]);
 // Picture-calendar tiles, legends and page intros stay plain; the words get linked in the page's sentences instead.
-const GL_SKIP_CLASS = /class="[^"]*\b(hz-line|lede|plant-intro|replant|eyebrow|crumbs|count|station|owner|pc-card|pc-legend|legend|author-box|byline|th-list|th-key|th-pop)\b/;
+const GL_SKIP_CLASS = /class="[^"]*\b(hz-line|lede|plant-intro|replant|eyebrow|crumbs|count|station|owner|pc-card|pc-legend|legend|author-box|byline|th-list|th-key|th-pop|tricky-words)\b/;
 const GL_TRACK = new Set(["p", "li", "dd", "ul", "ol", "div", "section"]);
 const GL_MAX = 12;
 function glossaryLinks(html, rel) {
@@ -927,11 +928,29 @@ function trickyParts(c) {
   const t = TRICKY[c.id];
   if (!t) return "";
   const name = lc(c.name);
-  const fix = f => f.endsWith("#pests") ? `<a href="#pests">${esc(f.slice(0, -6))}</a>` : esc(f);
-  return `${phoneFold("tricky", `Why ${name} are tricky here`, `<ul class="tricky-why">${t.why.map(w => `<li>${esc(w)}</li>`).join("")}</ul>
+  // Tap-to-explain words: the first time a glossary word shows up in these sections it links, carrying its explanation
+  // in the page itself (data-gl-t/-d), and the words are listed again with their meanings at the end of the section.
+  const used = [];
+  const gl = text => {
+    let h = esc(text);
+    for (const [id, re] of GL_LINKS) {
+      if (used.includes(id)) continue;
+      const r = re.exec(h);
+      if (!r || /<a [^>]*$/.test(h.slice(0, r.index + r[1].length)) || /^[^<]*<\/a>/.test(h.slice(r.index + r[1].length))) continue;
+      const g = GL_TERMS[id], at = r.index + r[1].length;
+      used.push(id);
+      h = h.slice(0, at) + `<a class="gl" href="../../glossary/#${id}" data-gl="${id}" data-gl-t="${esc(g[0])}" data-gl-d="${esc(g[2])}">${r[2]}</a>` + h.slice(at + r[2].length);
+    }
+    return h;
+  };
+  const words = () => used.length ? `<details class="tricky-words"><summary>Words used here (${used.length})</summary><dl>${used.map(id => `<dt>${esc(GL_TERMS[id][0])}</dt><dd>${esc(GL_TERMS[id][2])}</dd>`).join("")}</dl></details>` : "";
+  const fix = f => f.endsWith("#pests") ? `<a href="#pests">${esc(f.slice(0, -6))}</a>` : gl(f);
+  return `${phoneFold("tricky", `Why ${name} are tricky here`, `<ul class="tricky-why">${t.why.map(w => `<li>${gl(w)}</li>`).join("")}</ul>
 <h3 class="tricky-h">Stretching the season, step by step</h3>
-<ol class="stretch">${t.stretch.map(([when, what]) => `<li><span class="stretch-when">${esc(when)}</span><p>${esc(what)}</p></li>`).join("")}</ol>`)}
-${phoneFold("warning-signs", "Signs something's going wrong", `${t.stages.map(([stage, rows]) => `<section class="sign-stage"><h3>${esc(stage)}</h3>${rows.map(([see, why, what]) => `<div class="sign"><p class="sign-see">${esc(see)}</p><p><strong>Cause:</strong> ${esc(why)}. <strong>Fix:</strong> ${fix(what)}</p></div>`).join("")}</section>`).join("\n")}`)}`;
+<ol class="stretch">${t.stretch.map(([when, what]) => `<li><span class="stretch-when">${esc(when)}</span><p>${gl(what)}</p></li>`).join("")}</ol>
+${words()}`)}
+${phoneFold("warning-signs", "Signs something's going wrong", `${(used.length = 0, "")}${t.stages.map(([stage, rows]) => `<section class="sign-stage"><h3>${esc(stage)}</h3>${rows.map(([see, why, what]) => `<div class="sign"><p class="sign-see">${esc(see)}</p><p><strong>Cause:</strong> ${gl(why)}. <strong>Fix:</strong> ${fix(what)}</p></div>`).join("")}</section>`).join("\n")}
+${words()}`)}`;
 }
 // Popular variety cards from scripts/varieties.js, shown on each plant's main page.
 function varietyCards(c) {

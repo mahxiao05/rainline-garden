@@ -2860,3 +2860,8 @@ h2, .why-dates h2, .fall-now-h { text-transform: none; letter-spacing: 0; line-h
 .sign p { margin: 0 0 .5rem; line-height: 1.55; font-size: 1rem; }
 .sign .sign-see { font-weight: 700; }
 @media (min-width: 52rem) { .sign-stage { display: grid; grid-template-columns: 11rem 1fr; gap: 0 1.25rem; } .sign-stage h3 { padding-top: 12px; } .sign-stage .sign { grid-column: 2; } .sign-stage h3 { grid-row: 1 / span 9; } }
+.tricky-words { margin: .5rem 0 1rem; border-top: 1px solid var(--line); padding-top: .5rem; }
+.tricky-words summary { cursor: pointer; font-weight: 700; color: var(--fir); min-height: 44px; display: flex; align-items: center; }
+.tricky-words dl { margin: .25rem 0 0; }
+.tricky-words dt { font-weight: 700; margin-top: .6rem; }
+.tricky-words dd { margin: .15rem 0 0; line-height: 1.55; }
