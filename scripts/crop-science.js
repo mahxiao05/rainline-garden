@@ -231,7 +231,7 @@ module.exports = {
     keys: [["Soil to sprout", "60°F min, 70–95°F best"], ["Chill damage", "Below 50°F"], ["Soil pH", "6.0–7.5"], ["Water", "1 inch a week"], ["Each flower opens", "One morning only"], ["Pick at", "6–8 inches"]],
     sections: [
       ["Warm soil first",
-        "Squash seeds need soil of at least 60°F to sprout, and they come up fastest at 70 to 95°F. In cold, wet soil they rot before they emerge, which is why squash sown too early in the Northwest often fails. Plants are also damaged by long spells below about 50°F. Wait for warm soil, or start seeds indoors two to three weeks before planting out."],
+        "Squash seeds need soil of at least 60°F to sprout, and they come up fastest at 70 to 95°F. In cold, wet soil they rot before they emerge, which is why squash sown too early in the Northwest often fails. Plants are also damaged by long spells below about 50°F. Wait for warm soil, or start seeds indoors three to four weeks before planting out."],
       ["Male and female flowers",
         "Squash plants make separate male and female flowers. Males usually appear first, often for a week or more, and those early blossoms fall off without producing anything. That's normal. Female flowers have a tiny squash at their base.",
         "Each flower opens for one morning only, and bees have to carry pollen from a male to a female. In cool or rainy weather, few bees fly. Poorly pollinated fruit starts to grow, then turns yellow and shrivels from the tip. If that's happening, hand-pollinate: early in the morning, pick a male flower, peel back its petals and brush its pollen onto the center of an open female flower."],
@@ -254,7 +254,7 @@ module.exports = {
     sections: [
       ["Racing the season",
         "Winter squash needs a long, warm season, often 85 to 110 days from sowing, and the fruit has to mature fully before fall rains and frost. Seeds need soil of at least 60°F to sprout, and plants stall below about 50°F. In the Northwest, that makes the choice of variety and an early, warm start the deciding factors.",
-        "Faster varieties like Delicata and small pie pumpkins ripen far more reliably here than big storage squash or giant pumpkins. Start seeds indoors two to three weeks before planting out, and lay black plastic mulch to warm the soil several degrees."],
+        "Faster varieties like Delicata and small pie pumpkins ripen far more reliably here than big storage squash or giant pumpkins. Start seeds indoors three to four weeks before planting out, and lay black plastic mulch to warm the soil several degrees."],
       ["Pollination",
         "Like zucchini, winter squash has separate male and female flowers, and bees carry the pollen. The first flowers are usually male and drop without fruiting. In cool weather, hand-pollinating in the morning helps fruit set early enough to ripen."],
       ["Focusing the plant",

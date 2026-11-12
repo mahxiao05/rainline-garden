@@ -945,19 +945,6 @@ const STEP_ICONS = {
   feed: '<path d="M6 7h12l-1 13H7z"/><path d="M8 7l1-3h6l1 3"/><circle cx="10" cy="13" r=".8"/><circle cx="14" cy="12" r=".8"/><circle cx="12" cy="16" r=".8"/>'
 };
 // Steps the word rules above would get wrong: "crop|step label" -> icon.
-const STEP_ICON_FIX = {
-  "peppers|The week before planting": "sun", "melons|Pick the variety": "sprout", "eggplant|No warm bed?": "sun",
-  "cauliflower|The week before planting": "sun", "cauliflower|About a month after planting": "feed", "cauliflower|Head the size of an egg": "calendar", "cauliflower|Midsummer": "sprout",
-  "celery|Your town's start-indoors dates": "sprout", "celery|The week before planting": "sun",
-  "pumpkins|Planting day": "spade", "corn|Knee high": "feed", "corn|About 3 weeks after silking": "basket",
-  "broccoli|The week before planting": "sun", "broccoli|About a month after planting": "feed", "broccoli|Midsummer": "sprout",
-  "cabbage|The week before planting": "sun", "brussels-sprouts|Late May to June (west side)": "spade", "brussels-sprouts|Late summer": "feed",
-  "onions|Early spring": "sprout", "onions|Spring to early summer": "feed", "onions|Bulbs start to swell": "feed",
-  "carrots|Before sowing": "spade", "carrots|Seedlings a couple of inches tall": "pinch", "beets|A couple of inches tall": "pinch",
-  "parsnips|Before sowing": "spade", "parsnips|After a few frosts": "basket", "spinach|Before sowing": "spade", "spinach|Late August to September": "sprout",
-  "dahlias|Planting day": "thermo", "dahlias|Summer": "water", "snapdragons|8 to 10 weeks before your last frost": "sprout", "snapdragons|A few weeks before the last frost": "sun",
-  "ranunculus|Optional head start": "sprout", "ranunculus|Early spring": "spade"
-};
 const STEP_ICON_RULES = [
   ["wall", /wall-o-water/], ["plastic", /lay black plastic|cover the bed with plastic/], ["flower", /pollinat|covers? off|cover off/],
   ["frost", /frost cloth|cold snap|cold nights|cold spells/], ["shade", /shade cloth|afternoon shade/], ["net", /insect netting|netting or row cover|netting over the bed/],
@@ -971,6 +958,59 @@ function stepIcon(when, what) {
   return r ? r[0] : "calendar";
 }
 const STEP_ICON_DEFS = `<svg class="ti-defs" width="0" height="0" aria-hidden="true" focusable="false"><defs>${Object.entries(STEP_ICONS).map(([k, d]) => `<symbol id="ti-${k}" viewBox="0 0 24 24">${d}</symbol>`).join("")}</defs></svg>`;
+// One real search question per tricky crop, answered from one of its warning-sign rows (matched by the "what you see" text).
+// It's added to the page's questions (and FAQ data), and its short form leads the search description.
+const TRICKY_Q = {
+  tomatoes: ["Why are my tomato flowers falling off?", "Flowers dry up and fall off", "why flowers fall off"],
+  peppers: ["Why are my pepper flowers falling off?", "Flowers and tiny peppers drop", "why flowers drop"],
+  cucumbers: ["Why are my baby cucumbers turning yellow?", "Tiny cucumbers turn yellow and shrivel", "why baby cucumbers turn yellow"],
+  melons: ["Why are my melons still not ripe in September?", "Melons still unripe in September", "why melons won't ripen"],
+  eggplant: ["What makes tiny holes in eggplant leaves?", "Tiny pits and holes all over the leaves", "what makes tiny holes in the leaves"],
+  cauliflower: ["Why is my cauliflower head so small?", "A small head forms on a small plant", "why heads stay small"],
+  broccoli: ["Why is my broccoli flowering?", "The head loosens and opens into yellow flowers", "why heads open into flowers"],
+  cabbage: ["Why is my cabbage splitting?", "The head splits open", "why heads split"],
+  "brussels-sprouts": ["Why are my young Brussels sprouts wilting?", "Young plants wilt during the day", "why young plants wilt"],
+  "sweet-potatoes": ["Why are my sweet potatoes so small?", "Only a few small roots", "why roots stay small"],
+  corn: ["Why are my corn ears missing kernels?", "Ears with missing kernels", "why ears have missing kernels"],
+  "winter-squash": ["Why are my baby squash turning yellow and falling off?", "Baby squash turn yellow and drop", "why baby squash drop"],
+  pumpkins: ["Why are my baby pumpkins falling off?", "Young pumpkins shrivel and drop", "why baby pumpkins drop"],
+  onions: ["Why are my onions so small?", "Bulbs stay small", "why bulbs stay small"],
+  carrots: ["Why are my carrots forked or hairy?", "Split, forked or hairy roots", "why roots fork"],
+  beets: ["Why are my beets tough and stringy?", "Tough, stringy roots", "why roots get tough"],
+  parsnips: ["Why won't my parsnip seeds come up?", "Few or no seedlings after a month", "why seed won't come up"],
+  spinach: ["Why is my spinach bolting?", "Plants stretch tall and leaves get small", "why it bolts"],
+  radicchio: ["Why is my radicchio not turning red?", "Heads still green in September", "why heads stay green"],
+  basil: ["Why are my basil leaves turning yellow?", "Yellowing leaves with purplish-brown fuzz underneath", "why leaves turn yellow"],
+  dahlias: ["Why didn't my dahlia tubers sprout?", "Tubers never sprout and turn mushy", "why tubers don't sprout"],
+  "sweet-peas": ["Why have my sweet peas stopped blooming?", "Blooming slows down", "why blooming stops"],
+  cherries: ["Why are my cherries rotting on the tree?", "Fruit rots on the tree as harvest nears", "why fruit rots on the tree"],
+  peaches: ["Why are my peach blossoms wilting?", "Blossoms wilt and the rot moves into the shoots", "why blossoms wilt"],
+  apples: ["Why are my apples so small?", "Lots of small apples, then few flowers next spring", "why apples stay small"],
+  figs: ["Why are my figs black in spring?", "Overwintered fruit has turned black", "why the first crop fails"],
+  grapes: ["What is hollowing out my grapes?", "Berries emptied out to a hard shell", "what hollows out the grapes"],
+  "hardy-kiwi": ["Why does my kiwi vine flower but not fruit?", "Flowers but no fruit", "why vines flower but don't fruit"],
+  persimmons: ["Why does my persimmon make my mouth pucker?", "Fruit puckers your mouth", "why fruit puckers your mouth"],
+  "asian-pears": ["Why are my Asian pear blossoms turning black?", "Blossoms and young shoots blacken and die back", "why blossoms blacken"]
+};
+const capFirst = s => s.charAt(0).toUpperCase() + s.slice(1);
+function trickyFaq(c) {
+  const q = TRICKY_Q[c.id], t = TRICKY[c.id];
+  if (!q || !t) return [];
+  const row = t.stages.flatMap(([, rows]) => rows).find(r => r[0] === q[1]);
+  if (!row || row[2].endsWith("#pests")) throw new Error(`TRICKY_Q for ${c.id} doesn't match a warning sign with its own fix`);
+  return [[q[0], `${capFirst(row[1])}. ${capFirst(row[2])} The warning signs section on this page lists what else to watch for, season by season.`]];
+}
+// Crops that share troubles, linked from the bottom of each other's warning signs.
+const TRICKY_KIN = [["tomatoes", "peppers", "eggplant"], ["cucumbers", "melons", "winter-squash", "pumpkins"], ["cauliflower", "broccoli", "cabbage", "brussels-sprouts"],
+  ["carrots", "beets", "parsnips"], ["cherries", "peaches"], ["apples", "asian-pears"], ["grapes", "hardy-kiwi"]];
+const trickyKin = c => (TRICKY_KIN.find(g => g.includes(c.id)) || []).filter(id => id !== c.id && TRICKY[id]);
+// Month pages: the tricky-crop steps that fall in a month, read from each step's "when" ("Mid-August", "December to February").
+const MONTH_RE = /\b(January|February|March|April|May|June|July|August|September|October|November|December)\b/g;
+function trickyMonths(when) {
+  const ms = [...when.matchAll(MONTH_RE)].map(m => P.MONTHS_LONG.indexOf(m[1]) + 1);
+  if (ms.length === 2 && / to /.test(when)) { const out = []; for (let m = ms[0]; ; m = m % 12 + 1) { out.push(m); if (m === ms[1]) break; } return out; }
+  return ms;
+}
 // Deeper help for crops that are hard to ripen here (scripts/tricky-crops.js): why it's tricky, season stretchers in order,
 // and warning signs by stage. A fix ending in "#pests" links to the Pests and problems section instead of repeating it.
 function trickyParts(c) {
@@ -995,11 +1035,13 @@ function trickyParts(c) {
   const words = () => used.length ? `<details class="tricky-words"><summary>Words used here (${used.length})</summary><dl>${used.map(id => `<dt>${esc(GL_TERMS[id][0])}</dt><dd>${esc(GL_TERMS[id][2])}</dd>`).join("")}</dl></details>` : "";
   const fix = f => f.endsWith("#pests") ? `<a href="#pests">${esc(f.slice(0, -6))}</a>` : gl(f);
   return `${phoneFold("tricky", `Why ${name} ${/s$/.test(name) ? "are" : "is"} tricky here`, `<ul class="tricky-why">${t.why.map(w => `<li>${gl(w)}</li>`).join("")}</ul>
-<h3 class="tricky-h">${esc(t.steps || "Stretching the season, step by step")}</h3>
-${STEP_ICON_DEFS}<ol class="stretch">${t.stretch.map(([when, what]) => { const ic = STEP_ICON_FIX[`${c.id}|${when}`] || stepIcon(when, what); return `<li class="has-ico"><span class="st-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20"><use href="#ti-${ic}"/></svg></span><span class="stretch-when">${esc(when)}</span><p>${gl(what)}</p></li>`; }).join("")}</ol>
+${t.pollination ? `<h3 class="tricky-h">Pollination partners</h3>
+<ul class="tricky-why tricky-pol">${t.pollination.map(w => `<li>${gl(w)}</li>`).join("")}</ul>
+` : ""}<h3 class="tricky-h">${esc(t.steps || "Stretching the season, step by step")}</h3>
+${STEP_ICON_DEFS}<ol class="stretch">${t.stretch.map(([when, what, icon]) => { const ic = icon || stepIcon(when, what); return `<li class="has-ico"><span class="st-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20"><use href="#ti-${ic}"/></svg></span><span class="stretch-when">${esc(when)}</span><p>${gl(what)}</p></li>`; }).join("")}</ol>
 ${words()}`)}
 ${phoneFold("warning-signs", "Signs something's going wrong", `${(used.length = 0, "")}${t.stages.map(([stage, rows]) => `<section class="sign-stage"><h3>${esc(stage)}</h3>${rows.map(([see, why, what]) => `<div class="sign"><p class="sign-see">${esc(see)}</p><p><strong>Cause:</strong> ${gl(why)}. <strong>Fix:</strong> ${fix(what)}</p></div>`).join("")}</section>`).join("\n")}
-${words()}`)}`;
+${words()}${trickyKin(c).length ? `\n<p class="tricky-kin">Related troubles: ${trickyKin(c).map(id => `<a href="../${id}/#warning-signs">${esc(cropById(id).name)} warning signs</a>`).join(" · ")}</p>` : ""}`)}`;
 }
 // Popular variety cards from scripts/varieties.js, shown on each plant's main page.
 function varietyCards(c) {
@@ -1420,7 +1462,7 @@ D.crops.forEach(c => {
   const ledeTowns = [["Portland", port], ["Seattle", sea], ["Spokane", spo], ["Boise", boi], ["Bend", bend]];
   const hb = crumbs("../../", [["When to plant", WHEN_INDEX], [catById(c.cat).name, `${WHEN_INDEX}${c.cat}/`], [c.name, null]]);
   const sci0 = SCIENCE[c.id] || NOTES[c.id];
-  const sci = sci0 && sci0.faq ? { ...sci0, faq: whenQuestion(c, g, ledeTowns).concat(sci0.faq) } : sci0;
+  const sci = sci0 && sci0.faq ? { ...sci0, faq: whenQuestion(c, g, ledeTowns).concat(trickyFaq(c), sci0.faq) } : sci0;
   const dk = g.fall ? "fall" : "spring", lead = n => cityDates(c, ledeTowns.slice(0, n), dk);
   write("../../", `when-to-plant/${c.id}/index.html`, layout({
     rel: "../../", canonical: `when-to-plant/${c.id}/`, current: WHEN_INDEX,
@@ -1429,7 +1471,7 @@ D.crops.forEach(c => {
     title: fitTitle(...(seasonMonths(port, c.id) ? [`When to Plant ${titleCase(c.name)} in Oregon & Washington: ${seasonMonths(port, c.id)}`, `When to Plant ${titleCase(c.name)} in Oregon & Washington: ${seasonMonths(port, c.id, dk)}`, `When to Plant ${titleCase(c.name)} in OR & WA: ${seasonMonths(port, c.id)}`, `When to Plant ${titleCase(c.name)} in OR & WA: ${seasonMonths(port, c.id, dk)}`] : []),
       `When to Plant ${titleCase(c.name)} in Oregon, Washington and Idaho`, `When to Plant ${titleCase(c.name)} in Oregon, Washington & Idaho`, `When to Plant ${titleCase(c.name)} in the Pacific Northwest`, `When to Plant ${titleCase(c.name)} in the Northwest`),
     // Lead with the dates themselves: that's what a searcher wants to see in the result.
-    description: fitDesc(...[5, 4, 3, 2].map(n => lead(n)).filter(Boolean).flatMap(d => [`Plant ${lc(c.name)} ${d}. Dates for ${D.places.length} Northwest towns and a growing guide.`, `Plant ${lc(c.name)} ${d}. Dates for ${D.places.length} Northwest towns.`]),
+    description: fitDesc(...(TRICKY_Q[c.id] ? [4, 3, 2, 1].map(n => lead(n)).filter(Boolean).flatMap(d => [`Plant ${lc(c.name)} ${d}. Plus ${TRICKY_Q[c.id][2]} here, and what to do.`, `Plant ${lc(c.name)} ${d}. Plus ${TRICKY_Q[c.id][2]}.`]) : []), ...[5, 4, 3, 2].map(n => lead(n)).filter(Boolean).flatMap(d => [`Plant ${lc(c.name)} ${d}. Dates for ${D.places.length} Northwest towns and a growing guide.`, `Plant ${lc(c.name)} ${d}. Dates for ${D.places.length} Northwest towns.`]),
       `When to plant ${lc(c.name)} in Oregon, Washington and Idaho. ${portDates(c, port)}Dates for ${D.places.length} towns from Seattle to Boise, plus a growing guide.`,
       `When to plant ${lc(c.name)} in Oregon, Washington and Idaho. ${portDates(c, port)}Dates for ${D.places.length} towns, plus a growing guide.`,
       `When to plant ${lc(c.name)} in Oregon, Washington and Idaho: dates for ${D.places.length} towns from Portland and Seattle to Boise, plus a growing guide.`,
@@ -1823,6 +1865,8 @@ ${byBox(rel, a.author || DEFAULT_AUTHOR)}
 ${ad("article-bottom")}
 <h2>Plants in this article</h2>
 <ul class="chips">${a.crops.map(id => `<li><a href="${rel}when-to-plant/${id}/">${R.icon(id, rel, 24)}${cropById(id).name}</a></li>`).join("")}</ul>
+${a.crops.some(id => TRICKY[id]) ? `<h2>When it goes wrong</h2>
+<ul class="trouble-links">${a.crops.filter(id => TRICKY[id]).slice(0, 4).map(id => `<li><a href="${rel}when-to-plant/${id}/#warning-signs">${esc(cropById(id).name)}: signs something's going wrong</a> <span>and <a href="${rel}when-to-plant/${id}/#tricky">why ${esc(lc(cropById(id).name))} ${/s$/.test(cropById(id).name) ? "are" : "is"} tricky here</a></span></li>`).join("")}</ul>` : ""}
 ${newsletter()}
 <h2>More guides</h2>
 ${articleCards(rel, others.slice(0, 3))}`
@@ -2166,6 +2210,10 @@ var row=document.querySelector('.mb-reg tr[data-zone="'+t[3]+'"]');if(row)row.cl
 m.innerHTML='<p><strong>'+t[1]+', '+t[2]+'</strong> is in the '+zn[t[3]]+'.</p><p class="mb-mine-links"><a class="btn" href="${rel}plant-now/">Plant now in '+t[1]+'</a><a href="${rel}frost-dates/'+t[0]+'/">'+t[1]+'’s full calendar</a></p>';m.hidden=false;
 show(tags[t[3]]||"all")})();</script>
 ${notesFor("months", c.m, rel)}
+${(() => { const jobs = Object.entries(TRICKY).flatMap(([id, t]) => t.stretch.filter(([w]) => trickyMonths(w).includes(c.m)).map(([w, what]) => ({ id, w, what })));
+  return jobs.length ? `<h2 id="tricky-jobs">${name} jobs for tricky crops</h2>
+<p class="note">Steps from our deeper guides that fall in ${name}. Each links to the full list for that plant.</p>
+<ul class="trouble-links">${jobs.map(j => `<li><a href="${rel}when-to-plant/${j.id}/#tricky">${esc(cropById(j.id).name)}</a> <span class="tj-when">${esc(j.w)}:</span> ${esc(j.what)}</li>`).join("")}</ul>` : ""; })()}
 ${guideHtml}
 ${wxHtml}
 ${aheadHtml}

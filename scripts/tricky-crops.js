@@ -1,634 +1,833 @@
-/* Deeper help for the vegetables and flowers rated moderate or tricky in scripts/guide.js (fruit gets its own format later).
- * Three parts per crop, shown on its plant page right after the regional notes:
- *   why:     short reasons it's tricky here (list, one line each)
- *   stretch: season stretchers in the order you'd do them, as [when, what], one sentence each
- *   stages:  "signs something's going wrong", as [stage, [[what you see, cause, fix], ...]]
- * Every fact comes from Oregon State, Washington State or University of Idaho extension guides, or repeats what the
- * page already says. Leave a point out rather than guess, and don't repeat what Pests and problems already covers.
+/* Deeper help for the vegetables, flowers and fruit rated moderate or tricky in scripts/guide.js.
+ * Shown on each plant page right after the regional notes:
+ *   why:         short reasons it's tricky here (list, one line each)
+ *   pollination: fruit only, optional: which trees or vines need a partner
+ *   steps:       optional title for the step list
+ *   stretch:     steps in the order you'd do them, as [when, what] or [when, what, icon], one or two sentences each
+ *   stages:      "signs something's going wrong", as [stage, [[what you see, cause, fix], ...]]
+ * Every fact was checked against Oregon State, Washington State or University of Idaho extension guides (November 2026).
+ * Leave a point out rather than guess, and don't repeat what Pests and problems already covers: a fix ending in "#pests"
+ * links there instead. Celery, snapdragons, ranunculus, quince and huckleberries are left out until extension sources turn up.
  * Plain text only (escaped when rendered), and never cite sources by name, same as scripts/crop-notes.js. */
 module.exports = {
   tomatoes: {
     why: [
-      "Flowers drop without setting fruit when nights fall below about 55°F or days top 90°F.",
-      "West of the Cascades, fall rain and late blight often arrive while most of the crop is still green.",
-      "Big heirlooms need a long, warm summer. Varieties that ripen in 60 to 70 days are safer here."
+      "Nights below about 55°F can keep the pollen from forming properly, so flowers drop or the fruit comes out misshapen. That's common east of the Cascades and in high towns.",
+      "Late blight is a common tomato disease here, and wet fall weather helps it spread.",
+      "Full-size tomatoes take about 60 to 85 days from transplanting. The early ones are the safe bet in most of the Northwest."
     ],
     stretch: [
-      ["Start indoors", "Hang the grow light 2 to 4 inches above the seedlings, on 12 to 16 hours a day."],
-      ["1 to 2 weeks before planting", "Lay black plastic tight against smooth soil; loose plastic keeps the soil cooler."],
-      ["Planting day", "Wait for 60°F soil. In cold gardens, a wall-o-water protects down to about 20°F."],
-      ["Mid-August", "Pinch off new flowers and tiny fruit so the plant ripens what's already on the vine."],
-      ["A month before first frost", "Cut off the tips of the main stems and stop fertilizing."],
-      ["When fall rain starts", "Cover plants with clear plastic, or pick full-size green fruit to ripen indoors at 65 to 70°F."]
+      ["Start indoors","Keep the grow light on 12 to 16 hours a day, as close to the seedlings as you can, and raise it as they grow."],
+      ["Before planting","Lay black plastic tight against smooth soil. Loose plastic shades the soil and keeps it cooler."],
+      ["Planting day","Tomatoes do best once the soil is 65°F or warmer. In cold gardens, a wall-o-water around each plant soaks up the day's heat and gives it back at night."],
+      ["Mid-August","On large-fruited plants, pinch off new flowers and small fruit. They won't ripen in time, and removing them helps the rest ripen."],
+      ["A month before first frost","Cut off the tips of the main stems so the plant puts its energy into ripening the fruit it has."],
+      ["Fall","A clear plastic tent over the plants extends the harvest. Or pick full-size green fruit and ripen it indoors at 65 to 70°F."]
     ],
     stages: [
       ["Seedlings", [
-        ["Tall, thin seedlings that flop over", "not enough light", "lower the light to 2 to 4 inches and add a small fan."],
-        ["Purple undersides on the leaves", "cold, wet soil keeps roots from taking up phosphorus", "keep them warm and use a seedling fertilizer with phosphorus."]
+        ["Tall, thin seedlings that flop over","not enough light","move the light as close to the seedlings as you can."]
       ]],
       ["First weeks in the ground", [
-        ["Plant sits still for weeks", "cold soil or nights below 50°F", "black plastic and a wall-o-water, or plant later next year."]
+        ["Plants grow slowly and the lower leaves look sickly","cool, wet weather after an early-May planting","row covers help, and the plants usually recover fast once it warms up."]
       ]],
       ["Flowering", [
-        ["Flowers dry up and fall off", "nights below 55°F, days above 90°F, or dry soil", "water steadily; in cool spells, shake the flower clusters at midday."]
+        ["Flowers dry up and fall off","dry soil and dry wind, a sudden cold spell, heavy rain or too much nitrogen","water deeply and regularly. Another set of flowers usually follows."]
       ]],
       ["Fruit", [
-        ["Fruit stalls at orange in a heat wave", "red color barely forms above 85°F", "pick at first blush and ripen on the counter."]
+        ["Fruit is slow to color during a heat wave","ripening slows above about 85°F","wait for cooler weather, or pick fruit at first color and let it finish indoors."]
       ]],
       ["Fall", [
-        ["Lots of green fruit, frost on the way", "fruit set too late", "ripen the big ones indoors; next year pinch flowers in mid-August."]
+        ["Lots of green fruit with frost on the way","flowers set too late to ripen","bring in full-size green fruit to ripen at 65 to 70°F, and next year pinch new flowers from mid-August."]
       ]]
     ]
   },
   peppers: {
     why: [
-      "Peppers want nights of 60 to 70°F. Some varieties won't flower below 60°F.",
-      "Flowers drop when nights fall below about 58°F or days top 85°F.",
-      "Each pepper needs 45 to 55 days from flower to harvest, and 15 to 20 more in cool areas."
+      "Peppers want nights of 60 to 70°F. Some varieties won't flower at all below 60°F.",
+      "Flowers and small fruit drop when it's too cold, when the soil dries out, or on a dry, windy day.",
+      "Each pepper needs at least 45 to 55 days from flower to harvest, and 15 to 20 more where nights are cool."
     ],
     stretch: [
-      ["Start indoors", "Hang the grow light 2 to 4 inches above the seedlings, on 12 to 16 hours a day."],
-      ["The week before planting", "Harden plants off for a full week so the leaves don't scald."],
-      ["1 to 2 weeks before planting", "Lay black plastic tight against smooth soil."],
-      ["Planting day", "Wait for 70°F soil 3 to 4 inches down, then cover the row with low hoops and row cover."],
-      ["Hot days under cover", "Open the tunnel ends once it's above 90°F inside."],
-      ["East of the Cascades", "Use shade cloth or a spot with late-afternoon shade so fruit doesn't scald."]
+      ["Start indoors","Keep the grow light on 12 to 16 hours a day, as close to the seedlings as you can, and raise it as they grow."],
+      ["Before planting","Harden plants off well. Leaves that skip this step can scald in their first days outside.","sun"],
+      ["Before planting","Lay black plastic. It warms both the soil and the air around the plants."],
+      ["Planting day","Wait until frost danger is past and the soil is at least 60°F. Plant in the evening or on a cloudy day."],
+      ["Under low hoops","Keep a thermometer inside and open the cover once it's above 90°F."],
+      ["Midsummer","Shade cloth, or a spot with shade late in the day, keeps the hot afternoon sun from scalding the fruit."]
     ],
     stages: [
-      ["First weeks in the ground", [
-        ["Plants sit still and look pale", "cold soil and nights", "black plastic and a row cover tunnel."],
-        ["White, papery patches on the leaves", "sunscald, skipped hardening off", "new growth will be fine; harden off longer next time."]
+      ["After planting", [
+        ["White, papery patches on the leaves","sunscald from skipping hardening off","new growth will be fine. Harden off longer next time."]
       ]],
       ["Flowering", [
-        ["Flowers drop off", "nights below 58°F, days above 85°F, dry soil or wind", "even watering and a row cover."],
-        ["Few or no flowers", "below 60°F, or under six hours of sun", "move pots to your sunniest, warmest spot."]
+        ["Flowers and tiny peppers drop","cold, dry soil, or a hot, dry, windy day","keep the soil evenly moist and use a row cover for warmth and wind protection."],
+        ["Few or no flowers","temperatures below 60°F","a row cover, or move pots to your warmest spot."]
       ]],
       ["Fruit", [
-        ["Pale, papery patch on the sunny side", "sunscald", "afternoon shade cloth; don't strip leaves that shade fruit."],
-        ["Dark, sunken patch at the bottom", "blossom-end rot from uneven water or too much nitrogen", "water evenly and ease off nitrogen."]
+        ["Light brown or white patches on the sunny side","sunscald","shade cloth in the late afternoon, and don't strip leaves that shade the fruit."],
+        ["Dark, sunken patch at the bottom","blossom-end rot from wet-dry swings or too much nitrogen","water evenly and go easy on nitrogen."]
       ]],
       ["Fall", [
-        ["Peppers stay green for weeks", "cool weather", "pick them full size; ones with some color finish on the counter."]
-      ]]
-    ]
-  },
-  melons: {
-    why: [
-      "Seeds rot in cold soil. Melons need 65°F soil and nights above 55°F, often not until June on the west side.",
-      "Roots don't like being disturbed, so a rough transplant can stunt a plant all summer.",
-      "Bees must reach each female flower, so covers have to come off just when you'd like plants warm."
-    ],
-    stretch: [
-      ["Pick the variety", "Choose ones that ripen in 75 to 100 days unless you're in a hot east-side valley."],
-      ["About 4 weeks before planting", "Start seeds in individual pots so roots aren't torn at planting."],
-      ["1 to 2 weeks before planting", "Lay black plastic tight against smooth soil."],
-      ["Planting day", "Sow at 65°F soil or transplant at 70°F, then cover with row cover or a clear tunnel."],
-      ["When female flowers open", "Take the covers off so bees can pollinate, usually 4 to 6 weeks after planting."],
-      ["Summer", "Water with drip or a soaker hose under the plastic to keep leaves dry."]
-    ],
-    stages: [
-      ["Sowing and first weeks", [
-        ["Seeds never come up", "cold soil rotted them", "wait for 65°F soil or start in pots."],
-        ["Plants look stunted", "root damage at transplanting, or cold", "plant young, from single pots, and keep covered until flowering."]
-      ]],
-      ["Flowering", [
-        ["Lots of flowers, no little melons", "the first flowers are all male", "normal; female flowers follow in a week or so."],
-        ["Tiny melons turn yellow and drop", "not fully pollinated", "make sure covers are off once female flowers open."]
-      ]],
-      ["Fall", [
-        ["Melons still unripe in September", "too many set too late", "keep only a few melons per vine, and grow earlier varieties."]
-      ]]
-    ]
-  },
-  eggplant: {
-    why: [
-      "Eggplant wants warm nights even more than peppers, and cool nights are what hold it back west of the Cascades.",
-      "Plants set into cold soil stall and often never catch up.",
-      "Flea beetles hit young plants hardest, right when they're small and growing slowly."
-    ],
-    stretch: [
-      ["Your town's start-indoors dates", "Start seeds indoors under a light, kept warm."],
-      ["1 to 2 weeks before planting", "Lay black plastic tight against smooth soil. Clear plastic warms soil faster but lets weeds grow underneath."],
-      ["Planting day", "Wait until the soil stays above 70°F and nights above 55°F, then cover the plants with row cover right away."],
-      ["When flowers open", "Take the row cover off so bees can reach the flowers."],
-      ["Midsummer", "Add straw mulch only now, once the soil is warm, and water about an inch a week."],
-      ["No warm bed?", "Grow one or two plants in a big dark pot against a south-facing wall."]
-    ],
-    stages: [
-      ["First weeks in the ground", [
-        ["Tiny holes all over the leaves", "flea beetles", "row cover until plants grow strongly; bigger plants can usually take some damage without losing fruit."],
-        ["Plant barely grows for weeks", "cold soil and cool nights", "black plastic and row cover, and plant a week or two later next year."]
-      ]],
-      ["Flowering", [
-        ["Flowers drop off", "cool nights, or extreme heat east of the Cascades", "water evenly and mulch; it usually stops when the weather settles."]
-      ]],
-      ["Fruit", [
-        ["Fruit looks dull and tastes bitter and seedy", "picked too late", "pick while the skin is still glossy and springs back when pressed."]
-      ]]
-    ]
-  },
-  cauliflower: {
-    why: [
-      "It handles any check in growth badly. Cold, drought, crowding or a root-bound start can give you a tiny button head.",
-      "Plants that are too big at transplanting, or hit by cold or heat while small, often don't head properly.",
-      "Heat while heads form makes them loose and grainy, so east-side gardens do best with a fall crop."
-    ],
-    stretch: [
-      ["Picking starts", "Choose stocky plants with stems about as thick as a pencil, not tall ones crowded in their pots."],
-      ["The week before planting", "Harden them off for 4 to 7 days, then plant in the late afternoon or on a cool, cloudy day."],
-      ["First 1 to 2 weeks", "Keep row cover over them against wind, hard frost and root maggot flies."],
-      ["About a month after planting", "Side-dress with nitrogen and keep watering evenly, 1 to 1½ inches a week."],
-      ["Head the size of an egg", "Pull the outer leaves over it and tie them loosely to keep it white."],
-      ["Midsummer", "Plant again for fall. Heads that form in cool, even weather are the most reliable here."]
-    ],
-    stages: [
-      ["First weeks in the ground", [
-        ["Young plants wilt, stall and turn bluish", "root maggots", "row cover or stem collars from planting day."]
-      ]],
-      ["Heading", [
-        ["A small head forms while the plant is still small", "stress from cold, drought or a root-bound start", "pick it now; next time plant younger starts and keep them watered."],
-        ["Brown patches on the head, hollow stems", "too little boron, a trace nutrient", "work in compost or a complete vegetable fertilizer before the next crop."],
-        ["Loose, grainy or fuzzy head", "heat while the head was forming", "cut it right away, and grow a fall crop if summers are hot."]
-      ]]
-    ]
-  },
-  celery: {
-    why: [
-      "Several weeks of cool weather can make young plants flower instead of making stalks.",
-      "Its roots are shallow and it needs 1 to 2 inches of water every week of summer.",
-      "The seed is tiny and slow: it has to be started indoors two months or more ahead, and can take 2 to 3 weeks just to sprout."
-    ],
-    stretch: [
-      ["Your town's start-indoors dates", "Press seed onto the surface of the mix without covering it, and keep it at about 70°F."],
-      ["The week before planting", "Harden seedlings off gradually."],
-      ["Planting day", "Wait until nights stay above about 50°F. If a cold snap comes after planting, cover the plants with row cover."],
-      ["Summer", "Mulch and run a soaker hose so the soil never dries out."],
-      ["Last two weeks (optional)", "Wrap the stalks in paper or cardboard for paler, milder celery."]
-    ],
-    stages: [
-      ["Seedlings", [
-        ["Nothing has come up after a week", "celery is just slow", "keep the surface moist and wait; 2 to 3 weeks is normal."]
-      ]],
-      ["Summer", [
-        ["Young leaves in the center turn black or brown", "blackheart: calcium can't reach the center during dry spells", "water steadily every week so calcium keeps moving into the new growth."],
-        ["A flower stalk shoots up", "bolting after a cold spell when young", "it won't make good stalks now; next year plant out after nights stay above 50°F."]
-      ]]
-    ]
-  },
-  "sweet-potatoes": {
-    why: [
-      "They're tropical, and roots only form when the soil and nights are warm.",
-      "They need 90 to 120 days, which is a stretch for most of the Northwest outside the hot east-side valleys.",
-      "Cold soil in fall damages the roots, so you have to dig before it cools."
-    ],
-    stretch: [
-      ["About 2 months before planting", "Order slips, or sprout your own from a stored sweet potato."],
-      ["1 to 2 weeks before planting", "Cover the bed with plastic. Clear plastic warms soil more than black but lets weeds grow underneath."],
-      ["Planting day", "Wait for soil above 65°F, usually a week or two after tomatoes. Plant slips deep in loose, raised rows."],
-      ["First two weeks", "Water well while the slips root."],
-      ["After that", "Water only in dry spells and skip fertilizer, so the plant makes roots, not vines."],
-      ["Before the soil cools", "Dig carefully with a fork, then cure at 80 to 85°F for one to two weeks."]
-    ],
-    stages: [
-      ["Summer", [
-        ["Big, lush vines", "too much water or nitrogen", "cut back on both; vines don't mean roots."]
-      ]],
-      ["Harvest and storage", [
-        ["Only a few small roots", "a cool summer or cool soil", "next year use the warmest bed, plastic and a short-season variety like Georgia Jet."],
-        ["Roots taste starchy and bland", "not cured yet", "cure warm and humid for one to two weeks; they sweeten as they cure."],
-        ["Hard core and an off taste", "stored too cold", "keep them at 55 to 60°F, never in the fridge."]
+        ["Peppers stay green for weeks","cool weather slows ripening","green peppers are fine to eat. Pick them full-size and firm."]
       ]]
     ]
   },
   cucumbers: {
     why: [
-      "Seeds need soil of at least 60°F, and long spells below about 50°F damage the plants.",
-      "Bees carry pollen from male to female flowers. In cool, wet weather they stay home, and fruit comes out tapered or not at all.",
-      "Stress makes the fruit bitter: nights under 60°F, days over 90°F, or dry soil."
+      "Seed sprouts poorly in cold soil. It does best once the soil is about 65°F.",
+      "Bees carry pollen from male to female flowers. Below about 50°F or in rain they barely fly, so fruit doesn't set.",
+      "Stress turns the fruit bitter: temperatures below 60°F or above 90°F, dry soil, or poor feeding."
     ],
     stretch: [
-      ["Picking seed", "For a greenhouse or a cloudy coastal summer, choose a variety that sets fruit without bees, like Diva."],
-      ["1 to 2 weeks before planting", "Lay black plastic tight against smooth soil."],
-      ["Planting day", "Wait until the soil stays above 70°F for transplants, then cover with row cover. It also keeps cucumber beetles off."],
-      ["First female flowers", "Take the cover off. Female flowers have a tiny cucumber behind them."],
-      ["Cool spell at bloom", "Hand-pollinate early in the morning, brushing pollen from a male flower into a female one with a small paintbrush."],
-      ["Summer", "Trellis the vines, water at the base and pick every day or two."]
+      ["Before planting","Lay black plastic. It warms the soil and keeps weeds down."],
+      ["Planting day","Wait until frost danger is past and the soil is about 65°F. Row cover or a tunnel adds warmth."],
+      ["First female flowers","Take the cover off so bees can reach them. Female flowers have a tiny cucumber at the base."],
+      ["Early summer","Train the vines up a trellis or fence. It keeps fruit off the ground and leaves dry faster."],
+      ["Harvest season","Pick every other day, before any cucumber starts to turn yellow."]
     ],
     stages: [
-      ["Seedlings", [
-        ["Seedlings chewed off overnight", "slugs", "slug bait around young plants, or set out bigger transplants."]
-      ]],
       ["Flowering", [
-        ["The first flowers fall off", "they're male flowers", "normal; female flowers follow."],
-        ["Tiny cucumbers turn yellow and shrivel", "not pollinated", "hand-pollinate in the morning, and get the cover off once female flowers open."]
+        ["The first flowers fall off","they're male flowers","normal. Female flowers follow."],
+        ["Tiny cucumbers turn yellow and shrivel","not pollinated","get covers off once female flowers open. Cold or rainy weeks keep bees away."]
       ]],
       ["Fruit", [
-        ["The vine stops making new cucumbers", "a big, yellowing cucumber left on the vine", "pick it, and keep picking every day or two."]
+        ["Cucumbers taste bitter","stress from cold, heat, dry soil or poor feeding","peel them; the bitterness is in the skin. It passes when the weather evens out."],
+        ["The vine stops making new cucumbers","an old, yellowing cucumber left on the vine","pick it, and keep picking every other day."]
       ]]
     ]
   },
-  "winter-squash": {
+  melons: {
     why: [
-      "Most types need 85 to 110 days, and the fruit has to mature before fall rain and frost.",
-      "The first flowers are all male, and in cool weather bees are slow to pollinate the female ones.",
-      "Flowers that open after about mid-August rarely have time to make a ripe squash here."
+      "Melons need warm soil and warm nights. Transplants shouldn't go out until the soil stays above 70°F.",
+      "A start left too long in its pot can be stunted for good, so timing the indoor start matters.",
+      "Bees have to reach the flowers, so covers must come off at bloom, just when you'd like the plants warm."
     ],
     stretch: [
-      ["Picking seed", "Faster types like delicata, acorn and small kabocha ripen far more reliably than big storage squash."],
-      ["3 to 4 weeks before planting", "Start seeds indoors in individual pots."],
-      ["1 to 2 weeks before planting", "Lay black plastic tight against smooth soil."],
-      ["Cool spell at bloom", "Squash flowers open at dawn and close by midday, so hand-pollinate early in the morning."],
-      ["Mid-August", "Once a vine has 2 or 3 squash, pinch off the vine tips and new flowers."],
-      ["Before a hard frost", "Harvest with a few inches of stem, then cure about 10 days at around 80°F."]
+      ["Pick the variety","Where summers are short or cool, choose short-season, bush or small-vine varieties."],
+      ["3 to 4 weeks before planting","Start seeds indoors in individual pots so the roots aren't disturbed at planting."],
+      ["Before planting","Lay black plastic tight against the soil to warm it."],
+      ["Planting day","Plant once the soil stays above 70°F, then cover with row cover."],
+      ["At bloom","Take the covers off so bees can pollinate. That's usually 4 to 6 weeks after planting."],
+      ["Short-season gardens","Once two or three melons have set on a vine, pick off the rest so the plant ripens those."]
     ],
     stages: [
-      ["Flowering", [
-        ["Baby squash turn yellow and rot", "not pollinated", "hand-pollinate early in the morning in cool or wet weather."],
-        ["Flowers drop during a heat wave", "several days over 90°F", "water deeply; it picks up again when it cools."]
+      ["Sowing and first weeks", [
+        ["Seeds never come up","the soil was too cold","wait for warm soil, or start in pots."],
+        ["Plants sit stunted all summer","a root-bound or roughly handled transplant","start seeds 3 to 4 weeks ahead in single pots and plant them young."]
       ]],
-      ["Fruit", [
-        ["Squash rots on the underside", "sitting on wet soil", "slip a board or some straw under it."],
-        ["Rind dents with a fingernail", "not ripe yet", "leave it on the vine; a ripe one has a hard rind and a dry, corky stem."]
-      ]]
-    ]
-  },
-  pumpkins: {
-    why: [
-      "Carving pumpkins need 90 to 110 days, so for Halloween they need to be in the ground by late May or early June.",
-      "Vines run 10 to 20 feet, so they need a lot of room and steady water.",
-      "Bees have to carry pollen to each female flower, and they're slow in cool, wet weather."
-    ],
-    stretch: [
-      ["3 to 4 weeks before planting", "Start seeds indoors in individual pots for a head start in a cool spring."],
-      ["1 to 2 weeks before planting", "Lay black plastic tight against smooth soil."],
-      ["Planting day", "Plant into a hill of soil mixed with plenty of compost once the soil is warm."],
-      ["Cool spell at bloom", "Hand-pollinate early in the morning: brush pollen from a male flower onto the center of a female one, the flower with a tiny pumpkin behind it."],
-      ["Fruit swelling", "Water deeply once or twice a week at the base, and set each pumpkin on a board or straw."],
-      ["Before a hard frost", "Cut with a few inches of stem and cure in a warm spot for about a week."]
-    ],
-    stages: [
       ["Flowering", [
-        ["Young pumpkins shrivel and drop", "pollination failed", "hand-pollinate early in the morning."],
-        ["Flowers drop during a heat wave", "several days over 90°F", "water deeply; it picks up again when it cools."]
+        ["Tiny melons turn yellow and drop","the flowers weren't pollinated","make sure covers are off once flowers open."]
       ]],
       ["Fall", [
-        ["Pumpkins still green in late September", "planted too late or a large, slow variety", "pick before hard frost; next year plant by early June or grow a smaller type."]
+        ["Melons still unripe in September","too many set too late","keep only the first two or three per vine. A ripe melon slips off the vine easily."]
       ]]
     ]
   },
-  corn: {
+  eggplant: {
     why: [
-      "Seed rots in cold, wet soil. Regular sweet corn needs soil of about 60°F, and supersweet types about 65°F.",
-      "Each kernel forms only if pollen lands on its own silk, so corn needs to grow in a block, not one long row.",
-      "Supersweet corn that crosses with other sweet corn can turn starchy."
+      "Eggplant is frost-tender and needs real heat. In short-season areas, small or miniature varieties do best.",
+      "Transplants shouldn't go out until the soil stays above 70°F.",
+      "Flea beetles chew small pits and holes in the leaves, and young plants take it hardest."
     ],
     stretch: [
-      ["Picking seed", "West of the Cascades and in high towns, choose early varieties like Early Sunglow."],
-      ["High desert gardens", "Lay black plastic a week or two before planting to warm the soil."],
-      ["Planting day", "Sow in a block of at least four short rows, and cover with netting or row cover until plants are about 4 inches tall."],
-      ["Growing two types", "Plant supersweet and regular sweet corn about two weeks apart so they don't flower together."],
-      ["Knee high", "Side-dress with nitrogen."],
-      ["Tassels and silks", "Water deeply, an inch or more a week."],
-      ["About 3 weeks after silking", "Check ears: brown silks, a full rounded tip and milky juice mean ready."]
+      ["8 to 10 weeks before planting","Start seeds indoors."],
+      ["Before planting","Lay black plastic to warm the soil."],
+      ["Planting day","Wait until the soil stays above 70°F. A wall-o-water around each plant protects it in cold gardens."],
+      ["Right after planting","Put row cover over the plants before flea beetles show up, and seal the edges."],
+      ["Harvest","Pick eggplants once they're a usable size, while the skin is still shiny."]
     ],
     stages: [
-      ["Sprouting", [
-        ["Patchy rows with gaps", "seed rotted in cold soil", "replant the gaps once the soil warms."]
+      ["First weeks in the ground", [
+        ["Tiny pits and holes all over the leaves","flea beetles","row cover from planting day, sealed on all sides."]
       ]],
-      ["Growing", [
-        ["Lower leaves yellow in a V from the tip back", "not enough nitrogen; young plants can show it briefly in cold, wet weather", "side-dress now; corn is a heavy feeder."]
+      ["Fruit", [
+        ["The skin has gone dull","picked too late","pick while the skin is still glossy."]
+      ]]
+    ]
+  },
+  cauliflower: {
+    why: [
+      "Plants that are too big at transplanting, or hit by cold or heat while small, often don't form a proper head.",
+      "Like its cabbage-family cousins, young cauliflower doesn't handle cold soil well.",
+      "It likes cool weather, so the best heads come from a spring or fall harvest."
+    ],
+    stretch: [
+      ["About 6 weeks before planting","Start seeds indoors, or buy young starts rather than big ones."],
+      ["Before planting","Harden plants off over a week or two so the move outside doesn't stall them.","sun"],
+      ["Planting day","Cover with floating row cover right away and leave it on until harvest. It keeps off cabbageworms and loopers."],
+      ["Once plants are 4 inches tall","Feed with a balanced fertilizer every 3 to 4 weeks and keep the soil evenly moist.","feed"],
+      ["Head starts to form","Pull the outer leaves together over it and clip them shut so the sun doesn't discolor it.","calendar"],
+      ["Harvest","Cut the head while it's still tight and dense."]
+    ],
+    stages: [
+      ["First weeks in the ground", [
+        ["Young plants wilt during the day","often root maggots feeding on the roots","put row cover or stem collars on from planting day."]
       ]],
-      ["Harvest", [
-        ["Kernels taste starchy, not sweet", "picked late, or a supersweet crossed with other corn", "pick on time and cook right away, and keep types apart."]
+      ["Heading", [
+        ["A small head forms on a small plant","the start was too big, or cold or heat hit it while young","pick it now. Next time plant younger starts at the right time."],
+        ["The head turns yellowish or uneven in color","sun on the head","tie or clip the outer leaves over it as it forms."]
       ]]
     ]
   },
   broccoli: {
     why: [
-      "The head is a cluster of flower buds, so stress makes a small head that opens into flowers fast.",
-      "A hard cold snap right after planting, dry soil or a start left too long in its pot can all cause that stress.",
-      "Broccoli doesn't like heat, so east-side gardens need to time it around July."
+      "Hot weather, above about 80°F, makes broccoli send up flower stalks. Once that happens it can taste bitter.",
+      "Like the rest of the cabbage family, young broccoli doesn't handle cold soil well.",
+      "It likes cool weather, so time it for a spring or fall harvest."
     ],
     stretch: [
-      ["Picking starts", "Choose young, stocky plants that aren't crowded in their pots."],
-      ["The week before planting", "Harden them off for 4 to 7 days, then plant in the late afternoon or on a cool, cloudy day."],
-      ["First 1 to 2 weeks", "Cover with row cover against wind, frost and root maggot flies."],
-      ["About a month after planting", "Side-dress with nitrogen as heads begin to form."],
-      ["Head full, buds still tight", "Cut the main head and leave the plant; side shoots keep coming for weeks."],
-      ["Midsummer", "Plant a fall crop. It often gives the best heads because they form in cool weather."]
+      ["About 6 weeks before planting","Start seeds indoors, or buy a start."],
+      ["Before planting","Harden plants off over a week or two.","sun"],
+      ["Planting day","Cover with floating row cover right away against cabbageworms and loopers."],
+      ["Once plants are 4 inches tall","Feed with a balanced fertilizer every 3 to 4 weeks and keep the soil evenly moist.","feed"],
+      ["Head full, buds tight","Cut the stem below the head. Many varieties keep making side shoots for a few more weeks.","basket"],
+      ["Summer (west side)","Plant more starts for fall. West-side valleys can transplant broccoli as late as August."]
     ],
     stages: [
+      ["First weeks in the ground", [
+        ["Young plants wilt during the day","often root maggots feeding on the roots","see the root maggot notes#pests"]
+      ]],
       ["Heading", [
-        ["A tiny head forms early", "stress from cold, drought or a root-bound start", "pick it, and plant younger starts next time."],
-        ["Head turns yellow and loose", "waited too long, or hot weather", "cut as soon as the head looks full; the side shoots are still good."]
+        ["The head loosens and opens into yellow flowers","hot weather or waiting too long","cut while the buds are small and tight, and time plantings to head in cool weather."],
+        ["Holes in the leaves and green caterpillars","cabbageworms","pick them off by hand and keep row cover on."]
       ]]
     ]
   },
   cabbage: {
     why: [
-      "Large transplants can bolt to seed after several weeks of 40 to 50°F weather.",
-      "A few spells over 80°F can also make some varieties bolt.",
-      "A dry spell followed by a soaking splits heads."
+      "Cabbage is a biennial. A long cold spell can switch it to flowering, so it bolts instead of heading.",
+      "A mature head only holds for a while before it splits or bolts. How long depends on the variety.",
+      "Cabbageworms, loopers and cabbage aphids all go after it, and aphids can get right into the head."
     ],
     stretch: [
-      ["Picking seed", "Choose bolt-resistant varieties: quick, small types like Golden Acre for spring, January King for fall and winter west of the Cascades."],
-      ["Picking starts", "Choose young, stocky plants rather than big ones."],
-      ["The week before planting", "Harden them off for 4 to 7 days."],
-      ["Planting day", "Row cover or stem collars right away, against root maggots and cabbage worms."],
-      ["Plants filling out", "Side-dress, mulch, and water about an inch a week, evenly."],
-      ["Firm head, big rain coming", "Harvest it, or twist the plant a quarter turn to slow water uptake."]
+      ["5 to 7 weeks before planting","Start seeds indoors."],
+      ["Before planting","Harden plants off over a week or two.","sun"],
+      ["Planting day","Cover with floating row cover right away and leave it on until harvest."],
+      ["While heads form","Cabbage needs plenty of nitrogen. Side-dress and keep the soil evenly moist.","feed"],
+      ["Late July to early August (west side)","Plant again for fall and winter heads. Savoy types are especially cold hardy.","sprout"],
+      ["Firm head","Harvest before it starts to split."]
     ],
     stages: [
       ["Spring", [
-        ["A seed stalk instead of a head", "big transplants hit by weeks of 40 to 50°F weather", "plant smaller starts, or wait until the cold eases."]
+        ["A seed stalk instead of a head","a long cold spell set off flowering","use what you can now and plant later next time."]
       ]],
-      ["Summer", [
-        ["Plants bolt in a heat wave", "heat over 80°F", "harvest what you can, and choose bolt-resistant varieties next time."]
+      ["Heading", [
+        ["The head splits open","it's past mature and starting to flower","cut heads as soon as they're firm."],
+        ["Gray aphids packed between the leaves","cabbage aphids","hose them off every few days."]
       ]]
     ]
   },
   "brussels-sprouts": {
     steps: "Step by step through the season",
     why: [
-      "They need about 100 days in the ground, so a late start means small sprouts by winter.",
-      "Sprouts taste best when they firm up in cool fall weather; summer heat gives loose, leafy ones.",
-      "Gray aphids hide between the sprouts in late summer, where they're hard to see and hard to wash off."
+      "They take a long time, about 80 to 105 days in the ground, so they go in by early summer for a fall and winter crop.",
+      "Cold weather brings out their sweetness, so the best sprouts come late in the year.",
+      "Cabbage aphids get into the sprouts themselves, where they're hard to wash out."
     ],
     stretch: [
-      ["6 to 8 weeks before planting", "Start seeds indoors."],
-      ["Late May to June (west side)", "Set plants out, firm the soil well around them and stake them in windy spots. This timing gives sprouts from October through winter."],
-      ["Summer", "Side-dress once or twice and keep the soil evenly moist under mulch. Check under leaves for aphids every few days."],
-      ["Late summer", "Go easy on nitrogen from here on; too much late gives loose sprouts."],
-      ["About a month before picking", "Pinch out the growing tip so the sprouts size up evenly."],
-      ["Fall and winter", "Pick from the bottom up when sprouts are firm and about an inch across."]
+      ["6 to 8 weeks before planting","Start seeds indoors."],
+      ["Late spring to early summer","Set plants out 16 to 18 inches apart.","spade"],
+      ["Planting day","Cover with floating row cover against cabbageworms and loopers."],
+      ["Summer","Brussels sprouts need plenty of nitrogen. Check under leaves and between sprouts for aphids.","feed"],
+      ["Fall and winter","Pick from the bottom of the stalk up, once sprouts are about an inch across."]
     ],
     stages: [
       ["Summer", [
-        ["Plants lean or blow over", "tall, top-heavy stalks in loose soil", "firm the soil around the base and tie the stalk to a stake."]
+        ["Young plants wilt during the day","often root maggots feeding on the roots","put row cover or stem collars on from planting day."]
       ]],
       ["Fall", [
-        ["Sprouts stay small and uneven", "the plant is still putting energy into height", "pinch out the top about a month before you want to pick."]
+        ["Gray aphid clusters inside the sprouts","cabbage aphids","see the aphid notes#pests"]
+      ]]
+    ]
+  },
+  "sweet-potatoes": {
+    why: [
+      "Sweet potatoes need a lot of heat and humidity, more than most Northwest summers give them.",
+      "The slips go into soil warmed to about 80°F, so the bed has to be heated first with clear plastic.",
+      "Fresh-dug roots aren't sweet yet. They need curing somewhere warm and humid to turn starch into sugar."
+    ],
+    stretch: [
+      ["Before planting","Mix about 1 part compost into 2 parts soil and mound a slight ridge 12 to 24 inches wide. Skip commercial fertilizer.","spade"],
+      ["Warming the bed","Cover the ridge with clear plastic pulled smooth and tight, and wait until the soil is about 80°F."],
+      ["Planting day","Cut slits about 15 inches apart and plant a slip in each. Filling the holes with sand helps drainage and holds heat.","spade"],
+      ["Summer","Water late in the day when the soil is warmest, ideally with a soaker hose under the plastic."],
+      ["Fall","Dig carefully once temperatures drop into the 60s, without bruising or scratching the roots."],
+      ["Right after digging","Cure them 5 to 7 days somewhere warm and humid, 85 to 90°F."]
+    ],
+    stages: [
+      ["Summer", [
+        ["Big, lush vines","too much nitrogen","skip nitrogen-rich fertilizer. It feeds leaves, not roots."]
+      ]],
+      ["Harvest", [
+        ["Only a few small roots","the soil never got warm enough","clear plastic over the bed next year, and on the coast a spot against a south-facing wall."],
+        ["Roots taste starchy and bland","not cured","cure them warm and humid for 5 to 7 days."]
+      ]]
+    ]
+  },
+  corn: {
+    why: [
+      "Corn seed needs warm soil. It won't sprout below about 50°F and comes up best at 60°F or more.",
+      "Corn planted in one long row often pollinates poorly. Blocks of several rows do better.",
+      "Different types of sweet corn can cross with each other, so they need to be kept apart."
+    ],
+    stretch: [
+      ["Picking seed","In short-season areas, choose early varieties of about 70 days, like Early Sunglow or Sundance."],
+      ["Planting day","Sow once the soil is 60°F or warmer, in a block of several short rows."],
+      ["Growing more than one type","Keep types apart, for example white corn away from yellow or bicolor, so they don't cross."],
+      ["Every 2 weeks","Sow another block of an early variety for a longer harvest.","sprout"],
+      ["Harvest","Pick when the silks have turned brown and a pierced kernel gives milky juice. Eat it soon after picking."]
+    ],
+    stages: [
+      ["Sprouting", [
+        ["Patchy rows with gaps","seed sat in cold soil and failed","resow the gaps once the soil warms."]
+      ]],
+      ["Harvest", [
+        ["Ears with missing kernels","poor pollination, often from a single long row","plant in blocks of several rows."],
+        ["Kernels are tough and starchy","picked past the milky stage","check ears as the silks brown and pick while the juice is still milky."]
+      ]]
+    ]
+  },
+  "winter-squash": {
+    why: [
+      "Winter squash needs 85 to 135 days depending on type, which is longer than some parts of the Northwest allow.",
+      "Bees carry pollen from male to female flowers, and cold or rainy weather keeps them from flying.",
+      "Cool summers slow everything down, so in high or cool gardens it needs extra warmth at night."
+    ],
+    stretch: [
+      ["Picking seed","Check the days to harvest and choose a variety that fits your season.","sprout"],
+      ["3 to 4 weeks before planting","Start seeds indoors in pots, if you want a head start."],
+      ["Before planting","Lay plastic mulch to warm the soil.","plastic"],
+      ["Planting day","Plant in hills 4 to 5 feet apart, two plants per hill. Rocks, a wall or row cover help hold heat at night.","spade"],
+      ["At bloom","Take covers off so bees can reach the flowers, and avoid spraying insecticides."],
+      ["Harvest","Pick once the skin is hard and you can't dent it with a fingernail. Leave about 3 inches of stem and cure it in a warm, dry spot before storing.","basket"]
+    ],
+    stages: [
+      ["Sprouting", [
+        ["Seeds don't come up, or come up unevenly","cold soil, planted too deep, or old seed","resow in warm soil about an inch deep."]
+      ]],
+      ["Flowering", [
+        ["Baby squash turn yellow and drop","the female flower wasn't fully pollinated","help the bees: covers off at bloom and no insecticide sprays."],
+        ["Big, healthy vines but no flowers or fruit","too much fertilizer","ease off feeding."]
+      ]]
+    ]
+  },
+  pumpkins: {
+    why: [
+      "Most pumpkins need about 90 to 110 days, so for Halloween they should be in the ground by early June.",
+      "Big pumpkins may not ripen in short-season or high gardens. Small, bush or compact types are safer there.",
+      "Several days over 90°F can make flower buds drop or block pollination, and bees are slow in cool, wet weather."
+    ],
+    stretch: [
+      ["About 4 weeks before planting","Start seeds indoors in pots for a head start in a cool spring."],
+      ["Before planting","Lay plastic mulch to warm the soil.","plastic"],
+      ["Planting day","Plant one or two plants in a hill of mounded soil, which warms up sooner. Space hills about 4 to 6 feet apart."],
+      ["At bloom","Take covers off so bees can reach the flowers. If few bees are around, hand-pollinate."],
+      ["Harvest","Cut pumpkins when the rind is fully colored and too hard to dent with a fingernail, leaving 3 to 4 inches of stem."],
+      ["Before a hard frost","Bring them all in and cure them somewhere warm and dry."]
+    ],
+    stages: [
+      ["Flowering", [
+        ["Young pumpkins shrivel and drop","the flower wasn't fully pollinated","hand-pollinate, and keep covers off during bloom."],
+        ["Flowers drop during a heat wave","several days over 90°F","it picks up again when it cools. Hand-pollinating helps."]
+      ]],
+      ["Fall", [
+        ["Pumpkins still green in late September","planted late, or a large, slow variety","pick before a hard frost. Next year plant by early June or grow a smaller type."]
       ]]
     ]
   },
   onions: {
     steps: "Step by step through the season",
     why: [
-      "Bulbing starts when days reach about 14 to 16 hours in June, no matter how big the plant is. A small plant then makes a small bulb.",
-      "Sets bigger than about ¾ inch, or a cold snap at the wrong time, can make onions flower instead of bulb.",
-      "In wet Augusts west of the Cascades, bulbs can rot at the neck if they aren't dried well."
+      "The long-day onions grown here start forming bulbs at about 14 hours of daylight, whatever their size. A plant that's still small then makes a small bulb.",
+      "Sets bigger than a dime can flower early and never finish their bulb.",
+      "Onion roots are shallow. If the soil dries out, bulbs form early and stay small."
     ],
     stretch: [
-      ["Picking seed or sets", "Choose long-day or day-neutral varieties. Short-day onions bulb too early here and stay small."],
-      ["Early spring", "Plant early so each plant grows plenty of leaves before June; each leaf becomes one ring of the bulb. Pick small sets, and use any big ones for green onions."],
-      ["Spring to early summer", "Feed with nitrogen, weed often and water about an inch a week."],
-      ["Bulbs start to swell", "Stop feeding."],
-      ["Tops start to fall over", "Stop watering. Pull them when about half the tops are down."],
-      ["After harvest", "Cure 2 to 3 weeks in a dry, airy, shaded spot, under a roof if August is wet, until the necks are dry and tight."]
+      ["Picking sets or seed","Choose bulbing varieties suited to the north. Bunching onions never make bulbs."],
+      ["March to early April","Plant firm sets smaller than a dime 1 inch deep and 3 to 4 inches apart. Use bigger sets for green onions.","spade"],
+      ["Or from seed","Start seed indoors 4 to 8 weeks ahead and plant out when seedlings are 3 inches tall."],
+      ["Spring and summer","Keep the soil evenly moist and weed often, since onions compete poorly with weeds. Mulch helps with both."],
+      ["Feeding","Onions need plenty of nitrogen, but too much gives soft bulbs, thick necks and poor storage.","feed"],
+      ["Most tops have fallen over","Pull them and dry them in the shade with good airflow. Don't knock the tops down yourself; it bruises the neck."],
+      ["After harvest","Cure 6 to 10 days, until the outer skin is dry and papery, then store in mesh bags somewhere cool and dry."]
     ],
     stages: [
-      ["Spring", [
-        ["Plants wilt and yellow, with white maggots in the base", "onion maggots", "row cover on young plants, and a new bed next year."]
-      ]],
       ["Early summer", [
-        ["A flower stalk shoots up", "bolting from a big set or a cold snap", "use that onion soon, since it won't store; plant smaller sets next time."],
-        ["Bulbs stay small", "too few leaves before June", "plant earlier next year, from transplants or small sets."]
+        ["A flower stalk shoots up","a set that was too big","use that onion soon as a green onion. Plant smaller sets next time."],
+        ["Bulbs stay small","dry soil, or planted too late to grow enough before bulbing","plant early and keep the soil evenly moist."],
+        ["No bulbs at all","a bunching variety","grow a bulbing variety for your region."]
       ]],
       ["Storage", [
-        ["Bulbs go soft and gray at the top", "neck rot", "dry the necks completely before storing, and eat thick-necked ones first."]
+        ["Necks turn soft, yellow and water-soaked, then gray mold","neck rot","let tops mature on their own and cure 6 to 10 days before storing."]
       ]]
     ]
   },
   carrots: {
     steps: "Step by step through the season",
     why: [
-      "Seed can take one to three weeks to come up, and the soil surface has to stay moist that whole time.",
-      "Rain or watering packs the surface into a crust tiny seedlings can't break through.",
-      "Carrot rust fly larvae tunnel through the roots, and they're common across the Northwest."
+      "Carrot seed is slow, taking 7 to 21 days to sprout, and the seedbed has to stay moist the whole time.",
+      "Many western Oregon soils form a crust after rain or sprinkling, and tiny carrot seedlings can't push through it.",
+      "Carrot rust fly larvae tunnel into the roots, and they lay eggs in mid to late summer, when fall carrots are sown."
     ],
     stretch: [
-      ["Before sowing", "Loosen the soil deeply and pick out stones and clods, or use a raised bed. Skip fresh manure."],
-      ["Sowing day", "Cover the seed with a quarter inch of fine compost or vermiculite, not garden soil, then lay a board or burlap over the row."],
-      ["Until sprouts appear", "Water gently every day or two, and lift the cover the moment you see green."],
-      ["Right after sowing", "Seal insect netting over the bed and leave it on until harvest, or sow in early June after the first rust fly flight."],
-      ["Seedlings a couple of inches tall", "Thin to 2 inches apart."],
-      ["Fall", "Pull when the shoulders are about ¾ inch across, or mulch thickly and dig through winter west of the Cascades."]
+      ["Before sowing","Carrots grow best in loose, well-drained soil or a raised bed."],
+      ["Sowing day","Sow ¼ to ½ inch deep and cover the seed with light potting mix instead of garden soil, so it doesn't crust."],
+      ["Until sprouts appear","Keep the seedbed moist. Row cover over the row helps prevent crusting too.","water"],
+      ["Summer sowings","Keep row cover on to stop rust flies laying eggs."],
+      ["Seedlings up","Thin so each carrot is at least 2 inches from the next.","pinch"],
+      ["Harvest","Most are ready once the shoulder is about ½ inch across. Loosen the soil with a fork when it's damp."],
+      ["Fall (east side)","Mulch a late bed heavily and dig carrots as needed until the soil threatens to freeze."]
     ],
     stages: [
       ["Sowing", [
-        ["Nothing comes up, or only a few", "a crust formed or the surface dried out", "resow, cover with compost or vermiculite, and keep a board over the row until sprouts show."]
+        ["Nothing comes up, or only a few","the seedbed dried out or crusted","resow, cover with potting mix and keep it moist."]
       ]],
       ["Roots", [
-        ["Forked or stubby roots", "stones, hard soil or fresh manure", "loose, stone-free soil or a raised bed next time."],
-        ["Green shoulders", "the tops of the roots were in the sun", "pull soil up over the shoulders."],
-        ["Split roots", "a heavy soak after a dry spell", "water evenly."]
+        ["Brown tunnels in the roots","carrot rust fly larvae","see the rust fly notes#pests"],
+        ["Split, forked or hairy roots","too much nitrogen","go easy on fertilizer. Root crops need little nitrogen."]
       ]]
     ]
   },
   beets: {
     steps: "Step by step through the season",
     why: [
-      "Each seed is a cluster of 2 to 4 seeds, so seedlings come up crowded and grow leaves instead of roots unless you thin them.",
-      "A long cold spell after a spring planting can make beets bolt.",
-      "East of the Cascades, dry wind crusts the soil before seedlings come up."
+      "Beet seed takes 10 to 15 days to come up, and it does best when the soil stays evenly moist instead of drying out and getting wet again.",
+      "Seedlings need thinning so each root has room to form.",
+      "Large beets left in the ground get tough and stringy."
     ],
     stretch: [
-      ["Sowing day", "Wait until the soil has warmed a little; seeds sprout in soil from about 50 to 85°F."],
-      ["Until sprouts appear", "Keep the surface moist so it doesn't crust."],
-      ["A couple of inches tall", "Thin to one plant every 3 inches and eat the thinnings as greens."],
-      ["While roots grow", "Keep the soil evenly moist and add a light mulch."],
-      ["July (west side)", "Sow again for a fall crop."],
-      ["Golf ball to tennis ball size", "Pull them, leaving an inch of stem when you trim the tops."]
+      ["Sowing day","Sow seed straight into the garden at a shallow depth, which helps seedlings come up fast."],
+      ["Until sprouts appear","Keep the soil evenly moist; don't let it dry out and rewet."],
+      ["Spring","Use floating row cover to keep leafminer flies from laying eggs on the leaves."],
+      ["A few leaves up","Thin so each root has room, and eat the thinnings in salads.","pinch"],
+      ["Mid-July to early August (west side)","Sow again for a fall harvest.","sprout"],
+      ["Harvest","Pull them when the shoulder pokes above the soil, between golf ball and tennis ball size."]
     ],
     stages: [
+      ["Seedlings", [
+        ["Seedlings fall over and die at the soil line","damping off","sow shallow so seedlings come up fast, and don't overwater."]
+      ]],
+      ["Leaves", [
+        ["Pale, papery tunnels and blotches in the leaves","leafminers","floating row cover in spring."]
+      ]],
       ["Roots", [
-        ["Black, corky spots inside the root", "not enough boron", "test the soil; if boron is low, add only a tiny amount, since too much is toxic."],
-        ["White rings inside the root", "swings in temperature or heat stress", "nothing to fix; the flavor is fine."],
-        ["Woody, tough roots", "dry spells", "water evenly, especially while roots are sizing up."]
+        ["Tough, stringy roots","left too long, or uneven watering","pick at golf ball to tennis ball size and keep moisture even."]
       ]]
     ]
   },
   parsnips: {
     steps: "Step by step through the season",
     why: [
-      "Most failures happen before seedlings appear. Seed sprouts in 2 to 4 weeks, and the bed has to stay moist the whole time.",
-      "The seed only lasts about a year, so old seed often doesn't come up at all.",
-      "The root grows 8 to 12 inches long and forks in rocky or lumpy soil."
+      "Parsnip seed takes 20 to 25 days to sprout, so the bed has to stay moist for weeks.",
+      "The seed only keeps about a year. Old seed often doesn't come up at all.",
+      "Seedlings are slow and don't compete with weeds."
     ],
     stretch: [
-      ["Before sowing", "Buy fresh seed and dig the bed deep, or use a raised bed in heavy clay."],
-      ["Sowing day", "Sow a few radish seeds in the same row to mark it and break the crust."],
-      ["Until sprouts appear", "Keep a board or burlap over the row and the soil moist; lift it as soon as you see green."],
-      ["From sowing", "Cover with insect netting against carrot rust fly."],
-      ["After a few frosts", "Start digging; frost turns starch to sugar. East of the Cascades, mulch heavily so the ground doesn't freeze solid."]
+      ["Before sowing","Buy fresh seed each year. Prepare the bed a week or more early and remove the first flush of weeds before sowing."],
+      ["Sowing day","Sow into a fine seedbed. The best soil temperature for sprouting is about 50 to 70°F."],
+      ["Until sprouts appear","Water lightly and often so the surface stays moist and cool and doesn't crust."],
+      ["Mid to late summer","Row cover keeps carrot rust flies from laying eggs on young plants."],
+      ["Fall and winter","Dig roots as needed. They keep in the ground well into winter west of the Cascades."]
     ],
     stages: [
       ["Sowing", [
-        ["Few or no seedlings after a month", "old seed, or the bed dried out", "resow with fresh seed and keep it covered and moist."]
+        ["Few or no seedlings after a month","old seed, or the bed dried out","resow with fresh seed and keep the surface moist."]
       ]],
-      ["Handling", [
-        ["Rash or blisters after weeding", "the leaves' sap reacts with sunlight on skin", "wear gloves and long sleeves around the leaves on sunny days."]
+      ["Roots", [
+        ["Reddish-brown to black cankers at the top of the root","a fungus called Itersonilia canker","rotate where you grow parsnips, keep drainage good, hill soil at the base and choose resistant varieties."],
+        ["Forked or hairy roots","too much nitrogen","go easy on fertilizer. Root crops need little nitrogen."]
       ]]
     ]
   },
   spinach: {
     steps: "Step by step through the season",
     why: [
-      "Once days pass about 14 hours, around late April in Portland and Seattle, spinach starts flowering instead of making leaves.",
-      "It's unusually fussy about acidic soil, and many west-side soils are acidic.",
-      "Seed barely sprouts in soil above about 85°F, which makes late-summer sowing tricky."
+      "Spinach sends up a seed stalk as the days get longer, so spring plantings run out of time quickly.",
+      "It needs soil of at least pH 6.0 to 6.5, higher than many vegetables.",
+      "Seed sprouts best in cool soil, about 45 to 75°F, so late-summer sowings in warm soil are slow."
     ],
     stretch: [
-      ["Before sowing", "If spinach has struggled before, test the soil and lime it toward a pH of 6.5 to 7.5."],
-      ["As soon as the soil can be worked", "Sow a slow-bolting variety for spring."],
-      ["Late April onward", "Pick outer leaves often; once plants start to stretch upward, harvest them whole."],
-      ["Late August to September", "Sow again for fall. Water and shade the seedbed to keep it cool."],
-      ["Winter", "Row cover helps fall plants through cold spells, and they often start growing again in February."]
+      ["Before sowing","If spinach has struggled before, test the soil and lime it if the pH is below 6.0."],
+      ["Spring","Sow as soon as the soil can be worked. For late spring and summer harvests, choose slow-bolting varieties.","sprout"],
+      ["Spring harvest","Pick outer leaves often, and harvest whole plants once they start to stretch upward."],
+      ["August to September","Sow again for fall. Fast-growing varieties suit fall, winter and early spring harvests.","sprout"],
+      ["Winter","Row cover, a cloche or a cold frame helps fall plants through cold spells."]
     ],
     stages: [
       ["Seedlings", [
-        ["Seedlings grow slowly and turn yellow", "acidic soil", "test and lime the soil before the next sowing."]
+        ["Seedlings grow slowly and turn yellow","acidic soil","test the soil and lime it before the next sowing."]
       ]],
       ["Growing", [
-        ["Yellow patches on top, gray-purple fuzz underneath", "downy mildew", "space plants for airflow and choose resistant varieties."],
-        ["Plants stretch tall and leaves turn small", "bolting from long days", "harvest everything now, and sow for fall."]
-      ]]
-    ]
-  },
-  basil: {
-    why: [
-      "Cold hurts basil even without frost. Below about 50°F the leaves spot and blacken and growth stops.",
-      "That usually means waiting until June to plant out west of the Cascades.",
-      "Downy mildew can wipe out classic Genovese basil in humid weather."
-    ],
-    stretch: [
-      ["Picking seed", "Choose a mildew-resistant variety like Prospera or Amazel."],
-      ["Indoors", "Sow in warm soil, about 70 to 85°F."],
-      ["Planting day", "Wait until nights stay above 50°F. On the coast or in high towns, use a large pot you can move or bring in."],
-      ["6 inches tall", "Pinch off the top pair of leaves, and keep pinching for bushier plants."],
-      ["All summer", "Water at the base in the morning, and pinch off flower buds as soon as they show."]
-    ],
-    stages: [
-      ["After planting", [
-        ["Black spots on the leaves after chilly nights", "cold damage below 50°F", "cover plants or bring pots in on cold nights, and plant later next year."],
-        ["Holes in young leaves", "slugs", "slug bait around young plants."]
-      ]],
-      ["Summer", [
-        ["Leaves yellow between the veins, gray fuzz underneath", "downy mildew", "pull infected plants and grow a resistant variety."],
-        ["Fewer leaves and a changed flavor", "the plant is flowering", "pinch off the flower buds."]
+        ["Plants stretch tall and leaves get small","bolting as days lengthen","harvest everything now, and sow again for fall."]
       ]]
     ]
   },
   radicchio: {
     steps: "Step by step through the season",
     why: [
-      "Plants sown in spring often send up a flower stalk in summer instead of making a head.",
-      "Heads only form as nights cool in fall, so summer plants look like loose green leaves for months.",
-      "Summer heat makes it bitter, especially east of the Cascades."
+      "Radicchio does best in cool weather, so it's grown for early spring or late fall harvests.",
+      "Some types only turn red or pink once the weather cools, so summer plants can look green for months.",
+      "Varieties differ a lot in how long they take, so the same sowing date can give heads anywhere from October to February."
     ],
     stretch: [
-      ["Picking seed", "Modern hybrids like Indigo head up more reliably than older types."],
-      ["June or July", "Sow ¼ inch deep, or start in trays and transplant at about 4 weeks old, 8 to 12 inches apart."],
-      ["Summer", "Water evenly so the plants keep growing."],
-      ["Fall", "Leave the loose outer leaves; they protect the head forming in the center."],
-      ["September to late fall", "Cut heads at the base when they feel firm."]
+      ["June","Sow outdoors, or start in trays to transplant."],
+      ["July (west side)","Set out transplants for fall and winter heads.","spade"],
+      ["Summer","Keep the soil evenly moist so the plants keep growing."],
+      ["Fall and winter","Harvest heads as they firm up. A hard freeze can kill the outer leaves, but the head inside is fine once trimmed."]
     ],
     stages: [
       ["Fall", [
-        ["No head by early fall", "sown too early, or the plant stalled in summer", "cut it back to an inch or two; it may regrow a small head."],
-        ["Slugs inside the heads", "wet fall weather", "slug bait, and harvest promptly."]
+        ["Heads still green in September","some types only color up once nights turn cool","wait for cooler weather."],
+        ["Outer leaves blackened after a freeze","frost damage to the wrapper leaves","peel them off. The head inside is usually fine."]
+      ]]
+    ]
+  },
+  basil: {
+    why: [
+      "Basil's flavor goes downhill once temperatures start dropping below 50°F.",
+      "Downy mildew spores blow in on the wind and infect leaves that stay wet.",
+      "Unlike most herbs, basil wants rich soil, regular water and feeding."
+    ],
+    stretch: [
+      ["Before planting","Work compost into the bed. Basil needs richer soil than most herbs.","spade"],
+      ["All summer","Water when the soil is dry to your first knuckle, at the base rather than over the leaves."],
+      ["Once plants are growing","Mulch 2 to 3 inches deep with straw, compost or grass clippings to hold moisture.","spade"],
+      ["When flower clusters form","Cut the stem back at least 6 leaf nodes. Pinching just the tip only makes way for the next flower stalk."],
+      ["Fall","Cover plants with row cover on cool nights to stretch the season a little."]
+    ],
+    stages: [
+      ["Summer", [
+        ["Square clusters of leaves stacked at the stem tips","the plant is getting ready to flower","cut back at least 6 leaf nodes for a flush of new leaves."],
+        ["Yellowing leaves with purplish-brown fuzz underneath","downy mildew","pull infected plants and keep the leaves of the rest dry."]
+      ]],
+      ["Fall", [
+        ["Leaves lose their flavor","nights below 50°F","harvest heavily before cold nights, or use row cover."]
       ]]
     ]
   },
   dahlias: {
     steps: "Step by step through the season",
     why: [
-      "Tubers rot in cold, wet soil, which is common in Northwest spring clay.",
-      "Slugs and earwigs eat the new shoots just as they come up.",
-      "Frozen tubers die, so in wet clay or cold areas they have to be dug and stored over winter."
+      "Tubers rot easily in wet soil, especially between planting and the first leaves.",
+      "Slugs love young dahlia shoots, and earwigs chew the blooms later in summer.",
+      "Over winter, wet soil is more dangerous to tubers than cold, so they need excellent drainage or digging and storing."
     ],
     stretch: [
-      ["February or March (optional)", "Start tubers in 1-gallon pots of fresh potting mix indoors, with plenty of light so shoots don't get weak."],
-      ["Planting day", "Wait until the soil stays around 60°F, usually late April to May. Don't water until shoots appear."],
-      ["Two weeks after planting", "Put out slug bait, or as soon as the first shoots show."],
-      ["3 or 4 pairs of leaves", "Pinch out the center tip so the plant branches."],
-      ["Summer", "Water deeply about once a week, feed with low-nitrogen fertilizer, and cut flowers often."],
-      ["After frost blackens the leaves", "Dig the clumps, dry them a few days, and store at 40 to 50°F in barely damp shavings or peat."]
+      ["February or March (optional)","Start a tuber early in a 1-gallon pot of fresh potting soil, with plenty of light so it doesn't get leggy.","sprout"],
+      ["Planting day","Wait until the soil has stayed around 60°F for several days, usually late April to the end of May. Plant the tuber eye up, 4 to 6 inches deep, with a stake beside it."],
+      ["Until two leaves show","Don't water. The tuber is most likely to rot now."],
+      ["Two weeks after planting","Start slug bait or traps and keep it up all season."],
+      ["Young plants","Pinch out the sprout between the top pair of leaves so the plant branches."],
+      ["Summer","Keep the soil evenly moist but never soggy, and use a low-nitrogen fertilizer. Stop feeding by mid-August."],
+      ["After frost","Dig the clumps, wash and dry them, and store them somewhere dark that won't freeze, ideally 34 to 40°F."]
     ],
     stages: [
       ["Spring", [
-        ["Tubers never sprout and turn mushy", "cold, wet soil or watering too soon", "plant into warm soil and hold off watering until shoots show."],
-        ["Shoots chewed off overnight", "slugs or earwigs", "slug bait early, and rolled-up newspaper traps for earwigs."]
+        ["Tubers never sprout and turn mushy","watered too soon, or soggy soil","hold off watering until two leaves show, and improve drainage in clay."],
+        ["Shoots chewed off overnight","slugs","bait or trap from two weeks after planting."]
       ]],
       ["Summer", [
-        ["Lots of leaves, few flowers", "too much nitrogen", "switch to a low-nitrogen fertilizer."],
-        ["Mottled, streaked or crinkled leaves on a stunted plant", "likely a virus", "there's no cure; remove the plant so it doesn't spread."]
+        ["Weak stems and few flowers","too much nitrogen","switch to a low-nitrogen fertilizer such as 5-10-10."],
+        ["Stunted plant with yellow streaks or spots on the leaves","likely a virus","there's no cure. Remove the plant and tuber so it doesn't spread."],
+        ["Ragged holes in the blooms","earwigs","set out earwig traps and clear away debris."]
+      ]],
+      ["Storage", [
+        ["Tubers rot or shrivel over winter","too much nitrogen during the season, or stored wet","feed less nitrogen and store tubers dry and cool."]
       ]]
     ]
   },
   "sweet-peas": {
     steps: "Step by step through the season",
     why: [
-      "Hot weather ends the bloom, so plants need to flower in the cool weeks before summer.",
-      "As soon as a pod forms, the plant slows down flowering.",
-      "Slugs go after seedlings in cool, damp springs."
+      "Sweet peas have to grow in the cool part of the year. West of the Cascades, that means sowing before mid-March.",
+      "Slugs go after the seedlings as they come up.",
+      "Powdery mildew hits damp, crowded plantings, and pea enation virus shows up in hot weather."
     ],
     stretch: [
-      ["Late winter or early spring", "Soak the seeds overnight, then sow as early as the soil can be worked."],
-      ["Seedlings up", "Watch for slugs."],
-      ["3 or 4 pairs of leaves", "Pinch off the top for more stems, and guide the vines onto netting."],
-      ["Late spring", "Mulch to keep roots cool and water steadily."],
-      ["In bloom", "Cut flowers every day or two and snip off any pods."]
+      ["Before sowing","Pick a sunny, well-drained spot with good airflow. Dig a trench about 10 inches deep, half fill it with compost or rotted manure and top it with soil.","spade"],
+      ["Sowing day","Soak the seeds for 24 hours, then sow them ¾ to 1 inch deep and 2 inches apart. East of the Cascades and at higher elevations, sow a little later."],
+      ["Seedlings up","Protect them from slugs with traps or barriers, and from frost. Thin to 5 to 6 inches apart."],
+      ["About 4 inches tall","Pinch off the tips above the top leaves for a bushier plant with more flowering stems."],
+      ["Late spring","Mulch around the base to keep the soil cool, and water in dry spells."],
+      ["In bloom","Pick or remove spent flowers before pods form to keep them blooming."]
     ],
     stages: [
       ["Spring", [
-        ["Buds drop off", "a cold, cloudy spell", "nothing to do; they recover when the weather brightens."]
+        ["Seedlings chewed or gone overnight","slugs","traps or barriers around young plants."]
       ]],
       ["Summer", [
-        ["Blooming slows down", "pods forming, or heat", "pick every day or two and snip pods; in heat, the season is ending."]
+        ["White powder on the leaves","powdery mildew in damp, crowded spots","give plants more room and sun, and choose resistant varieties."],
+        ["Blooming slows down","pods are forming","remove spent flowers before they set pods."]
       ]]
     ]
   },
-  snapdragons: {
-    steps: "Step by step through the season",
+  cherries: {
+    steps: "Care through the year",
     why: [
-      "The seed is tiny and needs light to sprout, so it's easy to bury too deep.",
-      "Rust spreads in damp weather, and infected plants have to be pulled.",
-      "They bloom best in cool weather, and summer heat slows them east of the Cascades."
+      "Rain near harvest splits ripe sweet cherries, and cracked fruit draws spotted wing drosophila.",
+      "Bacterial canker kills branches and can girdle the trunk. It's a problem throughout the Northwest.",
+      "Sweet cherries don't tolerate wet or clay soil, and birds eat much of the fruit on a lone tree.",
+      "West of the Cascades, brown rot and cherry leaf spot are common; east of the Cascades, powdery mildew is."
+    ],
+    pollination: [
+      "Bing, Lambert and Royal Ann won't pollinate each other. Van, Corum and Bada are good partners for them.",
+      "Stella, Lapins and Sweetheart are self-fruitful, so one tree is enough.",
+      "Sour cherries such as Montmorency don't need a partner, and they have fewer disease problems."
     ],
     stretch: [
-      ["8 to 10 weeks before your last frost", "Press seed onto moist mix without covering it. It takes one to two weeks to sprout."],
-      ["A few weeks before the last frost", "Harden off and plant out; they handle light frost."],
-      ["Young plants", "Pinch above the third set of leaves for more stems, or leave them for one tall spike."],
-      ["Before they get tall", "Stretch netting over the bed so tall types grow up through it."],
-      ["In bloom", "Cut when the lower third of the flowers are open, and cut low for a second flush."]
-    ],
-    stages: [
-      ["Summer", [
-        ["Orange-brown spots under the leaves", "rust in damp weather", "water at the soil, give plants space, and bin infected plants."],
-        ["Few flowers in midsummer", "heat", "they pick up again as the weather cools in fall."]
-      ]]
-    ]
-  },
-  ranunculus: {
-    steps: "Step by step through the season",
-    why: [
-      "The corms rot in cold, soggy soil, which is common in a Northwest spring.",
-      "Young plants handle light frost but are damaged below about 25°F.",
-      "Summer heat ends the bloom, so they have to flower in late spring."
-    ],
-    stretch: [
-      ["Planting time", "Soak corms 3 to 4 hours in room-temperature water until they plump up."],
-      ["Optional head start", "Pre-sprout them in a tray of damp potting mix in a cool spot for 10 to 14 days, and skip any that rot."],
-      ["Early spring", "Plant 2 inches deep, claws down, in a raised bed or well-drained soil. Water once."],
-      ["Until leaves appear", "Don't water again."],
-      ["Cold nights", "Cover with frost cloth when it's forecast to drop below about 25°F."],
-      ["In bloom", "Cut when the buds are colored and feel soft like a marshmallow."]
+      ["Late winter","While the tree is bare, dormant oil helps with aphid and mite eggs and scale.","calendar"],
+      ["About Memorial Day","Cherry fruit flies come out about now. Hang traps so you know when they arrive."],
+      ["As fruit starts to color","Put netting over the tree, or just the lower limbs, before birds find it. Spotted wing drosophila starts laying eggs now too.","net"],
+      ["Harvest","Pick sweet cherries when they taste ripe, and pick up every dropped fruit.","basket"],
+      ["After harvest, in dry weather","Cut out branches with canker and get rid of the wood.","pinch"],
+      ["Leaf fall","Rake up and destroy fallen leaves and any shriveled fruit. Don't use them as mulch near the tree.","calendar"]
     ],
     stages: [
       ["Spring", [
-        ["Corms turn mushy and never sprout", "cold, soggy soil", "raised beds, and no water until leaves show."],
-        ["Leaves blacken after a cold night", "a hard frost", "frost cloth on cold nights."]
+        ["Branches die back","bacterial canker or Cytospora canker","cut out the infected wood after harvest, in dry weather."]
+      ]],
+      ["Summer", [
+        ["Maggots in ripe fruit","cherry fruit fly or spotted wing drosophila","see the fruit fly notes#pests"],
+        ["Fruit rots on the tree as harvest nears","brown rot, worst when it rains in the last two weeks before picking","pick promptly and clear away rotten fruit."]
+      ]],
+      ["Fall", [
+        ["Spotted leaves that drop early","cherry leaf spot, mostly west of the Cascades","rake and destroy fallen leaves; don't use them as mulch near the tree."]
+      ]]
+    ]
+  },
+  peaches: {
+    steps: "Care through the year",
+    why: [
+      "Peaches bloom early, when it's often too cool and wet for good pollination, and clear nights bring frost.",
+      "Wet weather brings peach leaf curl, shothole and brown rot. In cool, wet climates, unsprayed trees soon die.",
+      "They need heavy feeding and pruning. They're one of the hardest fruits to grow, though many home gardeners manage it.",
+      "Frost and Rosydawn resist leaf curl, which takes much of the work out of it."
+    ],
+    pollination: [
+      "Peaches don't need a second tree.",
+      "Nectarines bloom even earlier and get more disease than peaches."
+    ],
+    stretch: [
+      ["Mid-December, then again before January 15","Two leaf curl sprays (fixed copper or chlorothalonil) while the tree is dormant.","calendar"],
+      ["Late February","One more leaf curl spray. Dormant oil for aphid and mite eggs and scale goes on separately, not mixed in.","calendar"],
+      ["Before buds open","Remove any shriveled fruit left in or under the tree.","calendar"],
+      ["Bloom","Brown rot can blight the blossoms in wet springs. The usual control is a spray once a week from first pink to petal fall.","flower"],
+      ["Within 30 days after bloom","Thin young fruit to 6 to 8 inches apart. Trees drop some fruit on their own in early June, so leave a few extra.","pinch"],
+      ["Early July","Check the base of the trunk for peach tree borers. Young trees are hit hardest.","calendar"],
+      ["Until harvest","Pick up fallen or rotting fruit often so brown rot doesn't spread.","basket"],
+      ["As leaves start to fall","Leaf curl spray again. West of the Cascades, do every one of these spray timings.","calendar"]
+    ],
+    stages: [
+      ["Bloom", [
+        ["Blossoms wilt and the rot moves into the shoots","brown rot blossom blight","spray once a week from first pink to petal fall next spring, and clear out shriveled fruit in winter."]
+      ]],
+      ["Spring", [
+        ["Red, puckered leaves","peach leaf curl","see the leaf curl notes#pests"]
+      ]],
+      ["Summer", [
+        ["Branches die back","Cytospora canker or bacterial canker","cut out and destroy infected wood in winter."],
+        ["Larvae in fruit left to ripen on the tree","spotted wing drosophila","pick as soon as fruit is ripe."]
+      ]]
+    ]
+  },
+  apples: {
+    steps: "Care through the year",
+    why: [
+      "Codling moth is in every apple-growing area here and gives wormy apples unless you control it.",
+      "West of the Cascades, apple scab is common in wet springs. Delicious is especially prone; Liberty, Prima, Akane and Chehalis resist it.",
+      "Rootstock sets the tree's size, from about 5 to 10 feet across on dwarf roots to 30 to 40 feet on vigorous ones. Dwarf trees need a stake or trellis."
+    ],
+    pollination: [
+      "Most apples need pollen from another tree, often a different variety, blooming nearby.",
+      "Akane, Chehalis and Lodi are self-compatible, so a second tree of the same variety works as the partner."
+    ],
+    stretch: [
+      ["Late winter","Prune to open the tree to light and air. Remove diseased branches, fallen leaves and any shriveled fruit still hanging.","pinch"],
+      ["Before bloom","Hang codling moth pheromone traps in the upper third of the tree to see when the moths start flying.","calendar"],
+      ["Within about 20 days of petal fall","Leave one apple per spur, about one every 6 inches of branch, before they reach the size of a dime.","pinch"],
+      ["Right after thinning","Slip mesh bags over young apples to keep out codling moth, apple maggot and stink bugs.","net"],
+      ["Late July to harvest","Where apple maggot is found, hang sticky traps to catch and track the flies.","calendar"],
+      ["Fall","Rake up fallen leaves so scab has less to start from next spring.","calendar"]
+    ],
+    stages: [
+      ["Spring", [
+        ["White, powdery shoot tips","powdery mildew; most scab-resistant varieties are prone to it","prune off infected shoots regularly."],
+        ["Blossoms and shoots blacken and die","fire blight, which is rare in the Willamette Valley and Coast Range","cut 12 inches below the damage and dip pruners in 10% bleach or 70% alcohol between cuts."]
+      ]],
+      ["Summer", [
+        ["Tunnels to the core with brown crumbs at the hole","codling moth","see the codling moth notes#pests"],
+        ["Lots of small apples, then few flowers next spring","too much fruit left on the tree","thin earlier next year, one apple per spur."]
+      ]]
+    ]
+  },
+  figs: {
+    steps: "Care through the year",
+    why: [
+      "Only a few varieties, like Desert King, Lattarula and Brown Turkey, reliably ripen a crop here.",
+      "Temperatures around 0°F kill parts of the tree, and a hard winter can freeze the first crop.",
+      "They need the hottest spot you have, ideally against a south-facing wall, and soil near pH 6.5 to 7. Many west-side soils need lime."
+    ],
+    pollination: [
+      "The figs grown here set fruit without a second tree.",
+      "Desert King, Lattarula and White Kadota can give two harvests a year."
+    ],
+    stretch: [
+      ["January or February","Prune while dormant to open up the middle and keep the tree under about 8 feet.","pinch"],
+      ["Spring, as leaves come out","Check last year's small figs. Black ones are dead; cut those tips back to push new growth for the second crop.","pinch"],
+      ["Each year","Top-dress with compost instead of synthetic fertilizer, and don't feed in summer.","feed"],
+      ["Dry spells","Once the tree is established, about 1 inch of water every couple of weeks is plenty.","water"],
+      ["August on","Pick figs as soon as they droop and soften.","basket"],
+      ["Hard freezes","Protect young trees with mulch or wraps. A frozen tree often grows back from the lower stems in two or three years.","frost"]
+    ],
+    stages: [
+      ["Spring", [
+        ["Overwintered fruit has turned black","the first crop froze","cut those tips off early so the second crop has time to ripen."],
+        ["Branches dead back toward the base","a cold snap near 0°F","cut out the dead wood; trees regrow to fruiting size in two or three years."]
+      ]],
+      ["Fall", [
+        ["Green figs at the end of the season","a late variety or a cool spot","see the late figs notes#pests"]
+      ]]
+    ]
+  },
+  grapes: {
+    steps: "Care through the year",
+    why: [
+      "They need 150 to 180 frost-free days. On the coast and in cooler parts of the Willamette Valley, choose early to mid-season varieties; late ones like Concord may not ripen.",
+      "New shoots in April and May are easily hurt by frost.",
+      "Cool, wet falls bring bunch rot, and powdery mildew is worst on European varieties."
+    ],
+    stretch: [
+      ["January to early March","Prune while dormant. Expect to cut off about 90% of last year's growth, leaving 20 to 60 buds per vine.","pinch"],
+      ["Frosty sites","Leave a few extra-long canes when you prune to hold back bud break, then trim the extra once frost risk passes.","frost"],
+      ["Shoots about 6 inches long","Snap off the extra shoots so one remains at each bud.","pinch"],
+      ["Just before bloom","On young vines, leave one cluster per shoot.","pinch"],
+      ["By late June, when grapes are pea-size","Pull 2 to 4 leaves per shoot around the clusters, on the morning-sun side only.","sun"],
+      ["As grapes change color (about mid-August)","Net the vines against birds and set wasp traps in the row.","net"],
+      ["Harvest","Very early varieties are ready about early September in the Willamette Valley; Concord may take until mid-October.","basket"]
+    ],
+    stages: [
+      ["Spring", [
+        ["Twisted leaves and shoot tips","weed killer drift, especially 2,4-D","don't spray weed killer near grapes, and never on hot or windy days."],
+        ["Stunted shoots that grow in a zig-zag","zinc or boron shortage, weed killer, frost or mites","test the soil and look for nearby spraying."]
+      ]],
+      ["Summer", [
+        ["Yellow-brown patches on leaves, gray netting on berries","powdery mildew","see the powdery mildew notes#pests"],
+        ["Fuzzy spots under the leaves","grape erineum mite","nothing to do; it doesn't hurt the vine or the fruit."]
+      ]],
+      ["Fall and winter", [
+        ["Berries emptied out to a hard shell","wasps and hornets","set traps in the row."],
+        ["Bark chewed at the base of the trunk","voles and mice","keep tall grass and mulch away from the trunk."]
+      ]]
+    ]
+  },
+  "hardy-kiwi": {
+    steps: "Care through the year",
+    why: [
+      "Vines are male or female, and you can't tell which until they bloom. Without a male nearby, most females won't fruit.",
+      "They leaf out early, as soon as late February west of the Cascades, and 30 minutes at 30°F can kill the new shoots.",
+      "Soggy soil raises the risk of root rot.",
+      "The first crop comes in the third year."
+    ],
+    pollination: [
+      "Plant a female and a male of the same species, and label them. Buyers sometimes end up with two males or two females.",
+      "Issai is partly self-fertile and fruits without a male, though its fruit is smaller than Ananasnaya's."
+    ],
+    stretch: [
+      ["Winter","Prune the female vines while they're dormant. Leave the males alone for now.","pinch"],
+      ["Late winter to spring","When frost is forecast after buds open, put row cover over the vine the afternoon before and leave it until the cold passes.","cover"],
+      ["March","Feed established vines: two-thirds of the year's fertilizer now, the rest in May or June.","feed"],
+      ["Right after bloom (about late June)","Prune the male vines.","pinch"],
+      ["Summer","Water so the top foot of soil stays moist but never waterlogged. Stop feeding young vines after July.","water"],
+      ["September","Taste kiwiberries once they start to soften. When they taste good, start picking.","basket"]
+    ],
+    stages: [
+      ["Spring", [
+        ["New shoots blacken after a cold night","frost on the early shoots","wait; buds that hadn't opened yet usually grow in and still fruit."]
+      ]],
+      ["Bloom", [
+        ["Flowers but no fruit","no male nearby, or two vines of the same sex","check the flowers: male flowers have only pollen-bearing stamens, females have a branched center."]
+      ]],
+      ["Summer", [
+        ["Leaves start to fold or wilt","dry soil","water right away, wetting the soil a foot deep."],
+        ["Scarred fruit","wind rubbing fruit together, or hail","give the vine shelter from strong wind."]
+      ]]
+    ]
+  },
+  raspberries: {
+    steps: "Care through the year",
+    why: [
+      "They're very sensitive to poor drainage. Roots need soil at least 2 feet, ideally 3, above the water table, which usually means a raised bed.",
+      "Spotted wing drosophila lays eggs in ripening berries and builds up as summer goes on, so fall-bearing kinds get hit hardest.",
+      "They like soil pH 5.6 to 6.5, often higher than native soils on the coast."
+    ],
+    stretch: [
+      ["Before planting","Skip spots where strawberries, potatoes, tomatoes, peppers or eggplant grew in the last 5 years. They carry verticillium wilt.","spade"],
+      ["December to February","Summer-bearing kinds: remove weak, broken or damaged canes, keep the row 6 to 12 inches wide, and cut the rest to about 6 feet.","pinch"],
+      ["March","Fall-bearing kinds grown for one crop: cut every cane to just above the ground.","pinch"],
+      ["Harvest","Pick at least every 3 to 4 days, into shallow containers so the berries don't crush.","basket"],
+      ["After the summer crop","Cut the canes that fruited at the base. Do it right away if they look diseased; otherwise you can wait until fall.","pinch"]
+    ],
+    stages: [
+      ["Spring", [
+        ["Canes wilt and die in wet ground","root rot","see the root rot notes#pests"]
+      ]],
+      ["Summer", [
+        ["Soft berries with tiny larvae","spotted wing drosophila","see the drosophila notes#pests"]
+      ]]
+    ]
+  },
+  persimmons: {
+    steps: "Care through the year",
+    why: [
+      "Some years there aren't enough warm days to ripen the fruit, which comes in November.",
+      "Most persimmons are very astringent until they're soft-ripe. Fuyu is much less so.",
+      "The good news: Japanese persimmons have few pests here."
+    ],
+    pollination: [
+      "Fuyu and other Japanese types that ripen west of the Cascades are seedless and fruit without a partner.",
+      "American persimmons need two or more varieties or seedlings planted together."
+    ],
+    stretch: [
+      ["Planting","Give it your warmest, sunniest spot, and choose an early variety.","sun"],
+      ["After fruit sets","Thin the fruit; persimmons respond well to it.","pinch"],
+      ["November","Harvest. Fruit that isn't soft yet can finish ripening in a box in a clean, dry place like a garage.","basket"]
+    ],
+    stages: [
+      ["Summer", [
+        ["Young fruit drops","dry soil","see the fruit drop notes#pests"]
+      ]],
+      ["Fall", [
+        ["Fruit puckers your mouth","an astringent type that isn't soft-ripe yet","let it get fully soft before eating, or grow Fuyu."],
+        ["Fruit still hard as frost arrives","too few warm days this year","pick it and let it ripen in a box in the garage."]
+      ]]
+    ]
+  },
+  "asian-pears": {
+    steps: "Care through the year",
+    why: [
+      "You need at least two or three varieties for cross-pollination.",
+      "Fire blight is a serious threat in southern and eastern areas, though it's not common in the Willamette Valley or Coast Range.",
+      "Codling moth and bacterial blossom blast turn up everywhere."
+    ],
+    pollination: [
+      "Plant at least two or three varieties, such as Shinseiki, Kosui, Hosui, Chojuro and Nijisseiki."
+    ],
+    stretch: [
+      ["Late winter","Prune to open the tree. Remove diseased branches, fallen leaves and any fruit left from last year.","pinch"],
+      ["Before buds open","A fixed copper spray helps prevent blossom blast.","calendar"],
+      ["Before bloom","Hang codling moth pheromone traps in the upper third of the tree.","calendar"],
+      ["Within about 20 days of petal fall","Leave one fruit per spur, about one every 6 inches of branch.","pinch"],
+      ["Summer","Light summer pruning helps cut branch dieback from blossom blast.","pinch"],
+      ["August to September","Pick when ripe. Unlike European pears, Asian pears ripen on the tree and are crisp like apples.","basket"]
+    ],
+    stages: [
+      ["Spring", [
+        ["Blossoms and young shoots blacken and die back","bacterial blossom blast (Pseudomonas)","copper before buds open next year, and summer pruning."],
+        ["Blackened, curled shoot tips","fire blight","see the fire blight notes#pests"]
+      ]],
+      ["Summer", [
+        ["Worms tunneling to the core","codling moth","use pheromone traps before bloom to time control, and pick up damaged fruit."]
       ]]
     ]
   }

@@ -265,7 +265,7 @@ Object.assign(X, {
     pests: [["Cool soil", "Slips sit still for weeks.", "Lay black plastic a week before planting and plant in the warmest bed."],
       ["Voles", "Tunnels and chewed roots.", "Dig promptly when soil cools, and trap voles if they're active."]] },
   pumpkins: { pick: "9-10",
-    many: "For a family of four, 2 to 4 plants. Each vine needs 50 to 100 square feet.",
+    many: "For a family of four, 2 to 4 plants. Each plant needs about 16 to 36 square feet, with hills 4 to 6 feet apart; giant pumpkins need far more.",
     yield: "About 2 to 5 pumpkins per plant for medium sizes.",
     store: "Cure in a warm room for a week or two. Keep at 50 to 55°F for two to three months.",
     good: [["Corn", "Pumpkin vines shade the soil under the stalks."], ["Nasturtiums", "Draw bees that pollinate the flowers."]],

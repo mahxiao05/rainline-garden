@@ -920,10 +920,10 @@ const notes = {
     ]
   },
   celery: {
-    keys: [["Start indoors","10–12 weeks before"], ["Nights before planting","Above 50°F"], ["Water","1–2 inches a week"], ["Biggest risk","Bolting"]],
+    keys: [["Start indoors","8–10 weeks before"], ["Nights before planting","Above 50°F"], ["Water","1–2 inches a week"], ["Biggest risk","Bolting"]],
     sections: [
       ["Starting celery from seed",
-        "Celery seed is tiny and slow. Sow it indoors 10 to 12 weeks before planting time, pressing it onto the surface of the mix without covering it, since it needs light to sprout. Keep it at about 70°F; it can take two to three weeks to come up. Seedlings grow slowly at first, so be patient. Buying starts is a good shortcut."],
+        "Celery seed is tiny and slow. Sow it indoors 8 to 10 weeks before planting time, pressing it onto the surface of the mix without covering it, since it needs light to sprout. Keep it at about 70°F; it can take two to three weeks to come up. Seedlings grow slowly at first, so be patient. Buying starts is a good shortcut."],
       ["Why timing matters",
         "Celery is a biennial: it normally makes leaves one year and flowers the next. A week or more of nights below about 50°F convinces a young plant it has been through winter, and it bolts to seed in summer instead of making stalks. That's why the planting dates here wait for warmer nights than other cool-season crops.",
         "Harden seedlings off gradually, and if a cold snap comes after planting, cover them with row cover."],
@@ -972,7 +972,7 @@ const notes = {
     ]
   },
   pumpkins: {
-    keys: [["Soil to sprout","70–90°F"], ["Days to harvest","90–120"], ["Space per plant","25–50 sq ft"], ["Biggest risk","Powdery mildew"]],
+    keys: [["Soil to sprout","70–90°F"], ["Days to harvest","90–110"], ["Space per plant","16–36 sq ft"], ["Biggest risk","Powdery mildew"]],
     sections: [
       ["Timing for Halloween",
         "Most carving pumpkins need 90 to 110 days from planting to ripe. Count back from early October: in most of the Northwest that means plants should be in the ground by late May or early June. Starting them indoors three to four weeks early gives you a head start in cool springs. Pumpkins that ripen in September keep fine in a cool, dry spot until Halloween."],
