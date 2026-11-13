@@ -117,6 +117,7 @@ const AUTHORS = {
     photo: { img: "jigmey-river", alt: "A calm green river lined with tall fir trees under a clear blue summer sky, with maple leaves overhead and mossy rocks along the bank" },
     facts: ["Grew up in Oregon", "Gardens in Happy Valley, Oregon", "Years of growing vegetables at home", "Checks dates against NOAA weather records"],
     bio: "Jigmey Dorjee grew up in Oregon, where gardening means working with the weather: cold, wet springs, dry summers and long, mild falls. He's an experienced home gardener who has grown his own vegetables for years, and he knows firsthand that a Northwest garden runs on a different calendar than the national planting charts. He writes about vegetables and planting timing for Rainline Garden and checks the advice against NOAA weather records and university research.",
+    meta: "Jigmey Dorjee grew up in Oregon and grows vegetables at home in Happy Valley. He writes about vegetables and planting dates, checked against NOAA records.",
     short: "Jigmey Dorjee grew up in Oregon and has grown his own vegetables at home for years. He writes about vegetables and planting timing, and checks the advice against NOAA weather records and university research."
   },
   "elaine-holloway": {
@@ -125,6 +126,7 @@ const AUTHORS = {
     photo: { img: "elaine-gorge", alt: "The Columbia River Gorge from a stone overlook, the river winding east between green forested hills under a big cloudy sky" },
     facts: ["Born and raised in the Portland area", "Studied environmental science at Portland State", "Focus: soil health, native and pollinator plants"],
     bio: "Elaine Holloway was born and raised in the greater Portland area, where she grew up helping family tend backyard vegetable plots, native plant borders and container gardens. A lifelong gardener, she focuses on regional horticulture: building healthy soil, managing moisture through wet Northwest winters and dry summers, choosing native and climate-adapted plants, and adding pollinator-friendly, low-maintenance plantings to home gardens. She studied environmental science with a focus on horticulture at Portland State University, including plant ecology, sustainable agriculture and native plants. Where Jigmey covers vegetables and planting dates, Elaine covers the soil underneath them and the perennials, herbs and flowers around them.",
+    meta: "Elaine Holloway, a lifelong Portland-area gardener who studied environmental science at Portland State, writes about soil, perennials and native plants.",
     short: "Elaine Holloway was born and raised in the Portland area, has gardened all her life and studied environmental science at Portland State. She writes about soil, moisture, perennials and native and pollinator-friendly plants for Northwest gardens.",
     // Harvest photos in assets/img/results/{img}-480/-800 (.jpg + .webp, 4:5). Caption parts: plain text, or [text, crop id] to link a plant page.
     results: [
@@ -1027,7 +1029,7 @@ function trickyParts(c) {
   };
   const words = () => used.length ? `<details class="tricky-words"><summary>Words used here (${used.length})</summary><dl>${used.map(id => `<dt>${esc(GL_TERMS[id][0])}</dt><dd>${esc(GL_TERMS[id][2])}</dd>`).join("")}</dl></details>` : "";
   const fix = f => f.endsWith("#pests") ? `<a href="#pests">${esc(f.slice(0, -6))}</a>` : gl(f);
-  return `${phoneFold("tricky", `Why ${name} ${/s$/.test(name) ? "are" : "is"} tricky here`, `<ul class="tricky-why">${t.why.map(w => `<li>${gl(w)}</li>`).join("")}</ul>
+  return `${phoneFold("tricky", `Why ${name}${G.crops[c.id] && G.crops[c.id].difficulty === 2 ? " can be" : (/s$/.test(name) ? " are" : " is")} tricky here`, `<ul class="tricky-why">${t.why.map(w => `<li>${gl(w)}</li>`).join("")}</ul>
 ${t.pollination ? `<h3 class="tricky-h">Pollination partners</h3>
 <ul class="tricky-why tricky-pol">${t.pollination.map(w => `<li>${gl(w)}</li>`).join("")}</ul>
 ` : ""}<h3 class="tricky-h">${esc(t.steps || "Stretching the season, step by step")}</h3>
@@ -1859,7 +1861,7 @@ ${ad("article-bottom")}
 <h2>Plants in this article</h2>
 <ul class="chips">${a.crops.map(id => `<li><a href="${rel}when-to-plant/${id}/">${R.icon(id, rel, 24)}${cropById(id).name}</a></li>`).join("")}</ul>
 ${a.crops.some(id => TRICKY[id]) ? `<h2>When it goes wrong</h2>
-<ul class="trouble-links">${a.crops.filter(id => TRICKY[id]).slice(0, 4).map(id => { const nm = cropById(id).name, why = `why ${esc(lc(nm))} ${/s$/.test(nm) ? "are" : "is"} tricky here`;
+<ul class="trouble-links">${a.crops.filter(id => TRICKY[id]).slice(0, 4).map(id => { const nm = cropById(id).name, why = `why ${esc(lc(nm))}${G.crops[id] && G.crops[id].difficulty === 2 ? " can be" : (/s$/.test(nm) ? " are" : " is")} tricky here`;
   return TRICKY[id].stages.length ? `<li><a href="${rel}when-to-plant/${id}/#warning-signs">${esc(nm)}: signs something's going wrong</a> <span>and <a href="${rel}when-to-plant/${id}/#tricky">${why}</a></span></li>` : `<li><a href="${rel}when-to-plant/${id}/#tricky">${esc(nm)}: ${why}</a></li>`; }).join("")}</ul>` : ""}
 ${newsletter()}
 <h2>More guides</h2>
@@ -2335,7 +2337,7 @@ Object.keys(AUTHORS).filter(id => AUTHORS[id].page).forEach(id => {
   write(rel, `about/${id}/index.html`, layout({
     rel, canonical: `about/${id}/`, current: "about/",
     title: `${a.name}, ${a.role.toLowerCase()} | Rainline Garden`,
-    description: a.short,
+    description: a.meta || a.short,
     image: a.photo ? `assets/img/authors/${a.photo.img}-1280.jpg` : undefined,
     jsonld: [{ "@context": "https://schema.org", "@type": "ProfilePage", url: CONFIG.siteUrl + authorPath(id),
       mainEntity: { ...authorLd(id), jobTitle: a.role, description: a.bio, worksFor: { "@type": "Organization", name: CONFIG.siteName, url: CONFIG.siteUrl } } }],
