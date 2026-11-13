@@ -15,14 +15,14 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0B1A15">
 <script>try{var t=localStorage.getItem("rainline-theme");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"";if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="icon" href="../../favicon.ico" sizes="48x48">
-<link rel="icon" href="../../assets/icon-96.png" type="image/png" sizes="96x96">
-<link rel="icon" href="../../assets/icon-192.png" type="image/png" sizes="192x192">
-<link rel="icon" href="../../assets/icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="icon" href="../../favicon.ico?v=2" sizes="48x48">
+<link rel="icon" href="../../assets/icon-96.png?v=2" type="image/png" sizes="96x96">
+<link rel="icon" href="../../assets/icon-192.png?v=2" type="image/png" sizes="192x192">
+<link rel="icon" href="../../assets/icon.svg?v=2" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png?v=2">
 <link rel="manifest" href="../../site.webmanifest">
 <link rel="stylesheet" href="../../assets/fonts/fonts.css?v=0146e8b9">
-<link rel="stylesheet" href="../../assets/style.css?v=f8065fea">
+<link rel="stylesheet" href="../../assets/style.css?v=85d6dfd2">
 
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://rainlinegarden.org/"},{"@type":"ListItem","position":2,"name":"Town calendars","item":"https://rainlinegarden.org/frost-dates/"},{"@type":"ListItem","position":3,"name":"Medford, OR"}]}</script>
@@ -123,7 +123,7 @@ z.addEventListener("input",function(){if(z.value.replace(/\D/g,"").length===5)lo
 function send(){var b=f.querySelector("button[type=submit]");b.disabled=true;
 fetch(f.action,{method:"POST",body:new URLSearchParams(new FormData(f)),mode:"no-cors"}).then(function(){f.hidden=true;done.hidden=false;done.focus()},function(){b.disabled=false;f.submit()})}
 f.addEventListener("submit",function(e){if(!window.fetch||!window.FormData||!window.URLSearchParams||!window.Promise)return;e.preventDefault();
-if(!f.querySelector("#nl-email").checkValidity()){f.reportValidity();return}
+var em=f.querySelector("#nl-email");if(!em.checkValidity()){em.reportValidity();return}
 if(s.value)return send();
 if(!z.value){say("Enter your ZIP code, or pick your town.",true);showTown();z.focus();return}
 look().then(function(ok){if(ok)send()})})})()</script>
@@ -143,6 +143,6 @@ look().then(function(ok){if(ok)send()})})})()</script>
 <script src="../../assets/plan.js?v=b996308b"></script>
 <script src="../../assets/render.js?v=dc658a89"></script>
 <script src="../../assets/app.js?v=60793ca9"></script>
-<script src="../../assets/nav.js?v=e776c190" defer></script>
+<script src="../../assets/nav.js?v=b539d54e" defer></script>
 </body>
 </html>

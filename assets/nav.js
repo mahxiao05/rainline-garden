@@ -130,8 +130,8 @@
   }
   function href(item) {
     var slug = town();
-    // With a town saved, a plant goes straight to its dates for that town.
-    return base + (item.k === "crop" && slug ? item.u + slug + "/" : item.u);
+    // With a town saved, a plant opens on its page with that town's dates.
+    return base + (item.k === "crop" && slug ? item.u + "?town=" + slug + "#your-town" : item.u);
   }
   function run() {
     if (!index) { list.innerHTML = ""; return; }

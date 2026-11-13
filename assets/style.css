@@ -2876,3 +2876,6 @@ h2, .why-dates h2, .fall-now-h { text-transform: none; letter-spacing: 0; line-h
 .trouble-links li{padding:.55rem 0;border-bottom:1px solid var(--line,#e2ddd0);line-height:1.45}
 .trouble-links li>a:first-child{font-weight:600}
 .trouble-links .tj-when{font-weight:600;color:var(--muted,#5b6156)}
+
+/* Keep these closed until a script fills them (their display rules above beat the hidden attribute). */
+.menu-town[hidden], .hz-mine[hidden] { display: none; }
