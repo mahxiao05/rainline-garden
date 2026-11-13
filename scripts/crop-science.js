@@ -162,7 +162,7 @@ module.exports = {
     keys: [["Soil pH", "6.0–7.5"], ["Hardy to", "Low teens °F"], ["Frost", "Makes leaves sweeter"], ["Clubroot fix", "Lime to pH 7.2"], ["Leave on plant", "Top 5–6 leaves"], ["Keeps", "1–2 weeks cold"]],
     sections: [
       ["Why frost makes kale sweeter",
-        "As temperatures drop, kale converts some of its starch into sugars, which act as a natural antifreeze in its cells. The result is noticeably sweeter, milder leaves after a few frosts. Hardy varieties like Winterbor and Red Russian survive into the low teens or below, and west of the Cascades kale often produces all winter."],
+        "As temperatures drop, kale converts some of its starch into sugars, which act as a natural antifreeze in its cells. Hardy varieties like Winterbor and Red Russian survive into the low teens or below, and west of the Cascades kale often produces all winter."],
       ["Soil and clubroot",
         "Kale grows best in fertile soil with a pH of about 6.0 to 7.5. In the Northwest, the main soil threat is clubroot, a soilborne disease of the whole cabbage family that causes swollen, distorted roots and wilting plants. It thrives in acidic, wet soil, and its spores survive in the ground for many years.",
         "If clubroot has shown up before, raise the pH to about 7.2 with lime at least a month before planting, improve drainage, and don't plant any cabbage-family crops in that spot for several years. Start with clean transplants and don't move soil from infected beds."],
@@ -194,9 +194,9 @@ module.exports = {
       ["Why chard bolts",
         "As a biennial, chard flowers after a period of cold. Plants that came through winter will bolt the next spring, and spring plantings that hit a long cold spell soon after sprouting can bolt early too. Once a flower stalk forms, the leaves get smaller and tougher, so start a new planting."],
       ["Pests and diseases",
-        "Leaf miners leave pale, winding tunnels and blotches in leaves. Pick off affected leaves early and use row cover over young plants. Cercospora leaf spot causes small round spots with reddish-purple edges in warm, humid weather. Remove spotted leaves and water at the base. Slugs are a constant in the Northwest."],
+        "Leaf miners leave pale, winding tunnels and blotches in leaves. Cercospora leaf spot causes small round spots with reddish-purple edges in warm, humid weather. Remove spotted leaves and water at the base. Slugs are a constant in the Northwest."],
       ["Harvest and kitchen notes",
-        "Cut the outer stalks near the base when they're 8 to 12 inches tall, and leave the center to keep growing. Like spinach, chard contains oxalates, which give it a slightly mineral bite; cooking reduces them. Bagged in the fridge, it keeps about a week."]
+        "Cut the outer stalks near the base when they're 8 to 12 inches tall, and leave the center to keep growing. Like spinach, chard contains oxalates, which give it a slightly mineral bite; cooking reduces them."]
     ],
     faq: [
       ["Why do several chard seedlings come up from one seed?", "Each chard \"seed\" is really a dried fruit cluster with several seeds inside, the same as beets. Thin each clump to the strongest seedling; the extras are good in salads."],
@@ -231,9 +231,9 @@ module.exports = {
     keys: [["Soil to sprout", "60°F min, 70–95°F best"], ["Chill damage", "Below 50°F"], ["Soil pH", "6.0–7.5"], ["Water", "1 inch a week"], ["Each flower opens", "One morning only"], ["Pick at", "6–8 inches"]],
     sections: [
       ["Warm soil first",
-        "Squash seeds need soil of at least 60°F to sprout, and they come up fastest at 70 to 95°F. In cold, wet soil they rot before they emerge, which is why squash sown too early in the Northwest often fails. Plants are also damaged by long spells below about 50°F. Wait for warm soil, or start seeds indoors two to three weeks before planting out."],
+        "Squash seeds need soil of at least 60°F to sprout, and they come up fastest at 70 to 95°F. In cold, wet soil they rot before they emerge, which is why squash sown too early in the Northwest often fails. Plants are also damaged by long spells below about 50°F. Wait for warm soil, or start seeds indoors three to four weeks before planting out."],
       ["Male and female flowers",
-        "Squash plants make separate male and female flowers. Males usually appear first, often for a week or more, and those early blossoms fall off without producing anything. That's normal. Female flowers have a tiny squash at their base.",
+        "Squash plants make separate male and female flowers. Males usually appear first, often for a week or more, and those early blossoms fall off without producing anything. That's normal.",
         "Each flower opens for one morning only, and bees have to carry pollen from a male to a female. In cool or rainy weather, few bees fly. Poorly pollinated fruit starts to grow, then turns yellow and shrivels from the tip. If that's happening, hand-pollinate: early in the morning, pick a male flower, peel back its petals and brush its pollen onto the center of an open female flower."],
       ["Soil, water and feeding",
         "Squash are heavy feeders. Grow them in soil rich in compost with a pH of about 6.0 to 7.5, and give them about an inch of water a week, at the base of the plant. Big leaves often wilt in afternoon heat even when the soil is moist; if they recover by evening, the plant is fine."],
@@ -254,7 +254,7 @@ module.exports = {
     sections: [
       ["Racing the season",
         "Winter squash needs a long, warm season, often 85 to 110 days from sowing, and the fruit has to mature fully before fall rains and frost. Seeds need soil of at least 60°F to sprout, and plants stall below about 50°F. In the Northwest, that makes the choice of variety and an early, warm start the deciding factors.",
-        "Faster varieties like Delicata and small pie pumpkins ripen far more reliably here than big storage squash or giant pumpkins. Start seeds indoors two to three weeks before planting out, and lay black plastic mulch to warm the soil several degrees."],
+        "Faster varieties like Delicata and small pie pumpkins ripen far more reliably here than big storage squash or giant pumpkins. Start seeds indoors three to four weeks before planting out, and lay black plastic mulch to warm the soil several degrees."],
       ["Pollination",
         "Like zucchini, winter squash has separate male and female flowers, and bees carry the pollen. The first flowers are usually male and drop without fruiting. In cool weather, hand-pollinating in the morning helps fruit set early enough to ripen."],
       ["Focusing the plant",
@@ -262,7 +262,7 @@ module.exports = {
       ["Soil, water and disease",
         "Grow winter squash in rich, well-drained soil with a pH of about 6.0 to 7.5 and plenty of compost. Water deeply, about an inch a week, at the base of the plant. Powdery mildew shows up in late summer; resistant varieties and good spacing help, and squash that's already mature is rarely affected."],
       ["Ripeness, curing and storage",
-        "A ripe winter squash has a hard rind you can't dent with a fingernail, a dry, corky stem, and a spot where it rested on the soil that has turned cream or orange. Harvest before a hard frost, leaving a few inches of stem on.",
+        "Harvest before a hard frost, leaving a few inches of stem on.",
         "Most types, including butternut, kabocha, buttercup and pumpkins, store better after curing for about 10 days somewhere warm, around 80°F. That hardens the skin and heals small wounds. Acorn and delicata don't need curing. Store squash at 50 to 55°F in a dry spot. Butternut and kabocha get sweeter for several weeks after harvest as starches turn to sugar; delicata and acorn are best eaten within a couple of months."]
     ],
     faq: [
@@ -307,7 +307,7 @@ module.exports = {
       ["Disease",
         "Bacterial blights and white mold spread easily on wet leaves. Water at the base, give plants room for airflow, and avoid working among them or picking while the leaves are wet, since you can carry bacteria from plant to plant on your hands."],
       ["Harvest and storage",
-        "Pick snap beans when pods are about as thick as a pencil and before seeds bulge. Once seeds start to mature, the plant slows down, so frequent picking keeps it producing for weeks. Store in the fridge and use within about a week."]
+        "Once seeds start to mature, the plant slows down, so frequent picking keeps it producing for weeks. Store in the fridge and use within about a week."]
     ],
     faq: [
       ["Should I soak bean seeds before planting?", "No. Bean seeds that take up water too fast, especially in cold soil, can be damaged and rot. Plant dry seed in moist soil that's at least 60°F, and water once."],
@@ -324,7 +324,7 @@ module.exports = {
         "The biggest early risk isn't cold but wet. Seeds sitting in cold, waterlogged soil rot, so plant into soil that crumbles in your hand rather than forming a muddy ball."],
       ["Nitrogen from the air",
         "Like beans, peas host rhizobia bacteria in root nodules that turn nitrogen from the air into fertilizer for the plant. They need little added nitrogen, and an inoculant helps in beds that haven't grown peas recently.",
-        "A common belief is that peas leave lots of nitrogen in the soil. In fact, most of it ends up in the seeds you harvest. Cutting the vines and leaving the roots in the ground adds organic matter, but only a modest amount of nitrogen."],
+        "A common belief is that peas leave lots of nitrogen in the soil. In fact, most of it ends up in the seeds you harvest."],
       ["Soil and water",
         "Peas like well-drained soil with a pH of about 6.0 to 7.5. Keep the soil moist once flowering starts, since dry spells during bloom and pod fill cut yields. A trellis gives better airflow and easier picking, even for shorter varieties."],
       ["Diseases",
@@ -351,11 +351,11 @@ module.exports = {
       ["Temperature and tuber formation",
         "Plant when the soil is at least about 45°F; seed pieces sit idle or rot in colder, wet soil. Tubers form best when the soil is about 60 to 70°F and slow down when it's much warmer. Mulch helps keep the soil cool in hot summers east of the Cascades."],
       ["Hilling and green potatoes",
-        "Potatoes form on underground stems along the buried part of the plant. Hilling soil or mulch up around the stems as they grow gives more room for tubers and keeps them covered. Tubers exposed to light turn green. The green is harmless chlorophyll, but it signals that solanine, a bitter natural toxin, is building up too. Cut away green parts, and discard potatoes that are heavily green or taste bitter."],
+        "Potatoes form on underground stems along the buried part of the plant. Hilling soil or mulch up around the stems as they grow gives more room for tubers and keeps them covered. Tubers exposed to light turn green. The green is harmless chlorophyll, but it signals that solanine, a bitter natural toxin, is building up too."],
       ["Water and late blight",
         "Give potatoes about an inch or two of water a week, as evenly as possible. Uneven watering causes knobby, cracked or hollow tubers. Late blight, the same disease that hits tomatoes, can sweep through potatoes in cool, wet weather. Water at the soil, and if blight appears, cut and bag the tops and wait two weeks before digging so spores on the soil don't infect the tubers."],
       ["Harvest and storage",
-        "Dig new potatoes once the plants flower. For storage, wait until about two weeks after the tops die back so the skins thicken. Cure them for a week or two somewhere dark and humid at 50 to 60°F, then store them dark at about 40 to 45°F. Colder than that, potatoes turn some of their starch into sugar, which makes them taste sweet and brown too much when fried."]
+        "Cure them for a week or two somewhere dark and humid at 50 to 60°F, then store them dark at about 40 to 45°F. Colder than that, potatoes turn some of their starch into sugar, which makes them taste sweet and brown too much when fried."]
     ],
     faq: [
       ["Can I plant grocery store potatoes?", "They may grow, but they can carry diseases and viruses into your soil, and some are treated to slow sprouting. Certified seed potatoes are tested and grow more reliably."],
@@ -372,7 +372,7 @@ module.exports = {
         "Carrot seeds are slow, often taking one to three weeks to sprout, and they need the soil surface to stay moist the whole time. They'll sprout in soil as cool as 40 to 45°F, but come up much faster in warmer soil. In the Northwest, the common failure is a crust: rain or watering packs the surface into a crust the tiny seedlings can't push through.",
         "Cover the seeds with a quarter inch of fine compost or vermiculite instead of garden soil, water gently every day or two, and lay a board or burlap over the row until the first seedlings appear. Then remove it right away."],
       ["Straight roots",
-        "Carrots fork and twist when the taproot hits rocks, clods or hard soil, or when the tip is damaged. Grow them in deep, loose, stone-free soil or a raised bed, and avoid fresh manure. Don't transplant carrots, since damage to the taproot causes forking. Thin seedlings to about 2 inches apart; crowded carrots stay small and tangled."],
+        "Carrots fork and twist when the taproot hits rocks, clods or hard soil, or when the tip is damaged. Grow them in deep, loose, stone-free soil or a raised bed, and avoid fresh manure. Don't transplant carrots, since damage to the taproot causes forking."],
       ["Flavor, sweetness and frost",
         "Carrots develop their best color and sweetness at about 60 to 70°F. Heat and drought increase the compounds that make carrots taste bitter or soapy. Cool fall weather and light frost make them sweeter as the roots store more sugar. That's why fall carrots taste so good here."],
       ["Carrot rust fly",
@@ -381,7 +381,7 @@ module.exports = {
       ["Water and soil",
         "Carrots grow best in sandy or loamy soil with a pH of about 6.0 to 6.8. Water evenly. A heavy soak after a dry spell can split the roots. Keep the shoulders covered with soil so they don't turn green in the sun."],
       ["Harvest and storage",
-        "Pull carrots when the shoulders are about ¾ inch across. Cut the tops off right away, since leaves draw moisture from the root. In the fridge, carrots keep for weeks; in a cold, humid spot near 32°F, they last for months. West of the Cascades you can also leave fall carrots in the ground under a thick mulch and dig them through winter, as long as voles and rust fly aren't a problem."]
+        "Cut the tops off right away, since leaves draw moisture from the root. In the fridge, carrots keep for weeks; in a cold, humid spot near 32°F, they last for months. West of the Cascades you can also leave fall carrots in the ground under a thick mulch and dig them through winter, as long as voles and rust fly aren't a problem."]
     ],
     faq: [
       ["Why are my carrots forked?", "The taproot hit something, like rocks, clods or compacted soil, or the tip was damaged. Grow carrots in deep, loose, stone-free soil, skip fresh manure, and sow them directly rather than transplanting."],
@@ -404,7 +404,7 @@ module.exports = {
       ["Soil and water",
         "Onions have shallow roots, so they need loose, fertile soil with a pH of about 6.0 to 7.0 and steady moisture, about an inch a week, until the bulbs size up. Stop watering once the tops start to fall over. Onion thrips, tiny insects that leave silvery streaks on the leaves, are worst in hot, dry weather east of the Cascades."],
       ["Harvest, curing and storage",
-        "When about half the tops have flopped over, pull the onions. Cure them in a dry, airy, shaded spot for two to three weeks, until the necks are completely dry and tight. A properly dried neck seals out neck rot, the main cause of onions rotting in storage. Store storage onions cool and dry, ideally just above freezing with low humidity."]
+        "When most of the tops have fallen over, pull the onions. Cure them in a dry, airy, shaded spot for 6 to 10 days, until the necks are completely dry and tight. A properly dried neck seals out neck rot, the main cause of onions rotting in storage. Store storage onions cool and dry, ideally just above freezing with low humidity."]
     ],
     faq: [
       ["Why are my onions so small?", "Usually the plants had too few leaves when bulbing started, because they went in late, were crowded or had to compete with weeds. The wrong day-length type can also cause it: grow long-day varieties in the Northwest."],
@@ -427,7 +427,7 @@ module.exports = {
       ["Pests",
         "Leaf miners tunnel through the leaves, leaving pale, papery blotches. Pick off affected leaves early and cover young plants with row cover. Slugs go after seedlings."],
       ["Harvest and storage",
-        "Pull beets at golf ball to tennis ball size, when they're most tender. Leave an inch of stem when trimming the tops so the roots don't bleed. The red color comes from betalains, water-soluble pigments that stain; golden beets are less messy. The greens are edible too. Stored cold and humid, in the fridge or a root cellar, trimmed beets keep two to four months."]
+        "Leave an inch of stem when trimming the tops so the roots don't bleed. The red color comes from betalains, water-soluble pigments that stain; golden beets are less messy. The greens are edible too. Stored cold and humid, in the fridge or a root cellar, trimmed beets keep two to four months."]
     ],
     faq: [
       ["Why do several beet seedlings grow from one seed?", "Each beet \"seed\" is a cluster of two to four seeds. Thin to one plant every 3 inches, or grow monogerm varieties, which have one seed per cluster."],
@@ -463,9 +463,9 @@ module.exports = {
       ["Wet soil kills more rosemary than cold",
         "Rosemary comes from dry, rocky hillsides around the Mediterranean. Its roots rot when they sit in cold, soggy soil, which is why more rosemary dies in a wet Northwest winter than in a cold, dry one. Plant it in fast-draining soil, on a slope or in a raised bed, and never in a spot where water pools. Mixing gravel into heavy clay helps."],
       ["Cold hardiness",
-        "Most rosemary varieties are damaged somewhere around 15 to 20°F. Hardier selections like Arp and Madeline Hill (also sold as Hill Hardy) survive colder winters, especially in well-drained soil. Cold, drying winds make damage worse, so a spot near a south-facing wall is ideal. In colder eastern areas, grow rosemary in a pot and move it to a cool, bright spot for winter."],
+        "Most rosemary varieties are damaged somewhere around 15 to 20°F. Hardier selections like Arp and Madeline Hill (also sold as Hill Hardy) survive colder winters, especially in well-drained soil. Cold, drying winds make damage worse, so a spot near a south-facing wall is ideal."],
       ["Soil and feeding",
-        "Rosemary grows best in lean, well-drained soil and tolerates neutral to slightly alkaline pH. It doesn't need fertilizer. Rich soil and extra water make it grow fast and soft, with less of the aromatic oil that gives it flavor. Once established, water only during long dry spells."],
+        "Rosemary grows best in lean, well-drained soil and tolerates neutral to slightly alkaline pH. It doesn't need fertilizer. Rich soil and extra water make it grow fast and soft, with less of the aromatic oil that gives it flavor."],
       ["Pruning",
         "Rosemary has very few dormant buds on old, bare wood, so cuts into leafless stems usually don't regrow. Prune lightly, within the green, leafy part of each stem, right after flowering in spring. Regular light trims keep it compact and stop it from getting leggy."],
       ["In containers",
@@ -488,7 +488,7 @@ module.exports = {
       ["Flavor",
         "Peppermint's cool bite comes mainly from menthol; spearmint's sweeter flavor comes from carvone. Plants grown in full sun and harvested just before flowering have the most oil. Oregon and Washington, especially the Willamette Valley and the Columbia Basin, grow a large share of the country's peppermint oil."],
       ["Soil and water",
-        "Mint likes moist, fertile soil with a pH of about 6.0 to 7.0 and grows in sun or part shade. Containers dry out fast in summer, so water them often. Cut plants back hard in midsummer for a fresh flush of tender leaves."],
+        "Mint likes moist, fertile soil with a pH of about 6.0 to 7.0 and grows in sun or part shade. Containers dry out fast in summer, so water them often."],
       ["Mint rust and other problems",
         "Mint rust causes orange pustules on the undersides of leaves. Cut infected stems to the ground and throw them out, which removes the spores. Over the years, the center of a clump tends to die out. Divide and replant the healthy outer pieces every few years in fresh soil."]
     ],

@@ -194,5 +194,12 @@ module.exports = {
   "area:boise-id": { src: "pexels:9715774", alt: "A blue river winding through a dry canyon", where: "The Boise River canyon, Idaho" },
   "area:eastern-id": { src: "pexels:17782016", alt: "Shoshone Falls pouring over a wide basalt cliff", where: "Shoshone Falls, Twin Falls, Idaho" },
   "page:frost-dates": { src: "pexels:5645463", alt: "Jagged Cascade peaks above an autumn meadow at sunset", where: "The Cascades near Mount Rainier, Washington" },
+  "page:when-to-plant": { src: "pexels:7728082", alt: "Gloved hands setting lettuce seedlings into dark garden soil" },
+  "page:plant-now": { src: "pexels:7658789", alt: "A wicker basket of just-picked tomatoes, peppers, cucumbers and celery carried through a vegetable garden" },
+  "page:my-garden": { src: "pexels:5864224", alt: "Wooden raised beds and bark-chip paths in a shady backyard vegetable garden" },
+  "page:what-to-grow": { src: "pexels:7782057", alt: "A woven basket of radishes, beets, peppers and leafy greens" },
+  "page:articles": { src: "pexels:6231726", alt: "Pruners, trowels and other hand tools laid out on a wooden bench in the grass" },
+  "page:shade-plants": { src: "pexels:6631307", alt: "Ferns covering the floor of a misty conifer forest", where: "A fern forest in Oregon" },
+  "page:about": { src: "pexels:18815486", alt: "Mount Rainier above Tipsoo Lake, with white wildflowers growing from the rocks in front", where: "Tipsoo Lake, Mount Rainier National Park, Washington" },
   "page:hardiness-zones": { src: "pexels:5714418", alt: "Cascade peaks rising above a sea of fog at sunrise", where: "The Cascades near Ashford, Washington" }
 };

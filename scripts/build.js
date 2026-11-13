@@ -43,6 +43,8 @@ var el=s&&s.nextElementSibling;if(el&&/fall-bar/.test(el.className))el.querySele
 const PHOTOS = require("./photos.js");
 const SCIENCE = require("./crop-science.js");
 const NOTES = require("./crop-notes.js");
+const TRICKY = require("./tricky-crops.js");
+const GL_TERMS = Object.fromEntries(G.glossary.map(g => [g[1], g]));
 const CARE_TIPS = require("./care-tips.js");
 const CATEGORY_GUIDES = require("./category-guides.js");
 const MONTH_GUIDES = require("./month-guides.js");
@@ -115,6 +117,7 @@ const AUTHORS = {
     photo: { img: "jigmey-river", alt: "A calm green river lined with tall fir trees under a clear blue summer sky, with maple leaves overhead and mossy rocks along the bank" },
     facts: ["Grew up in Oregon", "Gardens in Happy Valley, Oregon", "Years of growing vegetables at home", "Checks dates against NOAA weather records"],
     bio: "Jigmey Dorjee grew up in Oregon, where gardening means working with the weather: cold, wet springs, dry summers and long, mild falls. He's an experienced home gardener who has grown his own vegetables for years, and he knows firsthand that a Northwest garden runs on a different calendar than the national planting charts. He writes about vegetables and planting timing for Rainline Garden and checks the advice against NOAA weather records and university research.",
+    meta: "Jigmey Dorjee grew up in Oregon and grows vegetables at home in Happy Valley. He writes about vegetables and planting dates, checked against NOAA records.",
     short: "Jigmey Dorjee grew up in Oregon and has grown his own vegetables at home for years. He writes about vegetables and planting timing, and checks the advice against NOAA weather records and university research."
   },
   "elaine-holloway": {
@@ -123,6 +126,7 @@ const AUTHORS = {
     photo: { img: "elaine-gorge", alt: "The Columbia River Gorge from a stone overlook, the river winding east between green forested hills under a big cloudy sky" },
     facts: ["Born and raised in the Portland area", "Studied environmental science at Portland State", "Focus: soil health, native and pollinator plants"],
     bio: "Elaine Holloway was born and raised in the greater Portland area, where she grew up helping family tend backyard vegetable plots, native plant borders and container gardens. A lifelong gardener, she focuses on regional horticulture: building healthy soil, managing moisture through wet Northwest winters and dry summers, choosing native and climate-adapted plants, and adding pollinator-friendly, low-maintenance plantings to home gardens. She studied environmental science with a focus on horticulture at Portland State University, including plant ecology, sustainable agriculture and native plants. Where Jigmey covers vegetables and planting dates, Elaine covers the soil underneath them and the perennials, herbs and flowers around them.",
+    meta: "Elaine Holloway, a lifelong Portland-area gardener who studied environmental science at Portland State, writes about soil, perennials and native plants.",
     short: "Elaine Holloway was born and raised in the Portland area, has gardened all her life and studied environmental science at Portland State. She writes about soil, moisture, perennials and native and pollinator-friendly plants for Northwest gardens.",
     // Harvest photos in assets/img/results/{img}-480/-800 (.jpg + .webp, 4:5). Caption parts: plain text, or [text, crop id] to link a plant page.
     results: [
@@ -334,7 +338,7 @@ ${noFallBar ? "" : `<script src="${base}assets/fallbar.js?v=${ver("fallbar.js")}
 ${body}
 </main>
 <footer class="site-foot"><div class="wrap">
-<p><strong class="foot-brand">Rainline Garden</strong><br>Free planting calendars for Oregon, Washington and Idaho gardens.<br>Frost data from NOAA climate normals. Updated ${stamp(CONFIG.updated)}.${CONFIG.amazonTag ? "<br>As an Amazon Associate, Rainline Garden earns from qualifying purchases." : ""}</p>
+<p><strong class="foot-brand">Rainline Garden</strong><br>Free planting calendars and growing guides for Oregon, Washington and Idaho gardens.<br>Frost data from NOAA climate normals. Updated ${stamp(CONFIG.updated)}.${CONFIG.amazonTag ? "<br>As an Amazon Associate, Rainline Garden earns from qualifying purchases." : ""}</p>
 <nav aria-label="Footer"><a href="${base}garden-calendar/">Month by month</a><a href="${base}fall-planting/">Fall planting</a><a href="${base}what-to-grow/">Plant quiz</a><a href="${base}glossary/">Glossary</a><a href="${base}how-it-works/">How it works</a><a href="${base}about/">About</a><a href="${base}contact/">Contact</a><a href="${base}privacy/">Privacy</a><a href="${base}terms/">Terms</a></nav>
 <p class="owner">&copy; ${YEAR} ${CONFIG.owner}. Rainline Garden is owned and operated by ${CONFIG.owner}.</p>
 </div></footer>
@@ -367,10 +371,12 @@ const toMonthYear = s => s.replace(/(Updated|Last updated) (\d{4}-\d\d-\d\d)\./g
 const GL_LINKS = G.glossaryLinks.map(([id, re]) => [id, new RegExp(`(^|[^\\w-])(${re})(?![\\w-])`, "i")]);
 const GL_SKIP = new Set(["a", "button", "h1", "h2", "h3", "h4", "h5", "h6", "summary", "table", "nav", "script", "style", "label", "select", "textarea", "figcaption", "dt", "svg", "form", "noscript", "template", "blockquote", "aside"]);
 // Picture-calendar tiles, legends and page intros stay plain; the words get linked in the page's sentences instead.
-const GL_SKIP_CLASS = /class="[^"]*\b(hz-line|lede|plant-intro|replant|eyebrow|crumbs|count|station|owner|pc-card|pc-legend|legend|author-box|byline|th-list|th-key|th-pop)\b/;
+const GL_SKIP_CLASS = /class="[^"]*\b(hz-line|lede|plant-intro|replant|eyebrow|crumbs|count|station|owner|pc-card|pc-legend|legend|author-box|byline|th-list|th-key|th-pop|tricky-words)\b/;
 const GL_TRACK = new Set(["p", "li", "dd", "ul", "ol", "div", "section"]);
 const GL_MAX = 12;
-function glossaryLinks(html, rel) {
+function glossaryLinks(html, rel, file = "") {
+  // "day-neutral" also describes onions; only strawberry pages get the strawberry-types definition.
+  const skipIds = /strawberr/.test(file) ? [] : ["strawberry-types"];
   const m = html.indexOf("<main"), e = html.lastIndexOf("</main>");
   if (m < 0 || e < m) return html;
   const skip = {}, stack = { }, done = new Set();
@@ -394,7 +400,7 @@ function glossaryLinks(html, rel) {
     if (n >= GL_MAX || inText <= 0 || off > 0 || Object.values(skip).some(v => v > 0)) return tok;
     const hits = [];
     for (const [id, re] of GL_LINKS) {
-      if (done.has(id)) continue;
+      if (done.has(id) || skipIds.includes(id)) continue;
       const r = re.exec(tok);
       if (r) hits.push({ id, at: r.index + r[1].length, word: r[2] });
     }
@@ -414,7 +420,7 @@ function glossaryLinks(html, rel) {
 const unGlossary = h => h.replace(/<a class="gl" href="[^"]*" data-gl="[^"]*">([^<]*)<\/a>/g, "$1");
 
 function write(rel, file, html, priority, lastmod) {
-  if (file !== "glossary/index.html") html = glossaryLinks(html, rel);
+  if (file !== "glossary/index.html") html = glossaryLinks(html, rel, file);
   const out = path.join(ROOT, file);
   fs.mkdirSync(path.dirname(out), { recursive: true });
   const old = fs.existsSync(out) ? fs.readFileSync(out, "utf8") : null;
@@ -700,6 +706,8 @@ const PAGE_PHOTOS = {
   "container-plants": "article:container-vegetable-gardening",
   "deer-resistant-plants": "cat:onion-family",
   "frost-dates": "page:frost-dates", "hardiness-zones": "page:hardiness-zones",
+  "when-to-plant": "page:when-to-plant", "plant-now": "page:plant-now", "my-garden": "page:my-garden", "what-to-grow": "page:what-to-grow",
+  "articles": "page:articles", "shade-plants": "page:shade-plants", "about": "page:about",
   "month-1": "article:winter-pruning-apple-and-pear-trees", "month-2": "article:planting-bare-root-fruit-trees",
   "month-3": "article:starting-seeds-indoors", "month-4": "article:growing-peas-in-the-northwest",
   "month-5": "article:best-tomatoes-for-the-northwest", "month-6": "article:growing-strawberries-in-the-northwest",
@@ -724,7 +732,7 @@ function faqLd(qas) {
 // Cleaner layout for crops with notes in scripts/crop-science.js (in depth) or scripts/crop-notes.js (shorter).
 function scienceBody(c, g, sci, { head, dates, plans, port }) {
   const ex = EXTRAS[c.id];
-  return `${jump(sci, VARIETIES[c.id])}
+  return `${jump(sci, VARIETIES[c.id], c)}
 ${quickFacts(c, g)}
 <p class="callout">${esc(c.note)}</p>
 <h2 id="dates">${singular(c.name).replace(/^./, x => x.toUpperCase())} planting dates</h2>
@@ -735,6 +743,7 @@ ${ad("crop-mid")}
 <div class="grow-grid"><div>${stepsForHub(c, g, port)}</div>
 ${sideCard(g, null, true)}</div>${videoBox(c)}
 ${regionalNotes(c)}
+${trickyParts(c)}
 ${cropGarden("../../", c)}${varietyCards(c)}
 ${howMany(c, ex)}
 ${plantAfter(c, ex, port)}
@@ -819,7 +828,7 @@ sec.open=true})})()</script>`;
 const phoneFold = (id, title, body, closed) => `<details class="fold" id="${id}" data-phone-fold${closed ? "" : " open"}><summary><h2>${title}</h2></summary>
 ${body}</details>`;
 const PHONE_FOLD_JS = `<script>(function(){var f=document.querySelectorAll("details[data-phone-fold]");if(matchMedia("(max-width: 40rem)").matches)f.forEach(function(d){if("#"+d.id!==location.hash)d.open=false});function show(){var d=location.hash&&document.getElementById(location.hash.slice(1));if(d&&d.matches("details[data-phone-fold]"))d.open=true}addEventListener("hashchange",show);show()})()</script>`;
-const jump = (sci, vars) => `<nav class="jump" aria-label="On this page"><span>On this page:</span><a href="#dates">Planting dates</a><a href="#grow">How to grow</a><a href="#regions">By region</a>${vars ? '<a href="#varieties">Varieties</a>' : ""}<a href="#how-many">How much to grow</a><a href="#numbers">Key numbers</a><a href="#science">${sci.notes ? "Growing notes" : "The science"}</a><a href="#neighbors">Neighbors</a><a href="#pests">Pests</a><a href="#faq">Questions</a></nav>`;
+const jump = (sci, vars, c) => `<nav class="jump" aria-label="On this page"><span>On this page:</span><a href="#dates">Planting dates</a><a href="#grow">How to grow</a><a href="#regions">By region</a>${TRICKY[c.id] ? '<a href="#tricky">Why it\'s tricky</a>' + (TRICKY[c.id].stages.length ? '<a href="#warning-signs">Warning signs</a>' : "") : ""}${vars ? '<a href="#varieties">Varieties</a>' : ""}<a href="#how-many">How much to grow</a><a href="#numbers">Key numbers</a><a href="#science">${sci.notes ? "Growing notes" : "The science"}</a><a href="#neighbors">Neighbors</a><a href="#pests">Pests</a><a href="#faq">Questions</a></nav>`;
 
 /* Plant-page extras from scripts/plant-extras.js and scripts/collections.js */
 // Tags linking to the "Plants for..." pages this plant appears on.
@@ -917,6 +926,118 @@ function regionalNotes(c) {
   return phoneFold("regions", `Growing ${lc(c.name)} in your part of the Northwest`, `<div class="sci-cards region-cards">${parts.map(([k, h, where]) => `<section class="sci-card region-card region-${k}" data-k="${k}">${miniMap(k)}<h3>${h}</h3><p class="region-where">${where}</p><p>${esc(r[k])}</p></section>`).join("\n")}</div>
 ${regionShared()}`);
 }
+// Small line icons for the season steps (one per step, picked from its words; calendar when nothing fits).
+// Drawn for this site: stroke-only, 24x24, colored by CSS. Order matters: the first match wins.
+const STEP_ICONS = {
+  sprout: '<path d="M12 20v-8"/><path d="M12 13c0-3.5-2.5-6-6-6 0 3.5 2.5 6 6 6z"/><path d="M12 11c0-3.5 2.5-6 6-6 0 3.5-2.5 6-6 6z"/><path d="M5 20h14"/>',
+  plastic: '<circle cx="12" cy="6" r="2.5"/><path d="M12 1.5v1M6.5 6h1M16.5 6h1M8.3 2.8l.7.7M15 3.5l.7-.7"/><path d="M3 14h18v5H3z"/><path d="M8 14v-2M16 14v-2"/>',
+  cover: '<path d="M3 19c0-7 4-11 9-11s9 4 9 11"/><path d="M2 19h20"/><path d="M8 19v-3M12 19v-4M16 19v-3"/>',
+  wall: '<path d="M6 19V8M10 19V6M14 19V6M18 19V8"/><path d="M4 19h16"/><path d="M12 6V3"/><path d="M12 4c-1.5 0-2.5-1-2.5-2M12 4c1.5 0 2.5-1 2.5-2"/>',
+  water: '<path d="M4 10h10v9H4z"/><path d="M14 13l6-4"/><path d="M19 7l2 3"/><path d="M7 10V7h4v3"/>',
+  thermo: '<path d="M10 14V4a2 2 0 0 1 4 0v10a4 4 0 1 1-4 0z"/><path d="M12 9v8"/>',
+  pinch: '<circle cx="6" cy="7" r="2.5"/><circle cx="6" cy="17" r="2.5"/><path d="M8 8.5l12 8M8 15.5l12-8"/>',
+  basket: '<path d="M3 10h18l-2.5 9h-13z"/><path d="M8 10a4 4 0 0 1 8 0"/><path d="M9 13v3M15 13v3"/>',
+  frost: '<path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9"/><path d="M10 5l2 2 2-2M10 19l2-2 2 2"/>',
+  net: '<path d="M4 4h16v16H4z"/><path d="M4 9.3h16M4 14.6h16M9.3 4v16M14.6 4v16"/>',
+  shade: '<path d="M3 11a9 7 0 0 1 18 0z"/><path d="M12 11v9"/><path d="M12 20a2 2 0 0 1-2-2"/>',
+  flower: '<circle cx="12" cy="10" r="2"/><circle cx="12" cy="5.5" r="2.5"/><circle cx="16.5" cy="10" r="2.5"/><circle cx="12" cy="14.5" r="2.5"/><circle cx="7.5" cy="10" r="2.5"/><path d="M12 17v4"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  calendar: '<path d="M4 6h16v14H4z"/><path d="M4 10h16M9 3v5M15 3v5"/>',
+  spade: '<path d="M12 2v11"/><path d="M8 13h8v4a4 4 0 0 1-8 0z"/><path d="M9 2h6"/>',
+  feed: '<path d="M6 7h12l-1 13H7z"/><path d="M8 7l1-3h6l1 3"/><circle cx="10" cy="13" r=".8"/><circle cx="14" cy="12" r=".8"/><circle cx="12" cy="16" r=".8"/>'
+};
+// Steps the word rules above would get wrong: "crop|step label" -> icon.
+const STEP_ICON_RULES = [
+  ["wall", /wall-o-water/], ["plastic", /lay black plastic|cover the bed with plastic/], ["flower", /pollinat|covers? off|cover off/],
+  ["frost", /frost cloth|cold snap|cold nights|cold spells/], ["shade", /shade cloth|afternoon shade/], ["net", /insect netting|netting or row cover|netting over the bed/],
+  ["cover", /row cover|low hoops|tunnel/], ["pinch", /pinch|tips of the main|growing tips/], ["sun", /\bcure\b/],
+  ["basket", /\bpick |\bpull |\bdig |cut (?:heads|when|flowers|the main|with)|harvest/], ["water", /water|soaker|moist/],
+  ["thermo", /°f/], ["sprout", /seed|sow|slips|tubers|corms|starts|indoors/]
+];
+function stepIcon(when, what) {
+  const t = `${when} ${what}`.toLowerCase();
+  const r = STEP_ICON_RULES.find(([, re]) => re.test(t));
+  return r ? r[0] : "calendar";
+}
+const STEP_ICON_DEFS = `<svg class="ti-defs" width="0" height="0" aria-hidden="true" focusable="false"><defs>${Object.entries(STEP_ICONS).map(([k, d]) => `<symbol id="ti-${k}" viewBox="0 0 24 24">${d}</symbol>`).join("")}</defs></svg>`;
+// One real search problem per tricky crop. The short form (third item) goes in the search description; the answer is the
+// matching warning-sign row (second item) on the page, so it isn't repeated as a question.
+const TRICKY_Q = {
+  tomatoes: ["Why are my tomato flowers falling off?", "Flowers dry up and fall off", "why flowers fall off"],
+  peppers: ["Why are my pepper flowers falling off?", "Flowers and tiny peppers drop", "why flowers drop"],
+  cucumbers: ["Why are my baby cucumbers turning yellow?", "Tiny cucumbers turn yellow and shrivel", "why baby cucumbers turn yellow"],
+  melons: ["Why are my melons still not ripe in September?", "Melons still unripe in September", "why melons won't ripen"],
+  eggplant: ["What makes tiny holes in eggplant leaves?", "Tiny pits and holes all over the leaves", "what makes tiny holes in the leaves"],
+  cauliflower: ["Why is my cauliflower head so small?", "A small head forms on a small plant", "why heads stay small"],
+  broccoli: ["Why is my broccoli flowering?", "The head loosens and opens into yellow flowers", "why heads open into flowers"],
+  cabbage: ["Why is my cabbage splitting?", "The head splits open", "why heads split"],
+  "brussels-sprouts": ["Why are my young Brussels sprouts wilting?", "Young plants wilt during the day", "why young plants wilt"],
+  "sweet-potatoes": ["Why are my sweet potatoes so small?", "Only a few small roots", "why roots stay small"],
+  corn: ["Why are my corn ears missing kernels?", "Ears with missing kernels", "why ears have missing kernels"],
+  "winter-squash": ["Why are my baby squash turning yellow and falling off?", "Baby squash turn yellow and drop", "why baby squash drop"],
+  pumpkins: ["Why are my baby pumpkins falling off?", "Young pumpkins shrivel and drop", "why baby pumpkins drop"],
+  onions: ["Why are my onions so small?", "Bulbs stay small", "why bulbs stay small"],
+  carrots: ["Why are my carrots forked or hairy?", "Split, forked or hairy roots", "why roots fork"],
+  beets: ["Why are my beets tough and stringy?", "Tough, stringy roots", "why roots get tough"],
+  parsnips: ["Why won't my parsnip seeds come up?", "Few or no seedlings after a month", "why seed won't come up"],
+  spinach: ["Why is my spinach bolting?", "Plants stretch tall and leaves get small", "why it bolts"],
+  radicchio: ["Why is my radicchio not turning red?", "Heads still green in September", "why heads stay green"],
+  basil: ["Why does my basil lose its flavor?", "Leaves lose their flavor", "why leaves lose their flavor"],
+  dahlias: ["Why didn't my dahlia tubers sprout?", "Tubers never sprout and turn mushy", "why tubers don't sprout"],
+  "sweet-peas": ["Why have my sweet peas stopped blooming?", "Blooming slows down", "why blooming stops"],
+  cherries: ["Why are my cherries rotting on the tree?", "Fruit rots on the tree as harvest nears", "why fruit rots on the tree"],
+  peaches: ["Why are my peach blossoms wilting?", "Blossoms wilt and the rot moves into the shoots", "why blossoms wilt"],
+  apples: ["Why are my apples so small?", "Lots of small apples, then few flowers next spring", "why apples stay small"],
+  figs: ["Why are my figs black in spring?", "Overwintered fruit has turned black", "why the first crop fails"],
+  grapes: ["What is hollowing out my grapes?", "Berries emptied out to a hard shell", "what hollows out the grapes"],
+  "hardy-kiwi": ["Why does my kiwi vine flower but not fruit?", "Flowers but no fruit", "why vines flower but don't fruit"],
+  persimmons: ["Why does my persimmon make my mouth pucker?", "Fruit puckers your mouth", "why fruit puckers your mouth"],
+  "asian-pears": ["Why are my Asian pear blossoms turning black?", "Blossoms and young shoots blacken and die back", "why blossoms blacken"]
+};
+for (const [id, q] of Object.entries(TRICKY_Q)) if (!TRICKY[id] || !TRICKY[id].stages.some(([, rows]) => rows.some(r => r[0] === q[1]))) throw new Error(`TRICKY_Q for ${id} doesn't match a warning sign`);
+// Crops that share troubles, linked from the bottom of each other's warning signs.
+const TRICKY_KIN = [["tomatoes", "peppers", "eggplant"], ["cucumbers", "melons", "winter-squash", "pumpkins"], ["cauliflower", "broccoli", "cabbage", "brussels-sprouts"],
+  ["carrots", "beets", "parsnips"], ["cherries", "peaches"], ["apples", "asian-pears"], ["grapes", "hardy-kiwi"]];
+const trickyKin = c => (TRICKY_KIN.find(g => g.includes(c.id)) || []).filter(id => id !== c.id && TRICKY[id] && TRICKY[id].stages.length);
+// Month pages: the tricky-crop steps that fall in a month, read from each step's "when" ("Mid-August", "December to February").
+const MONTH_RE = /\b(January|February|March|April|May|June|July|August|September|October|November|December)\b/g;
+function trickyMonths(when) {
+  const ms = [...when.matchAll(MONTH_RE)].map(m => P.MONTHS_LONG.indexOf(m[1]) + 1);
+  if (ms.length === 2 && / to /.test(when)) { const out = []; for (let m = ms[0]; ; m = m % 12 + 1) { out.push(m); if (m === ms[1]) break; } return out; }
+  return ms;
+}
+// Deeper help for crops that are hard to ripen here (scripts/tricky-crops.js): why it's tricky, season stretchers in order,
+// and warning signs by stage. A fix ending in "#pests" links to the Pests and problems section instead of repeating it.
+function trickyParts(c) {
+  const t = TRICKY[c.id];
+  if (!t) return "";
+  const name = lc(c.name);
+  // Tap-to-explain words: the first time a glossary word shows up in these sections it links, carrying its explanation
+  // in the page itself (data-gl-t/-d), and the words are listed again with their meanings at the end of the section.
+  const used = [];
+  const gl = text => {
+    let h = esc(text);
+    for (const [id, re] of GL_LINKS) {
+      if (used.includes(id) || (id === "strawberry-types" && c.id !== "strawberries")) continue;
+      const r = re.exec(h);
+      if (!r || /<a [^>]*$/.test(h.slice(0, r.index + r[1].length)) || /^[^<]*<\/a>/.test(h.slice(r.index + r[1].length))) continue;
+      const g = GL_TERMS[id], at = r.index + r[1].length;
+      used.push(id);
+      h = h.slice(0, at) + `<a class="gl" href="../../glossary/#${id}" data-gl="${id}" data-gl-t="${esc(g[0])}" data-gl-d="${esc(g[2])}">${r[2]}</a>` + h.slice(at + r[2].length);
+    }
+    return h;
+  };
+  const words = () => used.length ? `<details class="tricky-words"><summary>Words used here (${used.length})</summary><dl>${used.map(id => `<dt>${esc(GL_TERMS[id][0])}</dt><dd>${esc(GL_TERMS[id][2])}</dd>`).join("")}</dl></details>` : "";
+  const fix = f => f.endsWith("#pests") ? `<a href="#pests">${esc(f.slice(0, -6))}</a>` : gl(f);
+  return `${phoneFold("tricky", `Why ${name}${G.crops[c.id] && G.crops[c.id].difficulty === 2 ? " can be" : (/s$/.test(name) ? " are" : " is")} tricky here`, `<ul class="tricky-why">${t.why.map(w => `<li>${gl(w)}</li>`).join("")}</ul>
+${t.pollination ? `<h3 class="tricky-h">Pollination partners</h3>
+<ul class="tricky-why tricky-pol">${t.pollination.map(w => `<li>${gl(w)}</li>`).join("")}</ul>
+` : ""}<h3 class="tricky-h">${esc(t.steps || "Stretching the season, step by step")}</h3>
+${STEP_ICON_DEFS}<ol class="stretch">${t.stretch.map(([when, what, icon]) => { const ic = icon || stepIcon(when, what); return `<li class="has-ico"><span class="st-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20"><use href="#ti-${ic}"/></svg></span><span class="stretch-when">${esc(when)}</span><p>${gl(what)}</p></li>`; }).join("")}</ol>
+${words()}`)}
+${!t.stages.length ? "" : phoneFold("warning-signs", "Signs something's going wrong", `${(used.length = 0, "")}${t.stages.map(([stage, rows]) => `<section class="sign-stage"><h3>${esc(stage)}</h3>${rows.map(([see, why, what]) => `<div class="sign"><p class="sign-see">${esc(see)}</p><p><strong>Cause:</strong> ${gl(why)}. <strong>Fix:</strong> ${fix(what)}</p></div>`).join("")}</section>`).join("\n")}
+${words()}${trickyKin(c).length ? `\n<p class="tricky-kin">Related troubles: ${trickyKin(c).map(id => `<a href="../${id}/#warning-signs">${esc(cropById(id).name)} warning signs</a>`).join(" · ")}</p>` : ""}`)}`;
+}
 // Popular variety cards from scripts/varieties.js, shown on each plant's main page.
 function varietyCards(c) {
   const vs = VARIETIES[c.id];
@@ -968,23 +1089,23 @@ function categoryTiles(rel, drops, pick) {
 write("", "index.html", layout({
   rel: "", canonical: "", current: "",
   title: "Oregon, Washington & Idaho Planting Calendar | Rainline Garden",
-  description: "When to plant vegetables in Oregon, Washington and Idaho. Enter your ZIP for local frost dates and a planting calendar built from NOAA data.",
-  jsonld: [{ "@context": "https://schema.org", "@type": "WebSite", name: "Rainline Garden", url: CONFIG.siteUrl, publisher: OWNER_LD }],
+  description: `When to plant and how to grow ${D.crops.length} vegetables, herbs, fruits and flowers in Oregon, Washington and Idaho. Local frost dates from NOAA for your ZIP.`,
+  jsonld: [{ "@context": "https://schema.org", "@type": "WebSite", name: "Rainline Garden", url: CONFIG.siteUrl, description: `Frost dates, planting calendars and growing guides for ${D.crops.length} plants in Oregon, Washington and Idaho.`, publisher: OWNER_LD }],
   body: `
 <section class="home-hero">
 ${photo("hero", "", { big: "hero", small: "heroSm", cls: "home-photo", sizes: "100vw", eager: true, phone: true })}
 <div class="hero">
 <p class="eyebrow">Oregon · Washington · Idaho</p>
 <h1>Plant on Northwest time.</h1>
-<p class="lede">Local frost dates and a year-round planting calendar for your town, on either side of the Cascades.</p>
+<p class="lede">Local frost dates, a year-round planting calendar and growing guides for ${D.crops.length} plants, on either side of the Cascades.</p>
 ${townBox({ id: "where", rel: "", button: "Show my dates", browse: true })}
-<ul class="trust"><li>${D.places.length} towns</li><li>NOAA frost records</li><li>Free, no sign-up</li></ul>
+<ul class="trust"><li>${D.places.length} towns</li><li>${D.crops.length} growing guides</li><li>NOAA frost records</li><li>Free, no sign-up</li></ul>
 </div>
 </section>
 <section id="result" aria-live="polite"></section>
 <section id="season-now" class="home-sec season-now" aria-live="polite" hidden></section>
 <section id="plant-types" class="home-sec"><div class="sec-head"><h2>Browse by plant type</h2><a href="${WHEN_INDEX}">All ${D.crops.length} plants</a></div>
-<p class="sec-sub" id="plant-types-sub">Tap a plant type to see its plants.</p>
+<p class="sec-sub" id="plant-types-sub">Tap a plant type to see its plants. Each one has its planting dates and a guide to growing it.</p>
 ${categoryTiles("", true)}
 </section>
 <section class="home-sec plan-cta"><div><h2>Plan your garden</h2>
@@ -1345,7 +1466,7 @@ D.crops.forEach(c => {
     title: fitTitle(...(seasonMonths(port, c.id) ? [`When to Plant ${titleCase(c.name)} in Oregon & Washington: ${seasonMonths(port, c.id)}`, `When to Plant ${titleCase(c.name)} in Oregon & Washington: ${seasonMonths(port, c.id, dk)}`, `When to Plant ${titleCase(c.name)} in OR & WA: ${seasonMonths(port, c.id)}`, `When to Plant ${titleCase(c.name)} in OR & WA: ${seasonMonths(port, c.id, dk)}`] : []),
       `When to Plant ${titleCase(c.name)} in Oregon, Washington and Idaho`, `When to Plant ${titleCase(c.name)} in Oregon, Washington & Idaho`, `When to Plant ${titleCase(c.name)} in the Pacific Northwest`, `When to Plant ${titleCase(c.name)} in the Northwest`),
     // Lead with the dates themselves: that's what a searcher wants to see in the result.
-    description: fitDesc(...[5, 4, 3, 2].map(n => lead(n)).filter(Boolean).flatMap(d => [`Plant ${lc(c.name)} ${d}. Dates for ${D.places.length} Northwest towns and a growing guide.`, `Plant ${lc(c.name)} ${d}. Dates for ${D.places.length} Northwest towns.`]),
+    description: fitDesc(...(TRICKY_Q[c.id] ? [4, 3, 2, 1].map(n => lead(n)).filter(Boolean).flatMap(d => [`Plant ${lc(c.name)} ${d}. Plus ${TRICKY_Q[c.id][2]} here, and what to do.`, `Plant ${lc(c.name)} ${d}. Plus ${TRICKY_Q[c.id][2]}.`]) : []), ...[5, 4, 3, 2].map(n => lead(n)).filter(Boolean).flatMap(d => [`Plant ${lc(c.name)} ${d}. Dates for ${D.places.length} Northwest towns and a growing guide.`, `Plant ${lc(c.name)} ${d}. Dates for ${D.places.length} Northwest towns.`]),
       `When to plant ${lc(c.name)} in Oregon, Washington and Idaho. ${portDates(c, port)}Dates for ${D.places.length} towns from Seattle to Boise, plus a growing guide.`,
       `When to plant ${lc(c.name)} in Oregon, Washington and Idaho. ${portDates(c, port)}Dates for ${D.places.length} towns, plus a growing guide.`,
       `When to plant ${lc(c.name)} in Oregon, Washington and Idaho: dates for ${D.places.length} towns from Portland and Seattle to Boise, plus a growing guide.`,
@@ -1354,7 +1475,7 @@ D.crops.forEach(c => {
     jsonld: sci ? [hb.ld, faqLd(sci.faq)] : [hb.ld],
     body: `${hb.html}
 <section class="hero hero-crop${PHOTOS["crop:" + c.id] ? " has-photo" : ""}">${banner("crop:" + c.id, "../../")}${PHOTOS["crop:" + c.id] ? "" : R.icon(c.id, "../../", 120)}<div>
-<p class="eyebrow">Oregon · Washington · Idaho</p>
+<p class="eyebrow">Planting dates and growing guide</p>
 <h1>When to plant ${lc(c.name)}</h1>
 <p class="lede">${g.fall ? hubLede(c, ledeTowns, "fall") : hubLede(c, ledeTowns)}</p>
 <script>try{if(/^[a-z0-9-]+$/.test(localStorage.getItem("rainline-place")||""))document.currentScript.previousElementSibling.hidden=true}catch(e){}</script>
@@ -1393,8 +1514,8 @@ write("../", "when-to-plant/index.html", layout({
   description: `Planting dates for ${D.crops.length} vegetables, herbs, berries and flowers in ${D.places.length} Oregon, Washington and Idaho towns, with beginner-friendly growing guides.`,
   jsonld: [wb.ld],
   body: `${wb.html}
-<section class="hero"><p class="eyebrow">${D.crops.length} plants · Oregon · Washington · Idaho</p><h1>When to plant</h1>
-<p class="lede">Pick a plant for its dates in your town and how to grow it. New to this? Start with the ones marked Easy.</p>
+<section class="hero${pageCls("when-to-plant")}">${pageBanner("when-to-plant", "../")}<p class="eyebrow">${D.crops.length} plants · Oregon · Washington · Idaho</p><h1>When to plant</h1>
+<p class="lede">Every plant has its dates for your town and a guide to growing it. New to this? Start with the ones marked Easy.</p>
 <form class="home-find plant-find" role="search" onsubmit="return false"><div class="home-find-box"><label class="home-find-in" for="plant-q">${SEARCH_SVG}<span class="sr">Find a plant</span><input id="plant-q" type="search" autocomplete="off" spellcheck="false" placeholder="Find a plant, like beans or basil"></label></div></form>
 <p id="plant-none" class="msg" role="status" aria-live="polite"></p></section>
 <div class="idx-browse">${categoryTiles("../", true)}
@@ -1529,7 +1650,7 @@ write("../", "my-garden/index.html", layout({
   description: "Free garden planner for Oregon, Washington and Idaho. Pick your town and plants to get a dated 12-month to-do list you can print or add to your calendar.",
   jsonld: [gpb.ld],
   body: `${gpb.html}
-<section class="hero"><p class="eyebrow">Free planner</p><h1>My garden plan</h1>
+<section class="hero${pageCls("my-garden")}">${pageBanner("my-garden", "../")}<p class="eyebrow">Free planner</p><h1>My garden plan</h1>
 <p class="lede">Pick your town and your plants. You get a dated to-do list for the year that saves as you go and prints on one page.</p>
 <details class="gp-privacy"><summary>Your plan is saved in this browser. How does that work?</summary>
 <p>Your town, the plants you pick, the boxes you tick and your notes are kept in your browser's local storage, right on this device. That's why they're still here when you close the site and come back. There's no account and nothing is sent to us, so your plan stays private.</p>
@@ -1576,7 +1697,7 @@ write("../", "what-to-grow/index.html", layout({
   description: "Answer eight quick questions about your space, sun and time to find the vegetables, herbs, fruit and flowers that suit your Northwest garden.",
   jsonld: [qzb.ld],
   body: `${qzb.html}
-<section class="hero"><p class="eyebrow">Plant quiz · 2 minutes</p><h1>What should I grow?</h1>
+<section class="hero${pageCls("what-to-grow")}">${pageBanner("what-to-grow", "../")}<p class="eyebrow">Plant quiz · 2 minutes</p><h1>What should I grow?</h1>
 <p class="lede">Eight quick questions. You get plants that suit your garden and a one-tap plan.</p></section>
 <template id="quiz-tbox">${townBox({ id: "quiz-box", rel: "../", button: "Next" })}</template>
 <section id="quiz" class="quiz" aria-live="polite"><noscript><p>The quiz needs JavaScript. You can still <a href="../when-to-plant/">browse every plant</a> or read the <a href="../beginners-guide/">beginner's guide</a>.</p></noscript></section>
@@ -1739,6 +1860,9 @@ ${byBox(rel, a.author || DEFAULT_AUTHOR)}
 ${ad("article-bottom")}
 <h2>Plants in this article</h2>
 <ul class="chips">${a.crops.map(id => `<li><a href="${rel}when-to-plant/${id}/">${R.icon(id, rel, 24)}${cropById(id).name}</a></li>`).join("")}</ul>
+${a.crops.some(id => TRICKY[id]) ? `<h2>When it goes wrong</h2>
+<ul class="trouble-links">${a.crops.filter(id => TRICKY[id]).slice(0, 4).map(id => { const nm = cropById(id).name, why = `why ${esc(lc(nm))}${G.crops[id] && G.crops[id].difficulty === 2 ? " can be" : (/s$/.test(nm) ? " are" : " is")} tricky here`;
+  return TRICKY[id].stages.length ? `<li><a href="${rel}when-to-plant/${id}/#warning-signs">${esc(nm)}: signs something's going wrong</a> <span>and <a href="${rel}when-to-plant/${id}/#tricky">${why}</a></span></li>` : `<li><a href="${rel}when-to-plant/${id}/#tricky">${esc(nm)}: ${why}</a></li>`; }).join("")}</ul>` : ""}
 ${newsletter()}
 <h2>More guides</h2>
 ${articleCards(rel, others.slice(0, 3))}`
@@ -1752,7 +1876,7 @@ write("../", "articles/index.html", layout({
   description: "Practical guides for vegetable gardening in Oregon, Washington and Idaho: varieties that ripen here, winter gardens, short seasons, slugs and soil temperature.",
   jsonld: [ib.ld],
   body: `${ib.html}
-<section class="hero hub-hero"><p class="eyebrow">${ARTICLES.length} guides · Oregon · Washington · Idaho</p><h1>Guides for Northwest gardeners</h1>
+<section class="hero hub-hero${pageCls("articles")}">${pageBanner("articles", "../")}<p class="eyebrow">${ARTICLES.length} guides · Oregon · Washington · Idaho</p><h1>Guides for Northwest gardeners</h1>
 <p class="lede">Advice for what makes gardening here different: cool summers, wet winters, short seasons and slugs.</p></section>
 <nav class="topic-nav" aria-label="Article topics"><ul class="chips">${ARTICLE_TOPICS.map(([id, name]) => `<li><a href="#${id}">${name} <span class="count">${ARTICLES.filter(a => a.topic === id).length}</span></a></li>`).join("")}</ul></nav>
 ${ARTICLE_TOPICS.map(([id, name, blurb]) => `<section class="topic-sec" id="${id}"><h2>${name}</h2><p class="topic-blurb">${blurb}</p>
@@ -2082,6 +2206,10 @@ var row=document.querySelector('.mb-reg tr[data-zone="'+t[3]+'"]');if(row)row.cl
 m.innerHTML='<p><strong>'+t[1]+', '+t[2]+'</strong> is in the '+zn[t[3]]+'.</p><p class="mb-mine-links"><a class="btn" href="${rel}plant-now/">Plant now in '+t[1]+'</a><a href="${rel}frost-dates/'+t[0]+'/">'+t[1]+'’s full calendar</a></p>';m.hidden=false;
 show(tags[t[3]]||"all")})();</script>
 ${notesFor("months", c.m, rel)}
+${(() => { const jobs = Object.entries(TRICKY).flatMap(([id, t]) => t.stretch.filter(([w]) => trickyMonths(w).includes(c.m)).map(([w, what]) => ({ id, w, what })));
+  return jobs.length ? `<h2 id="tricky-jobs">${name} jobs for tricky crops</h2>
+<p class="note">Steps from our deeper guides that fall in ${name}. Each links to the full list for that plant.</p>
+<ul class="trouble-links">${jobs.map(j => `<li><a href="${rel}when-to-plant/${j.id}/#tricky">${esc(cropById(j.id).name)}</a> <span class="tj-when">${esc(j.w)}:</span> ${esc(j.what)}</li>`).join("")}</ul>` : ""; })()}
 ${guideHtml}
 ${wxHtml}
 ${aheadHtml}
@@ -2105,7 +2233,7 @@ ${c.articles.length ? `<h2>Read next</h2>\n${articleCards(rel, c.articles.filter
     title: "Plant Now: What to Plant This Week in Your Town",
     description: "What you can plant this week in your Oregon, Washington or Idaho town, what's coming up next, and this month's garden jobs.",
     body: `${crumbs(rel, [["Plant now", null]]).html}
-<section class="hero pnf-hero" id="pn-hero"><p class="eyebrow">Plant now</p><h1>What can I plant this week?</h1>
+<section class="hero pnf-hero${pageCls("plant-now")}" id="pn-hero">${pageBanner("plant-now", rel)}<p class="eyebrow">Plant now</p><h1>What can I plant this week?</h1>
 <p class="lede">It depends on your town: the coast and the east side can be weeks apart. Pick yours to see what goes in now and what's next.</p></section>
 <section class="pnf-pick" id="pn-pick">${townBox({ id: "pn-box", rel, button: "Show my dates" })}
 <p class="pnf-popular"><span>Or pick a town:</span> ${picks.map(x => `<a href="${rel}frost-dates/${x.slug}/" data-slug="${x.slug}">${esc(placeLabel(x))}</a>`).join("")}</p></section>
@@ -2171,13 +2299,15 @@ ${RAIN_LINE_ART}
 write("../", "about/index.html", layout({
   rel: "../", canonical: "about/", current: "about/",
   title: "About Rainline Garden",
-  description: "Rainline Garden is a free planting calendar made for gardeners in Oregon, Washington and Idaho.",
+  description: "Rainline Garden is a free planting calendar and set of growing guides made for gardeners in Oregon, Washington and Idaho.",
   jsonld: [{ "@context": "https://schema.org", "@type": "AboutPage", name: "About Rainline Garden", url: CONFIG.siteUrl + "about/", publisher: OWNER_LD, mainEntity: Object.keys(AUTHORS).map(id => ({ ...authorLd(id), description: AUTHORS[id].bio })) }],
-  body: `<section class="hero prose"><h1>About Rainline Garden</h1>
-<p class="lede">A free planting calendar built for Pacific Northwest gardens, not adapted from a national chart.</p></section>
+  body: `<section class="hero${pageCls("about") || " prose"}">${pageBanner("about", "../")}<h1>About Rainline Garden</h1>
+<p class="lede">A free planting calendar and growing guides built for Pacific Northwest gardens, not adapted from a national chart.</p>${pictured("page:about")}</section>
 <div class="prose"><p>National planting guides treat the whole country the same way. The Northwest doesn't cooperate: coastal gardens rarely frost but never get hot, west-side valleys have long seasons and cold spring soil, and the high desert can frost in July. Rainline Garden gives each area its own dates, built from NOAA weather records and regional growing research.</p>
 <h2 id="towns">${D.places.length} towns, each with its own dates</h2>
 <p>Rainline Garden covers only the Northwest, and covers it closely, with ${HOW_STATES}, from Astoria to Idaho Falls. Every town gets its own NOAA frost dates and planting calendar, with notes on the local soil, weather and pests, so Hillsboro, Bend and Pocatello each get dates that fit them instead of a state average. <a href="../frost-dates/">Find your town</a>.</p>
+<h2 id="guides">A growing guide for every plant</h2>
+<p>Each of the ${D.crops.length} plants has its own page: when to plant it in your town, how to plant it, spacing, varieties that do well here, the pests to watch for and answers to common questions. <a href="../when-to-plant/">Browse the plants</a>.</p>
 <h2 id="name">Why "Rainline"?</h2>
 <p>The Cascade Mountains draw a line through Oregon and Washington. West of it, Pacific storms drop their rain: winters are wet and mild, summers are dry, and the soil stays cold into May. East of it sits the rain shadow, with little rain, hot summers and hard winters, and it runs on across Idaho: Boise's hot valley, the short seasons of the Snake River Plain and north Idaho's cooler lake country. That rain line is the biggest reason a planting date for Portland is wrong for Bend, and it's why this site gives every town its own dates. The rain also sets the garden's rhythm on both sides: when the spring rains ease, when the summer dry spell means watering, and when the fall rains return.</p>
 <h2>Who writes Rainline Garden</h2>
@@ -2207,7 +2337,7 @@ Object.keys(AUTHORS).filter(id => AUTHORS[id].page).forEach(id => {
   write(rel, `about/${id}/index.html`, layout({
     rel, canonical: `about/${id}/`, current: "about/",
     title: `${a.name}, ${a.role.toLowerCase()} | Rainline Garden`,
-    description: a.short,
+    description: a.meta || a.short,
     image: a.photo ? `assets/img/authors/${a.photo.img}-1280.jpg` : undefined,
     jsonld: [{ "@context": "https://schema.org", "@type": "ProfilePage", url: CONFIG.siteUrl + authorPath(id),
       mainEntity: { ...authorLd(id), jobTitle: a.role, description: a.bio, worksFor: { "@type": "Organization", name: CONFIG.siteName, url: CONFIG.siteUrl } } }],

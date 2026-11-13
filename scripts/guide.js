@@ -784,6 +784,12 @@ const glossary = [
   ["Cane", "cane", "A long, woody stem on raspberries and blackberries. Most varieties fruit on canes in their second year, then those canes are cut out."],
   ["Runner", "runner", "A stem a strawberry plant sends along the ground that roots into a new plant. Pinch them off for bigger berries, or let them fill a bed."],
   ["Garlic scape", "garlic-scape", "The curly flower stalk on hardneck garlic. Cut it off in early summer so the bulb grows bigger; it's good to eat."],
+  ["Black plastic mulch", "black-plastic", "A sheet of black plastic laid over a bed before planting, with a hole cut for each plant. It soaks up the sun's heat and keeps the soil warmer at night. Pull it tight against smooth soil; loose plastic shades the ground and keeps it cooler."],
+  ["Low tunnel", "low-tunnel", "Wire hoops set over a row and covered with row cover or clear plastic, like a greenhouse a foot or two tall. Open the ends on hot days so it doesn't go above about 90\u00b0F inside."],
+  ["Shade cloth", "shade-cloth", "Loose-woven fabric hung over plants to cut the strongest sun. In hot east-side gardens it keeps peppers and tomatoes from scalding in the afternoon."],
+  ["Male and female flowers", "male-female-flowers", "Melons, cucumbers and squash have two kinds of flowers. Male flowers come first and only carry pollen. Female flowers have a tiny fruit at the base, and bees have to bring them pollen for it to grow."],
+  ["Full slip", "full-slip", "How most cantaloupes show they're ripe: the stem comes away from the melon with a gentle push."],
+  ["Sunscald", "sunscald", "Pale, papery or bleached patches where hot sun burned a fruit or leaf. It hits fruit left bare of leaf cover and young plants that weren't hardened off."],
   ["Late blight", "late-blight", "A disease that spreads fast in cool, wet weather, usually once fall rains start. Leaves get dark, greasy blotches and tomatoes turn brown and firm. Keep leaves dry and pick early."],
   ["Clubroot", "clubroot", "A soil disease that swells and twists the roots of cabbage-family crops. Raising soil pH with lime and rotating crops help keep it away."],
   ["Damping off", "damping-off", "When seedlings suddenly flop over at the soil line, caused by fungi in cold, wet soil. Use clean pots, fresh seed-starting mix and good airflow."],
@@ -832,10 +838,10 @@ const glossaryGroups = [
   ["planting", "Planting", ["direct-sow", "start-indoors", "starts", "hardening-off", "set-out", "germination", "true-leaves", "leggy", "potting-mix", "cool-season", "warm-season", "hardy-tender", "annual-perennial", "succession", "thinning", "onion-sets", "seed-potatoes", "bulbs-tubers", "bare-root"]],
   ["yard", "Weather and your yard", ["full-sun", "rain-shadow", "microclimate", "frost-pocket", "hardiness-zone", "soil-temperature", "native-plant"]],
   ["soil", "Soil and feeding", ["compost", "cover-crop", "crop-rotation", "fertilizer", "inoculant", "lime", "mulch", "raised-bed", "side-dressing", "soil-ph"]],
-  ["seeds", "Seeds and varieties", ["heirloom", "open-pollinated", "hybrid", "determinate", "bush-pole-beans", "hardneck-softneck", "pollination", "pollinator", "fruit-set", "self-seeding"]],
-  ["care", "Care and tools", ["bolting", "cloche", "cold-frame", "cordon", "curing", "cut-and-come-again", "deadheading", "drip-irrigation", "garlic-scape", "hilling", "hoop-house", "overwintering", "pinching", "row-cover", "trellis"]],
+  ["seeds", "Seeds and varieties", ["heirloom", "open-pollinated", "hybrid", "determinate", "bush-pole-beans", "hardneck-softneck", "pollination", "pollinator", "male-female-flowers", "fruit-set", "full-slip", "self-seeding"]],
+  ["care", "Care and tools", ["bolting", "cloche", "cold-frame", "cordon", "curing", "cut-and-come-again", "deadheading", "drip-irrigation", "garlic-scape", "hilling", "hoop-house", "low-tunnel", "black-plastic", "shade-cloth", "overwintering", "pinching", "row-cover", "trellis"]],
   ["fruit", "Fruit, berries and trees", ["cane", "crown", "dormant", "drip-line", "primocane", "pruning", "rootstock", "runner", "self-fertile", "strawberry-types"]],
-  ["problems", "Pests and plant problems", ["aphids", "blossom-end-rot", "cabbage-worms", "clubroot", "damping-off", "flea-beetles", "late-blight", "powdery-mildew", "root-rot", "slugs"]]
+  ["problems", "Pests and plant problems", ["aphids", "blossom-end-rot", "cabbage-worms", "clubroot", "damping-off", "flea-beetles", "late-blight", "powdery-mildew", "root-rot", "slugs", "sunscald"]]
 ];
 // "See also" links between terms that are easy to mix up.
 const glossaryRelated = {
@@ -877,7 +883,9 @@ const glossaryLinks = [
   ["pruning", "pruning"], ["rootstock", "rootstocks?"], ["runner", "runners"], ["self-fertile", "self-fertile|pollinizers?"],
   ["strawberry-types", "june-bearing|day-neutral"], ["aphids", "aphids"], ["blossom-end-rot", "blossom[- ]end rot"], ["cabbage-worms", "cabbage worms?"],
   ["clubroot", "clubroot"], ["damping-off", "damping[- ]off"], ["flea-beetles", "flea beetles?"], ["late-blight", "late blight"],
-  ["powdery-mildew", "powdery mildew"], ["root-rot", "root rot"], ["slugs", "slugs"]
+  ["powdery-mildew", "powdery mildew"], ["root-rot", "root rot"], ["slugs", "slugs"],
+  ["black-plastic", "black plastic(?: mulch)?"], ["low-tunnel", "low hoops|low tunnels?|clear (?:plastic )?tunnel|row cover tunnel"], ["shade-cloth", "shade cloth"],
+  ["male-female-flowers", "(?:fe)?male flowers?"], ["full-slip", "full slip|slips? off"], ["sunscald", "sunscald|scald"]
 ].filter(([, re]) => re);
 
 module.exports = { crops, beginner, beginnerWhy, glossary, glossaryStarter, glossaryGroups, glossaryRelated, glossaryLinks };

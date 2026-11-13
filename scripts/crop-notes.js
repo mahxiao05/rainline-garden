@@ -44,7 +44,7 @@ const notes = {
       ["Why heads split",
         "A cabbage head splits when it takes up a lot of water fast, often after a heavy rain or deep soaking that follows a dry spell. The inside grows faster than the outer leaves can stretch. Even watering is the best prevention. If a firm head is ready and big rain is coming, either harvest it or give the plant a twist to break some of its roots, which slows water uptake. Early Jersey Wakefield and Golden Acre are quick, small-headed types for spring, while January King is grown for fall and winter harvest west of the Cascades."],
       ["Pests, harvest and storage",
-        "Cabbage worms, root maggots and gray aphids all go after cabbage in the Northwest. Row cover from planting day handles the first two, and a strong spray of water knocks aphids back. Slugs also hide between the outer leaves in wet weather. Cut heads when they feel solid when squeezed. A whole, dry head keeps for weeks, even a couple of months, in a cold fridge or cool root cellar. Leave the stump in the ground in mild areas and it may sprout a few small bonus heads."]
+        "Cabbage worms, root maggots and gray aphids all go after cabbage in the Northwest. Row cover from planting day handles the first two, and a strong spray of water knocks aphids back. Slugs also hide between the outer leaves in wet weather. A whole, dry head keeps for weeks, even a couple of months, in a cold fridge or cool root cellar. Leave the stump in the ground in mild areas and it may sprout a few small bonus heads."]
     ],
     faq: [
       ["Why did my cabbage split open?", "A sudden rush of water, from rain or a big watering after dry soil, made the inside grow faster than the outer leaves. Water evenly and harvest heads soon after they firm up. A split head is still fine to eat if you use it soon."],
@@ -76,7 +76,7 @@ const notes = {
       ["Soil and feeding",
         "Peppers like warm, well-drained soil with compost worked in and a pH of about 6.0 to 6.8. Use a balanced fertilizer and go light on nitrogen, which grows leafy plants with few peppers. A modest feeding when the first fruit sets keeps them going. Water deeply and evenly, about an inch a week, since dry spells can cause blossom-end rot on peppers just as on tomatoes. Wait to add straw mulch until summer, because it keeps cool soil cool."],
       ["Why warmth decides everything",
-        "Peppers barely grow when nights drop below about 55°F, and transplants set out into cold May soil can sit still for weeks. Flowers also tend to drop off when nights are cool or days are very hot. West of the Cascades, black plastic mulch to warm the soil, row cover for the first weeks, and a spot against a south-facing wall make a big difference. Early, smaller-fruited varieties like Gypsy, Ace, Early Jalapeño and Lunchbox snacking peppers ripen in a short, mild summer. East of the Cascades, heat is plentiful, but midsummer sun can scald exposed fruit, so leafy plants help."],
+        "Peppers barely grow when nights drop below about 55°F, and transplants set out into cold May soil can sit still for weeks. West of the Cascades, black plastic mulch to warm the soil, row cover for the first weeks, and a spot against a south-facing wall make a big difference. Early, smaller-fruited varieties like Gypsy, Ace, Early Jalapeño and Lunchbox snacking peppers ripen in a short, mild summer. East of the Cascades, heat is plentiful, but midsummer sun can scald exposed fruit, so leafy plants help."],
       ["Harvest and color",
         "Every pepper starts green and changes color as it ripens. Green peppers are simply unripe, which is why red, yellow and orange ones are sweeter. In the Northwest, full color can take weeks, so pick some green to keep plants producing and leave others to ripen. When fall rain or frost threatens, pick everything full size. Peppers keep about a week or two in the fridge, and extras freeze well chopped with no blanching needed."]
     ],
@@ -231,7 +231,7 @@ const notes = {
       ["Spring vs fall, and why fall is sweeter",
         "Turnips are a cool-season crop. In spring, warm weather and long days can make roots tough and plants bolt, so sow as early as the soil allows and pick young. Fall crops, sown in mid to late summer, mature as the weather cools, and a light frost turns some of their starches to sugar. West of the Cascades, fall turnips often hold in the ground into early winter. East of the Cascades, harvest before the soil freezes hard. Hakurei is a quick, mild salad turnip, while Purple Top White Globe is the classic for cooking and storage."],
       ["Root maggots, harvest and storage",
-        "Cabbage root maggots tunnel into turnips in cool, wet soil, leaving brown trails. Row cover laid on at sowing keeps the egg-laying flies away, and rotating where you plant cabbage-family crops helps too. Pull roots at 2 to 3 inches across for the most tender texture. Twist off the greens, which are good cooked, and store roots in a bag in the fridge for several weeks. Larger fall turnips can keep for months in a cold, damp root cellar."]
+        "Cabbage root maggots tunnel into turnips in cool, wet soil, leaving brown trails. Row cover laid on at sowing keeps the egg-laying flies away, and rotating where you plant cabbage-family crops helps too. Twist off the greens, which are good cooked, and store roots in a bag in the fridge for several weeks. Larger fall turnips can keep for months in a cold, damp root cellar."]
     ],
     faq: [
       ["Why are my turnips woody or bitter?", "They were probably left in the ground too long, grew in hot weather, or dried out. Pick turnips small, about 2 to 3 inches across, and keep the soil moist. Fall crops are usually the sweetest."],
@@ -265,7 +265,7 @@ const notes = {
       ["Growing it east vs west of the Cascades",
         "West of the Cascades, eggplant is a challenge because summers are mild and nights are cool. Choose small-fruited, early varieties like Hansel, Fairy Tale and Orient Express, plant them in your hottest spot, and use black plastic mulch and row cover early in the season. Growing in a large dark container against a south wall also works well. East of the Cascades, hot valleys grow eggplant easily. Flowers can drop in extreme heat, though, so steady water and mulch help there."],
       ["Flea beetles, wilt and harvest",
-        "Flea beetles chew many tiny holes in young leaves and can stunt small plants. Keep row cover on until plants grow strongly, then remove it so bees can reach the flowers. Verticillium wilt, a soil disease shared with tomatoes and potatoes, causes leaves to yellow and wilt on one side; rotate so eggplant doesn't follow those crops. Pick fruit when the skin is glossy and springs back when pressed. Eggplant doesn't store long: keep it a few days in a cool spot, since the fridge can cause brown spots and pitting."]
+        "Flea beetles chew many tiny holes in young leaves and can stunt small plants. Keep row cover on until plants grow strongly, then remove it so bees can reach the flowers. Verticillium wilt, a soil disease shared with tomatoes and potatoes, causes leaves to yellow and wilt on one side; rotate so eggplant doesn't follow those crops. Eggplant doesn't store long: keep it a few days in a cool spot, since the fridge can cause brown spots and pitting."]
     ],
     faq: [
       ["Why isn't my eggplant producing fruit?", "Cool nights are the most common cause in the Northwest, and extreme heat can do the same in eastern valleys. Plants also need pollinators, so remove row cover once flowers open. Small, early varieties set fruit most reliably here."],
@@ -598,7 +598,7 @@ const notes = {
         "Young trees are the most vulnerable to hard freezes. Mulch the base well in fall and wrap the tree in frost cloth when temperatures head toward the teens. Even if the top dies, figs usually regrow from the roots, though you'll lose a year or two of fruit. In cold eastern areas, grow figs in large pots and move them into an unheated garage for winter."],
       ["Pruning and harvest",
         "Figs need little pruning. Remove dead and crossing wood in late winter once the worst cold is past. Avoid cutting back every branch, since the breba crop grows on last year's wood and heavy pruning removes it.",
-        "Pick figs when they droop on the stem, feel soft and the skin starts to crack slightly. An unripe fig will not ripen on the counter. Birds and wasps find ripe figs quickly, so check daily during harvest."]
+        "An unripe fig will not ripen on the counter. Birds and wasps find ripe figs quickly, so check daily during harvest."]
     ],
     faq: [
       ["Can figs grow in Seattle or Portland?", "Yes. Figs do well west of the Cascades when planted in a warm, sunny spot. Choose a variety with a reliable early crop like Desert King, and protect young trees in hard freezes."],
@@ -670,7 +670,7 @@ const notes = {
     keys: [["First bunches","Year 3"], ["Spacing","6–8 ft on a trellis"], ["Prune","Late winter, hard"], ["Biggest risk","Powdery mildew"]],
     sections: [
       ["Choosing grapes that ripen here",
-        "The biggest mistake with grapes in a cool climate is choosing a variety that needs more summer heat than you have. West of the Cascades, early seedless table grapes like Interlaken, Himrod and Canadice ripen reliably by September. Late wine grapes rarely sweeten up in a backyard on the wet side.",
+        "The biggest mistake with grapes in a cool climate is choosing a variety that needs more summer heat than you have. Late wine grapes rarely sweeten up in a backyard on the wet side.",
         "East of the Cascades, hot summers ripen Concord and many wine grapes easily. Cold winters there can injure European wine grapes, so choose hardy varieties for the coldest areas and keep some spare canes in case one gets frozen."],
       ["Pruning, and why it's so severe",
         "Grapes fruit on new green shoots that grow from one-year-old canes. Wood older than that won't fruit, so a grapevine left alone turns into a tangle with little fruit. Each late winter, remove most of last year's growth, leaving either a few short spurs of two buds each or one or two long canes tied along the trellis wire.",
@@ -717,7 +717,7 @@ const notes = {
         "Every few years, crowns get crowded. Dig and split off rooted side shoots in spring to replant or share."],
       ["Feeding, pests and harvest",
         "Artichokes are big, hungry plants. Work plenty of compost into the bed and water deeply, since drought stress makes buds tough. Aphids gather under leaves and in buds; a strong spray of water knocks them off. Slugs and earwigs sometimes hide between the scales.",
-        "Cut buds while the scales are tight, with an inch or two of stem. If a bud opens, leave it: the purple thistle flower is beautiful and bees love it."]
+        "If a bud opens, leave it: the purple thistle flower is beautiful and bees love it."]
     ],
     faq: [
       ["Can artichokes grow in the Pacific Northwest?", "Yes. West of the Cascades they often survive as perennials if the crowns are mulched and the soil drains well. In colder areas, grow Imperial Star as an annual for a first-year harvest."],
@@ -752,7 +752,7 @@ const notes = {
         "Oregon grape is Oregon's state flower and one of the most common native shrubs in Northwest woods and forest edges. Tall Oregon grape grows upright to about six feet and handles sun or shade. Low Oregon grape, also called dull Oregon grape, stays under two feet and carpets shady forest floors under Douglas firs.",
         "Despite the name, it isn't related to grapes. The spiny, holly-like leaves stay green all year and often turn reddish or bronze in winter."],
       ["Easy care",
-        "Oregon grape is about as low-maintenance as shrubs get. It grows in most soils, takes sun or deep shade, and once settled in it needs no summer water at all. Water through the first summer, mulch, then leave it alone. Every few years, cut a few of the oldest stems to the ground in late winter to keep it full and leafy at the base.",
+        "Oregon grape is about as low-maintenance as shrubs get. It grows in most soils, takes sun or deep shade, and once settled in it needs no summer water at all. Water through the first summer, mulch, then leave it alone.",
         "Leaf spot and rust can appear in crowded, damp spots. Giving plants room for airflow is usually enough."],
       ["Wildlife value",
         "The bright yellow flower clusters open in early spring, when few other plants are blooming, and are a key early food for native bumblebees and hummingbirds. Birds eat the berries in summer, and the evergreen, prickly leaves make safe cover for small birds. It's a great choice for a shady wildlife hedge or a planting under trees where little else grows."]
@@ -813,7 +813,7 @@ const notes = {
         "After blooming, let the leaves yellow before you cut them back. In a meadow or lawn planting, wait to mow until June. Let some seed heads ripen and scatter: seedlings take a few years to bloom, but plantings slowly spread."],
       ["Wildlife value and a safety note",
         "Camas flowers feed native bees and other early pollinators, and restoring camas helps rebuild a habitat that has mostly disappeared. Voles and gophers sometimes eat the bulbs.",
-        "Never dig and eat wild camas bulbs. Death camas grows in the same meadows, looks nearly identical without flowers and is highly poisonous. Its flowers are white or cream, but the bulbs can't be safely told apart. Enjoy garden camas for its flowers."]
+        "Death camas grows in the same meadows, looks nearly identical without flowers and is highly poisonous. Its flowers are white or cream, but the bulbs can't be safely told apart. Enjoy garden camas for its flowers."]
     ],
     faq: [
       ["Is camas poisonous?", "Blue camas itself isn't, but death camas, a different plant that grows in the same places, is highly poisonous and looks almost identical when not in bloom. Never eat wild bulbs; grow camas for its flowers."],
@@ -852,7 +852,7 @@ const notes = {
         "Start seeds indoors six to eight weeks before your last frost, and plant out once nights stay above about 50°F. Like tomatoes, they root along buried stems, so plant deep. Plants grow wide and floppy, often 3 to 4 feet tall and across, so give them the full 3 feet of spacing and a large cage or sturdy stakes.",
         "Average garden soil with some compost is enough. Too much nitrogen grows leaves at the expense of fruit."],
       ["Harvest and use",
-        "Pick when the fruit fills the husk and the husk starts to split or turn papery. Green types are best slightly underripe for tart salsa verde; purple ones turn deep purple and sweeter as they ripen.",
+        "Green types are best slightly underripe for tart salsa verde; purple ones turn deep purple and sweeter as they ripen.",
         "Tomatillos keep two weeks or more in their husks in the fridge, and they freeze well whole after husking and rinsing. Fruit that drops and rots in the bed often leaves volunteer seedlings next spring, so clean up fallen fruit if you don't want them."]
     ],
     faq: [
@@ -920,10 +920,10 @@ const notes = {
     ]
   },
   celery: {
-    keys: [["Start indoors","10–12 weeks before"], ["Nights before planting","Above 50°F"], ["Water","1–2 inches a week"], ["Biggest risk","Bolting"]],
+    keys: [["Start indoors","8–10 weeks before"], ["Nights before planting","Above 50°F"], ["Water","1–2 inches a week"], ["Biggest risk","Bolting"]],
     sections: [
       ["Starting celery from seed",
-        "Celery seed is tiny and slow. Sow it indoors 10 to 12 weeks before planting time, pressing it onto the surface of the mix without covering it, since it needs light to sprout. Keep it at about 70°F; it can take two to three weeks to come up. Seedlings grow slowly at first, so be patient. Buying starts is a good shortcut."],
+        "Celery seed is tiny and slow. Sow it indoors 8 to 10 weeks before planting time, pressing it onto the surface of the mix without covering it, since it needs light to sprout. Keep it at about 70°F; it can take two to three weeks to come up. Seedlings grow slowly at first, so be patient. Buying starts is a good shortcut."],
       ["Why timing matters",
         "Celery is a biennial: it normally makes leaves one year and flowers the next. A week or more of nights below about 50°F convinces a young plant it has been through winter, and it bolts to seed in summer instead of making stalks. That's why the planting dates here wait for warmer nights than other cool-season crops.",
         "Harden seedlings off gradually, and if a cold snap comes after planting, cover them with row cover."],
@@ -972,7 +972,7 @@ const notes = {
     ]
   },
   pumpkins: {
-    keys: [["Soil to sprout","70–90°F"], ["Days to harvest","90–120"], ["Space per plant","25–50 sq ft"], ["Biggest risk","Powdery mildew"]],
+    keys: [["Soil to sprout","70–90°F"], ["Days to harvest","90–110"], ["Space per plant","16–36 sq ft"], ["Biggest risk","Powdery mildew"]],
     sections: [
       ["Timing for Halloween",
         "Most carving pumpkins need 90 to 110 days from planting to ripe. Count back from early October: in most of the Northwest that means plants should be in the ground by late May or early June. Starting them indoors three to four weeks early gives you a head start in cool springs. Pumpkins that ripen in September keep fine in a cool, dry spot until Halloween."],
@@ -1012,7 +1012,7 @@ const notes = {
       ["White pine blister rust",
         "Black currants (and to a lesser extent other currants and gooseberries) are an alternate host of white pine blister rust, a disease that kills five-needle pines like western white pine. Plant rust-resistant black currant varieties such as Titania, Consort or Crusader, especially if you live near forests with white pines."],
       ["Pruning and pests",
-        "Currants fruit best on two- and three-year-old wood. Each late winter, cut out stems older than three or four years at ground level and keep about ten stems of mixed ages. Black currants fruit on younger wood, so prune them a bit harder.",
+        "Currants fruit best on two- and three-year-old wood. Black currants fruit on younger wood, so prune them a bit harder.",
         "In spring, watch for imported currantworm: green, spotted larvae that start under the lower leaves and can strip a bush in a week. Pick them off or spray with spinosad. Net the bushes as berries color."]
     ],
     faq: [
@@ -1121,8 +1121,8 @@ const notes = {
         "Sow seeds ¼ inch deep, or start them in trays and transplant at about four weeks old, 8 to 12 inches apart. Keep the soil evenly moist through summer heat so plants don't stall.",
         "Don't worry if summer leaves look green and loose. The outer leaves protect the head, which forms in the center later. Modern hybrids like Indigo head up more reliably than older open-pollinated types."],
       ["Harvest and storage",
-        "Cut heads at the base when they feel firm, from September through late fall. West of the Cascades, radicchio handles light frost and some varieties hold in the garden into early winter.",
-        "Peel off and compost the tattered outer leaves; the head inside is clean. Heads keep for weeks in the fridge. If a plant never forms a head, cut it back to an inch or two in early fall and it may regrow a small one."]
+        "West of the Cascades, radicchio handles light frost and some varieties hold in the garden into early winter.",
+        "Peel off and compost the tattered outer leaves; the head inside is clean. If a plant never forms a head, cut it back to an inch or two in early fall and it may regrow a small one."]
     ],
     faq: [
       ["Why didn't my radicchio form a head?", "Usually it was sown at the wrong time. Spring sowings often bolt, and some older varieties are unreliable. Sow a modern hybrid in midsummer and give it steady water."],
@@ -1135,7 +1135,7 @@ const notes = {
     sections: [
       ["A lemony perennial green",
         "Garden sorrel and French sorrel are hardy perennials grown for their sharp, lemony leaves. They're among the first greens to grow each spring, often weeks before anything you sowed is ready, and they come back for years.",
-        "The sour taste comes from oxalic acid, the same compound in spinach and rhubarb. It's fine in normal kitchen amounts, but people prone to kidney stones may want to go easy."],
+        "The sour taste comes from oxalic acid, the same compound in spinach and rhubarb."],
       ["Planting and care",
         "Sow seeds in early spring ½ inch deep, or plant young plants, about a foot apart. Sorrel takes sun or part shade and isn't fussy about soil. A small clump of three or four plants is plenty for most kitchens.",
         "Cut off flower stalks as soon as they appear in late spring; once plants flower, leaves turn tough and more sour. Divide crowded clumps every few years in spring or fall."],
@@ -1173,12 +1173,12 @@ const notes = {
     sections: [
       ["Sun and drainage first",
         "Culinary sage is a Mediterranean shrub that wants full sun and soil that drains fast. It handles cold well, but it doesn't like wet roots in winter, which is the usual cause of dead sage west of the Cascades.",
-        "Plant it on a mound, slope, raised bed or large pot with gritty soil. Skip rich compost and fertilizer: lean soil keeps plants compact and flavorful."],
+        "Skip rich compost and fertilizer: lean soil keeps plants compact and flavorful."],
       ["Pruning and renewal",
         "Each spring, once new leaves appear, cut plants back by about a third to keep them bushy. Don't cut into old, leafless wood; it often won't sprout.",
         "Sage gets woody and sparse after four or five years. Replace old plants, or layer a low branch: pin it to the soil and it roots by fall."],
       ["Harvest and varieties",
-        "Pick leaves any time. Flavor peaks just before flowering in early summer. Leave plenty of growth going into winter, especially on young plants.",
+        "Pick leaves any time. Flavor peaks just before flowering in early summer.",
         "Berggarten has big, round leaves and rarely flowers, so it stays leafy. Purple, golden and tricolor sages look great but are a bit less hardy than common sage."]
     ],
     faq: [
@@ -1192,7 +1192,7 @@ const notes = {
     sections: [
       ["An easy herb for tea",
         "Lemon balm is a hardy perennial in the mint family, grown for its lemon-scented leaves. It grows in almost any soil and takes part shade better than most herbs, which makes it useful in shady Northwest yards.",
-        "It dies back in winter and regrows from the crown each spring. Unlike mint, it doesn't spread by long runners, but it seeds itself freely."],
+        "Unlike mint, it doesn't spread by long runners, but it seeds itself freely."],
       ["Keeping it tidy",
         "Cut plants back by about half before the small white flowers set seed. That stops seedlings and brings a fresh crop of tender leaves. A second cut in late summer keeps plants neat.",
         "In full sun it needs some summer water; in part shade it gets by with less. Divide crowded clumps every few years in spring."],
@@ -1214,7 +1214,7 @@ const notes = {
         "Before buying, crush a leaf. French tarragon smells clearly of licorice and leaves a faint numbing tingle on the tongue."],
       ["Planting and winter care",
         "Plant in full sun or light afternoon shade in soil that drains well. Like sage and thyme, it suffers more from wet winter roots than from cold, so use a raised bed or pot on the west side.",
-        "It dies back to the ground in winter and regrows in spring. Cut old stems down in late fall. Clumps lose vigor after a few years; divide them in spring every third year to keep them productive."],
+        "Cut old stems down in late fall. Clumps lose vigor after a few years; divide them in spring every third year to keep them productive."],
       ["Harvest and use",
         "Snip sprigs from late spring through summer. Regular cutting keeps plants bushy.",
         "The flavor is best fresh. To keep it, freeze chopped leaves or steep sprigs in vinegar. Dried tarragon loses much of its flavor."]
@@ -1312,7 +1312,7 @@ const notes = {
         "Experienced west-side growers also plant in fall under a hoop house or cold frame for earlier, bigger plants. Outdoors without cover, fall plantings often rot in wet, cold winters."],
       ["Drainage and harvest",
         "The corms rot in cold, soggy soil, so plant in a raised bed or loose soil that drains well, and don't water again until leaves appear.",
-        "Cut stems when the buds are colored and feel soft like a marshmallow. They open in the vase and last a week or more. Most gardeners replant fresh corms each year."]
+        "Cut stems when the buds are colored and feel soft like a marshmallow. Most gardeners replant fresh corms each year."]
     ],
     faq: [
       ["Why did my ranunculus corms rot?", "Too much water before the leaves appeared, or cold, poorly drained soil. Water once after planting, then wait, and use raised beds."],
@@ -1331,7 +1331,7 @@ const notes = {
         "Tall types like Rocket need support. Stretch netting over the bed early so stems grow up through it."],
       ["Cutting and rust",
         "Cut stems when the lower third of the flowers are open. Cut low, and side shoots bloom again later.",
-        "Rust causes orange-brown spots under the leaves in damp weather. Water at the soil, give plants space, and pull and bin infected plants. On the west side, snapdragons often survive mild winters and bloom early the next year."]
+        "Rust causes orange-brown spots under the leaves in damp weather. On the west side, snapdragons often survive mild winters and bloom early the next year."]
     ],
     faq: [
       ["Do snapdragons come back every year?", "They're short-lived perennials grown as annuals. In mild west-side winters many survive and bloom again early the next year, though second-year plants are often weaker."],
@@ -1368,7 +1368,7 @@ const notes = {
         "Asian pears tend to set far more fruit than the tree can size up. About three weeks after bloom, thin each cluster to one fruit, spacing them about 6 inches apart. It feels harsh, but you'll get bigger, sweeter pears and a crop every year.",
         "Prune in late winter to keep the tree open. Semi-dwarf trees, 12 to 15 feet tall, are the easiest size for home gardens."],
       ["Harvest and fire blight",
-        "Unlike European pears, which ripen off the tree, Asian pears ripen on the tree. Pick when the color changes and the fruit tastes sweet. They're crisp, juicy and keep for weeks in the fridge.",
+        "Pick when the color changes and the fruit tastes sweet. They're crisp, juicy and keep for weeks in the fridge.",
         "Fire blight is a bacterial disease that blackens shoots as if burned. Cut infected shoots 8 to 12 inches below the damage on a dry day, and disinfect pruners between cuts. Avoid heavy nitrogen fertilizer, which drives the soft growth blight attacks."]
     ],
     faq: [
@@ -1382,13 +1382,13 @@ const notes = {
     sections: [
       ["What quince is",
         "Fruiting quince, Cydonia oblonga, is a small tree related to apples and pears, with big pink-white spring flowers and golden, fragrant fruit in fall. It's not the same as flowering quince, an ornamental shrub with small, hard fruit.",
-        "Most varieties are too hard and sour to eat raw. Cooked slowly, the flesh turns pink and perfumed, which is why quince is prized for jelly, paste and poached fruit. Aromatnaya is one of the few soft enough to eat fresh when fully ripe."],
+        "Most varieties are too hard and sour to eat raw. Cooked slowly, the flesh turns pink and perfumed, which is why quince is prized for jelly, paste and poached fruit."],
       ["Planting and care",
-        "Quince is self-fertile, so one tree is enough. Plant in full sun in soil that drains reasonably well. It blooms late, after most frosts, and it's very cold-hardy.",
+        "Plant in full sun in soil that drains reasonably well. It blooms late, after most frosts, and it's very cold-hardy.",
         "Trees grow 12 to 15 feet and need only light pruning in late winter to remove crossing branches and open the center."],
       ["Diseases",
-        "Quince leaf blight is the main problem in wet west-side springs: brown spots on leaves and fruit and early leaf drop. Rake and remove fallen leaves in autumn and prune for good airflow.",
-        "Quince can also get fire blight. Cut blackened shoots well below the damage on a dry day."]
+        "Quince leaf blight is the main problem in wet west-side springs: brown spots on leaves and fruit and early leaf drop.",
+        "Quince can also get fire blight."]
     ],
     faq: [
       ["Can you eat quince raw?", "Most varieties are too hard and sour. Cook them. A few, like Aromatnaya, soften enough to eat fresh when fully ripe."],
@@ -1521,7 +1521,7 @@ const notes = {
         "It spreads by underground stems into a patch. That's great in a meadow or a big bed, but dig out runners where you don't want them."],
       ["Care",
         "Water through the first summer, and in long dry spells after that. Dry soil invites powdery mildew late in the summer.",
-        "Cutting stems back by about a third in early June makes shorter, bushier plants that flop less. Leave seed heads standing for finches and cut stems down in late winter."]
+        "Cutting stems back by about a third in early June makes shorter, bushier plants that flop less."]
     ],
     faq: [
       ["When does Douglas aster bloom?", "From midsummer into early fall, usually July through September. That late bloom is its main value: it feeds bees and butterflies when most spring natives have finished. Cutting the stems back by a third in early June gives bushier plants with more flowers."],
@@ -1540,7 +1540,7 @@ const notes = {
         "Seed sown on the soil surface in fall germinates after a winter of cold, wet weather. Young plants can go in during spring or fall."],
       ["Care",
         "Water only during the first summer. After that, summer watering and rich soil are what kill it.",
-        "Shear plants lightly after bloom to keep them compact. Individual plants are short-lived, but they reseed in open, gravelly ground."]
+        "Shear plants lightly after bloom to keep them compact."]
     ],
     faq: [
       ["Why did my Oregon sunshine die?", "Usually too much water or soil that's too rich. It needs full sun, lean soil and dry summers."],
