@@ -300,7 +300,7 @@ ${noindex ? '<meta name="robots" content="noindex, follow">\n' : ""}${canonical 
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="${CONFIG.siteUrl}${canonical == null ? "" : canonical}">
-<meta property="og:image" content="${CONFIG.siteUrl}${image || "assets/img/og.png"}">
+<meta property="og:image" content="${CONFIG.siteUrl}${image || "assets/img/og.jpg"}">
 <meta property="og:site_name" content="Rainline Garden">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0B1A15">
@@ -1844,7 +1844,7 @@ ARTICLES.forEach(a => {
     title: a.seoTitle || `${a.title} | Rainline Garden`, description: a.description,
     image: PHOTOS["article:" + a.slug] && photoFile("article:" + a.slug, "banner"),
     jsonld: [ab.ld, { "@context": "https://schema.org", "@type": "Article", headline: a.title, description: a.description, datePublished: dt.published, dateModified: dt.modified,
-      image: CONFIG.siteUrl + (PHOTOS["article:" + a.slug] ? photoFile("article:" + a.slug, "banner") : "assets/img/og.png"), author: byLd(a.author || DEFAULT_AUTHOR), publisher: OWNER_LD, mainEntityOfPage: CONFIG.siteUrl + `articles/${a.slug}/` }],
+      image: CONFIG.siteUrl + (PHOTOS["article:" + a.slug] ? photoFile("article:" + a.slug, "banner") : "assets/img/og.jpg"), author: byLd(a.author || DEFAULT_AUTHOR), publisher: OWNER_LD, mainEntityOfPage: CONFIG.siteUrl + `articles/${a.slug}/` }],
     body: `${ab.html}
 <article class="article">
 <header class="hero hero-crop${PHOTOS["article:" + a.slug] ? " has-photo" : ""}">${banner("article:" + a.slug, rel)}${PHOTOS["article:" + a.slug] ? "" : articleIcon(a, rel, 120)}<div><p class="eyebrow">${topic} · Oregon · Washington · Idaho</p><h1>${esc(articleH1(a.title))}</h1><p class="lede">${esc(a.description)}</p>
