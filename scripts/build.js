@@ -305,11 +305,11 @@ ${noindex ? '<meta name="robots" content="noindex, follow">\n' : ""}${canonical 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0B1A15">
 <script>try{var t=localStorage.getItem("rainline-theme");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"";if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="icon" href="${base}favicon.ico" sizes="48x48">
-<link rel="icon" href="${base}assets/icon-96.png" type="image/png" sizes="96x96">
-<link rel="icon" href="${base}assets/icon-192.png" type="image/png" sizes="192x192">
-<link rel="icon" href="${base}assets/icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="${base}apple-touch-icon.png">
+<link rel="icon" href="${base}favicon.ico?v=2" sizes="48x48">
+<link rel="icon" href="${base}assets/icon-96.png?v=2" type="image/png" sizes="96x96">
+<link rel="icon" href="${base}assets/icon-192.png?v=2" type="image/png" sizes="192x192">
+<link rel="icon" href="${base}assets/icon.svg?v=2" type="image/svg+xml">
+<link rel="apple-touch-icon" href="${base}apple-touch-icon.png?v=2">
 <link rel="manifest" href="${base}site.webmanifest">
 <link rel="stylesheet" href="${base}assets/fonts/fonts.css?v=${ver("fonts/fonts.css")}">
 <link rel="stylesheet" href="${base}assets/style.css?v=${ver("style.css")}">
@@ -589,7 +589,7 @@ z.addEventListener("input",function(){if(z.value.replace(/\\D/g,"").length===5)l
 function send(){var b=f.querySelector("button[type=submit]");b.disabled=true;
 fetch(f.action,{method:"POST",body:new URLSearchParams(new FormData(f)),mode:"no-cors"}).then(function(){f.hidden=true;done.hidden=false;done.focus()},function(){b.disabled=false;f.submit()})}
 f.addEventListener("submit",function(e){if(!window.fetch||!window.FormData||!window.URLSearchParams||!window.Promise)return;e.preventDefault();
-if(!f.querySelector("#nl-email").checkValidity()){f.reportValidity();return}
+var em=f.querySelector("#nl-email");if(!em.checkValidity()){em.reportValidity();return}
 if(s.value)return send();
 if(!z.value){say("Enter your ZIP code, or pick your town.",true);showTown();z.focus();return}
 look().then(function(ok){if(ok)send()})})})()</script>`;
@@ -2448,7 +2448,7 @@ write(B, "404.html", layout({
   title: "Page not found | Rainline Garden", description: "That page doesn't exist.",
   body: `<section class="hero prose"><h1>That page doesn't exist.</h1><p class="lede">Try the <a href="${B}">home page</a>, the <a href="${B}what-to-grow/">plant quiz</a>, the <a href="${B}when-to-plant/">plant guides</a> or the <a href="${B}frost-dates/">town calendars</a>.</p></section>
 <script>/* Old one-plant-one-town pages were folded into the plant guides; send visitors to the guide with their town picked. */
-(function(){var m=location.pathname.match(/when-to-plant[/]([a-z-]+)[/]([a-z-]+-(?:or|wa))[/]?$/);if(m)location.replace("${B}when-to-plant/"+m[1]+"/?town="+m[2]+"#your-town")})()</script>`
+(function(){var m=location.pathname.match(/when-to-plant[/]([a-z-]+)[/]([a-z-]+-(?:or|wa|id))[/]?$/);if(m)location.replace("${B}when-to-plant/"+m[1]+"/?town="+m[2]+"#your-town")})()</script>`
 }), null);
 
 /* Custom domain: GitHub Pages reads the CNAME file. */

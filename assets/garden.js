@@ -308,7 +308,7 @@
         '<div class="sq-main"><div class="sq-left"><div class="sq-sizes" role="group" aria-label="Bed ' + (i + 1) + ' size in feet">' + sizeChips +
         '<span class="sq-own' + (custom ? ' is-on' : '') + '"><input type="number" min="1" max="30" inputmode="numeric" data-bed="' + i + '" data-dim="w" value="' + W + '" aria-label="Width in feet"' + (preview ? ' disabled' : '') + '><span aria-hidden="true">×</span><input type="number" min="1" max="30" inputmode="numeric" data-bed="' + i + '" data-dim="l" value="' + Lg + '" aria-label="Length in feet"' + (preview ? ' disabled' : '') + '></span></div>' +
         '<div class="sq-grid" data-bed-grid="' + i + '" style="grid-template-columns:repeat(' + Lg + ',1fr);grid-template-rows:repeat(' + W + ',auto)" aria-hidden="true">' + cellsH.join("") + '</div>' +
-        '<p class="sq-cap">Each square is 1 × 1 ft. Colours match the list; a number means that many plants share the square.</p></div><div class="sq-right">' +
+        '<p class="sq-cap">Each square is 1 × 1 ft. Colors match the list; a number means that many plants share the square.</p></div><div class="sq-right">' +
         (items.length ? '<ul class="sq-list">' + items.map(function (it) {
           var c = it.c, ps = perSq(c.id), tot = units(c, auto);
           var how = ps > 1 ? pl(it.n * ps) + ' · ' + ps + ' per square' : ps === 1 ? pl(it.n) + ' · one per square' : 'each needs a ' + spot(c.id) + ' × ' + spot(c.id) + ' ft spot';
