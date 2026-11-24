@@ -773,7 +773,7 @@ function plantAfter(c, ex, port) {
   return `<h2 id="after">What to plant after ${lc(c.name)}</h2>
 <p class="lede-sm">Around Portland, the ${singular(c.name)} harvest wraps up around ${P.MONTHS_LONG[last]}. These crops can still go into the same bed, and they come from a different plant family, which helps with rotation.</p>
 <ul class="chips">${picks.map(([o, w]) => `<li><a href="../${o.id}/">${R.icon(o.id, "../../", 24)}${esc(o.name)} <span class="chip-d">${P.fmtRange(w.start, w.end)}</span></a></li>`).join("")}</ul>
-<p class="note after-note">Portland dates. Pick your town at the top of the page for yours.</p>`;
+`;
 }
 // "Saving seed" (scripts/seed-saving.js), for plants whose seed is easy to save at home.
 function seedSaving(c) {
@@ -876,7 +876,7 @@ function yearStrip(c, ex, port) {
   return `<h2 id="year">${singular(c.name).replace(/^./, x => x.toUpperCase())} year at a glance</h2>
 <div class="table-wrap"><table class="year"><thead><tr><th scope="col"><span class="sr-only">Task</span></th>${M.map(m => `<th scope="col"><abbr title="${m}">${m[0]}</abbr></th>`).join("")}</tr></thead>
 <tbody>${rows.map(([label, cls, set]) => `<tr data-yr="${cls}"><th scope="row">${label}</th>${M.map((m, i) => set.has(i) ? `<td class="on ${cls}"><span class="sr-only">${m}</span></td>` : "<td></td>").join("")}</tr>`).join("")}</tbody></table></div>
-<p class="note yr-note">Shown for Portland. Pick your town in the table above for its own dates.${perennial && ex.pick ? " Harvest months are for an established plant." : ""}</p>`;
+<p class="note yr-note">Portland months.${perennial && ex.pick ? " Harvest months are for an established plant." : ""}</p>`;
 }
 function howMany(c, ex) {
   const flower = c.cat === "flowers";
@@ -1042,8 +1042,7 @@ ${words()}${trickyKin(c).length ? `\n<p class="tricky-kin">Related troubles: ${t
 function varietyCards(c) {
   const vs = VARIETIES[c.id];
   if (!vs) return "";
-  return phoneFold("varieties", `More ${singular(c.name)} varieties`, `<p class="lede-sm">More widely sold picks that do well somewhere in the Northwest. The tag says which part of the Northwest suits each one best.</p>
-<div class="var-cards">${vs.map(v => `<section class="var-card"><h3>${esc(v.name)}</h3><p class="var-meta">${esc(v.type)}${v.days ? ` <span>&middot; ${esc(v.days)}</span>` : ""}</p><p>${esc(v.note)}</p><p class="var-where">${esc(v.where)}</p></section>`).join("")}</div>`, true);
+  return phoneFold("varieties", `More ${singular(c.name)} varieties`, `<div class="var-cards">${vs.map(v => `<section class="var-card"><h3>${esc(v.name)}</h3><p class="var-meta">${esc(v.type)}${v.days ? ` <span>&middot; ${esc(v.days)}</span>` : ""}</p><p>${esc(v.note)}</p><p class="var-where">${esc(v.where)}</p></section>`).join("")}</div>`, true);
 }
 // Click-to-load how-to video from scripts/videos.js: shows the plant's own photo until clicked, then YouTube's official player.
 function videoBox(c) {
@@ -1062,8 +1061,7 @@ function scienceParts(sci, c) {
   return `<h2 id="numbers">Key numbers</h2>
 <ul class="keys">${sci.keys.map(([l, v]) => `<li><span class="k-v">${esc(v)}</span> <span class="k-l">${esc(l)}</span></li>`).join("")}</ul>${tip ? `
 <p class="care-tip"><strong>Top care tip:</strong> ${esc(tip)}</p>` : ""}
-${phoneFold("science", sci.notes ? "Growing notes" : "The plant science", `<p class="lede-sm">${sci.notes ? "What makes the difference in Northwest gardens, in plain language." : "The plant biology behind the advice above, in plain language."}</p>
-<div class="sci-cards">${sci.sections.map(([h, ...ps]) => `<section class="sci-card"><h3>${esc(h)}</h3>${ps.map(p => `<p>${esc(p)}</p>`).join("")}</section>`).join("\n")}</div>`, true)}`;
+${phoneFold("science", sci.notes ? "Growing notes" : "The plant science", `<div class="sci-cards">${sci.sections.map(([h, ...ps]) => `<section class="sci-card"><h3>${esc(h)}</h3>${ps.map(p => `<p>${esc(p)}</p>`).join("")}</section>`).join("\n")}</div>`, true)}`;
 }
 function stepsForHub(c, g, port) {
   return steps(c, rowFor(port, c.id), g).replace(/(Start seeds indoors|Plant them in the garden|Plant seeds|Plant seed potatoes|Plant onion sets|Break bulbs into cloves and plant them|Plant them|Plant again|Plant [A-Za-z -]+?) [A-Z][a-z]{2} \d+(–\d+| – [A-Z][a-z]{2} \d+)/g, "$1 on your town's dates");
@@ -1285,20 +1283,16 @@ function townQuestions(p) {
   const afterFrost = sp.start - f.spring50;
   return [
     [`When is the last frost in ${city}?`, `${P.fmtLong(f.spring50)} in a typical year, and frost is over by ${P.fmtLong(f.spring10)} in 9 years out of 10. ` +
-      (peas.start < f.spring50 - 7 ? `Peas and other cool crops don't need to wait for it: peas can go in from ${P.fmtLong(peas.start)}. ` : `Peas and other cool crops go in from ${P.fmtLong(peas.start)}. `) +
-      `Tomatoes, beans and squash wait longer than the frost date, until the soil warms (see the tomato question below).`],
+      (peas.start < f.spring50 - 7 ? `Peas and other cool crops don't need to wait for it: peas can go in from ${P.fmtLong(peas.start)}.` : `Peas and other cool crops go in from ${P.fmtLong(peas.start)}.`)],
     [`When is the first frost in ${city}?`, `Around ${P.fmtLong(f.fall50)} in a typical year, and as early as ${P.fmtLong(f.fall10)} in 1 year out of 10. ` +
-      `From about ${P.fmt(f.fall10)} on, watch the forecast and pick or cover tomatoes, peppers, squash and basil before a cold night. ` +
-      `Kale, carrots, leeks and cabbage handle a light frost fine and keep going.`],
+      `From about ${P.fmt(f.fall10)} on, watch the forecast and pick or cover tomatoes, peppers, squash and basil before a cold night.`],
     [`When can I plant tomatoes in ${city}?`, `Set out tomato plants ${P.fmtRange(sp.start, sp.end)}. ` +
       (afterFrost > 10 ? `That's ${weeks(afterFrost)} after the typical last frost, because tomatoes sit and sulk in cold soil until it reaches about 60°F. ` : `Wait for soil around 60°F and nights near 50°F; tomatoes stall in cold soil. `) +
       (tom.indoor ? `To grow your own from seed, start them indoors ${P.fmtRange(tom.indoor.start, tom.indoor.end)}, or buy young plants at planting time.` : "") +
       (tom.cover ? ` Keep frost cover handy until about ${P.fmt(tom.coverUntil)}.` : "") +
       (tom.season === "short" || tom.season === "tight" || f.season < 130 ? " The season is short here, so pick an early variety (under 70 days)." : "")],
-    [`When should I plant garlic in ${city}?`, `Plant garlic cloves ${P.fmtRange(garlic.start, garlic.end)}, pointy end up, in a sunny bed. ` +
-      `The cloves need a winter of cold to split into a full bulb, which is why fall planting works and spring planting often gives one small round bulb. ` +
-      `Dig the next summer, once the lower leaves have turned brown.`],
-    ...(p.place.hz ? [[`What growing zone is ${city} in?`, `USDA hardiness zone ${p.place.hz}${p.place.hz.includes("–") ? ", depending on your ZIP code" : ""}, on the 2023 USDA map: the coldest winter night is usually ${p.place.hzT.replace(/-/g, "−")}°F. The zone tells you which perennials, shrubs and trees survive the winter. For vegetables it matters much less: go by the frost dates and planting calendar on this page instead.`]] : []),
+    [`When should I plant garlic in ${city}?`, `Plant garlic cloves ${P.fmtRange(garlic.start, garlic.end)}, pointy end up, in a sunny bed.`],
+    ...(p.place.hz ? [[`What growing zone is ${city} in?`, `USDA hardiness zone ${p.place.hz}${p.place.hz.includes("–") ? ", depending on your ZIP code" : ""}, on the 2023 USDA map: the coldest winter night is usually ${p.place.hzT.replace(/-/g, "−")}°F.`]] : []),
     [`How long is the growing season in ${city}?`, `About ${f.season} frost-free days, from ${P.fmtLong(f.spring50)} to ${P.fmtLong(f.fall50)} in a typical year. That's ${where} of the ${ALL_PLANS.length} Oregon, Washington and Idaho towns we cover. ` +
       (twice.length ? `${twice.length} plants on the calendar get a second planting for fall here, including ${listOf(twiceEx)}.` : "")],
     ...(rf ? [[`How much rain does ${city} get?`, `About ${Math.round(rf.c.prcp)} inches a year, counting melted snow. ${MONTHS_LONG[rf.wet]} is the wettest month and ${MONTHS_LONG[rf.dry]} the driest. ` +
@@ -1308,6 +1302,7 @@ function townQuestions(p) {
 }
 
 /* City pages */
+const TOWN_INDEX = require("./town-index.js");
 D.places.forEach(place => {
   const p = P.plan(D, place);
   const f = p.frost;
@@ -1316,8 +1311,9 @@ D.places.forEach(place => {
   const peas = win(rowFor(p, "peas"), "spring");
   const bc = crumbs("../../", [["Town calendars", "frost-dates/"], [placeLabel(place), null]]);
   const qas = townQuestions(p);
+  const listed = TOWN_INDEX.has(place.slug);
   write("../../", `frost-dates/${place.slug}/index.html`, layout({
-    rel: "../../", canonical: `frost-dates/${place.slug}/`, current: "frost-dates/",
+    rel: "../../", canonical: `frost-dates/${place.slug}/`, current: "frost-dates/", noindex: !listed,
     // The date itself goes in the title, so searchers see the answer in the results.
     // Both dates: in spring people search "last frost", in fall "first frost" (Search Console, Nov 2026).
     title: fitTitle(`${placeLabel(place)} Frost Dates: Last ${P.fmt(f.spring50)}, First ${P.fmt(f.fall50)}`, `${placeLabel(place)}: Last Frost ${P.fmt(f.spring50)}, First ${P.fmt(f.fall50)}`,
@@ -1360,7 +1356,7 @@ ${nearbyTable(p, nearby)}
 <p><a href="../">All town calendars</a> or <a href="../../">look up your ZIP</a>.</p>
 ${PHONE_FOLD_JS}`,
     scripts: SCRIPTS
-  }), "0.8");
+  }), listed ? "0.8" : null);
 });
 
 /* Crop guides: one page per crop, and one per crop and city */
@@ -1431,7 +1427,7 @@ function cityDates(c, towns, kind = "spring") {
 // The question people actually type, answered first in a plant page's FAQ with the same dates as the lede.
 const whenQuestion = (c, g, towns) => { const kind = g.fall ? "fall" : "spring", d = cityDates(c, towns, kind);
   return d ? [[`When should I plant ${lc(c.name)} in Oregon, Washington and Idaho?`,
-    `${g.fall ? "Plant in fall" : "Plant in the garden"}: ${d}. Pick your town at the top of the page for your own dates.`]] : []; };
+    `${g.fall ? "Plant in fall" : "Plant in the garden"}: ${d}.`]] : []; };
 
 function quickFacts(c, g) {
   const rows = [["Difficulty", badge(g.difficulty)], ["Sun", g.sun], ["Spacing", g.spacing], ["Planting depth", g.depth],
