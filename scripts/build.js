@@ -1349,7 +1349,7 @@ ${townCompare(p)}
 ${townClimate(p)}
 <section class="pc" id="calendar"><h2>Planting calendar</h2>
 <p class="pc-sub">Pick a group to see when each plant goes in, or search for one.</p>
-${R.townCal(p, "../../", id => PHOTOS["cat:" + id] ? "../../" + photoFile("cat:" + id, "thumb", "webp") : "")}
+${R.townCal(p, "../../", id => PHOTOS["cat:" + id] ? { src: "../../" + photoFile("cat:" + id, "thumb", "webp"), alt: PHOTOS["cat:" + id].alt } : "")}
 </section>
 <p class="station">New to this? Read the <a href="../../beginners-guide/">beginner's guide</a> or look up a term in the <a href="../../glossary/">glossary</a>.</p>
 ${zipNote(place)}
@@ -1411,6 +1411,8 @@ function steps(c, r, g) {
 
 // Plant page intro: one town per state on each side of the Cascades (Portland, Seattle west; Spokane, Boise, Bend east).
 // Neighbors in the list with the same dates share one entry ("Portland and Seattle May 15 – Jun 12").
+// "Jun 9 – Jul 7" can break only after the dash, so a date never splits across lines ("Jul" / "7").
+const keepDates = d => d.replace(/ (?!$)/g, "\u00a0").replace(/\u00a0\u2013\u00a0/g, "\u00a0\u2013 ");
 function hubLede(c, towns, kind = "spring") {
   const spring = p => { const w = win(rowFor(p, c.id), kind); return w ? P.fmtRange(w.start, w.end) : ""; };
   const parts = [];
@@ -1418,7 +1420,7 @@ function hubLede(c, towns, kind = "spring") {
     const last = parts[parts.length - 1];
     if (last && last.d === spring(p)) last.n.push(n); else parts.push({ n: [n], d: spring(p) });
   });
-  return `${kind === "fall" ? "Plant in fall" : "Plant in the garden"}: ${parts.map(x => `${listOf(x.n)} ${x.d}`).join("; ")}.`;
+  return `${kind === "fall" ? "Plant in fall" : "Plant in the garden"}: ${parts.map(x => `${listOf(x.n)} ${keepDates(x.d)}`).join("; ")}.`;
 }
 
 // "May 15 – Jun 12 in Portland and Seattle, May 1–29 in Boise": city dates for descriptions and the FAQ answer.
@@ -2446,7 +2448,7 @@ const B = CONFIG.basePath;
 write(B, "404.html", layout({
   rel: B, canonical: null, current: null, noindex: true,
   title: "Page not found | Rainline Garden", description: "That page doesn't exist.",
-  body: `<section class="hero prose"><h1>That page doesn't exist.</h1><p class="lede">Try the <a href="${B}">home page</a>, the <a href="${B}what-to-grow/">plant quiz</a>, the <a href="${B}when-to-plant/">plant guides</a> or the <a href="${B}frost-dates/">town calendars</a>.</p></section>
+  body: `<section class="hero prose nf-hero"><h1>That page doesn't exist.</h1><p class="lede">Try the <a href="${B}">home page</a>, the <a href="${B}what-to-grow/">plant quiz</a>, the <a href="${B}when-to-plant/">plant guides</a> or the <a href="${B}frost-dates/">town calendars</a>.</p></section>
 <script>/* Old one-plant-one-town pages were folded into the plant guides; send visitors to the guide with their town picked. */
 (function(){var m=location.pathname.match(/when-to-plant[/]([a-z-]+)[/]([a-z-]+-(?:or|wa|id))[/]?$/);if(m)location.replace("${B}when-to-plant/"+m[1]+"/?town="+m[2]+"#your-town")})()</script>`
 }), null);

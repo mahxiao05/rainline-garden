@@ -2879,3 +2879,30 @@ h2, .why-dates h2, .fall-now-h { text-transform: none; letter-spacing: 0; line-h
 
 /* Keep these closed until a script fills them (their display rules above beat the hidden attribute). */
 .menu-town[hidden], .hz-mine[hidden] { display: none; }
+
+/* Bug sweep 2026-11-24 */
+/* Small phones (under 345px): shrink the site name so the menu button stays on screen. */
+@media (max-width: 345px) {
+  .site-head .wrap { padding-left: 10px; padding-right: 10px; column-gap: 5px; }
+  .site-head .brand { gap: 6px; }
+  .site-head .brand img { width: 24px; height: 24px; }
+  .site-head .brand span { font-size: .7rem; letter-spacing: .04em; }
+}
+/* Plant group cards in the planner: two across on small phones so long names fit. */
+@media (max-width: 360px) {
+  .gp-pick .cat-tiles, .gp-pick .home-sec .cat-tiles, .home-sec .gp-pick .cat-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+/* Bed list on phones: a slimmer +/- control leaves room for long plant names. */
+@media (max-width: 480px) {
+  .sq-list li { gap: 8px; }
+  .sq-list .bd-step button { width: 28px; height: 32px; }
+  .sq-list .bd-step output { min-width: 2.8rem; }
+}
+/* Harvest log on phones: one field per row, so the plant name isn't cut off. */
+@media (max-width: 560px) {
+  .gp-logform .field:first-child, .gp-logform .field:nth-child(2) { grid-column: 1 / -1; }
+}
+/* Link buttons keep their text centered when it wraps to two lines. */
+a.btn { justify-content: center; text-align: center; }
+/* Page not found: the dark band runs down to the footer instead of leaving a cream strip under it. */
+body:has(.nf-hero), body:has(.nf-hero) > main { background: var(--night); }

@@ -167,9 +167,9 @@
     return '<div class="pc-tools" hidden><label class="pc-find" for="pc-q"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>' +
       '<span class="sr">Find a plant</span><input id="pc-q" type="search" autocomplete="off" spellcheck="false" placeholder="Find a plant, like beans or basil"></label>' +
       '<ul class="pc-tabs" aria-label="Plant groups">' + groups.map(function (g, i) {
-        var src = photo ? photo(g.k.id) : "";
+        var ph = photo ? photo(g.k.id) : "", src = ph && ph.src || ph || "", alt = ph && ph.alt || "";
         return '<li><button type="button" class="pc-tab" data-g="' + g.k.id + '" aria-pressed="' + (i === 0) + '">' +
-          (src ? '<img src="' + src + '" width="480" height="240" alt="" loading="lazy" decoding="async">' : "") +
+          (src ? '<img src="' + src + '" width="480" height="240" alt="' + String(alt).replace(/"/g, "&quot;") + '" loading="lazy" decoding="async">' : "") +
           '<b>' + g.k.name + '</b><small>' + plants(g.rows.length) + '</small></button></li>';
       }).join("") + '</ul></div>' +
       '<div class="pc-frost"><span>Frost</span><div><div class="pc-ftrk">' +
