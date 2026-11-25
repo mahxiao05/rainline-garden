@@ -116,14 +116,14 @@ ${fig(1)}
     crops: ["tomatoes", "peas", "lettuce", "potatoes", "kale", "summer-squash"],
     published: "2026-10-13",
     quick: () => [
-      ["The season", "About 97 frost-free days at Redmond, the station closest to Bend."],
+      ["The season", "About 97 frost-free days at the Redmond airport, about 16 miles north of Bend."],
       ["Grow", "Frost-hardy crops like peas, kale, carrots and potatoes as the backbone."],
       ["Warm crops", "Fast transplants (60 days or less) with wall-o-waters and row cover ready."]
     ],
     body: ({ frost, link, fig }) => {
       const bend = frost("bend-or"), kf = frost("klamath-falls-or");
       return `
-<p>Gardening in Central Oregon takes a different playbook than the Willamette Valley. At Redmond, the NOAA weather station closest to Bend, the typical last spring frost is ${bend.last} and the first fall frost comes around ${bend.first}. That's a frost-free season of about ${bend.season} days, and in some years frost shows up in July. Klamath Falls is similar, with about ${kf.season} frost-free days.</p>
+<p>Gardening in Central Oregon takes a different playbook than the Willamette Valley. At the Redmond airport, the NOAA station these Bend dates come from, the typical last spring frost is ${bend.last} and the first fall frost comes around ${bend.first}. That's a frost-free season of about ${bend.season} days, and in some years frost shows up in July. Klamath Falls is similar, with about ${kf.season} frost-free days.</p>
 <p>It's absolutely possible to grow a productive garden here. You just have to pick the right crops and give warm-season ones some help.</p>
 <h2>Lean on crops that shrug off frost</h2>
 <p>Cool-season crops are the backbone of a high desert garden. Peas, lettuce, spinach, radishes, kale, chard, carrots, beets, onions and potatoes all handle light frost and can go in weeks before the last frost date. See <a href="${link("when-to-plant/peas/?town=bend-or#your-town")}">peas in Bend</a> or <a href="${link("when-to-plant/potatoes/?town=bend-or#your-town")}">potatoes in Bend</a> for exact windows.</p>
