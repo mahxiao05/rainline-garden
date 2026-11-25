@@ -8,7 +8,7 @@
   --moss: #1F5C45;
   --moss-soft: #DCEBE2;
   --teal: #2F7A6B; --teal-soft: #D5EAE3; --on-moss: #FFFFFF;
-  --ochre: #C2603A;
+  --ochre: #AD522E;
   --frost: #C3CDD6;
   --frost-hard: #8C9DAD;
   --free: #F3EEDF;
@@ -2906,3 +2906,17 @@ h2, .why-dates h2, .fall-now-h { text-transform: none; letter-spacing: 0; line-h
 a.btn { justify-content: center; text-align: center; }
 /* Page not found: the dark band runs down to the footer instead of leaving a cream strip under it. */
 body:has(.nf-hero), body:has(.nf-hero) > main { background: var(--night); }
+
+/* Dark mode contrast fixes (2026-11-25): article cards, note boxes and badges follow the theme instead of staying white. */
+.prose ol > li, .prose ul.pcard-list > li, .prose .pcards > p, .gnote { background: var(--paper); border-color: var(--line); }
+.prose ol > li::before { color: var(--on-moss); }
+.quick dt .tip-ic { background: var(--paper); }
+.quick dl > div { border-top-color: color-mix(in srgb, var(--ink) 10%, transparent); }
+.hz-sw.hzc-5 { color: #fff; }
+:root[data-theme="dark"] .cm-months a.is-now, :root[data-theme="dark"] .cm.is-now .cm-head h2::after { background: var(--ochre); border-color: var(--ochre); color: #10201A; }
+:root[data-theme="dark"] .profile .avatar-xl { background: linear-gradient(135deg, #1F5C45, #173B2E); }
+:root[data-theme="dark"] .avatar-alt, :root[data-theme="dark"] .profile .avatar-alt { background: linear-gradient(135deg, #A9502D, #7A3E22); color: #fff; }
+.gp-k-harvest .gp-kind { background: #A85C12; }
+.gp-k-water .gp-kind { background: #2878B0; }
+.field input, .field select { border-color: color-mix(in srgb, var(--muted) 45%, var(--bg)); }
+.bd-step button:disabled { color: color-mix(in srgb, var(--muted) 50%, var(--bg)); }
