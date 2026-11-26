@@ -56,6 +56,9 @@ module.exports = {
   "article:cabbage-worms-and-aphids": { src: "pexels:33009446", alt: "A cabbage white butterfly resting on curly kale leaves", tallX: 34 },
   "article:gardening-through-the-seasons": { src: "pexels:7658811", alt: "A gardener kneeling to pick lettuce in a vegetable garden" },
   "article:composting-in-a-rainy-climate": { src: "pexels:5503336", alt: "A wooden compost bin filled with vegetable scraps in a garden" },
+  "article:protecting-plants-in-a-hard-freeze": { src: "unsplash:1705349983683-57d26cae54af", alt: "Frost covering the crinkled leaves of a savoy cabbage", focus: "Center" },
+  "article:planning-next-years-vegetable-garden": { src: "unsplash:1649061261034-cf5aab982a82", alt: "Seed trays with seed packets propped in them, ready for spring sowing", focus: "Center" },
+  "article:growing-onions-in-the-northwest": { src: "unsplash:1777499699424-e26d608008f4", alt: "Rows of young onions growing in dark garden soil", focus: "Center" },
   "article:harvesting-and-preserving-herbs": { src: "pexels:5808450", alt: "Bunches of herbs hanging upside down to dry" },
 
   // In-article photos, placed in the text with ${fig(n)}. Only where a photo shows what the section is about.

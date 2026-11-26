@@ -73,7 +73,7 @@ D.crops.forEach(c => { if (!INTROS[c.id]) throw new Error(`Plant ${c.id} needs a
 const SEED_SAVING = require("./seed-saving.js");
 const STATION_CHECK = require("./station-check.js");
 const { SIZES, fileBase, sizesFor, sizeTag, formatsFor } = require("./photo-sizes.js");
-const ARTICLES = require("./articles-5.js").concat(require("./articles-4.js"), require("./articles-3.js"), require("./articles-2.js"), require("./articles.js")); // newest first
+const ARTICLES = require("./articles-6.js").concat(require("./articles-5.js"), require("./articles-4.js"), require("./articles-3.js"), require("./articles-2.js"), require("./articles.js")); // newest first
 
 const CONFIG = {
   siteName: "Rainline Garden",
@@ -1555,7 +1555,7 @@ D.categories.forEach(k => {
   write(rel, `${WHEN_INDEX}${k.id}/index.html`, layout({
     rel, canonical: `${WHEN_INDEX}${k.id}/`, current: WHEN_INDEX,
     title: x.title || fitTitle(`When to Plant ${titleCase(k.name)} in Oregon, Washington and Idaho`, `When to Plant ${titleCase(k.name)} in Oregon, Washington & Idaho`, `When to Plant ${titleCase(k.name)} in the Pacific Northwest`, `When to Plant ${titleCase(k.name)} in the Northwest`),
-    description: fitDesc(`When to plant ${listOf(list.map(c => lc(c.name)))} in Oregon, Washington and Idaho, with dates for every town and growing guides.`,
+    description: x.description || fitDesc(`When to plant ${listOf(list.map(c => lc(c.name)))} in Oregon, Washington and Idaho, with dates for every town and growing guides.`,
       `When to plant ${listOf(list.slice(0, 5).map(c => lc(c.name)))} and more in Oregon, Washington and Idaho, with dates for every town.`,
       `When to plant ${listOf(list.slice(0, 3).map(c => lc(c.name)))} and more in Oregon, Washington and Idaho, with dates for every town.`),
     jsonld: [kb.ld],

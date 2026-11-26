@@ -78,7 +78,8 @@ module.exports = {
     ]
   },
   "fruit-trees": {
-    title: "When to Plant Fruit Trees in Oregon, Washington and Idaho",
+    title: "When to Plant Fruit Trees in Oregon & Washington: Mar–Apr",
+    description: "Plant bare-root fruit trees while they're dormant: about March to late April in Portland and Seattle, April to May in Spokane. Dates for your town.",
     faq: [
       ["When should I plant fruit trees in the Northwest?", "Bare-root trees go in from late winter to early spring while they're dormant. Potted trees can be planted in spring or fall."],
       ["Which fruit trees are easiest west of the Cascades?", "Scab-resistant apples, Asian and European pears, figs in a warm spot, and self-fertile plums. Peaches are the hardest because of peach leaf curl in wet springs."],

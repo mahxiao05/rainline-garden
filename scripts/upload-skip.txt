@@ -493,3 +493,9 @@ assets/img/photos/page-what-to-grow-720.webp
 assets/img/photos/page-when-to-plant-1200.webp
 assets/img/photos/page-when-to-plant-720.jpg
 assets/img/photos/page-when-to-plant-720.webp
+assets/img/photos/article-protecting-plants-in-a-hard-freeze-1200.webp
+assets/img/photos/article-protecting-plants-in-a-hard-freeze-720.jpg
+assets/img/photos/article-planning-next-years-vegetable-garden-1200.webp
+assets/img/photos/article-planning-next-years-vegetable-garden-720.jpg
+assets/img/photos/article-growing-onions-in-the-northwest-1200.webp
+assets/img/photos/article-growing-onions-in-the-northwest-720.jpg
